@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="TracademicHub">
+<html lang="en" ng-app="TracademicHub" ng-cloak>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,8 +9,24 @@
     <link href="css/lib/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="css/position-alignment.css" rel="stylesheet" type="text/css">
     <link href="css/index.css" rel="stylesheet" type="text/css">
+    <link href="css/dashboard.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+<div ng-include="'/templates/navigationBar.html'"></div>
 
+<div ng-view></div>
+
+<div ng-include="'/templates/footerBar.html'"></div>
+
+<!-- ==================== separator ==================== -->
+<script src="javascript/lib/jquery-3.2.0.min.js" type="text/javascript"></script>
+<script src="javascript/lib/bootstrap.min.js" type="text/javascript"></script>
+<!--angularjs script-->
+<script src="javascript/lib/angular.min.js" type="text/javascript"></script>
+<script src="javascript/lib/angular-route.min.js" type="text/javascript"></script>
+<script src="javascript/index.js" type="text/javascript"></script>
+<script src="javascript/controllers/navigationBarController.js" type="text/javascript"></script>
+<script src="javascript/controllers/homeController.js" type="text/javascript"></script>
+<script src="javascript/controllers/dashboardController.js" type="text/javascript"></script>
 </body>
 </html>
