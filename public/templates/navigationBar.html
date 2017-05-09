@@ -10,7 +10,7 @@
                 <span class="icon-bar"></span>
             </button>
             <!-- logo and website name -->
-            <a class="navbar-brand" href="#/index.html">
+            <a class="navbar-brand" href="/index.html">
                 <span class="navbar-logo"></span>
                 <span class="navbar-name">Tracademic Hub</span>
             </a>
@@ -19,19 +19,19 @@
         <div class="collapse navbar-collapse" id="navbar_dropdown">
             <ul class="nav navbar-nav navbar-right">
                 <li ng-if="isAuthenticated() && getAccessLevel() >= 30">
-                    <a href="#/admin">
+                    <a href="admin">
                         <span><i class="fa fa-user-plus fa-fw"></i></span>
                         <span>Admin</span>
                     </a>
                 </li>
                 <li ng-if="isAuthenticated()">
-                    <a href="#/dashboard">
+                    <a href="dashboard">
                         <span><i class="fa fa-tachometer fa-fw"></i></span>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li ng-if="!isAuthenticated()">
-                    <a href="#/login" ng-click="login()">
+                    <a href="login" ng-click="login()">
                         <span><i class="fa fa-sign-in fa-fw"></i></span>
                         <span>Login</span>
                     </a>
@@ -44,14 +44,14 @@
                     </a>
                     <ul class="dropdown-menu" id="navbar_user_dropdown">
                         <li>
-                            <a href="#/profile">
+                            <a href="profile">
                                 <span><i class="fa fa-user fa-fw"></i></span>
                                 <span>Profile</span>
                             </a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="#/logout" ng-if="isAuthenticated()" ng-click="logout()">
+                            <a href="logout" ng-click="logout()">
                                 <span><i class="fa fa-sign-out fa-fw"></i></span>
                                 <span>Logout</span>
                             </a>

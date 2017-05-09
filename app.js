@@ -12,9 +12,18 @@ var http = require('http');
 var app = express();
 
 app.use(bodyParser.json());
-app.use(express.static('public'));
-app.set('port', 3000);
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(cookieParser());
 
+
+// app.get('/', function (req, res) {
+//     res.redirect('/index.html');
+// });
+
+
+app.use(express.static('public'));
+
+app.set('port', 3000);
 http.createServer(app).listen(app.get('port'), function () {
     console.log("Express is running.");
     console.log('HTTP on port ' + app.get('port'));

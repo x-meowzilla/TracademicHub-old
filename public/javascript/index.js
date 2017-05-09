@@ -15,6 +15,16 @@ app.config(function ($routeProvider, $locationProvider) {
             templateUrl: 'templates/dashboard.html',
             controller: 'dashboardController'
         })
+        .when('/profile', {
+            templateUrl: 'templates/profile.html'
+
+        })
+
+
+
+        .when('/admin', {
+            templateUrl: 'templates/admin-main.html'
+        })
         // .when('/someRoute', {
         //     templateUrl: 'templates/someRoute.html',
         //     controller: 'someController'
