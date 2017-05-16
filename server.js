@@ -10,8 +10,8 @@ app.set('port', port);
 
 // http server
 http.createServer(app).listen(app.get('port'), function () {
-    console.log("Express is running. Listening on port " + app.get('port'));
-}).on('error', onError);
+    console.log("Express is running.");
+}).on('error', onError).on('listening', onListening);
 
 // // https server
 // var serverConfig = {
@@ -19,7 +19,7 @@ http.createServer(app).listen(app.get('port'), function () {
 //     cert: fs.readFileSync(config.httpsCert)
 // };
 // https.createServer(serverConfig, app).listen(app.get('port'), function () {
-//     console.log("Express is running. Listening on port " + app.get('port'));
+//     console.log("Express is running.");
 // }).on('error', onError).on('listening', onListening);
 
 
