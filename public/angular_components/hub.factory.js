@@ -8,7 +8,7 @@
     function checkAuthentication() {
         return {
             isAuthenticated: function () {
-                return true;
+                return false;
             },
             getAccessLevel: function () {
                 if (!this.isAuthenticated()) {
