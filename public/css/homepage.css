@@ -1,0 +1,84 @@
+.site-heading {
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+.heading-cover {
+    background: url(../img/homepage-cover-1.png) no-repeat center center;
+    background-size: cover;
+    overflow: hidden;
+    text-align: center;
+    color: #f8f8f8;
+}
+
+.heading-content {
+    position: relative;
+    vertical-align: middle;
+    padding-top: 100px;
+    padding-bottom: 10%;
+}
+
+.heading-divider {
+    border-top: 1px solid #f8f8f8;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    width: 40%;
+}
+
+.site-title {
+    margin: 0;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+    font-size: 5em;
+}
+
+.site-description {
+    padding-left: 36px;
+    padding-right: 36px;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+}
+
+.app-container {
+    margin: 15px 5px;
+    padding: 15px 5px;
+}
+
+.app-container h4 {
+    font-weight: 360;
+}
+
+.app-container .app-icon {
+    margin-bottom: 20px;
+}
+
+@media (max-width: 767px) {
+    .site-title {
+        font-size: 4em;
+    }
+
+    .site-description {
+        padding-left: 24px;
+        padding-right: 24px;
+        font-size: 1.5em;
+    }
+
+    .heading-divider {
+        width: 60%;
+    }
+
+}
+
+@media (max-width: 575px) {
+    .site-title {
+        font-size: 3em;
+    }
+
+    .site-description {
+        padding-left: 12px;
+        padding-right: 12px;
+        font-size: 1em;
+    }
+
+    .heading-divider {
+        width: 80%;
+    }
+
+}
