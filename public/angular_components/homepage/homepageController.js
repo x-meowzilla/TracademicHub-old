@@ -1,15 +1,20 @@
-var app = angular.module('TracademicHub');
-app.controller('homepageController', homeController);
+(function () {
+    'use strict';
 
-// home page controller functions
-function homeController($scope, _CheckAuthentication) {
+    angular
+        .module('TracademicHub')
+        .controller('homepageController', homepageController);
 
-    $scope.isAuthenticated = function () {
-        return _CheckAuthentication.isAuthenticated();
-    };
+    function homepageController($scope, _CheckAuthentication) {
 
-    $scope.getAccessLevel = function () {
-        return _CheckAuthentication.getAccessLevel();
-    };
+        $scope.isAuthenticated = function () {
+            return _CheckAuthentication.isAuthenticated();
+        };
 
-}
+        $scope.getAccessLevel = function () {
+            return _CheckAuthentication.getAccessLevel();
+        };
+
+    }
+
+}());
