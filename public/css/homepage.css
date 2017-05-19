@@ -1,31 +1,10 @@
-@import url('lib/animate.css');
-@import url('lib/font-awesome.min.css');
-
-.navbar-logo {
-    background: url(../images/th-logo.png) no-repeat center center;
-    background-size: cover;
-    text-align: center;
-    width: 36px;
-    height: 36px;
-}
-
-.navbar-brand {
-    display: flex;
-    align-items: center;
-}
-
-.navbar-name {
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
 .site-heading {
     padding-top: 10px;
     padding-bottom: 20px;
 }
 
 .heading-cover {
-    background: url(../images/index-cover.png) no-repeat center center;
+    background: url(../img/homepage-cover-1.png) no-repeat center center;
     background-size: cover;
     overflow: hidden;
     text-align: center;
@@ -102,12 +81,4 @@
         width: 80%;
     }
 
-}
-
-footer {
-    border-top: 1px solid #e7e7e7;
-}
-
-footer .copyright {
-    margin: 16px 0;
 }
