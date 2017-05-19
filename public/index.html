@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<!--<html lang="en" ng-app="TracademicHub" ng-cloak>-->
-<html lang="en" ng-app ng-cloak>
+<html lang="en" ng-app="TracademicHub" ng-cloak>
+<!--<html lang="en" ng-app ng-cloak>-->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="description" content="Tracademic Hub Webapp">
-    <!--<base href="/">-->
     <title>Tracademic Hub</title>
     <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="css/alignment.css" rel="stylesheet" type="text/css">
+    <link href="css/customized_alignments.css" rel="stylesheet" type="text/css">
+    <link href="css/navigation_bar.css" rel="stylesheet" type="text/css">
     <!--<link href="css/index.css" rel="stylesheet" type="text/css">-->
     <!--<link href="css/dashboard.css" rel="stylesheet" type="text/css">-->
     <!--<link href="css/admin.css" rel="stylesheet" type="text/css">-->
@@ -17,17 +17,9 @@
 
 
 <body>
+<div ng-include="'angular_components/navigation_bar/navigationBar.html'"></div>
 
-<h1>Hello World</h1>
-
-
-
-<!--<input type="text" ng-model="test">-->
-<!--{{test}}-->
-
-<!--<div ng-include="'/templates/navigationBar.html'"></div>-->
-
-<!--<div ng-view class="margin-top-50 margin-bottom-10"></div>-->
+<!--<div class="margin-top-50 margin-bottom-10" ng-view></div>-->
 
 <!--<div ng-include="'/templates/footerBar.html'"></div>-->
 
@@ -36,12 +28,14 @@
 <script src="js/lib/bootstrap.min.js" type="text/javascript"></script>
 <!--angularjs script-->
 <script src="js/lib/angular.min.js" type="text/javascript"></script>
-<!--<script src="../app/lib/angular-route.js" type="text/javascript"></script>-->
-<!--controller script-->
-<!--<script src="../app/thub.module.js" type="text/javascript"></script>-->
-<!--<script src="../app/thub.factory.js" type="text/javascript"></script>-->
+<script src="js/lib/angular-route.min.js" type="text/javascript"></script>
+<!--angular module-->
+<script src="angular_components/hub.module.js" type="text/javascript"></script>
+<script src="angular_components/hub.factory.js" type="text/javascript"></script>
+<!--angular controller-->
+<script src="angular_components/navigation_bar/navigationBarController.js" type="text/javascript"></script>
+
 <!--<script src="javascript/index.js" type="text/javascript"></script>-->
-<!--<script src="shared/navbar/navigationBarController.js" type="text/javascript"></script>-->
 <!--<script src="javascript/controllers/homeController.js" type="text/javascript"></script>-->
 <!--<script src="javascript/controllers/dashboardController.js" type="text/javascript"></script>-->
 </body>
