@@ -1,5 +1,5 @@
 var app = require('./app');
-var config = require('./config');
+var config = require('./configurations/server_config');
 var http = require('http');
 var https = require('https');
 var fs = require('fs');
