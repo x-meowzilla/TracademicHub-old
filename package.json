@@ -17,12 +17,12 @@
   },
   "homepage": "https://github.com/MeowsterEric/TracademicHub#readme",
   "dependencies": {
-    "angular": "^1.6.4",
     "body-parser": "^1.17.1",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
     "express-session": "^1.15.2",
     "express-validator": "^3.2.0",
+    "mongoose": "^4.10.0",
     "serve-favicon": "^2.4.2"
   }
 }
