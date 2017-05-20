@@ -2,7 +2,7 @@ var fs = require('fs');
 
 module.exports = {
 
-    saml_data: {
+    samlData: {
         // URL that goes from the Service Provider -> Identity Provider
         entryPoint: 'https://idp.utorauth.utoronto.ca/idp/profile/SAML2/Redirect/SSO',
         // URL that goes from the Identity Provider -> Service Provider
