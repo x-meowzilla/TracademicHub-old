@@ -35,6 +35,7 @@ module.exports = function (app) {
     });
     passport.use(samlStrategy);
 
+    // maybe move these lines to app.js, then remove the app in parameter
     app.use(passport.initialize());
     app.use(session());
 
