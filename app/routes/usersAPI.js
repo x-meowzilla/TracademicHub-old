@@ -1,27 +1,34 @@
 var router = require('express').Router();
 var mongoDB = require('mongodb').MongoClient;
-var db_config = require('../configurations/db_config');
-var User = require('../db_models/User');
-
+var dbConfig = require('../configurations/db_config');
+var dbModel = require('../db_models/User');
 
 // users API
 router.get('/', function (req, res) {
-
+    console.log(req.session);
     res.send('GET request accepted.');
-
 });
 
 router.get('/:id', function (req, res) {
-
     res.send('GET request accepted, ID: ' + req.params.id);
+});
 
+router.get('/:id/history', function (req, res) {
+    res.send('GET history');
 });
 
 router.post('/', function (req, res) {
-
     res.send('POST request accepted.');
-
 });
+
+router.delete('/', function (req, res) {
+    res.send('DELETE!! delete all entries');
+});
+
+router.delete('/:id', function (req, res) {
+    res.send('DELETE!! delete one entry');
+});
+
 
 // copied from existing code, need to update them
 var checkAuthentication = function (req, res, next) {
@@ -45,7 +52,7 @@ var verifyPassword = function (user, password) {
 };
 
 var mongoAction = function (tableName, action, data, callback) {
-    mongoDB.connect(db_config.dbURL, function (err, db) {
+    mongoDB.connect(dbConfig.dbURL, function (err, db) {
         if (err) {
             return console.log(err);
         } else {
@@ -79,9 +86,19 @@ var mongoAction = function (tableName, action, data, callback) {
     })
 };
 
-mongoAction('users', 'drop', {options: {}}, function (err, user) {
-    console.log("drop users table");
+// testing schema
+mongoDB.connect(dbConfig.dbURL, function (err, db) {
+    var collection = db.collection('users');
+    collection.insertOne({firstname: 'eric'}, function (err, result) {
+        if (err) console.log(err);
+        else console.log(result.ops);
+    });
+    db.close();
 });
+
+// mongoAction('users', 'drop', {options: {}}, function (err, user) {
+//     console.log("drop users table");
+// });
 
 
 module.exports = router;
