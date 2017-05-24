@@ -11,7 +11,7 @@ var MongoStore = require('connect-mongo')(session);
 // config files and API file path
 var serverConfig = require('./configurations/server_config');
 var dbConfig = require('./configurations/db_config');
-var usersAPI = require('./routes/usersAPI');
+var usersAPI = require('./routes/users_api');
 
 
 // ----- app start here -----
