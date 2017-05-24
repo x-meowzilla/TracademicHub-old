@@ -87,13 +87,19 @@ var mongoAction = function (tableName, action, data, callback) {
 };
 
 // testing schema
-mongoDB.connect(dbConfig.dbURL, function (err, db) {
-    var collection = db.collection('users');
-    collection.insertOne({firstname: 'eric'}, function (err, result) {
-        if (err) console.log(err);
-        else console.log(result.ops);
-    });
-    db.close();
+// mongoDB.connect(dbConfig.dbURL, function (err, db) {
+//     var collection = db.collection('users');
+//     collection.insertOne({firstname: 'eric'}, function (err, result) {
+//         if (err) console.log(err);
+//         else console.log(result.ops);
+//     });
+//     db.close();
+// });
+
+var user = dbModel.User();
+user.save(function (err, res) {
+    if (err) return err;
+    else return res;
 });
 
 // mongoAction('users', 'drop', {options: {}}, function (err, user) {
