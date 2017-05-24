@@ -1,4 +1,5 @@
 var fs = require('fs');
+var serverConfig = require('./server_config');
 
 module.exports = {
 
@@ -10,9 +11,9 @@ module.exports = {
         // Usually specified as `/shibboleth` from site root
         issuer: '',
         // Service Provider private key
-        decryptionPvk: fs.readFileSync('', 'utf8'),
+        decryptionPvk: fs.readFileSync(serverConfig.httpsKey, 'utf8'),
         // Service Provider Certificate
-        privateCert: fs.readFileSync('', 'utf8'),
+        privateCert: fs.readFileSync(serverConfig.httpsCert, 'utf8'),
         // Identity Provider's public key
         cert: fs.readFileSync('', 'utf8'),
         identifierFormat: null,
