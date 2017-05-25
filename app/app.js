@@ -5,6 +5,7 @@ var favicon = require('serve-favicon');
 var bodyParser = require("body-parser");
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var mongoose = require('mongoose');
 var MongoStore = require('connect-mongo')(session);
 // var passport = require('./passport');
 
@@ -51,6 +52,24 @@ app.use(function (req, res, next) {
 app.use(function (req, res) {
     console.log("HTTP Response", res.statusCode);
 });
+
+app.use(function (req, res) {
+    res.status(404).send('IC 404, Room not found!');
+});
+
+// mongodb connection
+var mongooseOptions = {server: {socketOptions: {keepAlive: 100}}};
+mongoose.connect(dbConfig.dbURL, mongooseOptions);
+mongoose.connection.on('open', function (error) {
+    return error ? console.error(error) : console.log('Connected to mongodb.');
+});
+mongoose.connection.on('disconnected', function (error) {
+    return error ? console.error(error) : console.log('Disconnected from mongodb.')
+});
+mongoose.connection.on('error', function (error) {
+    return console.error(error);
+});
+
 
 module.exports = app;
 
