@@ -1,6 +1,6 @@
 var passport = require('passport');
 var SamlStrategy = require('passport-saml').Strategy;
-var passportConfig = require('./configurations/passport_config');
+var passportConfig = require('../configurations/passport_config');
 
 module.exports = function (app) {
 
