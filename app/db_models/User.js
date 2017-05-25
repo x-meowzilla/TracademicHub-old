@@ -14,9 +14,22 @@ var userSchema = new Schema({
     // email: {type: String},
     // // libraryNumber: {type: String, unique: true}, //
     // lastLoginDate: {type: Date, index: true},
-    // accessLevel: {type: Number, required: true, default: 10}
+    accessLevel: {type: Number, required: true, default: 10}
 
 }, {collection: 'users'});
+
+
+// improve these methods!
+userSchema.methods.getUsername = function (done) {
+    var user = this;
+    return done(null, user.username);
+};
+
+userSchema.methods.getAccessLevel = function (done) {
+    var user = this;
+    return done(null, user.accessLevel);
+};
+
 
 // module.exports = mongoose.model('User', userSchema);
 exports.User = mongoose.model('User', userSchema);
