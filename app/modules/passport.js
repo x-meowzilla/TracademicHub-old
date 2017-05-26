@@ -1,6 +1,6 @@
 var passport = require('passport');
 var SamlStrategy = require('passport-saml').Strategy;
-var saml_config = require('./configurations/passport_saml_config');
+var passportConfig = require('../configurations/passport_config');
 
 module.exports = function (app) {
 
@@ -29,12 +29,13 @@ module.exports = function (app) {
     // });
 
 
-    var samlStrategy = new SamlStrategy(saml_config.saml_data, function (req, profile, done) {
+    var samlStrategy = new SamlStrategy(passportConfig.samlData, function (req, profile, done) {
         console.log(profile);
         done(new Error('temp stop program for testing'), null);
     });
     passport.use(samlStrategy);
 
+    // maybe move these lines to app.js, then remove the app in parameter
     app.use(passport.initialize());
     app.use(session());
 

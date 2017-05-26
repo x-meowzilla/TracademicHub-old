@@ -8,19 +8,19 @@ process.title = 'TracademicHub';
 var port = normalizePort(process.env.PORT || config.port);
 app.set('port', port);
 
-// http server
-http.createServer(app).listen(app.get('port'), function () {
-    console.log("Express is running.");
-}).on('error', onError).on('listening', onListening);
-
-// // https server
-// var serverConfig = {
-//     key: fs.readFileSync(config.httpsKey),
-//     cert: fs.readFileSync(config.httpsCert)
-// };
-// https.createServer(serverConfig, app).listen(app.get('port'), function () {
+// // http server
+// http.createServer(app).listen(app.get('port'), function () {
 //     console.log("Express is running.");
 // }).on('error', onError).on('listening', onListening);
+
+// https server
+var serverConfig = {
+    key: fs.readFileSync(config.httpsKey),
+    cert: fs.readFileSync(config.httpsCert)
+};
+https.createServer(serverConfig, app).listen(app.get('port'), function () {
+    console.log("Express is running.");
+}).on('error', onError).on('listening', onListening);
 
 
 function normalizePort(val) {
