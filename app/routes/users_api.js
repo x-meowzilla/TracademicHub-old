@@ -96,11 +96,13 @@ var mongoAction = function (tableName, action, data, callback) {
 //     db.close();
 // });
 
-var user = dbModel.User();
-user.save(function (err, res) {
-    if (err) return err;
-    else return res;
-});
+
+// var user = new dbModel.User();
+// var promise = user.save();
+// promise.then(function (doc) {
+//     console.log(doc);
+// });
+
 
 // mongoAction('users', 'drop', {options: {}}, function (err, user) {
 //     console.log("drop users table");
