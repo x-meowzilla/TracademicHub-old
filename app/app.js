@@ -12,6 +12,7 @@ var MongoStore = require('connect-mongo')(session);
 // config files and API file path
 var serverConfig = require('./configurations/server_config');
 var dbConfig = require('./configurations/db_config');
+var samlAPI = require('./routes/saml_api');
 var usersAPI = require('./routes/users_api');
 
 
@@ -42,6 +43,7 @@ app.use(favicon(path.join('public', 'favicon.ico')));
 // api routers
 app.use('/', express.static('public'));
 app.use('/api/users', usersAPI);
+app.use('/Shibboleth.sso', samlAPI);
 
 // function handler
 app.use(function (req, res, next) {
