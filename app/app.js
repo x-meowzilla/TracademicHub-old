@@ -7,12 +7,13 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
 var MongoStore = require('connect-mongo')(session);
-// var passport = require('./passport');
 
 // config files and API file path
 var serverConfig = require('./configurations/server_config');
 var dbConfig = require('./configurations/db_config');
+var passportAuthModule = require('./modules/passport_authentication');
 var samlAPI = require('./routes/saml_api');
+var localAuthAPI = require('./routes/local_auth_api');
 var usersAPI = require('./routes/users_api');
 
 
@@ -39,11 +40,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(favicon(path.join('public', 'favicon.ico')));
+passportAuthModule(app);
 
 // api routers
 app.use('/', express.static('public'));
 app.use('/api/users', usersAPI);
-app.use('/Shibboleth.sso', samlAPI);
+// app.use('/Shibboleth.sso', samlAPI);  // sign-in via Shibboleth Auth
+app.use('/LocalAuth', localAuthAPI);  // sign-in via Local Auth
 
 // function handler
 app.use(function (req, res, next) {
