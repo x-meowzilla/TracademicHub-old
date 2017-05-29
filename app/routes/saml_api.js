@@ -5,9 +5,11 @@ var passport = require('passport');
 //     res.send('looking good');
 // });
 
-router.get('/login', passport.authenticate('saml', {
-    successRedirect: '/', // homepage
-    failureRedirect: '/Shibboleth.sso/login' //
-}));
+router.get('/Login',
+    passport.authenticate('saml', {
+        successRedirect: '/', // homepage
+        failureRedirect: '/Shibboleth.sso/Login' //
+    })
+);
 
 module.exports = router;
