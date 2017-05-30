@@ -2,7 +2,7 @@
 var LocalStrategy = require('passport-local').Strategy;
 // var passportConfig = require('../configurations/passport_config');
 
-var UsersDB = require('../db_models/User');
+var UsersModel = require('../db_models/User');
 
 module.exports = function (passport) {
 
@@ -13,7 +13,7 @@ module.exports = function (passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function (id, done) {
-        UsersDB.findById(id, function (error, user) {
+        UsersModel.findById(id, function (error, user) {
             if (error) return done(error, null);
 
             return user ? done(null, user.toObject()) : done(new Error('User does not exist.'), null);
@@ -28,7 +28,7 @@ module.exports = function (passport) {
 
     // local strategy
     passport.use('local', new LocalStrategy({passReqToCallback: true}, function (req, username, password, done) {
-        UsersDB.findOne({username: username}, function (error, user) {
+        UsersModel.findOne({username: username}, function (error, user) {
             if (error) return done(error, null);
 
             // user does not exist
@@ -39,7 +39,7 @@ module.exports = function (passport) {
 
             // user exist, but password wrong
             if (!user.verifyPassword(password)) {
-                console.log('Password incorrect.');
+                console.log('Incorrect Password.');
                 return done(null, false);
             } else {
                 return done(null, user);

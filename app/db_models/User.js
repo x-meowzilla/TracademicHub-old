@@ -50,5 +50,5 @@ userSchema.methods.getAccessLevel = function () {
     return user.accessLevel;
 };
 
-var UsersDB = mongoose.model('User', userSchema);
-module.exports = UsersDB;
+var UserModel = mongoose.model('User', userSchema);
+module.exports = UserModel;
