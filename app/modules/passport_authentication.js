@@ -1,14 +1,10 @@
-var passport = require('passport');
 // var SamlStrategy = require('passport-saml').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 // var passportConfig = require('../configurations/passport_config');
 
-var dbModel = require('../db_models/User');
+var UsersDB = require('../db_models/User');
 
-module.exports = function (app) {
-
-    app.use(passport.initialize());
-    app.use(passport.session());
+module.exports = function (passport) {
 
     // https://github.com/ritstudentgovernment/passport-saml-example/blob/master/app.js
     passport.serializeUser(function (user, done) {

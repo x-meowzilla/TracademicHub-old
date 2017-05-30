@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
 var MongoStore = require('connect-mongo')(session);
+var passport = require('passport');
 
 // config files and API file path
 var serverConfig = require('./configurations/server_config');
@@ -40,27 +41,29 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(favicon(path.join('public', 'favicon.ico')));
-passportAuthModule(app);
+app.use(passport.initialize());
+app.use(passport.session());
+passportAuthModule(passport);
 
 // api routers
 app.use('/', express.static('public'));
 app.use('/api/users', usersAPI);
+app.use('/local/', localAuthAPI);  // sign-in via Local Auth
 // app.use('/Shibboleth.sso', samlAPI);  // sign-in via Shibboleth Auth
-app.use('/LocalAuth', localAuthAPI);  // sign-in via Local Auth
 
-// function handler
-app.use(function (req, res, next) {
-    console.log("HTTP request", req.method, req.url, req.body);
-    next();
-});
-
-app.use(function (req, res) {
-    console.log("HTTP Response", res.statusCode);
-});
-
-app.use(function (req, res) {
-    res.status(404).send('IC 404, Room not found!');
-});
+// // function handler
+// app.use(function (req, res, next) {
+//     console.log("HTTP request", req.method, req.url, req.body);
+//     next();
+// });
+//
+// app.use(function (req, res) {
+//     console.log("HTTP Response", res.statusCode);
+// });
+//
+// app.use(function (req, res) {
+//     res.status(404).send('IC 404, Room not found!');
+// });
 
 // mongodb connection
 var mongooseOptions = {server: {socketOptions: {keepAlive: 100}}};
