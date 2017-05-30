@@ -1,5 +1,5 @@
 var router = require('express').Router();
-var dbModel = require('../db_models/User');
+var UsersDB = require('../db_models/User');
 
 var checkAuthentication = function (req, res, next) {
     var user = req.session.user;
@@ -31,9 +31,10 @@ router.post('/', checkAuthentication, function (req, res) {
     res.send('POST request accepted.');
 });
 
-router.post('/:id/adjustPrivileges', function (req, res) {
+// TODO - POST may not be the best method here, put? find method for update
+router.post('/:id/adjustPrivileges', checkAuthentication, function (req, res) {
     var userID = req.params.id;
-    dbModel.findByID(userID, function (error, user) {
+    UsersDB.findByID(userID, function (error, user) {
         if (error) return res.status(500).end(error);
 
         if (!user) {
