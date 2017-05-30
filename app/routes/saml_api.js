@@ -5,9 +5,21 @@ var passport = require('passport');
 //     res.send('looking good');
 // });
 
-router.get('/login', passport.authenticate('saml', {
-    successRedirect: '/', // homepage
-    failureRedirect: '/Shibboleth.sso/login' //
-}));
+router.get('/Login',
+    passport.authenticate('saml', {
+        successRedirect: '/', // homepage
+        failureRedirect: '/Shibboleth.sso/Login' //
+    })
+);
+
+router.get('/Login/callback',
+    passport.authenticate('saml', {
+        successRedirect: '/',
+        failureRedirect: '/Shibboleth.sso/Login'
+    }),
+    function (req, res) {
+        res.end('not implemented yet.')
+    }
+);
 
 module.exports = router;
