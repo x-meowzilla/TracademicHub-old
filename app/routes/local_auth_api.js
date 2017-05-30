@@ -48,9 +48,9 @@ router.post('/login', function (req, res) {
         function (error, user) {
             if (error) return res.status(error.code).end(error);
 
-            if (!user) return res.end('Incorrect username or password.');
+            if (!user) return res.status(404).end('User: "' + req.body.username + '" does not exist.');
+            if (!user.verifyPassword(req.body.password)) return res.status(401).end('Incorrect Password.');
             else return res.status(200).json(user).end();
-
         })(req, res);
 });
 

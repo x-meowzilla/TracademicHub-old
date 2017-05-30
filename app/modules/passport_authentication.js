@@ -30,20 +30,7 @@ module.exports = function (passport) {
     passport.use('local', new LocalStrategy({passReqToCallback: true}, function (req, username, password, done) {
         UsersModel.findOne({username: username}, function (error, user) {
             if (error) return done(error, null);
-
-            // user does not exist
-            if (!user) {
-                console.log('Username ' + username + ' does not exist.');
-                return done(null, false);
-            }
-
-            // user exist, but password wrong
-            if (!user.verifyPassword(password)) {
-                console.log('Incorrect Password.');
-                return done(null, false);
-            } else {
-                return done(null, user);
-            }
+            else return done(null, user); // return the user regardless of existence of this user, handle status in router
         });
     }));
 
