@@ -12,4 +12,14 @@ router.get('/Login',
     })
 );
 
+router.get('/Login/callback',
+    passport.authenticate('saml', {
+        successRedirect: '/',
+        failureRedirect: '/Shibboleth.sso/Login'
+    }),
+    function (req, res) {
+        res.end('not implemented yet.')
+    }
+);
+
 module.exports = router;
