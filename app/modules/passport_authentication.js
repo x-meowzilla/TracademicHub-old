@@ -6,30 +6,19 @@ var UsersDB = require('../db_models/User');
 
 module.exports = function (passport) {
 
-    // https://github.com/ritstudentgovernment/passport-saml-example/blob/master/app.js
+    // used to serialize the user for the session
     passport.serializeUser(function (user, done) {
-        done(null, user);
+        return done(null, user.id);
     });
 
-    passport.deserializeUser(function (user, done) {
-        done(null, user);
+    // used to deserialize the user
+    passport.deserializeUser(function (id, done) {
+        UsersDB.findById(id, function (error, user) {
+            if (error) return done(error, null);
+
+            return user ? done(null, user.toObject()) : done(new Error('User does not exist.'), null);
+        });
     });
-
-    // ----- this part from the web app, select one to use -----
-    // passport.serializeUser(function(user, done) {
-    //     done(null, user._id);
-    // });
-    // passport.deserializeUser(function(id, done) {
-    //     UserModel.findById(id, function(err, user) {
-    //         if (err)
-    //             return done(err, false);
-    //         if(user)
-    //             return done(null, user.toObject());
-    //         else
-    //             return done(new Error("User not found"), false);
-    //     });
-    // });
-
 
     // var samlStrategy = new SamlStrategy(passportConfig.samlData, function (req, profile, done) {
     //     console.log(profile);
@@ -38,28 +27,24 @@ module.exports = function (passport) {
     // passport.use(samlStrategy);
 
     // local strategy
-    var localStrategy = new LocalStrategy({passReqToCallback: true}, function (username, password, done) {
-        // TODO - save local user to db?
+    passport.use('local', new LocalStrategy({passReqToCallback: true}, function (req, username, password, done) {
+        UsersDB.findOne({username: username}, function (error, user) {
+            if (error) return done(error, null);
 
-        console.log('local');
+            // user does not exist
+            if (!user) {
+                console.log('Username ' + username + ' does not exist.');
+                return done(null, false);
+            }
 
-        dbModel.LocalUser.findOne({username: username}, function (error, user) {
-
-            console.log('local db');
-
-            console.log(error);
-            console.log(user);
-
-            done(null, 'good');
-
-
-            // // return error message if error exists
-            // if (error) return callback(error, null);
-            //
-            // if (!user) return callback(null, null);
-            // else return callback(null, user);
-        })
-    });
-    passport.use(localStrategy);
+            // user exist, but password wrong
+            if (!user.verifyPassword(password)) {
+                console.log('Password incorrect.');
+                return done(null, false);
+            } else {
+                return done(null, user);
+            }
+        });
+    }));
 
 };
