@@ -8,6 +8,7 @@ var session = require('express-session');
 var mongoose = require('mongoose');
 var MongoStore = require('connect-mongo')(session);
 var passport = require('passport');
+var Promise = require('bluebird');
 
 // config files and API file path
 var serverConfig = require('./configurations/server_config');
@@ -67,6 +68,7 @@ app.use('/local/', localAuthAPI);  // sign-in via Local Auth
 
 // mongodb connection
 var mongooseOptions = {server: {socketOptions: {keepAlive: 100}}};
+mongoose.Promise = Promise;
 mongoose.connect(dbConfig.dbURL, mongooseOptions);
 mongoose.connection.on('open', function (error) {
     return error ? console.error(error) : console.log('Connected to mongodb.');
