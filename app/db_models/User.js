@@ -5,12 +5,12 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
 
     username: {type: String, required: true, unique: true},
-    //password: String, // choose either password or salt+hash
-    salt: {type: String, required: true},
-    hash: {type: String, required: true},
-    // firstName: {type: String, required: true},
-    // lastName: {type: String, required: true},
-    // preferredName: {type: String, default: ''},
+    salt: {type: String},
+    hash: {type: String},
+    firstName: {type: String, required: true},
+    lastName: {type: String, required: true},
+    preferredName: {type: String, default: ''},
+    // utorid: {type: String, required: true},
     // studentNumber: {type: String, unique: true},
     // email: {type: String},
     // // libraryNumber: {type: String, unique: true}, //
@@ -33,6 +33,14 @@ var userSchema = new Schema({
 //    next();
 //});
 
+
+userSchema.methods.encryptPassword = function (password) {
+    var user = this;
+    var salt = crypto.randomBytes(16).toString('base64');
+    var hash = crypto.createHmac('sha512', salt).update(password).digest('base64');
+    user.salt = salt;
+    user.hash = hash;
+};
 
 userSchema.methods.getUsername = function () {
     var user = this;
