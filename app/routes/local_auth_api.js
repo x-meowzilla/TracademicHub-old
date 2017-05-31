@@ -2,79 +2,37 @@ var router = require('express').Router();
 var passport = require('passport');
 var UserModel = require('../db_models/User');
 
-var crypto = require('crypto');
 
-//router.put('/register', function (req, res) {
-//    console.log(req.body);
-//
-//    UserModel.findOne({username: req.body.username}, function (error, user) {
-//
-//        if (error) return res.status(error.code).end(error);
-//
-//        if (user) {
-//            return res.status(409).end('Username: "' + user.username + '" already exists.');
-//        } else {
-//
-//            // var newUser = new UserModel();
-//            // newUser.username = req.body.username;
-//            // newUser.password = req.body.password;
-//            // newUser.accessLevel = 50; // change it later, now admin level
-//            //
-//            // newUser.save(function (error, result) {
-//            //
-//            //     console.log(error, result);
-//            //
-//            // });
-//
-//            var newUser = new UserModel({
-//                username: req.body.username,
-//                password: req.body.password,
-//                accessLevel: 50
-//            });
-//
-//            newUser.save(function (error) {
-//                if (error) return res.status(error.code).end(error);
-//                else return res.end('Create User: "' + newUser.username + '".');
-//            });
-//        }
-//    });
-//});
-
+// only for local user
 router.post('/register', function (req, res) {
-        if (!req.body.username || !req.body.password) {
-            return res.status(400).end("Create user failed: Missing userName and/or password in request");
-        }
-        
-        UserModel.findOne({username: req.body.username}, function (error, user) {
+    UserModel.findOne({username: req.body.username}, function (error, user) {
 
         if (error) return res.status(error.code).end(error);
 
         if (user) {
             return res.status(409).end('Username: "' + user.username + '" already exists.');
         } else {
-            // create salt and hash to encrypt the password
-            var salt = crypto.randomBytes(16).toString('base64');
-            var hash = crypto.createHmac('sha512', salt).update(req.body.password).digest('base64');
-            var newUser = new UserModel({
-                username: req.body.username,
-                salt: salt,
-                hash: hash,
-                accessLevel: 50
-            });
+            // user does not exist, create new user and save to database
+            user = new UserModel();
+            user.username = req.body.username;
+            user.encryptPassword(req.body.password);
+            user.firstName = req.body.firstName;
+            user.lastName = req.body.lastName;
 
-            newUser.save(function (error) {
-                if (error) return console.log(error);
-                else return res.end('Create User: "' + newUser.username + '".');
-            });
+            // use promise in mongodb to avoid massive callbacks
+            user.save()
+                .then(function (user) {
+                    console.log(user.toObject());
+                    return res.status(200).json(user).end();
+                })
+                .catch(function (error) {
+                    return res.status(error.code).end(error);
+                });
         }
     });
 });
 
 router.post('/login', function (req, res) {
-    if (!req.body.username || !req.body.password) {
-        return res.status(400).end("Login failed: Missing userName and/or password in request");
-    }
-    
     passport.authenticate('local',
         {
             successRedirect: '/',
