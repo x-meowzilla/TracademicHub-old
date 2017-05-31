@@ -42,12 +42,10 @@ var crypto = require('crypto');
 
 router.post('/register', function (req, res) {
         if (!req.body.username || !req.body.password) {
-            return res.status(400).json({
-                status: 400,
-                message: "Create user failed: Missing userName and/or password in request"
-            });
+            return res.status(400).end("Create user failed: Missing userName and/or password in request");
         }
-    UserModel.findOne({username: req.body.username}, function (error, user) {
+        
+        UserModel.findOne({username: req.body.username}, function (error, user) {
 
         if (error) return res.status(error.code).end(error);
 
@@ -73,7 +71,10 @@ router.post('/register', function (req, res) {
 });
 
 router.post('/login', function (req, res) {
-    console.log(req.body);
+    if (!req.body.username || !req.body.password) {
+        return res.status(400).end("Login failed: Missing userName and/or password in request");
+    }
+    
     passport.authenticate('local',
         {
             successRedirect: '/',
