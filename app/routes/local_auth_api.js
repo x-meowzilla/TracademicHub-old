@@ -60,7 +60,7 @@ router.get('/login/fail', function (req, res) {
 
 router.get('/logout', function (req, res) {
     req.logout();
-    return res.status(200).end('Logout successful.');
+    return res.redirect('/').status(200).end('Logout successful.');
 });
 
 
