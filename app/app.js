@@ -14,7 +14,7 @@ var Promise = require('bluebird');
 var serverConfig = require('./configurations/server_config');
 var dbConfig = require('./configurations/db_config');
 var passportAuthModule = require('./modules/passport_authentication');
-var samlAPI = require('./routes/saml_api');
+var shibbolethAuthAPI = require('./routes/shibboleth_auth_api');
 var localAuthAPI = require('./routes/local_auth_api');
 var usersAPI = require('./routes/users_api');
 
@@ -50,7 +50,7 @@ passportAuthModule(passport);
 app.use('/', express.static('public'));
 app.use('/api/users', usersAPI);
 app.use('/local/', localAuthAPI);  // sign-in via Local Auth
-// app.use('/Shibboleth.sso', samlAPI);  // sign-in via Shibboleth Auth
+// app.use('/Shibboleth.sso', shibbolethAuthAPI);  // sign-in via Shibboleth Auth
 
 // // function handler
 // app.use(function (req, res, next) {
