@@ -1,6 +1,6 @@
-// var SamlStrategy = require('passport-saml').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
-// var passportConfig = require('../configurations/passport_config');
+var SamlStrategy = require('passport-saml').Strategy;
+var passportConfig = require('../configurations/passport_config');
 
 var UsersModel = require('../db_models/User');
 
@@ -19,6 +19,7 @@ module.exports = function (passport) {
     });
 
     // saml strategy
+    // TODO - get ready for the config data
     passport.use('saml', new SamlStrategy(config_data), function (profile, done) {
         var utorid = profile['urn:oid:1.3.6.1.4.1.15465.3.1.8'];
         var email = profile['urn:oid:0.9.2342.19200300.100.1.3'];
