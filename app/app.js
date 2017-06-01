@@ -27,7 +27,7 @@ var sessionData = {
         secure: true,
         httpOnly: true,
         sameSite: true, // delete? because other apps store in different repo. check doc: https://github.com/expressjs/session
-        maxAge: serverConfig.session.timeout
+        expires: serverConfig.session.timeout
     },
     store: new MongoStore({url: dbConfig.dbURL}),
     resave: false,
