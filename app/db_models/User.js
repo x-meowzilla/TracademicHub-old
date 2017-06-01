@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
 
-    username: {type: String, required: true, unique: true},
+    utorid: {type: String, required: true, unique: true},
     salt: {type: String},
     hash: {type: String},
     firstName: {type: String, required: true},
@@ -35,9 +35,9 @@ userSchema.methods.verifyPassword = function (password) {
     return (user.hash === hash);
 };
 
-userSchema.methods.getUsername = function () {
+userSchema.methods.getUTORid = function () {
     var user = this;
-    return user.username;
+    return user.utorid;
 };
 
 userSchema.methods.getFullName = function () {

@@ -8,15 +8,13 @@ module.exports = function (passport) {
 
     // used to serialize the user for the session
     passport.serializeUser(function (user, done) {
-        return done(null, user.id);
+        return done(null, user._id);
     });
 
     // used to deserialize the user
     passport.deserializeUser(function (id, done) {
         UsersModel.findById(id, function (error, user) {
-            if (error) return done(error, null);
-
-            return user ? done(null, user.toObject()) : done(new Error('User does not exist.'), null);
+            return done(error, user);
         });
     });
 
@@ -27,11 +25,14 @@ module.exports = function (passport) {
     // passport.use(samlStrategy);
 
     // local strategy
-    passport.use('local', new LocalStrategy({passReqToCallback: true}, function (req, username, password, done) {
-        UsersModel.findOne({username: username}, function (error, user) {
-            if (error) return done(error, null);
-            else return done(null, user); // return the user regardless of existence of this user, handle status in router
-        });
+    passport.use('local', new LocalStrategy({usernameField: 'utorid'}, function (utorid, password, done) {
+        UsersModel.findOne({utorid: utorid})
+            .then(function (user) {
+                return done(null, user);  // return the user regardless of existence of this user, handle status in router
+            })
+            .catch(function (error) {
+                return done(error, null);
+            });
     }));
 
 };

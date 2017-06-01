@@ -6,14 +6,14 @@ var UserModel = require('../db_models/User');
 // only for local user
 router.post('/register', function (req, res) {
     // use promise instead of callbacks
-    UserModel.findOne({username: req.body.username})
+    UserModel.findOne({utorid: req.body.utorid})
         .then(function (user) {
             if (user) {
-                return res.status(409).end('Username: "' + user.username + '" already exists.');
+                return res.status(409).end('Username: "' + user.utorid + '" already exists.');
             } else {
                 // user does not exist, create new user and save to database
                 user = new UserModel();
-                user.username = req.body.username;
+                user.utorid = req.body.utorid;
                 user.encryptPassword(req.body.password);
                 user.firstName = req.body.firstName;
                 user.lastName = req.body.lastName;
@@ -43,7 +43,7 @@ router.post('/login', function (req, res) {
             if (error) return res.status(error.code).end(error);
 
             if (!user) {
-                return res.status(404).end('User: "' + req.body.username + '" does not exist.');
+                return res.status(404).end('User: "' + req.body.utorid + '" does not exist.');
             } else if (!user.verifyPassword(req.body.password)) {
                 return res.status(401).end('Incorrect Password.');
             } else {
