@@ -1,19 +1,21 @@
 var mongoose = require('mongoose');
 var crypto = require('crypto');
+var access = require('../modules/access_level');
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
 
-    utorid: {type: String, required: true, unique: true},
-    salt: {type: String},
+    utorid: {type: String, required: true, unique: true}, // required!!
+    email: {type: String, unique: true},
+    salt: {type: String, unique: true},
     hash: {type: String},
-    firstName: {type: String, required: true},
-    lastName: {type: String, required: true},
+    firstName: {type: String, default: ''},
+    lastName: {type: String, default: ''},
     preferredName: {type: String, default: ''},
-    accessLevel: {type: Number, required: true, default: 10}
+    accessLevel: {type: Number, required: true, default: access.ACCESS_LEVEL_STUDENT}
+
     // lastLoginDate: {type: Date, index: true}
     // studentNumber: {type: String, unique: true},
-    // email: {type: String},
     // libraryNumber: {type: String, unique: true}, //
 
 
