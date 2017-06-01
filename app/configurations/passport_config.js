@@ -11,11 +11,11 @@ module.exports = {
         // Usually specified as `/shibboleth` from site root
         issuer: 'https://idp.utorauth.utoronto.ca/shibboleth',
         // Service Provider private key
-        decryptionPvk: fs.readFileSync(serverConfig.httpsKey, 'utf8'),
+        // decryptionPvk: fs.readFileSync(serverConfig.httpsKey, 'utf8'),
         // Service Provider Certificate
-        privateCert: fs.readFileSync(serverConfig.httpsCert, 'utf8'),
+        // privateCert: fs.readFileSync(serverConfig.httpsCert, 'utf8'),
         // Identity Provider's public key
-        cert: fs.readFileSync(serverConfig.idPCert, 'utf8'),
+        // cert: fs.readFileSync(serverConfig.idPCert, 'utf8'),
         identifierFormat: null,
         validateInResponseTo: false,
         disableRequestedAuthnContext: true,

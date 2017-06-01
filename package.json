@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/MeowsterEric/TracademicHub#readme",
   "dependencies": {
+    "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "connect-mongo": "^1.3.2",
     "cookie-parser": "^1.4.3",
@@ -26,6 +27,7 @@
     "mongodb": "^2.2.26",
     "mongoose": "^4.10.0",
     "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "passport-saml": "^0.15.0",
     "serve-favicon": "^2.4.2"
   }
