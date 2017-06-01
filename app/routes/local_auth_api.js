@@ -5,31 +5,32 @@ var UserModel = require('../db_models/User');
 
 // only for local user
 router.post('/register', function (req, res) {
-    UserModel.findOne({username: req.body.username}, function (error, user) {
+    // use promise instead of callbacks
+    UserModel.findOne({username: req.body.username})
+        .then(function (user) {
+            if (user) {
+                return res.status(409).end('Username: "' + user.username + '" already exists.');
+            } else {
+                // user does not exist, create new user and save to database
+                user = new UserModel();
+                user.username = req.body.username;
+                user.encryptPassword(req.body.password);
+                user.firstName = req.body.firstName;
+                user.lastName = req.body.lastName;
 
-        if (error) return res.status(error.code).end(error);
-
-        if (user) {
-            return res.status(409).end('Username: "' + user.username + '" already exists.');
-        } else {
-            // user does not exist, create new user and save to database
-            user = new UserModel();
-            user.username = req.body.username;
-            user.encryptPassword(req.body.password);
-            user.firstName = req.body.firstName;
-            user.lastName = req.body.lastName;
-
-            // use promise in mongodb to avoid massive callbacks
-            user.save()
-                .then(function (user) {
-                    console.log(user.toObject());
-                    return res.status(200).json(user).end();
-                })
-                .catch(function (error) {
-                    return res.status(error.code).end(error);
-                });
-        }
-    });
+                // use promise in mongodb to avoid massive callbacks
+                user.save()
+                    .then(function (user) {
+                        return res.status(200).json(user).end();
+                    })
+                    .catch(function (error) {
+                        return res.status(error.code).end(error);
+                    });
+            }
+        })
+        .catch(function (error) {
+            return res.status(error.code).end(error);
+        });
 });
 
 router.post('/login', function (req, res) {
