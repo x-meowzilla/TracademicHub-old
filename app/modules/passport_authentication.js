@@ -19,8 +19,7 @@ module.exports = function (passport) {
     });
 
     // saml strategy
-    // TODO - get ready for the config data
-    passport.use('saml', new SamlStrategy(config_data), function (profile, done) {
+    passport.use('saml', new SamlStrategy(passportConfig.samlData, function (profile, done) {
         var utorid = profile['urn:oid:1.3.6.1.4.1.15465.3.1.8'];
         var email = profile['urn:oid:0.9.2342.19200300.100.1.3'];
         UserModel.findOne({utorid: utorid})
@@ -30,7 +29,7 @@ module.exports = function (passport) {
             .catch(function (error) {
                 return done(error, false);
             });
-    });
+    }));
 
     // local strategy
     passport.use('local', new LocalStrategy({usernameField: 'utorid'}, function (utorid, password, done) {

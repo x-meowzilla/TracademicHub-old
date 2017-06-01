@@ -49,8 +49,8 @@ passportAuthModule(passport);
 // api routers
 app.use('/', express.static('public'));
 app.use('/api/users', usersAPI);
-app.use('/local/', localAuthAPI);  // sign-in via Local Auth
-// app.use('/Shibboleth.sso', shibbolethAuthAPI);  // sign-in via Shibboleth Auth
+app.use('/api/local/users', localAuthAPI);  // sign-in via Local Auth
+app.use('/Shibboleth.sso', shibbolethAuthAPI);  // sign-in via Shibboleth Auth
 
 // // function handler
 // app.use(function (req, res, next) {
