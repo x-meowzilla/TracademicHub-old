@@ -54,5 +54,10 @@ router.delete('/:id', checkAuthentication, function (req, res) {
     res.send('DELETE!! delete one entry');
 });
 
+router.get('/logout', function (req, res) {
+    req.logout();
+    return res.redirect('/').status(200).end('Logout successful.');
+});
+
 
 module.exports = router;

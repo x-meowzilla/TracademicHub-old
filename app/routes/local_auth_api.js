@@ -36,10 +36,10 @@ router.post('/login', function (req, res) {
     passport.authenticate('local',
         {
             successRedirect: '/',
-            failureRedirect: '/login/fail'
+            failureRedirect: '/'
         },
         function (error, user) {
-            if (error) return res.status(error.code).end(error);
+            if (error) return res.status(500).end(error.errmsg);
 
             if (!user) {
                 return res.status(404).end('User: "' + req.body.utorid + '" does not exist.');
@@ -51,15 +51,6 @@ router.post('/login', function (req, res) {
                 return res.status(200).json(user).end();
             }
         })(req, res);
-});
-
-router.get('/login/fail', function (req, res) {
-    return res.status(401).end('Login failed.');
-});
-
-router.get('/logout', function (req, res) {
-    req.logout();
-    return res.redirect('/').status(200).end('Logout successful.');
 });
 
 
