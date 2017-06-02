@@ -9,14 +9,13 @@ router.post('/register', function (req, res) {
     UserModel.findOne({utorid: req.body.utorid})
         .then(function (user) {
             if (user) {
-                return res.status(409).end('Username: "' + user.utorid + '" already exists.');
+                return res.status(409).end('User: "' + user.utorid + '" already exists.');
             } else {
                 // user does not exist, create new user and save to database
                 user = new UserModel();
                 user.utorid = req.body.utorid;
                 user.encryptPassword(req.body.password);
-                user.firstName = req.body.firstName;
-                user.lastName = req.body.lastName;
+                user.email = req.body.utorid + '@test-tracademic.com'; // create a fake email address for now
 
                 // use promise in mongodb to avoid massive callbacks
                 user.save()
@@ -24,12 +23,12 @@ router.post('/register', function (req, res) {
                         return res.status(200).json(user).end();
                     })
                     .catch(function (error) {
-                        return res.status(error.code).end(error);
+                        return res.status(500).end(error.errmsg);
                     });
             }
         })
         .catch(function (error) {
-            return res.status(error.code).end(error);
+            return res.status(500).end(error.errmsg);
         });
 });
 
@@ -37,10 +36,10 @@ router.post('/login', function (req, res) {
     passport.authenticate('local',
         {
             successRedirect: '/',
-            failureRedirect: '/login/fail'
+            failureRedirect: '/'
         },
         function (error, user) {
-            if (error) return res.status(error.code).end(error);
+            if (error) return res.status(500).end(error.errmsg);
 
             if (!user) {
                 return res.status(404).end('User: "' + req.body.utorid + '" does not exist.');
@@ -52,15 +51,6 @@ router.post('/login', function (req, res) {
                 return res.status(200).json(user).end();
             }
         })(req, res);
-});
-
-router.get('/login/fail', function (req, res) {
-    return res.status(401).end('Login failed.');
-});
-
-router.get('/logout', function (req, res) {
-    req.logout();
-    return res.redirect('/').status(200).end('Logout successful.');
 });
 
 

@@ -41,30 +41,11 @@ app.use(session(sessionData));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
+app.use(expressValidator());
 app.use(favicon(path.join('public', 'favicon.ico')));
 app.use(passport.initialize());
 app.use(passport.session());
 passportAuthModule(passport);
-
-// api routers
-app.use('/', express.static('public'));
-app.use('/api/users', usersAPI);
-app.use('/local/', localAuthAPI);  // sign-in via Local Auth
-// app.use('/Shibboleth.sso', shibbolethAuthAPI);  // sign-in via Shibboleth Auth
-
-// // function handler
-// app.use(function (req, res, next) {
-//     console.log("HTTP request", req.method, req.url, req.body);
-//     next();
-// });
-//
-// app.use(function (req, res) {
-//     console.log("HTTP Response", res.statusCode);
-// });
-//
-// app.use(function (req, res) {
-//     res.status(404).send('IC 404, Room not found!');
-// });
 
 // mongodb connection
 var mongooseOptions = {server: {socketOptions: {keepAlive: 100}}};
@@ -80,9 +61,51 @@ mongoose.connection.on('error', function (error) {
     return console.error(error);
 });
 
+// check and sanitize request body function
+app.use(function sanitizeReqBodyHandler(req, res, next) {
+    Object.keys(req.body).forEach(function (arg) {
+        req.sanitizeBody(arg).escape();
+        switch (arg) {
+            case 'utorid':
+                req.checkBody(arg, 'UTORid must be alphanumeric characters').isAlphanumeric();
+                break;
+            case 'email':
+                req.checkBody(arg, 'Invalid email address').isEmail();
+                break;
+            case 'password':
+                req.checkBody(arg, 'Password should be alphanumeric characters').isAlphanumeric();
+                req.checkBody(arg, 'Password must be at least 6 characters long').isByteLength(6);
+                break;
+            case 'firstName':
+                req.checkBody(arg, 'First name must be letters').isAlpha();
+                break;
+            case 'lastName':
+                req.checkBody(arg, 'Last name must be letters').isAlpha();
+                break;
+            case 'preferredName':
+                break;
+        }
+    });
+
+    req.getValidationResult()
+        .then(function (result) {
+            if (!result.isEmpty()) {
+                var list = [];
+                result.array().forEach(function (error) {
+                    list.push(error.msg);
+                });
+                return res.status(400).json(list.join(" & ")).end();
+            } else {
+                next();
+            }
+        });
+});
+
+// api routers - these routers should put after sanitation function
+app.use('/', express.static('public'));
+app.use('/api/users', usersAPI);
+app.use('/api/local/users', localAuthAPI);  // sign-in via Local Auth
+app.use('/Shibboleth.sso', shibbolethAuthAPI);  // sign-in via Shibboleth Auth
+
 
 module.exports = app;
-
-
-// some potential use dependencies
-// mongojs
