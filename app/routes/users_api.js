@@ -6,10 +6,10 @@ var checkAuthentication = function (req, res, next) {
 
     if (user) {
         if (!res.cookie.user) res.cookie('user', user, {secure: true, sameSite: true, httpOnly: true});
-        else next();
+        return next();
     } else {
         res.clearCookie('user');
-        res.status(401).send('Please login.').end("Unauthorized");
+        return res.status(401).send('Please login before performing this action.').end("Unauthorized");
     }
 };
 
@@ -35,7 +35,7 @@ router.post('/', checkAuthentication, function (req, res) {
 router.post('/:id/adjustPrivileges', checkAuthentication, function (req, res) {
     var userID = req.params.id;
     UserModel.findByID(userID, function (error, user) {
-        if (error) return res.status(500).end(error);
+        if (error) return res.status(500).end(error.errmsg);
 
         if (!user) {
             return res.status(404).end('User not found.');

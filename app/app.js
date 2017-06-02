@@ -101,12 +101,6 @@ app.use(function sanitizeReqBodyHandler(req, res, next) {
         });
 });
 
-// check request handler
-app.use(function (req, res, next) {
-    console.log("HTTP request", req.method, req.url, req.body);
-    next();
-});
-
 // api routers - these routers should put after sanitation function
 app.use('/', express.static('public'));
 app.use('/api/users', usersAPI);
