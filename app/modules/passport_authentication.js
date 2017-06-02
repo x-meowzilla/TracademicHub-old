@@ -2,7 +2,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var SamlStrategy = require('passport-saml').Strategy;
 var passportConfig = require('../configurations/passport_config');
 
-var UsersModel = require('../db_models/User');
+var UserModel = require('../db_models/User');
 
 module.exports = function (passport) {
 
@@ -13,7 +13,7 @@ module.exports = function (passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function (id, done) {
-        UsersModel.findById(id, function (error, user) {
+        UserModel.findById(id, function (error, user) {
             return done(error, user);
         });
     });
@@ -24,7 +24,21 @@ module.exports = function (passport) {
         var email = profile['urn:oid:0.9.2342.19200300.100.1.3'];
         UserModel.findOne({utorid: utorid})
             .then(function (user) {
-                return done(null, user); // return the user regardless of existence of this user, handle status in router
+                // if a student is late to register for the course, but student data is already imported,
+                // the student can still login via UofT login but we won't find any entry from our database,
+                // so we automatically create an empty user entry and let student fill out rest of the data
+                if (user) {
+                    return done(null, user);
+                } else {
+                    user = new UserModel({utorid: utorid, email: email});
+                    user.save()
+                        .then(function (user) {
+                            return res.status(200).json(user).end();
+                        })
+                        .catch(function (error) {
+                            return res.status(500).end(error.errmsg);
+                        });
+                }
             })
             .catch(function (error) {
                 return done(error, false);
@@ -33,7 +47,7 @@ module.exports = function (passport) {
 
     // local strategy
     passport.use('local', new LocalStrategy({usernameField: 'utorid'}, function (utorid, password, done) {
-        UsersModel.findOne({utorid: utorid})
+        UserModel.findOne({utorid: utorid})
             .then(function (user) {
                 return done(null, user);  // return the user regardless of existence of this user, handle status in router
             })
