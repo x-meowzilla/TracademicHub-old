@@ -6,18 +6,20 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
 
     utorid: {type: String, required: true, unique: true}, // required!!
-    email: {type: String, unique: true},
+    email: {type: String, required: true, unique: true},
+    accessLevel: {type: Number, required: true, default: access.ACCESS_LEVEL_STUDENT},
+    createDate: {type: Date, default: Date.now},
+    lastLoginDate: {type: Date, index: true, sparse: true},
     password: {
-        isLocalUser: {type: Boolean, required: true, default: true},
-        salt: {type: String, unique: true},
+        isLocalUser: {type: Boolean},
+        salt: {type: String},
         hash: {type: String}
     },
     name: {
         firstName: {type: String, default: ''},
         lastName: {type: String, default: ''},
         preferredName: {type: String, default: ''}
-    },
-    accessLevel: {type: Number, required: true, default: access.ACCESS_LEVEL_STUDENT}
+    }
 
     // lastLoginDate: {type: Date, index: true}
     // studentNumber: {type: String, unique: true},
@@ -32,13 +34,18 @@ userSchema.methods.encryptPassword = function (password) {
     var hash = crypto.createHmac('sha512', salt).update(password).digest('base64');
     user.password.salt = salt;
     user.password.hash = hash;
+    user.password.isLocalUser = true;
 };
 
 // method for local user
 userSchema.methods.verifyPassword = function (password) {
     var user = this;
-    var hash = crypto.createHmac('sha512', user.password.salt).update(password).digest('base64');
-    return (user.password.hash === hash);
+    if (user.password && user.password.salt) {
+        var hash = crypto.createHmac('sha512', user.password.salt).update(password).digest('base64');
+        return (user.password.hash === hash);
+    } else {
+        return false;
+    }
 };
 
 userSchema.methods.getUTORid = function () {
@@ -48,10 +55,10 @@ userSchema.methods.getUTORid = function () {
 
 userSchema.methods.getFullName = function () {
     var user = this;
-    return user.name.firstName + ' ' + user.name.lastName;
+    return {firstName: user.name.firstName, lastName: user.name.lastName};
 };
 
-userSchema.methods.setName = function (firstName, lastName) {
+userSchema.methods.setFullName = function (firstName, lastName) {
     var user = this;
     user.name.firstName = firstName;
     user.name.lastName = lastName;
