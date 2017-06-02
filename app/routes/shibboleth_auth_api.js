@@ -12,7 +12,7 @@ router.get('/Login', function (req, res) {
             if (error) return res.status(500).end(error.errmsg);
 
             // set data to session and cookie
-            res.session.user = user;
+            req.session.user = user;
             res.cookie('userID', user._id);
 
             // if this user data has not been imported (name field exists), then redirect to update info page
