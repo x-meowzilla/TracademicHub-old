@@ -24,19 +24,20 @@
     ajaxRequest.$inject = ['$http'];
     function ajaxRequest($http) {
         return {
-            get: function (apiURL, isJSON) {
-                // return Promise? can call .success/.error in other controllers
-                return $http.get(apiURL);
-                // // or return object
-                // $http.get(apiURL)
-                //     .then(
-                //         function successCallback(response) {
-                //             return isJSON ? JSON.parse(response) : response;
-                //         },
-                //         function errorCallback(error) {
-                //             return error
-                //         }
-                //     )
+            // // return Promise? can call .success/.error in other controllers
+            // get: function (apiURL, isJSON) {
+            //     return $http.get(apiURL);
+            // },
+            // or return callback function, handle success/error here [personally prefer this one]
+            get: function (apiURL, callback) {
+                return $http.get(apiURL).then(
+                    function successCallback(result) {
+                        return callback(null, result);
+                    },
+                    function errorCallback(error) {
+                        return callback(error, false)
+                    }
+                )
             },
             post: function (apiURL, reqBody, isJSON) {
                 return $http.post(apiURL, reqBody, {headers: isJSON ? {'Content-Type': 'application/json'} : {}});
