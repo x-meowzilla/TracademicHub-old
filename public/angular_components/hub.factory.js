@@ -28,13 +28,13 @@
                 // return Promise? can call .success/.error in other controllers
                 return $http.get(apiURL);
                 // // or return object
-                // $http.get(apiURL)
+                // $http.get(apiURL, callback)
                 //     .then(
                 //         function successCallback(response) {
-                //             return isJSON ? JSON.parse(response) : response;
+                //             return callback(null, isJSON ? JSON.parse(response) : response);
                 //         },
                 //         function errorCallback(error) {
-                //             return error
+                //             return callback(error, false);
                 //         }
                 //     )
             },
