@@ -15,3 +15,11 @@
     padding-left: 10px;
     padding-right: 10px;
 }
+
+.dropdown-menu-long-width {
+    width: 180px;
+}
+
+.dropdown-menu-short-width {
+    width: 140px;
+}
