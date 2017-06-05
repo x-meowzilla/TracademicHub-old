@@ -12,10 +12,10 @@
                     templateUrl: 'angular_components/homepage/homepage.html',
                     controller: 'homepageController'
                 })
-                // .when('/dashboard', {
-                //     templateUrl: 'templates/dashboard.html',
-                //     controller: 'dashboardController'
-                // })
+                .when('/userProfile', {
+                    templateUrl: 'angular_components/userProfile/userProfile.html',
+                    controller: 'userProfileController'
+                });
                 // .when('/profile', {
                 //     templateUrl: 'templates/profile.html'
                 //
@@ -31,11 +31,7 @@
                 //     templateUrl: 'templates/someRoute.html',
                 //     controller: 'someDetailedController'
                 // })
-                .otherwise('/');
+                // .otherwise('/');
         });
-
-    $('[ng-app]').on('click', 'a', function() {
-        window.location.href = $(this).attr('href');
-    });
 
 }());

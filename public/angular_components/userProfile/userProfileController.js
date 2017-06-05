@@ -3,9 +3,9 @@
 
     angular
         .module('TracademicHub')
-        .controller('homepageController', homepageController);
+        .controller('userProfileController', userProfileController);
 
-    function homepageController($scope, _CheckAuthentication) {
+    function userProfileController($scope, _CheckAuthentication) {
 
         $scope.isAuthenticated = function () {
             return _CheckAuthentication.isAuthenticated();
@@ -15,10 +15,6 @@
             return _CheckAuthentication.getAccessLevel();
         };
 
-        $scope.utoridLogin = function ()
-        {
-          window.location = "/Shibboleth.sso/Login";
-        };
     }
 
 }());
