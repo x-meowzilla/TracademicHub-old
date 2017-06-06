@@ -1,19 +1,19 @@
-#userProfilewrapper {
+.userProfilewrapper {
     padding-left: 0;
 }
 
-#userProfile-page-wrapper {
+.userProfile-page-wrapper {
     width: 100%;
     padding: 0;
     background-color: #fff;
 }
 
 @media(min-width:768px) {
-    #userProfilewrapper {
+    .userProfilewrapper {
         padding-left: 225px;
     }
 
-    #userProfile-page-wrapper {
+    .userProfile-page-wrapper {
         padding: 10px;
     }
 }
