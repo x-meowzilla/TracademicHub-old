@@ -8,6 +8,10 @@
 
     function checkAuthentication() {
         return {
+            UTORidLogin: function () {
+                // we need to use $http service to call our api
+                window.location = "/Shibboleth.sso/Login";
+            },
             isAuthenticated: function () {
                 return false;
             },

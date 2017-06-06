@@ -8,6 +8,10 @@
     navbarController.$inject = ['$scope', '_CheckAuthentication']; // dependency injection
     function navbarController($scope, _CheckAuthentication, _AjaxRequest) {
 
+        $scope.UTORidLogin = function () {
+            return _CheckAuthentication.UTORidLogin();
+        };
+
         $scope.isAuthenticated = function () {
             return _CheckAuthentication.isAuthenticated();
         };

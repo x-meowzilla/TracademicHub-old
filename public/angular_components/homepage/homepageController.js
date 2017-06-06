@@ -15,9 +15,8 @@
             return _CheckAuthentication.getAccessLevel();
         };
 
-        $scope.utoridLogin = function ()
-        {
-          window.location = "/Shibboleth.sso/Login";
+        $scope.UTORidLogin = function () {
+            return _CheckAuthentication.UTORidLogin();
         };
     }
 
