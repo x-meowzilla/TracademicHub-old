@@ -3,7 +3,8 @@
 
     angular
         .module('TracademicHub')
-        .factory('_CheckAuthentication', checkAuthentication);
+        .factory('_CheckAuthentication', checkAuthentication)
+        .factory('_AjaxRequest', ajaxRequest);
 
     function checkAuthentication() {
         return {
@@ -16,6 +17,37 @@
                 } else {
                     return 50;
                 }
+            }
+        };
+    }
+
+    ajaxRequest.$inject = ['$http'];
+    function ajaxRequest($http) {
+        return {
+            // // return Promise? can call .success/.error in other controllers
+            // get: function (apiURL, isJSON) {
+            //     return $http.get(apiURL);
+            // },
+            // or return callback function, handle success/error here [personally prefer this one]
+            get: function (apiURL, callback) {
+                return $http.get(apiURL).then(
+                    function successCallback(result) {
+                        return callback(null, result);
+                    },
+                    function errorCallback(error) {
+                        return callback(error, false)
+                    }
+                )
+            },
+            post: function (apiURL, reqBody, isJSON) {
+                return $http.post(apiURL, reqBody, {headers: isJSON ? {'Content-Type': 'application/json'} : {}});
+            },
+            put: function (apiURL, reqBody, isJSON) {
+                return $http.put(apiURL, reqBody, {headers: isJSON ? {'Content-Type': 'application/json'} : {}});
+            },
+            delete: function (apiURL) {
+                // TODO - method to be discussed
+                return $http.delete(apiURL);
             }
         };
     }
