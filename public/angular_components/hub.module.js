@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('TracademicHub', ['ngRoute'])
+        .module('TracademicHub', ['ngRoute', 'ngAnimate'])
         .config(function ($routeProvider, $locationProvider) {
             $locationProvider.hashPrefix('');
             $locationProvider.html5Mode(true);
