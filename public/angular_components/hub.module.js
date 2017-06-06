@@ -15,6 +15,18 @@
                 .when('/userProfile', {
                     templateUrl: 'angular_components/userProfile/userProfile.html',
                     controller: 'userProfileController'
+                })
+                .when('/leaderBoardRank', {
+                    templateUrl: 'angular_components/userProfile/leaderBoardRank.html',
+                    controller: 'leaderBoardRankController'
+                })
+                .when('/states', {
+                        templateUrl: 'angular_components/userProfile/states.html',
+                        controller: 'statesController'
+                })
+                .when('/manageProducts', {
+                    templateUrl: 'angular_components/userProfile/manageProducts.html',
+                    controller: 'manageProductsController'
                 });
                 // .when('/profile', {
                 //     templateUrl: 'templates/profile.html'
@@ -31,7 +43,6 @@
                 //     templateUrl: 'templates/someRoute.html',
                 //     controller: 'someDetailedController'
                 // })
-                // .otherwise('/');
         });
 
 }());
