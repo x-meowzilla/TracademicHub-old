@@ -56,6 +56,7 @@ router.delete('/:id', checkAuthentication, function (req, res) {
 
 router.get('/logout', function (req, res) {
     req.logout();
+    res.clearCookie('userID');
     return res.redirect('/').status(200).end('Logout successful.');
 });
 
