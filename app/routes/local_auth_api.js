@@ -48,7 +48,14 @@ router.post('/login', function (req, res) {
             } else {
                 req.session.user = user;
                 res.cookie('userID', user._id);
-                return res.status(200).json(user).end();
+                var userData = {
+                    _id: user._id,
+                    utorid: user.utorid,
+                    email: user.email,
+                    name: user.name,
+                    accessLevel: user.accessLevel
+                }; // for login, only return the data we need.
+                return res.status(200).json(userData).end();
             }
         })(req, res);
 });
