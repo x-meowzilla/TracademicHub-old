@@ -18,6 +18,10 @@
             return _CheckAuthentication.isAuthenticated();
         };
 
+        $scope.getDisplayName = function () {
+            return _CheckAuthentication.getDisplayName();
+        };
+
         $scope.getAccessLevel = function () {
             return _CheckAuthentication.getAccessLevel();
         };
@@ -38,6 +42,50 @@
                 isMasterAccessEnabled = true;
                 console.log('You have enabled master login access.');
             }
+        };
+
+        $scope.masterLogin = function () {
+            var formData = {
+                utorid: $scope.masterUsername,
+                password: $scope.masterPassword
+            };
+            _AjaxRequest.post('/api/local/users/login', formData, true).then(
+                function successCallback(result) {
+                    console.log(result);
+
+                    var userData = result.data;
+                    _CheckAuthentication._isAuthenticated = true;
+                    _CheckAuthentication._displayName = getDisplayName(userData);
+                    _CheckAuthentication._accessLevel = userData.accessLevel;
+
+                    // TODO - show login successful banner
+
+                    function getDisplayName(userData) {
+                        if (userData.name.preferredName) {
+                            return userData.name.preferredName;
+                        } else if (userData.name.firstName && userData.name.lastName) {
+                            return userData.name.firstName + ' ' + userData.name.lastName;
+                        } else {
+                            return userData.utorid;
+                        }
+                    }
+                },
+                function errorCallback(error) {
+                    console.log(error.data);
+                    // TODO - show login failed banner
+                }
+            )
+        };
+
+        $scope.logout = function () {
+            _AjaxRequest.delete('/api/users/logout').then(
+                function successCallback(result) {
+                    console.log(result);
+                },
+                function errorCallback(error) {
+                    console.log(error);
+                }
+            )
         }
 
     }
