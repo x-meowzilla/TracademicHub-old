@@ -5,7 +5,12 @@
         .module('TracademicHub')
         .controller('homepageController', homepageController);
 
-    function homepageController($scope, _CheckAuthentication) {
+    homepageController.$inject = ['$scope', '_UTORidAuthentication', '_CheckAuthentication'];
+    function homepageController($scope, _UTORidAuthentication, _CheckAuthentication) {
+
+        $scope.UTORidLogin = function () {
+            return _UTORidAuthentication.UTORidLogin();
+        };
 
         $scope.isAuthenticated = function () {
             return _CheckAuthentication.isAuthenticated();
