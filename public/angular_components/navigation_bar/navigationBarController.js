@@ -5,13 +5,13 @@
         .module('TracademicHub')
         .controller('navbarController', navbarController);
 
-    navbarController.$inject = ['$scope', '_CheckAuthentication']; // dependency injection
-    function navbarController($scope, _CheckAuthentication, _AjaxRequest) {
+    navbarController.$inject = ['$scope', '_UTORidAuthentication', '_CheckAuthentication', '_AjaxRequest']; // dependency injection
+    function navbarController($scope, _UTORidAuthentication, _CheckAuthentication, _AjaxRequest) {
 
         var isMasterAccessEnabled = false;
 
         $scope.UTORidLogin = function () {
-            return _CheckAuthentication.UTORidLogin();
+            return _UTORidAuthentication.UTORidLogin();
         };
 
         $scope.isAuthenticated = function () {
