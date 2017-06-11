@@ -37,10 +37,12 @@
 
             if (vm.clickCount >= 7 && vm.clickCount < 10) {
                 console.log('You are ' + (10 - vm.clickCount) + ' clicks from enabling master login access.');
+                // TODO - show info banner
             }
             else if (vm.clickCount >= 10) {
                 isMasterAccessEnabled = true;
                 console.log('You have enabled master login access.');
+                // TODO - show info banner
             }
         };
 
@@ -49,6 +51,7 @@
                 utorid: $scope.masterUsername,
                 password: $scope.masterPassword
             };
+            console.log(formData);
             _AjaxRequest.post('/api/local/users/login', formData, true).then(
                 function successCallback(result) {
                     console.log(result);
