@@ -26,7 +26,6 @@ var sessionData = {
     cookie: {
         secure: true,
         httpOnly: true,
-        sameSite: true, // delete? because other apps store in different repo. check doc: https://github.com/expressjs/session
         expires: serverConfig.session.timeout
     },
     store: new MongoStore({url: dbConfig.dbURL}),
@@ -103,6 +102,13 @@ app.use(function sanitizeReqBodyHandler(req, res, next) {
 
 // api routers - these routers should put after sanitation function
 app.use('/', express.static('public'));
+
+// to be removed. debugging purpose
+app.use(function (req, res, next) {
+    console.log("HTTP request", req.method, req.url, req.body);
+    next();
+});
+
 app.use('/api/users', usersAPI);
 app.use('/api/local/users', localAuthAPI);  // sign-in via Local Auth
 app.use('/Shibboleth.sso', shibbolethAuthAPI);  // sign-in via Shibboleth Auth
