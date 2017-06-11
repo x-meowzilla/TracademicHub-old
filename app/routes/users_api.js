@@ -5,10 +5,10 @@ var checkAuthentication = function (req, res, next) {
     var user = req.session.user;
 
     if (user) {
-        if (!res.cookie.user) res.cookie('user', user, {secure: true, sameSite: true, httpOnly: true});
+        if (!res.cookie.userID) res.cookie('userID', user._id, {secure: true, httpOnly: true});
         return next();
     } else {
-        res.clearCookie('user');
+        res.clearCookie('userID');
         return res.status(401).send('Please login before performing this action.').end("Unauthorized");
     }
 };
@@ -54,10 +54,11 @@ router.delete('/:id', checkAuthentication, function (req, res) {
     res.send('DELETE!! delete one entry');
 });
 
-router.get('/logout', function (req, res) {
+router.delete('/logout', function (req, res) {
     req.logout();
     res.clearCookie('userID');
-    return res.redirect('/').status(200).end('Logout successful.');
+    res.redirect('/');
+    return res.status(200).end('Logout successful.');
 });
 
 
