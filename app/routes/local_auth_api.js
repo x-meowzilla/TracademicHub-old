@@ -1,6 +1,7 @@
 var router = require('express').Router();
 var passport = require('passport');
 var UserModel = require('../db_models/User');
+var AccessLevelModule = require('../db_models/AccessLevel');
 
 
 // only for local user
@@ -11,19 +12,24 @@ router.post('/register', function (req, res) {
             if (user) {
                 return res.status(409).end('User: "' + user.utorid + '" already exists.');
             } else {
-                // user does not exist, create new user and save to database
-                user = new UserModel();
-                user.utorid = req.body.utorid;
-                user.encryptPassword(req.body.password);
-                user.email = req.body.utorid + '@test-tracademic.com'; // create a fake email address for now
+                AccessLevelModule.findOne({description: 'Admin'})
+                    .then(function (adminAccess) {
 
-                // use promise in mongodb to avoid massive callbacks
-                user.save()
-                    .then(function (user) {
-                        return res.status(200).json(user).end();
-                    })
-                    .catch(function (error) {
-                        return res.status(500).end(error.errmsg);
+                        // user does not exist, create new user and save to database
+                        user = new UserModel();
+                        user.utorid = req.body.utorid;
+                        user.encryptPassword(req.body.password);
+                        user.email = req.body.utorid + '@test-tracademic.com'; // create a fake email address for now
+                        user.accessLevel = adminAccess._id;
+
+                        // use promise in mongodb to avoid massive callbacks
+                        user.save()
+                            .then(function (user) {
+                                return res.status(200).json(user).end();
+                            })
+                            .catch(function (error) {
+                                return res.status(500).end(error.errmsg);
+                            });
                     });
             }
         })
