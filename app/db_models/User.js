@@ -73,15 +73,15 @@ userSchema.methods.setPreferredName = function (preferredName) {
     user.name.preferredName = preferredName;
 };
 
-userSchema.methods.getAccessLevel = function () {
-    var user = this;
-    return user.accessLevel;
-};
-
-userSchema.methods.setAccessLevel = function (accessLevel) {
-    var user = this;
-    user.accessLevel = accessLevel;
-};
+// userSchema.methods.getAccessLevel = function () {
+//     var user = this;
+//     return user.accessLevel;
+// };
+//
+// userSchema.methods.setAccessLevel = function (accessLevel) {
+//     var user = this;
+//     user.accessLevel = accessLevel;
+// };
 
 
 var UserModel = mongoose.model('User', userSchema);
