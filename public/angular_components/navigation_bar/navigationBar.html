@@ -41,7 +41,7 @@
                     </a>
                 </li>
                 <!--<li class="dropdown" data-target="#navbar_master_dropdown" ng-if="!isAuthenticated() && isMasterLoginEnabled()">-->
-                <li class="dropdown" data-target="#navbar_master_dropdown">
+                <li class="dropdown" data-target="#navbar_master_dropdown" ng-if="!isAuthenticated()">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <span><i class="fa fa-sign-in fa-fw"></i></span>
                         <span>Master Login</span>
@@ -51,10 +51,10 @@
                         <li>
                             <form class="master-login-form" id="master_login_form" accept-charset="UTF-8">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="master_username" placeholder="Username" ng-model="masterUsername" autofocus required>
+                                    <input type="text" class="form-control" id="master_username" placeholder="Username" ng-model="$parent.masterUsername" autofocus required>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control" id="master_password" placeholder="Password" ng-model="masterPassword" required>
+                                    <input type="password" class="form-control" id="master_password" placeholder="Password" ng-model="$parent.masterPassword" required>
                                 </div>
                                 <div class="divider"></div>
                                 <input type="submit" class="btn btn-primary btn-block" id="master_login_button" value="Login" ng-click="masterLogin()">

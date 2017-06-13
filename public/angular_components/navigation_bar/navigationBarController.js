@@ -51,7 +51,8 @@
                 utorid: $scope.masterUsername,
                 password: $scope.masterPassword
             };
-            console.log(formData);
+            //testtest
+            console.log("he" + $scope.masterUsername);
             _AjaxRequest.post('/api/local/users/login', formData, true).then(
                 function successCallback(result) {
                     console.log(result);
