@@ -1,13 +1,13 @@
 var mongoose = require('mongoose');
 var crypto = require('crypto');
-var access = require('../modules/access_level');
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
 
     utorid: {type: String, required: true, unique: true}, // required!!
     email: {type: String, required: true, unique: true},
-    accessLevel: {type: Number, required: true, default: access.ACCESS_LEVEL_STUDENT},
+    studentNumber: {type: Number, sparse: true, unique: true},
+    accessLevel: {type: Schema.Types.ObjectId, ref: 'AccessLevel', required: true},
     createDate: {type: Date, default: Date.now},
     lastLoginDate: {type: Date, index: true, sparse: true},
     password: {
@@ -19,13 +19,12 @@ var userSchema = new Schema({
         firstName: {type: String, default: ''},
         lastName: {type: String, default: ''},
         preferredName: {type: String, default: ''}
-    }
-
-    // lastLoginDate: {type: Date, index: true}
-    // studentNumber: {type: String, unique: true},
-    // libraryNumber: {type: String, unique: true}, //
+    },
+    biography: {type: String, default: ''},
+    avatarPath: {type: String, default: null}
 
 }, {collection: 'UsersDB'});
+// }, {collection: 'UsersDB', autoIndex: false}); // for production use
 
 // method for local user
 userSchema.methods.encryptPassword = function (password) {
@@ -74,15 +73,15 @@ userSchema.methods.setPreferredName = function (preferredName) {
     user.name.preferredName = preferredName;
 };
 
-userSchema.methods.getAccessLevel = function () {
-    var user = this;
-    return user.accessLevel;
-};
-
-userSchema.methods.setAccessLevel = function (accessLevel) {
-    var user = this;
-    user.accessLevel = accessLevel;
-};
+// userSchema.methods.getAccessLevel = function () {
+//     var user = this;
+//     return user.accessLevel;
+// };
+//
+// userSchema.methods.setAccessLevel = function (accessLevel) {
+//     var user = this;
+//     user.accessLevel = accessLevel;
+// };
 
 
 var UserModel = mongoose.model('User', userSchema);

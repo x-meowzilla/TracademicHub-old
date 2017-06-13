@@ -14,6 +14,7 @@ var Promise = require('bluebird');
 var serverConfig = require('./configurations/server_config');
 var dbConfig = require('./configurations/db_config');
 var passportAuthModule = require('./modules/passport_authentication');
+var accessLevelModuleInit = require('./modules/access_level_init');
 var shibbolethAuthAPI = require('./routes/shibboleth_auth_api');
 var localAuthAPI = require('./routes/local_auth_api');
 var usersAPI = require('./routes/users_api');
@@ -45,6 +46,7 @@ app.use(favicon(path.join('public', 'favicon.ico')));
 app.use(passport.initialize());
 app.use(passport.session());
 passportAuthModule(passport);
+accessLevelModuleInit();
 
 // mongodb connection
 var mongooseOptions = {server: {socketOptions: {keepAlive: 100}}};
