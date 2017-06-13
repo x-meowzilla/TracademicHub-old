@@ -27,6 +27,9 @@
                 .when('/manageProducts', {
                     templateUrl: 'angular_components/userProfile/manageProducts.html',
                     controller: 'manageProductsController'
+                })
+                .otherwise({
+                    templateUrl: 'angular_components/error_pages/404.html'
                 });
                 // .when('/profile', {
                 //     templateUrl: 'templates/profile.html'

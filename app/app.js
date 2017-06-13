@@ -104,11 +104,10 @@ app.use(function sanitizeReqBodyHandler(req, res, next) {
 
 // api routers - these routers should put after sanitation function
 app.use('/', express.static('public'));
-app.use('/settings', express.static('public'));
-app.use('/states', express.static('public'));
-app.use('/leaderBoardRank', express.static('public'));
-app.use('/states', express.static('public'));
-app.use('/manageProducts', express.static('public'));
+app.use('/', function (req, res) {
+    res.sendfile('public/index.html');
+
+});
 
 // to be removed. debugging purpose
 app.use(function (req, res, next) {
