@@ -1,0 +1,19 @@
+.background404 {
+    width: 100% !important;
+    height: 100% !important;
+    background: url(../img/404background.jpg);
+}
+
+.error-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+
+.error-actions {
+    margin-top:15px;
+    margin-bottom:15px;
+}
+
+.error-actions .btn {
+    margin-right:10px;
+}

@@ -12,7 +12,7 @@
                     templateUrl: 'angular_components/homepage/homepage.html',
                     controller: 'homepageController'
                 })
-                .when('/userProfile', {
+                .when('/settings', {
                     templateUrl: 'angular_components/userProfile/userProfile.html',
                     controller: 'userProfileController'
                 })
