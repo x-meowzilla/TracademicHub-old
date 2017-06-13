@@ -104,10 +104,6 @@ app.use(function sanitizeReqBodyHandler(req, res, next) {
 
 // api routers - these routers should put after sanitation function
 app.use('/', express.static('public'));
-app.use('/', function (req, res) {
-    res.sendfile('public/index.html');
-
-});
 
 // to be removed. debugging purpose
 app.use(function (req, res, next) {
@@ -118,6 +114,11 @@ app.use(function (req, res, next) {
 app.use('/api/users', usersAPI);
 app.use('/api/local/users', localAuthAPI);  // sign-in via Local Auth
 app.use('/Shibboleth.sso', shibbolethAuthAPI);  // sign-in via Shibboleth Auth
+
+// rewrite vitual urls to angular app to enable refreshing of internal pages, only works for GET
+app.get('/*', function (req, res) {
+    res.sendfile(path.resolve('public/index.html'));
+});
 
 
 module.exports = app;
