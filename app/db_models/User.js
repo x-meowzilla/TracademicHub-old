@@ -23,8 +23,8 @@ var userSchema = new Schema({
     biography: {type: String, default: ''},
     avatarPath: {type: String, default: null}
 
-}, {collection: 'UsersDB'});
-// }, {collection: 'UsersDB', autoIndex: false}); // for production use
+}, {collection: 'UsersCollection'});
+// }, {collection: 'UsersCollection', autoIndex: false}); // for production use
 
 // method for local user
 userSchema.methods.encryptPassword = function (password) {

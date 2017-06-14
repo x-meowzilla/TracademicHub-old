@@ -15,7 +15,7 @@ var pointSchema = new Schema({
     value: {type: Number, default: 1, required: true},
     category: {type: Schema.Types.ObjectId, ref: 'PointCategory', required: true}
 
-}, {collection: 'PointsDB'});
+}, {collection: 'PointsCollection'});
 
 
 var PointModel = mongoose.model('Point', pointSchema);
