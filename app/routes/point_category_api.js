@@ -33,10 +33,10 @@ router.put('/', function (req, res) {
         });
 });
 
-router.delete('/:name', function (req, res) {
-    PointCategoryModel.remove({name: req.params.name})
+router.delete('/:categoryName', function (req, res) {
+    PointCategoryModel.remove({name: req.params.categoryName})
         .then(function () {
-            res.send('Category: \'' + req.params.name + '\' deleted.').end();
+            res.send('Category: \'' + req.params.categoryName + '\' deleted.').end();
         })
         .catch(function (error) {
             res.status(500).end(error.errmsg);
