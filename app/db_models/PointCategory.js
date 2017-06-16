@@ -7,6 +7,20 @@ var pointCategorySchema = new Schema({
 
 }, {collection: 'PointCategoryReference'});
 
+pointCategorySchema.statics.getAllCategoryNames = function () {
+    var category = this.model('PointCategory');
+    return category.find({});
+};
+
+pointCategorySchema.statics.findByCategoryName = function (categoryName) {
+    var category = this.model('PointCategory');
+    return category.findOne({name: categoryName})
+};
+
+pointCategorySchema.statics.deleteByCategoryName = function (categoryName) {
+    var category = this.model('PointCategory');
+    return category.remove({name: categoryName});
+};
 
 var PointCategoryModel = mongoose.model('PointCategory', pointCategorySchema);
 module.exports = PointCategoryModel;

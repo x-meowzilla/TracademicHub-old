@@ -3,7 +3,7 @@ var PointCategoryModel = require('../db_models/PointCategory');
 
 // point category URI: .../api/points-category/
 router.get('/', function (req, res) {
-    PointCategoryModel.find({})
+    PointCategoryModel.getAllCategoryNames('Learning Point')
         .then(function (categoryArray) {
             res.json(categoryArray).end();
         })
@@ -13,7 +13,7 @@ router.get('/', function (req, res) {
 });
 
 router.put('/', function (req, res) {
-    PointCategoryModel.findOne({name: req.body.categoryName})
+    PointCategoryModel.findByCategoryName(req.body.categoryName)
         .then(function (category) {
             if (category) {
                 res.status(409).end('Category: \'' + category.name + '\' exists.');
@@ -34,7 +34,7 @@ router.put('/', function (req, res) {
 });
 
 router.delete('/:categoryName', function (req, res) {
-    PointCategoryModel.remove({name: req.params.categoryName})
+    PointCategoryModel.deleteByCategoryName(req.params.categoryName)
         .then(function () {
             res.send('Category: \'' + req.params.categoryName + '\' deleted.').end();
         })
