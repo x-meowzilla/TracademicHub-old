@@ -6,8 +6,6 @@
         .controller('userProfileController', userProfileController);
 
     function userProfileController($scope, _CheckAuthentication) {
-        $scope.toggled = false;
-
         $scope.isAuthenticated = function () {
             return _CheckAuthentication.isAuthenticated();
         };

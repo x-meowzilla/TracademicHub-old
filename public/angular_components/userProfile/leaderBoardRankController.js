@@ -6,8 +6,6 @@
         .controller('leaderBoardRankController', leaderBoardRankController);
 
     function leaderBoardRankController($scope, _CheckAuthentication) {
-        $scope.toggled = false;
-
         $scope.isAuthenticated = function () {
             return _CheckAuthentication.isAuthenticated();
         };

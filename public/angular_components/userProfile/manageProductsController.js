@@ -6,8 +6,6 @@
         .controller('manageProductsController', manageProductsController);
 
     function manageProductsController($scope, _CheckAuthentication) {
-        $scope.toggled = false;
-
         $scope.isAuthenticated = function () {
             return _CheckAuthentication.isAuthenticated();
         };
