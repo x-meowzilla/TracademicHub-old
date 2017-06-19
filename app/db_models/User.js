@@ -23,8 +23,15 @@ var userSchema = new Schema({
     biography: {type: String, default: ''},
     avatarPath: {type: String, default: null}
 
-}, {collection: 'UsersDB'});
-// }, {collection: 'UsersDB', autoIndex: false}); // for production use
+}, {collection: 'UsersCollection'});
+// }, {collection: 'UsersCollection', autoIndex: false}); // for production use
+
+
+// static methods
+userSchema.statics.findByUTORID = function (utorid) {
+    var user = this.model('User');
+    return user.findOne({utorid: utorid});
+};
 
 // method for local user
 userSchema.methods.encryptPassword = function (password) {

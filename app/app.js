@@ -18,6 +18,8 @@ var accessLevelModuleInit = require('./modules/access_level_init');
 var shibbolethAuthAPI = require('./routes/shibboleth_auth_api');
 var localAuthAPI = require('./routes/local_auth_api');
 var usersAPI = require('./routes/users_api');
+var pointsAPI = require('./routes/point_api');
+var pointsCategoryAPI = require('./routes/point_category_api');
 
 
 // ----- app start here -----
@@ -38,16 +40,15 @@ var sessionData = {
     name: serverConfig.session.key,
     secret: serverConfig.session.secret
 };
-app.use(session(sessionData));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(cookieParser());
+app.use(cookieParser(serverConfig.session.secret));
+app.use(session(sessionData));
 app.use(expressValidator());
 app.use(favicon(path.join('public', 'favicon.ico')));
 app.use(passport.initialize());
 app.use(passport.session());
 passportAuthModule(passport);
-accessLevelModuleInit();
 
 // mongodb connection
 var mongooseOptions = {server: {socketOptions: {keepAlive: 100}}};
@@ -62,6 +63,8 @@ mongoose.connection.on('disconnected', function (error) {
 mongoose.connection.on('error', function (error) {
     return console.error(error);
 });
+
+accessLevelModuleInit();
 
 // check and sanitize request body function
 app.use(function sanitizeReqBodyHandler(req, res, next) {
@@ -85,6 +88,7 @@ app.use(function sanitizeReqBodyHandler(req, res, next) {
                 req.checkBody(arg, 'Last name must be letters').isAlpha();
                 break;
             case 'preferredName':
+            case 'categoryName':
                 break;
         }
     });
@@ -108,6 +112,8 @@ app.use('/', express.static('public'));
 app.use('/api/users', usersAPI);
 app.use('/api/local/users', localAuthAPI);  // sign-in via Local Auth
 app.use('/Shibboleth.sso', shibbolethAuthAPI);  // sign-in via Shibboleth Auth
+app.use('/api/points', pointsAPI);
+app.use('/api/points-category', pointsCategoryAPI);
 
 
 module.exports = app;
