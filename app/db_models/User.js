@@ -17,6 +17,7 @@ var userSchema = new Schema({
     },
     name: {
         firstName: {type: String, default: ''},
+        middleName: {type: String, default: ''},
         lastName: {type: String, default: ''},
         preferredName: {type: String, default: ''}
     },
@@ -25,6 +26,13 @@ var userSchema = new Schema({
 
 }, {collection: 'UsersCollection'});
 // }, {collection: 'UsersCollection', autoIndex: false}); // for production use
+
+
+// static methods
+userSchema.statics.findByUTORID = function (utorid) {
+    var user = this.model('User');
+    return user.findOne({utorid: utorid});
+};
 
 // method for local user
 userSchema.methods.encryptPassword = function (password) {
