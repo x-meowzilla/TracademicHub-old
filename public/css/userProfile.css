@@ -146,3 +146,7 @@
 .progress-meter > .meter.meter-right > .meter-text {
     text-align: right;
 }
+
+.user-info-list>li{
+    overflow-x: scroll;
+}

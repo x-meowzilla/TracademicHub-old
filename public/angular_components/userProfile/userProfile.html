@@ -35,6 +35,7 @@
                                 <figure>
                                     <img class="img-circle img-responsive" alt="" src="https://tracademic.utsc.utoronto.ca/img/default%20avatar.svg">
                                 </figure>
+                                <!--Note: deleter later!!!-->
                                 <div class="row">
                                     <div class="col-xs-12 social-btns">
                                         <div class="col-xs-3 col-md-1 col-lg-1 social-btn-holder">
@@ -61,12 +62,31 @@
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-8">
-                                <ul class="list-group">
-                                    <li class="list-group-item">John Doe</li>
-                                    <li class="list-group-item">Male </li>
-                                    <li class="list-group-item">Software Engineer Stream</li>
-                                    <li class="list-group-item"><i class="fa fa-phone"></i> 000-000-0000 </li>
-                                    <li class="list-group-item"><i class="fa fa-envelope"></i> john@mail.utoronto.ca</li>
+                                <ul class="list-group row user-info-list">
+                                    <li class="list-group-item col-xs-12">
+                                        <div class="col-xs-5 tital"><strong>First Name: </strong></div>
+                                        <div class="col-xs-7">Tracademic</div>
+                                    </li>
+                                    <li class="list-group-item col-xs-12">
+                                        <div class="col-xs-5 tital"><strong>Last Name: </strong></div>
+                                        <div class="col-xs-7">Hub</div>
+                                    </li>
+                                    <li class="list-group-item col-xs-12">
+                                        <div class="col-xs-5 tital"><strong>Preferred Name: </strong></div>
+                                        <div class="col-xs-7">th</div>
+                                    </li>
+                                    <li class="list-group-item col-xs-12">
+                                        <div class="col-xs-5 tital"><strong>Email: </strong></div>
+                                        <div class="col-xs-7">th@utsc.mail.utoronto.ca</div>
+                                    </li>
+                                    <li class="list-group-item col-xs-12">
+                                        <div class="col-xs-5 tital"><strong>Access Level: </strong></div>
+                                        <div class="col-xs-7">TA</div>
+                                    </li>
+                                    <li class="list-group-item col-xs-12">
+                                        <div class="col-xs-5 tital"><strong>Last Login: </strong></div>
+                                        <div class="col-xs-7">2017.5.5 10.00am</div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -80,7 +100,7 @@
                         </div>
 
                         <div class="bs-callout bs-callout-danger">
-                            <h4>Language and Platform Skills</h4>
+                            <h4>Badges Board</h4>
                             <ul class="list-group">
                                 <a class="list-group-item inactive-link" href="#">
                                     <div class="progress">
@@ -111,30 +131,43 @@
                             </ul>
                         </div>
 
-                        <div class="bs-callout bs-callout-danger">
-                            <h4>Education</h4>
-                            <table class="table table-striped table-responsive ">
-                                <thead>
-                                <tr>
-                                    <th>Degree</th>
-                                    <th>Graduation Year</th>
-                                    <th>CGPA</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>Masters in Computer Science and Engineering</td>
-                                    <td>2014</td>
-                                    <td> 3.50 </td>
-                                </tr>
-                                <tr>
-                                    <td>BSc. in Computer Science and Engineering</td>
-                                    <td>2011</td>
-                                    <td> 3.25 </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                        <!--<div class="bs-callout bs-callout-danger">-->
+                            <!--<h4>Education</h4>-->
+                            <!--<table class="table table-striped table-responsive ">-->
+                                <!--<thead>-->
+                                <!--<tr>-->
+                                    <!--<th>Degree</th>-->
+                                    <!--<th>Graduation Year</th>-->
+                                    <!--<th>CGPA</th>-->
+                                <!--</tr>-->
+                                <!--</thead>-->
+                                <!--<tbody>-->
+                                <!--<tr>-->
+                                    <!--<td>Masters in Computer Science and Engineering</td>-->
+                                    <!--<td>2014</td>-->
+                                    <!--<td> 3.50 </td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td>BSc. in Computer Science and Engineering</td>-->
+                                    <!--<td>2011</td>-->
+                                    <!--<td> 3.25 </td>-->
+                                <!--</tr>-->
+                                <!--</tbody>-->
+                            <!--</table>-->
+                        <!--</div>-->
+
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">
+                                <h4> States </h4>
+                            </div>
+                            <div class="panel-body">
+                                <div id="statesBar"></div>
+                                <div class="text-right">
+                                    <a href="/states">View History <i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -145,3 +178,5 @@
 
 
 </div>
+
+<script src="angular_components/userProfile/statesPoints.js"></script>
