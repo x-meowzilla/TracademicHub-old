@@ -1,72 +1,87 @@
 .userProfilewrapper {
-    padding-left: 0;
+    padding-left: 225px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
 }
 
 .userProfile-page-wrapper {
     width: 100%;
-    padding: 0;
+    padding: 15px;
     background-color: #fff;
 }
 
-@media(min-width:768px) {
+/* Side Navigation */
+
+.sidebar {
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 225px;
+    width: 225px;
+    margin-left: -225px;
+    border: none;
+    border-radius: 0;
+    overflow-y: auto;
+    background-color: #222;
+    overflow-x: hidden;
+    padding-bottom: 40px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    z-index: 1000;
+}
+
+.side-nav>li>a {
+    width: 225px;
+    color: #999;
+    font-size: 20px;
+}
+
+.side-nav li a:hover,
+.side-nav li a:focus {
+    outline: none;
+    background-color: #000 !important;
+}
+
+#sidebar-btn{
+    display: none;
+}
+
+@media(max-width:768px) {
     .userProfilewrapper {
+        padding-left: 0px;
+    }
+
+    .sidebar{
+        width: 0px;
+    }
+
+    .userProfilewrapper.toggled {
         padding-left: 225px;
     }
 
-    .userProfile-page-wrapper {
-        padding: 10px;
-    }
-}
-
-
-/* Side Navigation */
-
-@media(min-width:768px) {
-    .side-nav {
-        position: fixed;
-        top: 51px;
-        left: 225px;
+    .userProfilewrapper.toggled .sidebar {
         width: 225px;
-        margin-left: -225px;
-        border: none;
-        border-radius: 0;
-        overflow-y: auto;
-        background-color: #222;
-        bottom: 0;
-        overflow-x: hidden;
-        padding-bottom: 40px;
     }
 
-    .side-nav>li>a {
-        width: 225px;
-        color: #999;
-        font-size: 20px;
+    #sidebar-btn{
+        display: inline-block;
     }
-
-    .side-nav li a:hover,
-    .side-nav li a:focus {
-        outline: none;
-        background-color: #000 !important;
-    }
-}
-
-.side-nav>li>ul {
-    padding: 0;
-}
-
-.side-nav>li>ul>li>a {
-    display: block;
-    padding: 10px 15px 10px 38px;
-    text-decoration: none;
-    color: #999;
-}
-
-.side-nav>li>ul>li>a:hover {
-    color: #fff;
 }
 
 
 /*Profile Page*/
+#editProfileBtn{
+    color: #2e6da4;
+}
+
+#editProfileBtn:hover{
+    text-shadow: 2px 2px 2px #999;
+}
+
 .bs-callout {
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;

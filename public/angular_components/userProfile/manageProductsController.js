@@ -6,7 +6,6 @@
         .controller('manageProductsController', manageProductsController);
 
     function manageProductsController($scope, _CheckAuthentication) {
-
         $scope.isAuthenticated = function () {
             return _CheckAuthentication.isAuthenticated();
         };

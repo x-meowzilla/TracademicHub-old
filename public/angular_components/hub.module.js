@@ -12,7 +12,7 @@
                     templateUrl: 'angular_components/homepage/homepage.html',
                     controller: 'homepageController'
                 })
-                .when('/userProfile', {
+                .when('/settings', {
                     templateUrl: 'angular_components/userProfile/userProfile.html',
                     controller: 'userProfileController'
                 })
@@ -21,12 +21,15 @@
                     controller: 'leaderBoardRankController'
                 })
                 .when('/states', {
-                        templateUrl: 'angular_components/userProfile/states.html',
-                        controller: 'statesController'
+                    templateUrl: 'angular_components/userProfile/states.html',
+                    controller: 'statesController'
                 })
                 .when('/manageProducts', {
                     templateUrl: 'angular_components/userProfile/manageProducts.html',
                     controller: 'manageProductsController'
+                })
+                .otherwise({
+                    templateUrl: 'angular_components/error_pages/404.html'
                 });
                 // .when('/profile', {
                 //     templateUrl: 'templates/profile.html'
