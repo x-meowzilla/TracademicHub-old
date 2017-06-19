@@ -21,8 +21,8 @@
                     controller: 'leaderBoardRankController'
                 })
                 .when('/states', {
-                        templateUrl: 'angular_components/userProfile/states.html',
-                        controller: 'statesController'
+                    templateUrl: 'angular_components/userProfile/states.html',
+                    controller: 'statesController'
                 })
                 .when('/manageProducts', {
                     templateUrl: 'angular_components/userProfile/manageProducts.html',
