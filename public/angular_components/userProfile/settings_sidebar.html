@@ -26,5 +26,7 @@
     </ul>
 </div>
 
-<a class="btn btn-default" ng-click="$parent.toggled = !toggled">Toggle Menu</a>
+<a id="sidebar-btn" class="btn btn-default" ng-click="$parent.toggled = !toggled">
+    <i class="fa fa-2x" ng-class="{'fa-angle-double-right': !toggled, 'fa-angle-double-left': toggled}"></i>
+</a>
 

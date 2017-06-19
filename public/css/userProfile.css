@@ -57,6 +57,9 @@
     color: #999;
 }
 
+#sidebar-btn{
+    display: none;
+}
 
 @media(max-width:768px) {
     .userProfilewrapper {
@@ -73,6 +76,10 @@
 
     .userProfilewrapper.toggled .sidebar {
         width: 225px;
+    }
+
+    #sidebar-btn{
+        display: inline-block;
     }
 }
 
