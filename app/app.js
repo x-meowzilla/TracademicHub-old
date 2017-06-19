@@ -29,6 +29,7 @@ var sessionData = {
     cookie: {
         secure: true,
         httpOnly: true,
+        domain: 'localhost:3000', // change to production domain when needed.
         expires: serverConfig.session.timeout
     },
     store: new MongoStore({url: dbConfig.dbURL}),
