@@ -17,7 +17,6 @@ var userSchema = new Schema({
     },
     name: {
         firstName: {type: String, default: ''},
-        middleName: {type: String, default: ''},
         lastName: {type: String, default: ''},
         preferredName: {type: String, default: ''}
     },
