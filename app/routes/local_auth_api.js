@@ -1,41 +1,52 @@
 var router = require('express').Router();
 var passport = require('passport');
+var access = require('../modules/access_level');
 var UserModel = require('../db_models/User');
 var AccessLevelModule = require('../db_models/AccessLevel');
 
-
-// only for local user
+// local user URI: .../api/local/users/
 router.post('/register', function (req, res) {
-    // use promise instead of callbacks
-    UserModel.findOne({utorid: req.body.utorid})
+
+    UserModel.findByUTORID(req.body.utorid) // find admin username (utorid is the primary key in the database)
         .then(function (user) {
-            if (user) {
-                return res.status(409).end('User: "' + user.utorid + '" already exists.');
-            } else {
-                AccessLevelModule.findOne({description: 'Admin'})
-                    .then(function (adminAccess) {
-
-                        // user does not exist, create new user and save to database
-                        user = new UserModel();
-                        user.utorid = req.body.utorid;
-                        user.encryptPassword(req.body.password);
-                        user.email = req.body.utorid + '@test-tracademic.com'; // create a fake email address for now
-                        user.accessLevel = adminAccess._id;
-
-                        // use promise in mongodb to avoid massive callbacks
-                        user.save()
-                            .then(function (user) {
-                                return res.status(200).json(user).end();
-                            })
-                            .catch(function (error) {
-                                return res.status(500).end(error.errmsg);
-                            });
-                    });
-            }
+            return user ? res.status(409).end('User: "' + user.utorid + '" already exists.') : createLocalUser();
         })
         .catch(function (error) {
-            return res.status(500).end(error.errmsg);
+            res.status(500).end(error.errmsg);
         });
+
+    function createLocalUser() {
+        AccessLevelModule.findByAccessLevelAndDescription(access.ACCESS_LEVEL_ADMIN, access.ACCESS_LEVEL_ADMIN_DESCRIPTION)
+            .then(function (adminAccess) {
+                return adminAccess._id;
+            })
+            .then(function (adminAccess) {
+                var user = new UserModel();
+                user.utorid = req.body.utorid;
+                user.encryptPassword(req.body.password);
+                user.email = req.body.utorid + '@test-tracademic.com'; // create a fake email address for now
+                user.accessLevel = adminAccess;
+                return user
+            })
+            .then(function (resultUser) {
+                resultUser.save()
+                    .then(function (user) {
+                        var userData = {
+                            _id: user._id,
+                            utorid: user.utorid,
+                            email: user.email,
+                            accessLevel: user.accessLevel,
+                            name: user.name,
+                            createDate: user.createDate
+                        };
+                        return res.json(userData).end();
+                    });
+            })
+            .catch(function (error) {
+                res.status(500).end(error.errmsg);
+            });
+    }
+
 });
 
 router.post('/login', function (req, res) {
@@ -61,7 +72,7 @@ router.post('/login', function (req, res) {
                     name: user.name,
                     accessLevel: user.accessLevel
                 }; // for login, only return the data we need.
-                return res.status(200).json(userData).end();
+                return res.json(userData).end();
             }
         })(req, res);
 });

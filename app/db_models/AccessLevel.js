@@ -11,5 +11,11 @@ var accessLevelSchema = new Schema({
 
 }, {collection: 'AccessLevelsReference'});
 
+
+accessLevelSchema.statics.findByAccessLevelAndDescription = function (accessValue, description) {
+    var access = this.model('AccessLevel');
+    return access.findOne({value: accessValue, description: description});
+};
+
 var accessLevelModel = mongoose.model('AccessLevel', accessLevelSchema);
 module.exports = accessLevelModel;
