@@ -6,18 +6,10 @@
     transition: all 0.5s ease;
 }
 
-.userProfilewrapper.toggled {
-    padding-left: 0px;
-}
-
 .userProfile-page-wrapper {
     width: 100%;
     padding: 15px;
     background-color: #fff;
-}
-
-.userProfilewrapper.toggled .sidebar {
-    width: 0px;
 }
 
 /* Side Navigation */
@@ -63,6 +55,25 @@
     padding: 10px 15px 10px 38px;
     text-decoration: none;
     color: #999;
+}
+
+
+@media(max-width:768px) {
+    .userProfilewrapper {
+        padding-left: 0px;
+    }
+
+    .sidebar{
+        width: 0px;
+    }
+
+    .userProfilewrapper.toggled {
+        padding-left: 225px;
+    }
+
+    .userProfilewrapper.toggled .sidebar {
+        width: 225px;
+    }
 }
 
 
