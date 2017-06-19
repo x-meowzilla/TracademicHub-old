@@ -18,6 +18,7 @@ var accessLevelModuleInit = require('./modules/access_level_init');
 var shibbolethAuthAPI = require('./routes/shibboleth_auth_api');
 var localAuthAPI = require('./routes/local_auth_api');
 var usersAPI = require('./routes/users_api');
+var pointsAPI = require('./routes/point_api');
 var pointsCategoryAPI = require('./routes/point_category_api');
 
 
@@ -111,6 +112,7 @@ app.use('/', express.static('public'));
 app.use('/api/users', usersAPI);
 app.use('/api/local/users', localAuthAPI);  // sign-in via Local Auth
 app.use('/Shibboleth.sso', shibbolethAuthAPI);  // sign-in via Shibboleth Auth
+app.use('/api/points', pointsAPI);
 app.use('/api/points-category', pointsCategoryAPI);
 
 
