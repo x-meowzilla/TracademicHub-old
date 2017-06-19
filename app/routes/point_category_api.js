@@ -3,7 +3,7 @@ var PointCategoryModel = require('../db_models/PointCategory');
 
 // point category URI: .../api/points-category/
 router.get('/', function (req, res) {
-    PointCategoryModel.getAllCategoryNames('Learning Point')
+    PointCategoryModel.getAllCategoryNames()
         .then(function (categoryArray) {
             res.json(categoryArray).end();
         })
