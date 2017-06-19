@@ -1,5 +1,6 @@
 var router = require('express').Router();
 var passport = require('passport');
+var access = require('../modules/access_level');
 var UserModel = require('../db_models/User');
 var AccessLevelModule = require('../db_models/AccessLevel');
 
@@ -15,7 +16,7 @@ router.post('/register', function (req, res) {
         });
 
     function createLocalUser() {
-        AccessLevelModule.findByDescription('Admin')
+        AccessLevelModule.findByAccessLevelAndDescription(access.ACCESS_LEVEL_ADMIN, access.ACCESS_LEVEL_ADMIN_DESCRIPTION)
             .then(function (adminAccess) {
                 return adminAccess._id;
             })
