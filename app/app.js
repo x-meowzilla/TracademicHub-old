@@ -40,10 +40,10 @@ var sessionData = {
     name: serverConfig.session.key,
     secret: serverConfig.session.secret
 };
-app.use(session(sessionData));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(cookieParser());
+app.use(cookieParser(serverConfig.session.secret));
+app.use(session(sessionData));
 app.use(expressValidator());
 app.use(favicon(path.join('public', 'favicon.ico')));
 app.use(passport.initialize());
