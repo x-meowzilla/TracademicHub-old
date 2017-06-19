@@ -74,6 +74,14 @@
 
 
 /*Profile Page*/
+#editProfileBtn{
+    color: #2e6da4;
+}
+
+#editProfileBtn:hover{
+    text-shadow: 2px 2px 2px #999;
+}
+
 .bs-callout {
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;

@@ -16,11 +16,14 @@
                         <span>John Doe</span>
                         <small>
                             Profile Overview
-                            <a href="#"><i class="fa fa-fw fa-gear"></i></a>
+                            <i id="editProfileBtn" class="fa fa-fw fa-gear" data-toggle="modal" data-target="#editUserProfilePage"></i>
                         </small>
                     </h1>
                 </div>
             </div>
+
+            <!--Edit user profile page-->
+            <div ng-include="'angular_components/userProfile/editUserProfile.html'"></div>
 
             <div class="row">
                 <div class="col-lg-12">
