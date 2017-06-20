@@ -70,9 +70,9 @@ module.exports = function (passport) {
         UserModel.findByUTORID(utorid)
             .then(function (user) {
                 if (!user)
-                    return {error: {status: 404, errmsg: 'User: "' + utorid + '" does not exist.'}, user: false};
+                    return {error: {errcode: 404, errmsg: 'Login failed. Username "' + utorid + '" does not exist.'}, user: false};
                 if (!user.verifyPassword(password))
-                    return {error: {status: 401, errmsg: 'Login failed. Incorrect Password.'}, user: false};
+                    return {error: {errcode: 401, errmsg: 'Login failed. Incorrect Password.'}, user: false};
                 else
                     return {error: null, user: user};
             })

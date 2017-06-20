@@ -35,8 +35,8 @@ router.post('/register', function (req, res) {
                             _id: user._id,
                             utorid: user.utorid,
                             email: user.email,
-                            accessLevel: user.accessLevel,
                             name: user.name,
+                            accessLevel: user.accessLevel,
                             createDate: user.createDate
                         };
                         return res.json(userData).end();
@@ -50,31 +50,21 @@ router.post('/register', function (req, res) {
 });
 
 router.post('/login', function (req, res) {
-    passport.authenticate('local',
-        {
-            successRedirect: '/',
-            failureRedirect: '/'
-        },
-        function (error, user) {
-            if (error) return res.status(500).end(error.errmsg);
-
-            if (!user) {
-                return res.status(404).end('User: "' + req.body.utorid + '" does not exist.');
-            } else if (!user.verifyPassword(req.body.password)) {
-                return res.status(401).end('Incorrect Password.');
-            } else {
-                req.session.user = user;
-                res.cookie('userID', user._id);
-                var userData = {
-                    _id: user._id,
-                    utorid: user.utorid,
-                    email: user.email,
-                    name: user.name,
-                    accessLevel: user.accessLevel
-                }; // for login, only return the data we need.
-                return res.json(userData).end();
-            }
-        })(req, res);
+    passport.authenticate('local', {session: true}, function (error, user) {
+        if (error) {
+            return res.status(error.errcode).end(error.errmsg);
+        } else {
+            res.cookie('userID', user._id);
+            var userData = {
+                _id: user._id,
+                utorid: user.utorid,
+                email: user.email,
+                name: user.name,
+                accessLevel: user.accessLevel
+            }; // for login, only return the data we need.
+            return res.json(userData).end();
+        }
+    })(req, res);
 });
 
 
