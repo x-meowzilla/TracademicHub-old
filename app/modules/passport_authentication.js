@@ -69,7 +69,15 @@ module.exports = function (passport) {
     passport.use('local', new LocalStrategy({usernameField: 'utorid'}, function (utorid, password, done) {
         UserModel.findByUTORID(utorid)
             .then(function (user) {
-                return done(null, user);  // return the user regardless of existence of this user, handle status in router
+                if (!user)
+                    return {error: {status: 404, errmsg: 'User: "' + utorid + '" does not exist.'}, user: false};
+                if (!user.verifyPassword(password))
+                    return {error: {status: 401, errmsg: 'Login failed. Incorrect Password.'}, user: false};
+                else
+                    return {error: null, user: user};
+            })
+            .then(function (result) {
+                return done(result.error, result.user);
             })
             .catch(function (error) {
                 return done(error, false);
