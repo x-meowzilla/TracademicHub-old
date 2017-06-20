@@ -32,7 +32,7 @@ var sessionData = {
         domain: 'localhost:3000', // change to production domain when needed.
         expires: serverConfig.session.timeout
     },
-    store: new MongoStore({url: dbConfig.dbURL}),
+    store: new MongoStore({url: dbConfig.dbURL, ttl: 2 * 60 * 60}),
     resave: false,
     saveUninitialized: false,
     rolling: true,
@@ -44,11 +44,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser(serverConfig.session.secret));
 app.use(session(sessionData));
-app.use(expressValidator());
-app.use(favicon(path.join('public', 'favicon.ico')));
+passportAuthModule(passport);
 app.use(passport.initialize());
 app.use(passport.session());
-passportAuthModule(passport);
+app.use(expressValidator());
+app.use(favicon(path.join('public', 'favicon.ico')));
 
 // mongodb connection
 var mongooseOptions = {server: {socketOptions: {keepAlive: 100}}};
