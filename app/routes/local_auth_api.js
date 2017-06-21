@@ -53,7 +53,7 @@ router.post('/login', function (req, res) {
             return res.status(error.errcode).end(error.errmsg);
         } else {
             req.logIn(user, function () {
-                res.cookie('userID', user._id);
+                res.cookie('userID', user._id, {secure: true, httpOnly: true});
                 var userData = {
                     _id: user._id,
                     utorid: user.utorid,
