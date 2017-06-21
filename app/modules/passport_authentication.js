@@ -22,25 +22,6 @@ module.exports = function (passport) {
     passport.use('saml', new SamlStrategy(passportConfig.samlData, function (profile, done) {
         var utorid = profile['urn:oid:1.3.6.1.4.1.15465.3.1.8'];
         var email = profile['urn:oid:0.9.2342.19200300.100.1.3'];
-        // UserModel.findByUTORID(utorid)
-        //     .then(function (user) {
-        //         if (user) {
-        //             return done(null, user);
-        //         } else {
-        //             user = new UserModel({utorid: utorid, email: email});
-        //             user.save()
-        //                 .then(function (user) {
-        //                     return res.status(200).json(user).end();
-        //                 })
-        //                 .catch(function (error) {
-        //                     return res.status(500).end(error.errmsg);
-        //                 });
-        //         }
-        //     })
-        //     .catch(function (error) {
-        //         return done(error, false);
-        //     });
-
         UserModel.findByUTORID(utorid)
             .then(function (user) {
                 // if a student is late to register for the course, but student data is already imported,
@@ -62,7 +43,6 @@ module.exports = function (passport) {
                     return done(error, false);
                 });
         }
-
     }));
 
     // local strategy
