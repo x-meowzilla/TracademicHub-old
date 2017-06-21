@@ -29,7 +29,6 @@ var sessionData = {
     cookie: {
         secure: true,
         httpOnly: true,
-        domain: 'localhost:3000', // change to production domain when needed.
         expires: serverConfig.session.timeout
     },
     store: new MongoStore({url: dbConfig.dbURL, ttl: 2 * 60 * 60}),
@@ -40,9 +39,9 @@ var sessionData = {
     name: serverConfig.session.key,
     secret: serverConfig.session.secret
 };
+app.use(cookieParser(serverConfig.session.secret));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(cookieParser(serverConfig.session.secret));
 app.use(session(sessionData));
 passportAuthModule(passport);
 app.use(passport.initialize());
