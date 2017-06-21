@@ -6,7 +6,6 @@ var AccessLevelModule = require('../db_models/AccessLevel');
 
 // local user URI: .../api/local/users/
 router.post('/register', function (req, res) {
-
     UserModel.findByUTORID(req.body.utorid) // find admin username (utorid is the primary key in the database)
         .then(function (user) {
             return user ? res.status(409).end('User: "' + user.utorid + '" already exists.') : createLocalUser();
@@ -46,7 +45,6 @@ router.post('/register', function (req, res) {
                 res.status(500).end(error.errmsg);
             });
     }
-
 });
 
 router.post('/login', function (req, res) {
@@ -54,15 +52,17 @@ router.post('/login', function (req, res) {
         if (error) {
             return res.status(error.errcode).end(error.errmsg);
         } else {
-            res.cookie('userID', user._id);
-            var userData = {
-                _id: user._id,
-                utorid: user.utorid,
-                email: user.email,
-                name: user.name,
-                accessLevel: user.accessLevel
-            }; // for login, only return the data we need.
-            return res.json(userData).end();
+            req.logIn(user, function () {
+                res.cookie('userID', user._id);
+                var userData = {
+                    _id: user._id,
+                    utorid: user.utorid,
+                    email: user.email,
+                    name: user.name,
+                    accessLevel: user.accessLevel
+                }; // for login, only return the data we need.
+                return res.json(userData).end();
+            });
         }
     })(req, res);
 });
