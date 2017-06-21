@@ -1,5 +1,6 @@
 var router = require('express').Router();
 var passport = require('passport');
+var serverConfig = require('../configurations/server_config');
 var access = require('../modules/access_level');
 var UserModel = require('../db_models/User');
 var AccessLevelModule = require('../db_models/AccessLevel');
@@ -53,7 +54,7 @@ router.post('/login', function (req, res) {
             return res.status(error.errcode).end(error.errmsg);
         } else {
             req.login(user, function () {
-                res.cookie('userID', user._id, {secure: true, httpOnly: true});
+                res.cookie('userID', user._id, {secure: true, httpOnly: true, expires: serverConfig.session.timeout});
                 var userData = {
                     _id: user._id,
                     utorid: user.utorid,
