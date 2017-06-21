@@ -1,12 +1,12 @@
 var router = require('express').Router();
 var passport = require('passport');
+var serverConfig = require('../configurations/server_config');
 var access = require('../modules/access_level');
 var UserModel = require('../db_models/User');
 var AccessLevelModule = require('../db_models/AccessLevel');
 
 // local user URI: .../api/local/users/
 router.post('/register', function (req, res) {
-
     UserModel.findByUTORID(req.body.utorid) // find admin username (utorid is the primary key in the database)
         .then(function (user) {
             return user ? res.status(409).end('User: "' + user.utorid + '" already exists.') : createLocalUser();
@@ -35,8 +35,8 @@ router.post('/register', function (req, res) {
                             _id: user._id,
                             utorid: user.utorid,
                             email: user.email,
-                            accessLevel: user.accessLevel,
                             name: user.name,
+                            accessLevel: user.accessLevel,
                             createDate: user.createDate
                         };
                         return res.json(userData).end();
@@ -46,25 +46,14 @@ router.post('/register', function (req, res) {
                 res.status(500).end(error.errmsg);
             });
     }
-
 });
 
 router.post('/login', function (req, res) {
-    passport.authenticate('local',
-        {
-            successRedirect: '/',
-            failureRedirect: '/'
-        },
-        function (error, user) {
-            if (error) return res.status(500).end(error.errmsg);
-
-            if (!user) {
-                return res.status(404).end('User: "' + req.body.utorid + '" does not exist.');
-            } else if (!user.verifyPassword(req.body.password)) {
-                return res.status(401).end('Incorrect Password.');
-            } else {
-                req.session.user = user;
-                res.cookie('userID', user._id);
+    passport.authenticate('local', {session: true}, function (error, user) {
+        if (error) {
+            return res.status(error.errcode).end(error.errmsg);
+        } else {
+            req.login(user, function () {
                 var userData = {
                     _id: user._id,
                     utorid: user.utorid,
@@ -73,8 +62,9 @@ router.post('/login', function (req, res) {
                     accessLevel: user.accessLevel
                 }; // for login, only return the data we need.
                 return res.json(userData).end();
-            }
-        })(req, res);
+            });
+        }
+    })(req, res);
 });
 
 
