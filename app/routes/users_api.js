@@ -1,24 +1,9 @@
 var router = require('express').Router();
+var mw = require('../modules/middlewares');
 var UserModel = require('../db_models/User');
 
-var checkAuthentication = function (req, res, next) {
-
-    console.log('------------------------', req.user);
-
-    if (!req.isAuthenticated()) {
-        res.clearCookie('userID');
-        return res.status(403).send('Please login before performing this action.').end('Forbidden');
-    } else {
-        return next();
-    }
-};
-
-
 // users URI: .../api/users/
-router.get('/', function (req, res) {
-
-    console.log(req.user);
-
+router.get('/', mw.checkAuthentication, function (req, res) {
     UserModel.getAllUsers()
         .then(function (userArray) {
             var resultArray = userArray.map(function (user) {
