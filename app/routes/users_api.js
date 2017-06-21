@@ -2,21 +2,40 @@ var router = require('express').Router();
 var UserModel = require('../db_models/User');
 
 var checkAuthentication = function (req, res, next) {
-    var user = req.session.user;
 
-    if (user) {
-        if (!res.cookie.userID) res.cookie('userID', user._id, {secure: true, httpOnly: true});
-        return next();
-    } else {
+    console.log('------------------------', req.user);
+
+    if (!req.isAuthenticated()) {
         res.clearCookie('userID');
-        return res.status(401).send('Please login before performing this action.').end("Unauthorized");
+        return res.status(403).send('Please login before performing this action.').end('Forbidden');
+    } else {
+        return next();
     }
 };
 
-// users API
-router.get('/', checkAuthentication, function (req, res) {
-    console.log(req.session);
-    res.send('GET request accepted.');
+
+// users URI: .../api/users/
+router.get('/', function (req, res) {
+
+    console.log(req.user);
+
+    UserModel.getAllUsers()
+        .then(function (userArray) {
+            var resultArray = userArray.map(function (user) {
+                return {
+                    _id: user._id,
+                    utorid: user.utorid,
+                    email: user.email,
+                    name: user.name,
+                    studentNumber: user.studentNumber,
+                    accessLevel: user.accessLevel
+                }
+            });
+            return res.json(resultArray).end();
+        })
+        .catch(function (error) {
+            return res.status(500).end(error.errmsg);
+        });
 });
 
 router.get('/:id', checkAuthentication, function (req, res) {
