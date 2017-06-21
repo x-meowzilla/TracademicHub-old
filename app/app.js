@@ -31,7 +31,7 @@ var sessionData = {
         httpOnly: true,
         expires: serverConfig.session.timeout
     },
-    store: new MongoStore({url: dbConfig.dbURL}),
+    store: new MongoStore({url: dbConfig.dbURL, ttl: 2 * 60 * 60}),
     resave: false,
     saveUninitialized: false,
     rolling: true,
@@ -39,15 +39,15 @@ var sessionData = {
     name: serverConfig.session.key,
     secret: serverConfig.session.secret
 };
+app.use(cookieParser(serverConfig.session.secret));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(cookieParser(serverConfig.session.secret));
 app.use(session(sessionData));
-app.use(expressValidator());
-app.use(favicon(path.join('public', 'favicon.ico')));
+passportAuthModule(passport);
 app.use(passport.initialize());
 app.use(passport.session());
-passportAuthModule(passport);
+app.use(expressValidator());
+app.use(favicon(path.join('public', 'favicon.ico')));
 
 // mongodb connection
 var mongooseOptions = {server: {socketOptions: {keepAlive: 100}}};

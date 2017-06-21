@@ -33,6 +33,11 @@ userSchema.statics.findByUTORID = function (utorid) {
     return user.findOne({utorid: utorid});
 };
 
+userSchema.statics.getAllUsers = function () {
+    var user = this.model('User');
+    return user.find({});
+};
+
 // method for local user
 userSchema.methods.encryptPassword = function (password) {
     var user = this;
