@@ -23,44 +23,68 @@ router.get('/', mw.checkAuthentication, function (req, res) {
         });
 });
 
-router.get('/:id', checkAuthentication, function (req, res) {
-    res.send('GET request accepted, ID: ' + req.params.id);
+router.get('/:userID', function (req, res) {
+    UserModel.findById(req.params.userID)
+        .then(function (user) {
+            var resultUser = {
+                _id: user._id,
+                utorid: user.utorid,
+                email: user.email,
+                name: user.name,
+                studentNumber: user.studentNumber,
+                accessLevel: user.accessLevel
+            };
+            return res.json(resultUser).end();
+        })
+        .catch(function (error) {
+            return res.status(500).end(error.errmsg);
+        });
 });
 
-router.get('/:id/history', checkAuthentication, function (req, res) {
-    res.send('GET history');
+router.get('/utorid/:utorid', function (req, res) { // may not needed
+    UserModel.findByUTORID(req.params.utorid)
+        .then(function (user) {
+            var resultUser = {
+                _id: user._id,
+                utorid: user.utorid,
+                email: user.email,
+                name: user.name,
+                studentNumber: user.studentNumber,
+                accessLevel: user.accessLevel
+            };
+            return res.json(resultUser).end();
+        })
+        .catch(function (error) {
+            return res.status(500).end(error.errmsg);
+        });
 });
 
-router.post('/', checkAuthentication, function (req, res) {
+router.post('/', function (req, res) {
     res.send('POST request accepted.');
 });
 
-// TODO - POST may not be the best method here, put? find method for update
-router.post('/:id/adjustPrivileges', checkAuthentication, function (req, res) {
-    var userID = req.params.id;
-    UserModel.findByID(userID, function (error, user) {
-        if (error) return res.status(500).end(error.errmsg);
-
-        if (!user) {
-            return res.status(404).end('User not found.');
-        } else {
-            var accessLevel = Number(req.body.accessLevel);
-            // TODO - adjust user priviledges, try to use promise to avoid callbacks
-        }
-    });
+router.patch('/:userID/privilege/:accessID', function (req, res) {
+    UserModel.findByIdAndUpdate(req.params.userID, {$set: {accessLevel: req.params.accessID}}, {new: true})
+        .then(function (user) {
+            console.log(user);
+            res.json(user);
+            // TODO
+        })
+        .catch(function (error) {
+            return res.status(500).end(error.errmsg);
+        });
 });
 
-router.delete('/', checkAuthentication, function (req, res) {
-    res.send('DELETE!! delete all entries');
-});
-
-router.delete('/:id', checkAuthentication, function (req, res) {
-    res.send('DELETE!! delete one entry');
-});
+// router.delete('/', function (req, res) {
+//     res.send('DELETE!! delete all entries');
+// });
+//
+// router.delete('/:id', function (req, res) {
+//     res.send('DELETE!! delete one entry');
+// });
 
 router.delete('/logout', function (req, res) {
     req.logout();
-    res.clearCookie('userID');
     res.redirect('/');
     return res.status(200).end('Logout successful.');
 });
