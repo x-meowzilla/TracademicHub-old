@@ -116,7 +116,7 @@ app.use(function (req, res, next) {
 });
 
 app.use('/api/users', usersAPI);
-app.use('/api/local/users', localAuthAPI);  // sign-in via Local Auth
+app.use('/api/local-users', localAuthAPI);  // sign-in via Local Auth
 app.use('/Shibboleth.sso', shibbolethAuthAPI);  // sign-in via Shibboleth Auth
 app.use('/api/points', pointsAPI);
 app.use('/api/points-category', pointsCategoryAPI);
