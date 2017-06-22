@@ -53,7 +53,7 @@
             };
             //testtest
             console.log("he" + $scope.masterUsername);
-            _AjaxRequest.post('/api/local/users/login', formData, true).then(
+            _AjaxRequest.post('/api/local-users/login', formData, true).then(
                 function successCallback(result) {
                     console.log(result);
 
@@ -82,7 +82,7 @@
         };
 
         $scope.logout = function () {
-            _AjaxRequest.delete('/api/users/logout').then(
+            _AjaxRequest.get('/api/logout').then(
                 function successCallback(result) {
                     console.log(result);
                 },
