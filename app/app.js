@@ -17,8 +17,8 @@ var passportAuthModule = require('./modules/passport_authentication');
 var accessLevelModuleInit = require('./modules/access_level_init');
 
 // API endpoint router files
-var shibbolethAuthAPI = require('./routes/shibboleth_auth_api');
-var localAuthAPI = require('./routes/local_auth_api');
+var shibbolethAuthAPI = require('./routes/auth_shibboleth_api');
+var localAuthAPI = require('./routes/auth_local_api');
 var usersAPI = require('./routes/users_api');
 var pointsAPI = require('./routes/point_api');
 var pointsCategoryAPI = require('./routes/point_category_api');
