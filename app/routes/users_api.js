@@ -61,11 +61,5 @@ router.patch('/:userID/privilege/:accessID', function (req, res) {
 //     res.send('DELETE!! delete one entry');
 // });
 
-router.delete('/logout', function (req, res) {
-    req.logout();
-    res.redirect('/');
-    return res.status(200).end('Logout successful.');
-});
-
 
 module.exports = router;
