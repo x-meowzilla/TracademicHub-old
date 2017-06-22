@@ -17,24 +17,29 @@ router.get('/', mw.checkAuthentication, function (req, res) {
         });
 });
 
-router.get('/:userID', function (req, res) {
-    UserModel.findById(req.params.userID)
-        .then(function (user) {
-            return res.json(util.retrieveBasicUserData(user)).end();
-        })
-        .catch(function (error) {
-            return res.status(500).end(error.errmsg);
-        });
-});
+router.get('/:id', function (req, res) { // can be utorid or userID
+    // play a little trick here. UTORid max length = 8, user id max length = 24
+    return (req.params.id.length > 12) ? findByUserID(req.params.id) : findByUTORID(req.params.id);
 
-router.get('/utorid/:utorid', function (req, res) { // may not needed
-    UserModel.findByUTORID(req.params.utorid)
-        .then(function (user) {
-            return res.json(util.retrieveBasicUserData(user)).end();
-        })
-        .catch(function (error) {
-            return res.status(500).end(error.errmsg);
-        });
+    function findByUserID(userID) {
+        UserModel.findById(userID)
+            .then(function (user) {
+                return res.json(util.retrieveBasicUserData(user)).end();
+            })
+            .catch(function (error) {
+                return res.status(500).end(error.errmsg);
+            });
+    }
+
+    function findByUTORID(utorid) {
+        UserModel.findByUTORID(utorid)
+            .then(function (user) {
+                return res.json(util.retrieveBasicUserData(user)).end();
+            })
+            .catch(function (error) {
+                return res.status(500).end(error.errmsg);
+            });
+    }
 });
 
 router.post('/', function (req, res) {
