@@ -44,7 +44,7 @@
                             <h4 class="panel-title"><i class="fa fa-table"></i> Points Received History</h4>
                         </div>
                         <div class="panel-body">
-                            <table id="statesHistory" class="display table table-bordered table-hover table-striped" cellspacing="0">
+                            <table id="statesHistory" th-datatables="{pagingType: 'full_numbers'}" class="display table table-bordered table-hover table-striped" cellspacing="0">
                                 <thead>
                                 <tr>
                                     <th>Assignee Full Name</th>
@@ -312,15 +312,6 @@
     </div>
 
 </div>
-
-<script>
-    $(document).ready(function() {
-        $('#statesHistory').DataTable( {
-//            'ajax': '/lab/articles/jquery-datatables-pagination-without-ellipses/arrays-many.txt',
-            "pagingType": "full_numbers"
-        } );
-    } );
-</script>
 
 <script src="angular_components/userProfile/statesPoints.js"></script>
 

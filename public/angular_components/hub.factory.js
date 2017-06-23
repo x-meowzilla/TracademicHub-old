@@ -5,7 +5,8 @@
         .module('TracademicHub')
         .factory('_UTORidAuthentication', utoridAuthentication)
         .factory('_CheckAuthentication', checkAuthentication)
-        .factory('_AjaxRequest', ajaxRequest);
+        .factory('_AjaxRequest', ajaxRequest)
+        .directive('thDatatables', thDatatables);
 
     function utoridAuthentication() {
         return {
@@ -57,6 +58,16 @@
                 return $http.delete(apiURL);
             }
         };
+    }
+
+    function thDatatables() {
+        return {
+            restrict: 'A',
+            link: function (scope, elem, attrs) {
+                //            'ajax': '/lab/articles/jquery-datatables-pagination-without-ellipses/arrays-many.txt',
+                angular.element(elem).DataTable(scope.$eval(attrs.thDatatables));
+            }
+        }
     }
 
 }());

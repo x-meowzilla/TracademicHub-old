@@ -16,9 +16,8 @@
             </div>
         </div>
 
-
         <div class="table-responsive">
-            <table id="example" class="display table table-bordered table-hover table-striped" cellspacing="0">
+            <table th-datatables="{pagingType: 'full_numbers'}" class="display table table-bordered table-hover table-striped" cellspacing="0">
                 <thead>
                 <tr>
                     <th>Assignee Full Name</th>
@@ -235,12 +234,3 @@
     </div>
 
 </div>
-
-<script>
-    $(document).ready(function() {
-        $('#example').DataTable( {
-//            'ajax': '/lab/articles/jquery-datatables-pagination-without-ellipses/arrays-many.txt',
-            "pagingType": "full_numbers"
-        } );
-    } );
-</script>
