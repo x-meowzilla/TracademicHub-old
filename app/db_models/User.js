@@ -7,11 +7,11 @@ var userSchema = new Schema({
     utorid: {type: String, required: true, unique: true}, // required!!
     email: {type: String, required: true, unique: true},
     studentNumber: {type: Number, sparse: true, unique: true},
-    accessLevel: {type: Schema.Types.ObjectId, ref: 'AccessLevel', required: true},
+    accessPrivilege: {type: Schema.Types.ObjectId, ref: 'AccessPrivilege', required: true},
     createDate: {type: Date, default: Date.now},
     lastLoginDate: {type: Date, index: true, sparse: true},
+    isLocalUser: {type: Boolean, sparse: true},
     password: {
-        isLocalUser: {type: Boolean},
         salt: {type: String},
         hash: {type: String}
     },
@@ -33,6 +33,11 @@ userSchema.statics.findByUTORID = function (utorid) {
     return user.findOne({utorid: utorid});
 };
 
+userSchema.statics.findByAccessPrivilege = function (accessID) {
+    var user = this.model('User');
+    return user.find({accessPrivilege: accessID});
+};
+
 userSchema.statics.getAllUsers = function () {
     var user = this.model('User');
     return user.find({});
@@ -45,7 +50,7 @@ userSchema.methods.encryptPassword = function (password) {
     var hash = crypto.createHmac('sha512', salt).update(password).digest('base64');
     user.password.salt = salt;
     user.password.hash = hash;
-    user.password.isLocalUser = true;
+    user.isLocalUser = true;
 };
 
 // method for local user
@@ -87,12 +92,12 @@ userSchema.methods.setPreferredName = function (preferredName) {
 
 // userSchema.methods.getAccessLevel = function () {
 //     var user = this;
-//     return user.accessLevel;
+//     return user.accessPrivilege;
 // };
 //
-// userSchema.methods.setAccessLevel = function (accessLevel) {
+// userSchema.methods.setAccessLevel = function (accessPrivilege) {
 //     var user = this;
-//     user.accessLevel = accessLevel;
+//     user.accessPrivilege = accessPrivilege;
 // };
 
 
