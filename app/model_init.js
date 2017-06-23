@@ -3,6 +3,7 @@ var PointsCategoryModel = require('./db_models/PointCategory');
 var util = require('./modules/utility');
 
 module.exports = function () {
+    "use strict";
 
     (function initAdminAccessPrivilege() {
         var admin = new PrivilegeModel({value: util.ACCESS_ADMIN, description: util.ACCESS_ADMIN_DESCRIPTION});

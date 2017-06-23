@@ -8,7 +8,7 @@ var PrivilegeModule = require('../db_models/AccessPrivilege');
 router.post('/register', function (req, res) {
     UserModel.findByUTORID(req.body.utorid) // find admin username (utorid is the primary key in the database)
         .then(function (user) {
-            return user ? res.status(409).end('User: "' + user.utorid + '" already exists.') : createLocalUser();
+            return user ? res.status(409).end('Username "' + user.utorid + '" already exists.') : createLocalUser();
         })
         .catch(function (error) {
             res.status(500).end(error.errmsg);
