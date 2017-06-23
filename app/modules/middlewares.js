@@ -60,6 +60,4 @@ function errorMessage(accessDescription) {
     var errmsg = 'Permission denied. You must have ';
     if (accessDescription !== util.ACCESS_ADMIN_DESCRIPTION) errmsg += 'at least ';
     return errmsg + accessDescription.toUpperCase() + ' access privilege to perform this action.';
-
-    // return 'Permission denied. You must have at least ' + accessDescription.toUpperCase() + ' access privilege to perform this action.'
 }
