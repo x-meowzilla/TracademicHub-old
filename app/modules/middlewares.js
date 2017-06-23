@@ -1,3 +1,6 @@
+var PrivilegeModel = require('../db_models/AccessPrivilege');
+var util = require('./utility');
+
 module.exports.checkAuthentication = function (req, res, next) {
     "use strict";
 
@@ -7,23 +10,56 @@ module.exports.checkAuthentication = function (req, res, next) {
         return next();
 };
 
-module.exports.haveTAAccessPrivilege = function (req, res, next) {
+module.exports.haveMinimumTAAccessPrivilege = function (req, res, next) {
     "use strict";
 
-    console.log('=====mw - TA=====', req.user.accessPrivilege);
-    return next();
+    PrivilegeModel.findById(req.user.accessPrivilege)
+        .then(function (userAccess) {
+            if (userAccess.value < util.ACCESS_TA)
+                return res.status(401).send(errorMessage(util.ACCESS_TA_DESCRIPTION)).end('Unauthorized');
+            else
+                return next()
+        })
+        .catch(function (error) {
+            return res.status(500).end(error.errmsg);
+        });
 };
 
-module.exports.haveInstructorAccessPrivilege = function (req, res, next) {
+module.exports.haveMinimumInstructorAccessPrivilege = function (req, res, next) {
     "use strict";
 
-    console.log('=====mw - Instructor=====', req.user.accessPrivilege);
-    return next();
+    PrivilegeModel.findById(req.user.accessPrivilege)
+        .then(function (userAccess) {
+            if (userAccess.value < util.ACCESS_INSTRUCTOR)
+                return res.status(401).send(errorMessage(util.ACCESS_INSTRUCTOR_DESCRIPTION)).end('Unauthorized');
+            else
+                return next()
+        })
+        .catch(function (error) {
+            return res.status(500).end(error.errmsg);
+        });
+
 };
 
-module.exports.haveAdminAccessPrivilege = function (req, res, next) {
+module.exports.haveMinimumAdminAccessPrivilege = function (req, res, next) {
     "use strict";
 
-    console.log('=====mw - Admin=====', req.user.accessPrivilege);
-    return next();
+    PrivilegeModel.findById(req.user.accessPrivilege)
+        .then(function (userAccess) {
+            if (userAccess.value !== util.ACCESS_ADMIN)
+                return res.status(401).send(errorMessage(util.ACCESS_ADMIN_DESCRIPTION)).end('Unauthorized');
+            else
+                return next()
+        })
+        .catch(function (error) {
+            return res.status(500).end(error.errmsg);
+        });
 };
+
+function errorMessage(accessDescription) {
+    var errmsg = 'Permission denied. You must have ';
+    if (accessDescription !== util.ACCESS_ADMIN_DESCRIPTION) errmsg += 'at least ';
+    return errmsg + accessDescription.toUpperCase() + ' access privilege to perform this action.';
+
+    // return 'Permission denied. You must have at least ' + accessDescription.toUpperCase() + ' access privilege to perform this action.'
+}
