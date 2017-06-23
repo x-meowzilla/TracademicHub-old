@@ -14,7 +14,7 @@ var Promise = require('bluebird');
 var serverConfig = require('./configurations/server_config');
 var dbConfig = require('./configurations/db_config');
 var passportAuthModule = require('./modules/passport_authentication');
-var accessLevelModuleInit = require('./modules/access_level_init');
+var modelInitialization = require('./model_init');
 
 // API endpoint router files
 var shibbolethAuthAPI = require('./routes/auth_shibboleth_api');
@@ -66,7 +66,7 @@ mongoose.connection.on('error', function (error) {
     return console.error(error);
 });
 
-accessLevelModuleInit();
+modelInitialization();
 
 // check and sanitize request body function
 app.use(function sanitizeReqBodyHandler(req, res, next) {

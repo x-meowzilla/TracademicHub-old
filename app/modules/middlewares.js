@@ -7,10 +7,23 @@ module.exports.checkAuthentication = function (req, res, next) {
         return next();
 };
 
-module.exports.checkAccessPrivilege = function (req, res, next) {
+module.exports.haveTAAccessPrivilege = function (req, res, next) {
     "use strict";
 
-    // TODO - find a way to compare access privilege
+    console.log('=====mw - TA=====', req.user.accessPrivilege);
+    return next();
+};
 
+module.exports.haveInstructorAccessPrivilege = function (req, res, next) {
+    "use strict";
+
+    console.log('=====mw - Instructor=====', req.user.accessPrivilege);
+    return next();
+};
+
+module.exports.haveAdminAccessPrivilege = function (req, res, next) {
+    "use strict";
+
+    console.log('=====mw - Admin=====', req.user.accessPrivilege);
     return next();
 };

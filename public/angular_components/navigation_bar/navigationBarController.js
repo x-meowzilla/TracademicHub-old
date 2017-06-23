@@ -60,7 +60,7 @@
                     var userData = result.data;
                     _CheckAuthentication._isAuthenticated = true;
                     _CheckAuthentication._displayName = getDisplayName(userData);
-                    _CheckAuthentication._accessLevel = userData.accessLevel;
+                    // _CheckAuthentication._accessLevel = userData.accessPrivilege;
 
                     // TODO - show login successful banner
 

@@ -17,7 +17,7 @@ router.get('/', mw.checkAuthentication, function (req, res) {
         });
 });
 
-router.get('/:id', function (req, res) { // can be utorid or userID
+router.get('/:id', mw.checkAuthentication, function (req, res) { // can be utorid or userID
     // play a little trick here. UTORid max length = 8, user id max length = 24
     return (req.params.id.length > 12) ? findByUserID(req.params.id) : findByUTORID(req.params.id);
 
@@ -42,12 +42,26 @@ router.get('/:id', function (req, res) { // can be utorid or userID
     }
 });
 
+router.get('/privilege/:accessID', function (req, res) {
+    // get users by access privilege
+    UserModel.findByAccessPrivilege(req.params.accessID)
+        .then(function (userArray) {
+            var resultArray = userArray.map(function (user) {
+                return util.retrieveBasicUserData(user);
+            });
+            return res.json(resultArray).end();
+        })
+        .catch(function (error) {
+            return res.status(500).end(error.errmsg);
+        });
+});
+
 router.post('/', function (req, res) {
     res.send('POST request accepted.');
 });
 
 router.patch('/:userID/privilege/:accessID', function (req, res) {
-    UserModel.findByIdAndUpdate(req.params.userID, {$set: {accessLevel: req.params.accessID}}, {new: true})
+    UserModel.findByIdAndUpdate(req.params.userID, {$set: {accessPrivilege: req.params.accessID}}, {new: true})
         .then(function (user) {
             console.log(user);
             res.json(user);
@@ -62,9 +76,13 @@ router.patch('/:userID/privilege/:accessID', function (req, res) {
 //     res.send('DELETE!! delete all entries');
 // });
 //
-// router.delete('/:id', function (req, res) {
-//     res.send('DELETE!! delete one entry');
-// });
+router.delete('/:id', mw.checkAuthentication, mw.haveAdminAccessPrivilege, function (req, res) {
+
+    // console.log(req);
+
+
+    res.send('DELETE!! delete one entry');
+});
 
 
 module.exports = router;

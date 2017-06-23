@@ -1,9 +1,8 @@
 var router = require('express').Router();
 var passport = require('passport');
-var access = require('../modules/access_level');
 var util = require('../modules/utility');
 var UserModel = require('../db_models/User');
-var AccessLevelModule = require('../db_models/AccessLevel');
+var PrivilegeModule = require('../db_models/AccessPrivilege');
 
 // local user URI: .../api/local-users/
 router.post('/register', function (req, res) {
@@ -16,7 +15,7 @@ router.post('/register', function (req, res) {
         });
 
     function createLocalUser() {
-        AccessLevelModule.findByAccessLevelAndDescription(access.ACCESS_LEVEL_ADMIN, access.ACCESS_LEVEL_ADMIN_DESCRIPTION)
+        PrivilegeModule.findByPrivilegeValueAndDescription(util.ACCESS_ADMIN, util.ACCESS_ADMIN_DESCRIPTION)
             .then(function (adminAccess) {
                 return adminAccess._id;
             })
@@ -25,7 +24,7 @@ router.post('/register', function (req, res) {
                 user.utorid = req.body.utorid;
                 user.encryptPassword(req.body.password);
                 user.email = req.body.utorid + '@test-tracademic.com'; // create a fake email address for now
-                user.accessLevel = adminAccess;
+                user.accessPrivilege = adminAccess;
                 return user
             })
             .then(function (resultUser) {
