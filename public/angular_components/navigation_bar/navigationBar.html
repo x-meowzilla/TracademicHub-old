@@ -63,8 +63,7 @@
                     </ul>
                 </li>
 
-                <!--add ng-if="isAuthenticated()" later, shibboleth doesn't work-->
-                <li class="dropdown" data-target="#navbar_user_dropdown">
+                <li class="dropdown" data-target="#navbar_user_dropdown" ng-if="isAuthenticated()">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <span>Sign-in as:</span>
                         <span id="signed_in_username"><strong>{{getDisplayName()}}</strong></span>

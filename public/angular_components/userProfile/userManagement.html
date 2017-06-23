@@ -242,28 +242,18 @@
         </div>
 
         <div ng-if="!tableDisplay">
-            <strong>Show 
-                <select ng-init="viewby='10'" ng-model="viewby">
+            <div class="grid-option-setting"><strong>Show
+                <select ng-init="viewby='10'" ng-model="viewby" class="select-width">
                     <option>10</option>
                     <option>30</option>
                     <option>50</option>
-                </select> entries.
-            </strong>
+                </select> entries
+            </strong></div>
 
-            <div ng-if="!tableDisplay">
-                <div class="panel panel-default col-xs-4">
-                    <div class="panel-body">
-                        User1
-                    </div>
-                </div>
-                <div class="panel panel-default col-xs-4">
-                    <div class="panel-body">
-                        User1
-                    </div>
-                </div>
-                <div class="panel panel-default col-xs-4">
-                    <div class="panel-body">
-                        User1
+            <div class="row">
+                <div class="col-md-4" ng-repeat="row in data">
+                    <div class="panel panel-default col-md-12">
+                        {{row}}
                     </div>
                 </div>
             </div>

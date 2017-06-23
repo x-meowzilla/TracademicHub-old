@@ -387,3 +387,10 @@ div.material-table table td:last-child {
 }
 
 /*user management page*/
+.grid-option-setting{
+    padding-bottom: 10px;
+}
+
+.select-width{
+    width:49px;
+}
