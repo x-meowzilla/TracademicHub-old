@@ -10,16 +10,19 @@ var MongoStore = require('connect-mongo')(session);
 var passport = require('passport');
 var Promise = require('bluebird');
 
-// config files and API file path
+// config files
 var serverConfig = require('./configurations/server_config');
 var dbConfig = require('./configurations/db_config');
 var passportAuthModule = require('./modules/passport_authentication');
-var accessLevelModuleInit = require('./modules/access_level_init');
-var shibbolethAuthAPI = require('./routes/shibboleth_auth_api');
-var localAuthAPI = require('./routes/local_auth_api');
+var modelInitialization = require('./model_init');
+
+// API endpoint router files
+var shibbolethAuthAPI = require('./routes/auth_shibboleth_api');
+var localAuthAPI = require('./routes/auth_local_api');
 var usersAPI = require('./routes/users_api');
 var pointsAPI = require('./routes/point_api');
 var pointsCategoryAPI = require('./routes/point_category_api');
+var generalAPI = require('./routes/general_api');
 
 
 // ----- app start here -----
@@ -63,7 +66,7 @@ mongoose.connection.on('error', function (error) {
     return console.error(error);
 });
 
-accessLevelModuleInit();
+modelInitialization();
 
 // check and sanitize request body function
 app.use(function sanitizeReqBodyHandler(req, res, next) {
@@ -115,8 +118,9 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.use('/api/', generalAPI);
 app.use('/api/users', usersAPI);
-app.use('/api/local/users', localAuthAPI);  // sign-in via Local Auth
+app.use('/api/local-users', localAuthAPI);  // sign-in via Local Auth
 app.use('/Shibboleth.sso', shibbolethAuthAPI);  // sign-in via Shibboleth Auth
 app.use('/api/points', pointsAPI);
 app.use('/api/points-category', pointsCategoryAPI);
