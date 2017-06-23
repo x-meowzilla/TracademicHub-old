@@ -16,7 +16,7 @@ module.exports.haveMinimumTAAccessPrivilege = function (req, res, next) {
     PrivilegeModel.findById(req.user.accessPrivilege)
         .then(function (userAccess) {
             if (userAccess.value < util.ACCESS_TA)
-                return res.status(401).send(errorMessage(util.ACCESS_TA_DESCRIPTION)).end('Unauthorized');
+                return res.status(403).send(errorMessage(util.ACCESS_TA_DESCRIPTION)).end('Forbidden');
             else
                 return next()
         })
@@ -31,7 +31,7 @@ module.exports.haveMinimumInstructorAccessPrivilege = function (req, res, next) 
     PrivilegeModel.findById(req.user.accessPrivilege)
         .then(function (userAccess) {
             if (userAccess.value < util.ACCESS_INSTRUCTOR)
-                return res.status(401).send(errorMessage(util.ACCESS_INSTRUCTOR_DESCRIPTION)).end('Unauthorized');
+                return res.status(403).send(errorMessage(util.ACCESS_INSTRUCTOR_DESCRIPTION)).end('Forbidden');
             else
                 return next()
         })
@@ -47,7 +47,7 @@ module.exports.haveMinimumAdminAccessPrivilege = function (req, res, next) {
     PrivilegeModel.findById(req.user.accessPrivilege)
         .then(function (userAccess) {
             if (userAccess.value !== util.ACCESS_ADMIN)
-                return res.status(401).send(errorMessage(util.ACCESS_ADMIN_DESCRIPTION)).end('Unauthorized');
+                return res.status(403).send(errorMessage(util.ACCESS_ADMIN_DESCRIPTION)).end('Forbidden');
             else
                 return next()
         })
