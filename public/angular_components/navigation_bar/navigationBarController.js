@@ -53,14 +53,14 @@
             };
             //testtest
             console.log("he" + $scope.masterUsername);
-            _AjaxRequest.post('/api/local/users/login', formData, true).then(
+            _AjaxRequest.post('/api/local-users/login', formData, true).then(
                 function successCallback(result) {
                     console.log(result);
 
                     var userData = result.data;
                     _CheckAuthentication._isAuthenticated = true;
                     _CheckAuthentication._displayName = getDisplayName(userData);
-                    _CheckAuthentication._accessLevel = userData.accessLevel;
+                    // _CheckAuthentication._accessLevel = userData.accessPrivilege;
 
                     // TODO - show login successful banner
 
@@ -82,7 +82,7 @@
         };
 
         $scope.logout = function () {
-            _AjaxRequest.delete('/api/users/logout').then(
+            _AjaxRequest.get('/api/logout').then(
                 function successCallback(result) {
                     console.log(result);
                 },
