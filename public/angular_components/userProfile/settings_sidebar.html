@@ -12,11 +12,24 @@
         <li>
             <a href="/manageProducts"><i class="fa fa-fw fa-wrench"></i> Manage Products</a>
         </li>
+        <!--ng-if="isAuthenticated()"-->
         <li>
-            <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
-            <ul id="demo" class="collapse">
+            <a href="javascript:;" data-toggle="collapse" data-target="#history"><i class="fa fa-fw fa-arrows-v"></i> History <i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="history" class="collapse">
+                <li>
+                    <a href="/pointsHistory">Points History</a>
+                </li>
                 <li>
                     <a href="#">Dropdown Item</a>
+                </li>
+            </ul>
+        </li>
+        <!--ng-if="isAuthenticated()"-->
+        <li>
+            <a href="javascript:;" data-toggle="collapse" data-target="#management"><i class="fa fa-fw fa-arrows-v"></i> Management <i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="management" class="collapse">
+                <li>
+                    <a href="/userManagement">User Management</a>
                 </li>
                 <li>
                     <a href="#">Dropdown Item</a>
@@ -26,7 +39,7 @@
     </ul>
 </div>
 
-<a id="sidebar-btn" class="btn btn-default" ng-click="$parent.toggled = !toggled">
+<span id="sidebar-btn" class="btn btn-default" ng-click="$parent.toggled = !toggled">
     <i class="fa fa-2x" ng-class="{'fa-angle-double-right': !toggled, 'fa-angle-double-left': toggled}"></i>
-</a>
+</span>
 

@@ -64,6 +64,7 @@
         return {
             restrict: 'A',
             link: function (scope, elem, attrs) {
+                // "sAjaxSource": "ajax/pages.php",
                 //            'ajax': '/lab/articles/jquery-datatables-pagination-without-ellipses/arrays-many.txt',
                 angular.element(elem).DataTable(scope.$eval(attrs.thDatatables));
             }

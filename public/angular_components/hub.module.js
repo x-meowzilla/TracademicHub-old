@@ -28,6 +28,14 @@
                     templateUrl: 'angular_components/userProfile/manageProducts.html',
                     controller: 'manageProductsController'
                 })
+                .when('/pointsHistory', {
+                    templateUrl: 'angular_components/userProfile/pointsHistory.html',
+                    controller: 'pointsHistoryController'
+                })
+                .when('/userManagement', {
+                    templateUrl: 'angular_components/userProfile/userManagement.html',
+                    controller: 'userManagementController'
+                })
                 .otherwise({
                     templateUrl: 'angular_components/error_pages/404.html'
                 });
