@@ -3,6 +3,8 @@ var Schema = mongoose.Schema;
 
 var pointSchema = new Schema({
 
+    // TODO - check embedded model design vs normalized model design
+
     assignerID: {type: Schema.Types.ObjectId, ref: 'User', required: true},
     assigneeID: {type: Schema.Types.ObjectId, ref: 'User', required: true},
     grantDate: {type: Date, default: Date.now, required: true},
