@@ -21,7 +21,7 @@ router.post('/local-login', _validateReqBodyUTORidAndPassword, function (req, re
 router.post('/local-register', _validateReqBodyUTORidAndPassword, _validateReqBodyFirstNameAndLastName, function (req, res) {
     UserModel.findByUTORID(req.body.utorid) // Note: utorid is the name field for all users.
         .then(function (user) {
-            return user ? res.status(409).end('Error: Username "' + user.utorid + '" already exists.') : createLocalUser();
+            return user ? res.status(409).end('Username "' + user.utorid + '" already exists.') : createLocalUser();
         })
         .catch(function (error) {
             res.status(500).end(error.errmsg);
@@ -54,16 +54,16 @@ router.get('/logout', function (req, res) {
     req.logout();
     res.clearCookie(serverConfig.session.key, {path: '/'});
     // res.redirect('/'); // TODO - delete? refresh page?
-    return res.status(200).end('Logout successful.');
+    return res.status(200).end('Logout successful. Please close the browser to complete the logout process.');
 });
 
 
 function _validateReqBodyUTORidAndPassword(req, res, next) {
     var errmsg = null;
     if (!req.body.utorid)
-        errmsg = 'Error: Missing required field "utorid" in request body.';
+        errmsg = 'Missing required field "utorid" in request body.';
     else if (!req.body.password)
-        errmsg = 'Error: Missing required field "password" in request body.';
+        errmsg = 'Missing required field "password" in request body.';
 
     return errmsg ? res.status(400).end(errmsg) : next();
 }
@@ -71,9 +71,9 @@ function _validateReqBodyUTORidAndPassword(req, res, next) {
 function _validateReqBodyFirstNameAndLastName(req, res, next) {
     var errmsg = null;
     if (!req.body.firstName)
-        errmsg = 'Error: Missing required field "firstName" in request body.';
+        errmsg = 'Missing required field "firstName" in request body.';
     else if (!req.body.lastName)
-        errmsg = 'Error: Missing required field "lastName" in request body.';
+        errmsg = 'Missing required field "lastName" in request body.';
 
     return errmsg ? res.status(400).end(errmsg) : next()
 }
