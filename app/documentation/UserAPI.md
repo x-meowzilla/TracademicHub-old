@@ -68,6 +68,80 @@ User API Documentation
 
 #### All Users
 
++ **READ**
+    + Description: Retrieve all users data.
+    + Request: ```GET /api/users/```
+    + Response: 200
+        + Content-Type: ```application/json```
+        + Body: (array of object)
+            + _id: (string) unique user ID
+            + utorid: (string)
+            + email: (string)
+            + name: (object)
+                + firstName: (string)
+                + lastName: (string)
+                + preferredName: (string) [_Optional_]
+            + studentNumber: (string) U of T unique student number [_Optional_]
+            + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+            + biography: (string) [_Optional_]
+            + lastLoginDate: (Date) last login date in UTC format [_Optional_]
+    + Response: 401
+        + Body:
+            + errmsg: 'Please login before performing this action.'
+    + Response: 403
+        + Body:
+            + errmsg: 'Permission denied. You must have at least TEACHING ASSISTANT access privilege to perform this action.'
+
++ **READ**
+    + Description: Retrieve a specific user data by user ID.
+    + Request: ```GET /api/users/:userID```
+    + Response: 200
+        + Content-Type: ```application/json```
+        + Body:
+            + _id: (string) unique user ID
+            + utorid: (string)
+            + email: (string)
+            + name: (object)
+                + firstName: (string)
+                + lastName: (string)
+                + preferredName: (string) [_Optional_]
+            + studentNumber: (string) U of T unique student number [_Optional_]
+            + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+            + biography: (string) [_Optional_]
+            + lastLoginDate: (Date) last login date in UTC format [_Optional_]
+    + Response: 401
+        + Body:
+            + errmsg: 'Please login before performing this action.'
+    + Response: 403
+        + Body:
+            + errmsg: 'Permission denied. You must have at least TEACHING ASSISTANT access privilege to perform this action.'
+
++ **READ**
+    + Description: Retrieve all users data by based on access privilege ID.
+    + Request: ```GET /api/users/privilege/:accessID```
+    + Response: 200
+        + Content-Type: ```application/json```
+        + Body: (array of object)
+            + _id: (string) unique user ID
+            + utorid: (string)
+            + email: (string)
+            + name: (object)
+                + firstName: (string)
+                + lastName: (string)
+                + preferredName: (string) [_Optional_]
+            + studentNumber: (string) U of T unique student number [_Optional_]
+            + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+            + biography: (string) [_Optional_]
+            + lastLoginDate: (Date) last login date in UTC format [_Optional_]
+    + Response: 401
+        + Body:
+            + errmsg: 'Please login before performing this action.'
+    + Response: 403
+        + Body:
+            + errmsg: 'Permission denied. You must have at least INSTRUCTOR access privilege to perform this action.'
+
+========== insert below ==========
+
 + **DELETE**
     + **Description:** Logout current user.
     + **Request:** ```GET /api/logout/```
