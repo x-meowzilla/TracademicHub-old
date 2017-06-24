@@ -17,8 +17,7 @@ var passportAuthModule = require('./modules/passport_authentication');
 var modelInitialization = require('./model_init');
 
 // API endpoint router files
-var shibbolethAuthAPI = require('./routes/auth_shibboleth_api');
-var localAuthAPI = require('./routes/auth_local_api');
+var shibbolethAuthAPI = require('./routes/shibboleth_api');
 var usersAPI = require('./routes/users_api');
 var pointsAPI = require('./routes/point_api');
 var pointsCategoryAPI = require('./routes/point_category_api');
@@ -120,7 +119,6 @@ app.use(function (req, res, next) {
 
 app.use('/api/', generalAPI);
 app.use('/api/users', usersAPI);
-app.use('/api/local-users', localAuthAPI);  // sign-in via Local Auth
 app.use('/Shibboleth.sso', shibbolethAuthAPI);  // sign-in via Shibboleth Auth
 app.use('/api/points', pointsAPI);
 app.use('/api/points-category', pointsCategoryAPI);
