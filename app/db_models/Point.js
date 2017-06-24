@@ -3,25 +3,11 @@ var Schema = mongoose.Schema;
 
 var pointSchema = new Schema({
 
-    assigner: {
-        id: {type: Schema.Types.ObjectId, ref: 'User', required: true},
-        name: {
-            firstName: {type: String, required: true},
-            lastName: {type: String, required: true},
-            preferredName: {type: String, required: true}
-        }
-    },
-    assignee: {
-        id: {type: Schema.Types.ObjectId, ref: 'User', required: true},
-        name: {
-            firstName: {type: String, required: true},
-            lastName: {type: String, required: true},
-            preferredName: {type: String, required: true}
-        }
-    },
+    assignerID: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+    assigneeID: {type: Schema.Types.ObjectId, ref: 'User', required: true},
     grantDate: {type: Date, default: Date.now, required: true},
     value: {type: Number, default: 1, required: true},
-    category: {type: Schema.Types.ObjectId, ref: 'PointCategory', required: true}
+    categoryID: {type: Schema.Types.ObjectId, ref: 'PointCategory', required: true}
 
 }, {collection: 'PointsCollection'});
 
