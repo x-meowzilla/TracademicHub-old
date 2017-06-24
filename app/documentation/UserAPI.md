@@ -22,11 +22,11 @@ User API Documentation
             + name: (object)
                 + firstName: (string)
                 + lastName: (string)
-                + preferredName: (string)
-            + studentNumber: (string) U of T unique student number
+                + preferredName: (string) [_Optional_]
+            + studentNumber: (string) U of T unique student number [_Optional_]
             + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
-            + biography: (string)
-            + lastLoginDate: (Date) last login date in UTC format
+            + biography: (string) [_Optional_]
+            + lastLoginDate: (Date) last login date in UTC format [_Optional_]
     + **Response:** 400
         + Body:
             + errmsg: 'Missing required field "utorid/password/firstName/lastName" in request body.'
@@ -50,11 +50,11 @@ User API Documentation
             + name: (object)
                 + firstName: (string)
                 + lastName: (string)
-                + preferredName: (string)
-            + studentNumber: (string) U of T unique student number
+                + preferredName: (string) [_Optional_]
+            + studentNumber: (string) U of T unique student number [_Optional_]
             + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
-            + biography: (string)
-            + lastLoginDate: (Date) last login date in UTC format
+            + biography: (string) [_Optional_]
+            + lastLoginDate: (Date) last login date in UTC format [_Optional_]
     + **Response:** 400
         + Body:
             + errmsg: 'Missing required field "utorid/password/firstName/lastName" in request body.'
