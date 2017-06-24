@@ -22,8 +22,9 @@ module.exports.retrieveBasicUserData = function (user) {
         email: user.email,
         name: user.name,
         studentNumber: user.studentNumber,
-        accessLevel: user.accessPrivilege,
-        biography: user.biography
+        accessPrivilege: user.accessPrivilege,
+        biography: user.biography,
+        lastLoginDate: user.lastLoginDate
     }
 
 };

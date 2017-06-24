@@ -16,16 +16,14 @@ var userSchema = new Schema({
         hash: {type: String}
     },
     name: {
-        firstName: {type: String, default: ''},
-        lastName: {type: String, default: ''},
+        firstName: {type: String, required: true},
+        lastName: {type: String, required: true},
         preferredName: {type: String, default: ''}
     },
     biography: {type: String, default: ''},
     avatarPath: {type: String, default: null}
 
-}, {collection: 'UsersCollection'});
-// }, {collection: 'UsersCollection', autoIndex: false}); // for production use
-
+}, {collection: 'UsersCollection', autoIndex: false}); // for production use
 
 // static methods
 userSchema.statics.findByUTORID = function (utorid) {
@@ -62,11 +60,6 @@ userSchema.methods.verifyPassword = function (password) {
     } else {
         return false;
     }
-};
-
-userSchema.methods.getUTORid = function () {
-    var user = this;
-    return user.utorid;
 };
 
 userSchema.methods.getFullName = function () {
