@@ -140,6 +140,36 @@ User API Documentation
         + Body:
             + errmsg: 'Permission denied. You must have at least INSTRUCTOR access privilege to perform this action.'
 
++ **UPDATE**
+    + **Description:** Adjust target user access privilege
+    + **Request:** ```PATCH /api/users/:userID/privilege/:accessID```
+    + **Response:** 200
+        + Content-Type: ```application/json```
+        + Body: (array of object)
+            + _id: (string) unique user ID
+            + utorid: (string)
+            + email: (string)
+            + name: (object)
+                + firstName: (string)
+                + lastName: (string)
+                + preferredName: (string) [_Optional_]
+            + studentNumber: (string) U of T unique student number [_Optional_]
+            + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+            + biography: (string) [_Optional_]
+            + lastLoginDate: (Date) last login date in UTC format [_Optional_]
+    + **Response:** 400
+        + Body:
+            + errmsg: 'Missing required field "userID" in URI.'
+    + **Response:** 400
+        + Body:
+            + errmsg: 'You cannot perform this action for yourself.'
+    + **Response:** 401
+        + Body:
+            + errmsg: 'Please login before performing this action.'
+    + **Response:** 403
+        + Body:
+            + errmsg: 'Permission denied. Insufficient access privilege to perform this action. Target user has equal or higher access privilege.'
+
 ========== insert below ==========
 
 + **DELETE**
