@@ -4,7 +4,7 @@
     angular
         .module('TracademicHub')
         .controller('statesController', statesController)
-        .directive('sortingTableHeader', sortingTableHeader);
+        .directive('sortRecords', sortRecords);
 
     statesController.$inject = ['$scope', '_CheckAuthentication', '_AjaxRequest']; // dependency injection
 
@@ -28,19 +28,48 @@
                     }
                 )
         }());
+
+        $scope.sort = {
+            sortingOrder : '',
+            reverse : false
+        };
     };
 
-    function sortingTableHeader($compile) {
+    function sortRecords() {
         return {
-            link: function(scope, element, attrs) {
-                var tableHeaderEles = angular.element( element[0].querySelectorAll('th') );
-                angular.forEach(tableHeaderEles, function(tableHeaderEle) {
-                    var thElement = angular.element(tableHeaderEle);
-                    var thValue = thElement.text();
-                    var sortIcon = '<span class="fa" ng-class="{\'fa-sort\': sortType != \'' + thValue + '\', \'fa-caret-down\': sortType == \'' + thValue + '\' && !sortReverse, \'fa-caret-up\': sortType == \'' + thValue + '\' && sortReverse}"></span>';
-                    thElement.append($compile(sortIcon)(scope));
-                });
+            restrict: 'A',
+            transclude: true,
+            scope: {
+                order: '@',
+                sort: '='
+            },
+            template :
+            ' <span ng-click="sort_by(order)">'+
+            '    <span ng-transclude></span>'+
+            '    <i ng-class="selectedCls(order)"></i>'+
+            '</span>',
+            link: function(scope) {
+                // change sorting order
+                scope.sort_by = function(newSortingOrder) {
+                    var sort = scope.sort;
+
+                    if (sort.sortingOrder == newSortingOrder){
+                        sort.reverse = !sort.reverse;
+                    }
+
+                    sort.sortingOrder = newSortingOrder;
+                };
+
+
+                scope.selectedCls = function(column) {
+                    if(column == scope.sort.sortingOrder){
+                        return ('fa fa-caret-' + ((!scope.sort.reverse) ? 'down' : 'up'));
+                    }
+                    else{
+                        return'fa fa-sort'
+                    }
+                };
             }
-        };
+        }
     }
 }());
