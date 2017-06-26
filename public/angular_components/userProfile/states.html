@@ -23,6 +23,78 @@
             </div>
 
 
+
+
+
+
+
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr sorting-Table-Header>
+                    <th>Assignee Full Name</th>
+                    <th>Assignee Preferred Name</th>
+                    <th>Category</th>
+                    <th>Course</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<td>-->
+                        <!--<a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">-->
+                            <!--Sushi Roll-->
+                            <!--<span class="fa" ng-class="{'fa-sort': true}"></span>-->
+                        <!--</a>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<a href="#" ng-click="sortType = 'fish'; sortReverse = !sortReverse">-->
+                            <!--Fish Type-->
+                            <!--<span ng-show="sortType != 'fish'" class="fa fa fa-sort"></span>-->
+                            <!--<span ng-show="sortType == 'fish' && !sortReverse" class="fa fa-caret-down"></span>-->
+                            <!--<span ng-show="sortType == 'fish' && sortReverse" class="fa fa-caret-up"></span>-->
+                        <!--</a>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<a href="#" ng-click="sortType = 'tastiness'; sortReverse = !sortReverse">-->
+                            <!--Taste Level-->
+                            <!--<span ng-show="sortType != 'tastiness'" class="fa fa fa-sort"></span>-->
+                            <!--<span ng-show="sortType == 'tastiness' && !sortReverse" class="fa fa-caret-down"></span>-->
+                            <!--<span ng-show="sortType == 'tastiness' && sortReverse" class="fa fa-caret-up"></span>-->
+                        <!--</a>-->
+                    <!--</td>-->
+                <!--</tr>-->
+                <!--</thead>-->
+
+                <!--<tbody>-->
+                <!--<tr ng-repeat="roll in sushi | orderBy:sortType:sortReverse | filter:searchFish">-->
+                    <!--<td>{{ roll.name }}</td>-->
+                    <!--<td>{{ roll.fish }}</td>-->
+                    <!--<td>{{ roll.tastiness }}</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+
+            </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <!--States Details Showing in Different Charts-->
             <div class="row">
                 <div class="col-lg-12">
@@ -148,117 +220,17 @@
                                     <td>22</td>
                                     <td>2013/03/03</td>
                                 </tr>
-                                <tr>
-                                    <td>Charde Marshall</td>
-                                    <td>Regional Director</td>
-                                    <td>San Francisco</td>
-                                    <td>36</td>
-                                    <td>2008/10/16</td>
-                                </tr>
-                                <tr>
-                                    <td>Haley Kennedy</td>
-                                    <td>Senior Marketing Designer</td>
-                                    <td>London</td>
-                                    <td>43</td>
-                                    <td>2012/12/18</td>
-                                </tr>
-                                <tr>
-                                    <td>Tatyana Fitzpatrick</td>
-                                    <td>Regional Director</td>
-                                    <td>London</td>
-                                    <td>19</td>
-                                    <td>2010/03/17</td>
-                                </tr>
-                                <tr>
-                                    <td>Michael Silva</td>
-                                    <td>Marketing Designer</td>
-                                    <td>London</td>
-                                    <td>66</td>
-                                    <td>2012/11/27</td>
-                                </tr>
-                                <tr>
-                                    <td>Paul Byrd</td>
-                                    <td>Chief Financial Officer (CFO)</td>
-                                    <td>New York</td>
-                                    <td>64</td>
-                                    <td>2010/06/09</td>
-                                </tr>
-                                <tr>
-                                    <td>Gloria Little</td>
-                                    <td>Systems Administrator</td>
-                                    <td>New York</td>
-                                    <td>59</td>
-                                    <td>2009/04/10</td>
-                                </tr>
-                                <tr>
-                                    <td>Bradley Greer</td>
-                                    <td>Software Engineer</td>
-                                    <td>London</td>
-                                    <td>41</td>
-                                    <td>2012/10/13</td>
-                                </tr>
-                                <tr>
-                                    <td>Dai Rios</td>
-                                    <td>Personnel Lead</td>
-                                    <td>Edinburgh</td>
-                                    <td>35</td>
-                                    <td>2012/09/26</td>
-                                </tr>
-                                <tr>
-                                    <td>Jenette Caldwell</td>
-                                    <td>Development Lead</td>
-                                    <td>New York</td>
-                                    <td>30</td>
-                                    <td>2011/09/03</td>
-                                </tr>
-                                <tr>
-                                    <td>Yuri Berry</td>
-                                    <td>Chief Marketing Officer (CMO)</td>
-                                    <td>New York</td>
-                                    <td>40</td>
-                                    <td>2009/06/25</td>
-                                </tr>
-                                <tr>
-                                    <td>Caesar Vance</td>
-                                    <td>Pre-Sales Support</td>
-                                    <td>New York</td>
-                                    <td>21</td>
-                                    <td>2011/12/12</td>
-                                </tr>
-                                <tr>
-                                    <td>Doris Wilder</td>
-                                    <td>Sales Assistant</td>
-                                    <td>Sidney</td>
-                                    <td>23</td>
-                                    <td>2010/09/20</td>
-                                </tr>
-                                <tr>
-                                    <td>Angelica Ramos</td>
-                                    <td>Chief Executive Officer (CEO)</td>
-                                    <td>London</td>
-                                    <td>47</td>
-                                    <td>2009/10/09</td>
-                                </tr>
-                                <tr>
-                                    <td>Gavin Joyce</td>
-                                    <td>Developer</td>
-                                    <td>Edinburgh</td>
-                                    <td>42</td>
-                                    <td>2010/12/22</td>
-                                </tr>
-                                <tr>
-                                    <td>Jennifer Chang</td>
-                                    <td>Regional Director</td>
-                                    <td>Singapore</td>
-                                    <td>28</td>
-                                    <td>2010/11/14</td>
-                                </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+
+
+
 
             <!--states points recived history-->
 
