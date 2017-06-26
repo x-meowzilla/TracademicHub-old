@@ -38,9 +38,10 @@ userSchema.statics.findByAccessPrivilege = function (accessID) {
     return user.find({accessPrivilege: accessID});
 };
 
-userSchema.statics.getAllUsers = function () {
+userSchema.statics.updateAccessPrivilege = function (userID, newAccessID) {
+    "use strict";
     var user = this.model('User');
-    return user.find({});
+    return user.findByIdAndUpdate(userID, {$set: {accessPrivilege: newAccessID}}, {new: true});
 };
 
 // method for local user
