@@ -66,35 +66,36 @@ module.exports.haveAuthority = function (req, res, next) {
         .then(function (targetUser) {
             if (req.user._id.equals(targetUser._id)) // cannot perform self upgrade/downgrade
                 return res.status(400).send('You cannot perform this action for yourself.').end('Bad Request');
-            else // if both users have same access privilege, then continue, if not deep check privilege value
-                return (targetUser.accessPrivilege.equals(req.user.accessPrivilege)) ? next() : deepPrivilegeCheck(req.user.accessPrivilege, targetUser.accessPrivilege);
+            else if (req.user.accessPrivilege.equals(targetUser.accessPrivilege)) // if both users have same access privilege, then check if req user is upgrading target user access privilege
+                return deepPrivilegeCheck(req.user.accessPrivilege, req.params.accessID);
+            else // deep check privilege value
+                return deepPrivilegeCheck(req.user.accessPrivilege, targetUser.accessPrivilege);
         })
         .catch(function (error) {
             return res.status(500).end(error.errmsg + ">>> have authority catch 1");
         });
 
-    function deepPrivilegeCheck(reqUserAccessID, targetUserAccessID) {
-        PrivilegeModel.findByIds(reqUserAccessID, targetUserAccessID)
+    function deepPrivilegeCheck(reqUserAccessID, targetAccessID) {
+        PrivilegeModel.findByIds(reqUserAccessID, targetAccessID)
             .then(function (array) {
                 // access privilege array must contain 2 objects
                 var reqUserAccessValue = null;
-                var targetUserAccessValue = null;
+                var targetAccessValue = null;
                 // compare the access privilege id to identify the value
-                if (array[0]._id === reqUserAccessID) {
+                if (array[0]._id.equals(reqUserAccessID)) {
                     reqUserAccessValue = array[0].value;
-                    targetUserAccessValue = array[1].value;
+                    targetAccessValue = array[1].value;
                 } else {
                     reqUserAccessValue = array[1].value;
-                    targetUserAccessValue = array[0].value;
+                    targetAccessValue = array[0].value;
                 }
-                return (reqUserAccessValue < targetUserAccessValue) ? res.status(403).send(noAuthorityError()).end('Forbidden') : next();
+                return (reqUserAccessValue <= targetAccessValue) ? res.status(403).send(noAuthorityError()).end('Forbidden') : next();
             })
             .catch(function (error) {
                 return res.status(500).end(error.errmsg + ">>> have authority catch 2");
             });
     }
 };
-
 
 function noPrivilegeError(accessDescription) {
     var errmsg = 'Permission denied. You must have ';
@@ -103,5 +104,5 @@ function noPrivilegeError(accessDescription) {
 }
 
 function noAuthorityError() {
-    return 'Permission denied. Insufficient access privilege to perform this action. Target user has higher access privilege.';
+    return 'Permission denied. Insufficient access privilege to perform this action. Target user has equal or higher access privilege.';
 }
