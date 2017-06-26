@@ -39,41 +39,15 @@
                 </tr>
                 </thead>
 
-                <!--<thead>-->
-                <!--<tr>-->
-                    <!--<td>-->
-                        <!--<a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">-->
-                            <!--Sushi Roll-->
-                            <!--<span class="fa" ng-class="{'fa-sort': true}"></span>-->
-                        <!--</a>-->
-                    <!--</td>-->
-                    <!--<td>-->
-                        <!--<a href="#" ng-click="sortType = 'fish'; sortReverse = !sortReverse">-->
-                            <!--Fish Type-->
-                            <!--<span ng-show="sortType != 'fish'" class="fa fa fa-sort"></span>-->
-                            <!--<span ng-show="sortType == 'fish' && !sortReverse" class="fa fa-caret-down"></span>-->
-                            <!--<span ng-show="sortType == 'fish' && sortReverse" class="fa fa-caret-up"></span>-->
-                        <!--</a>-->
-                    <!--</td>-->
-                    <!--<td>-->
-                        <!--<a href="#" ng-click="sortType = 'tastiness'; sortReverse = !sortReverse">-->
-                            <!--Taste Level-->
-                            <!--<span ng-show="sortType != 'tastiness'" class="fa fa fa-sort"></span>-->
-                            <!--<span ng-show="sortType == 'tastiness' && !sortReverse" class="fa fa-caret-down"></span>-->
-                            <!--<span ng-show="sortType == 'tastiness' && sortReverse" class="fa fa-caret-up"></span>-->
-                        <!--</a>-->
-                    <!--</td>-->
-                <!--</tr>-->
-                <!--</thead>-->
-
-                <!--<tbody>-->
-                <!--<tr ng-repeat="roll in sushi | orderBy:sortType:sortReverse | filter:searchFish">-->
-                    <!--<td>{{ roll.name }}</td>-->
-                    <!--<td>{{ roll.fish }}</td>-->
-                    <!--<td>{{ roll.tastiness }}</td>-->
-                <!--</tr>-->
-                <!--</tbody>-->
-
+                <tbody>
+                <tr ng-repeat="item in items | orderBy:sort.sortingOrder:sort.reverse">{{sort.sortingOrder}}
+                    <td>{{item.fullName}}</td>
+                    <td>{{item.preferredName}}</td>
+                    <td>{{item.category}}</td>
+                    <td>{{item.course}}</td>
+                    <td>{{item.date}}</td>
+                </tr>
+                </tbody>
             </table>
 
 
