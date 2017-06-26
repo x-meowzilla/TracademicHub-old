@@ -52,6 +52,7 @@ router.post('/local-register', _validateReqBodyUTORidAndPassword, _validateReqBo
 
 router.get('/logout', function (req, res) {
     req.logout();
+    req.session.destroy();
     res.clearCookie(serverConfig.session.key, {path: '/'});
     // res.redirect('/'); // TODO - delete? refresh page?
     return res.status(200).end('Logout successful. Please close the browser to complete the logout process.');
