@@ -59,28 +59,40 @@ module.exports.haveMinimumAdminAccessPrivilege = function (req, res, next) {
 
 
 module.exports.haveAuthority = function (req, res, next) {
-    // TODO - still under construction
+    "use strict";
     // Note: when calling this middleware function, target user id: req.params.userID must present!!
-    var targetUserID = req.params.userID;
+    if (!req.params.userID) return res.status(400).send('Missing required field "userID" in URI.').end('Bad Request');
 
-    UserModel.findById(targetUserID)
+    UserModel.findById(req.params.userID) // find target user access privilege
         .then(function (targetUser) {
-            return targetUser.accessPrivilege;
-        })
-        .then(function (targetUserAccessID) {
-            console.log('====2=====', req.user.accessPrivilege);
-            console.log('====2=====', targetUserAccessID);
-
-            return PrivilegeModel.findTest(req.user.accessPrivilege, targetUserAccessID);
-        })
-        .then(function (array) {
-            console.log('====3=====', array);
-
-            next();
+            console.log('===== have same privilege? =====', targetUser.accessPrivilege === req.user.accessPrivilege);
+            // if both users have same access privilege, then continue, if not deep check privilege value
+            return (targetUser.accessPrivilege === req.user.accessPrivilege) ? next() : deepPrivilegeCheck(req.user.accessPrivilege, targetUser.accessPrivilege);
         })
         .catch(function (error) {
             return res.status(500).end(error.errmsg);
-        })
+        });
+
+    function deepPrivilegeCheck(reqUserAccessID, targetUserAccessID) {
+        PrivilegeModel.findByIds(reqUserAccessID, targetUserAccessID)
+            .then(function (array) {
+                // access privilege array must contain 2 objects
+                var reqUserAccessValue = null;
+                var targetUserAccessValue = null;
+                // compare the access privilege id to identify the value
+                if (array[0]._id === reqUserAccessID) {
+                    reqUserAccessValue = array[0].value;
+                    targetUserAccessValue = array[1].value;
+                } else {
+                    reqUserAccessValue = array[1].value;
+                    targetUserAccessValue = array[0].value;
+                }
+                return (reqUserAccessValue < targetUserAccessValue) ? res.status(403).send(noAuthorityError()).end('Forbidden') : next();
+            })
+            .catch(function (error) {
+                return res.status(500).end(error.errmsg);
+            });
+    }
 };
 
 
@@ -91,5 +103,5 @@ function noPrivilegeError(accessDescription) {
 }
 
 function noAuthorityError() {
-
+    return 'Permission denied. Insufficient access privilege to perform this action. Target user has higher access privilege.';
 }
