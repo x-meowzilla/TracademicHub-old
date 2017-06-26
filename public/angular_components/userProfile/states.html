@@ -24,34 +24,50 @@
 
 
 
+            <div class="row gridHead">
+                <div class="col-md-3">
+                    <div class="grid-option-setting"><strong>Show
+                        <select ng-init="viewby='10'" ng-model="viewby" class="select-width">
+                            <option>10</option>
+                            <option>30</option>
+                            <option>50</option>
+                        </select> entries
+                    </strong></div>
+                </div>
 
+                <div class="col-md-3 pull-right">
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                        <input type="text" class="form-control" placeholder="Search" ng-model="searchRecord">
+                    </div>
+                </div>
+            </div>
 
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th sort-Records order="fullName", sort="sort">Assignee Full Name</th>
+                            <th sort-Records order="preferredName", sort="sort">Assignee Preferred Name</th>
+                            <th sort-Records order="category", sort="sort">Category</th>
+                            <th sort-Records order="course", sort="sort">Course</th>
+                            <th sort-Records order="date", sort="sort">Date</th>
+                        </tr>
+                        </thead>
 
-
-            <table class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                    <th sort-Records order="fullName", sort="sort">Assignee Full Name</th>
-                    <th sort-Records order="preferredName", sort="sort">Assignee Preferred Name</th>
-                    <th sort-Records order="category", sort="sort">Category</th>
-                    <th sort-Records order="course", sort="sort">Course</th>
-                    <th sort-Records order="date", sort="sort">Date</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                <tr ng-repeat="item in items | orderBy:sort.sortingOrder:sort.reverse">{{sort.sortingOrder}}
-                    <td>{{item.fullName}}</td>
-                    <td>{{item.preferredName}}</td>
-                    <td>{{item.category}}</td>
-                    <td>{{item.course}}</td>
-                    <td>{{item.date}}</td>
-                </tr>
-                </tbody>
-            </table>
-
-
-
+                        <tbody>
+                        <tr ng-repeat="item in items | orderBy:sort.sortingOrder:sort.reverse | filter:searchRecord">
+                            <td>{{item.fullName}}</td>
+                            <td>{{item.preferredName}}</td>
+                            <td>{{item.category}}</td>
+                            <td>{{item.course}}</td>
+                            <td>{{item.date}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
 
 

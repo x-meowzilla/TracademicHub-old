@@ -386,11 +386,17 @@ div.material-table table td:last-child {
     padding: 0 14px 0 0;
 }
 
-/*user management page*/
-.grid-option-setting{
-    padding-bottom: 10px;
+/*functional operation to grid*/
+.gridHead{
+    margin-bottom: 3px;
 }
 
 .select-width{
     width:49px;
+    height: 30px;
+}
+
+/*user management page*/
+.grid-option-setting{
+    padding-bottom: 10px;
 }
