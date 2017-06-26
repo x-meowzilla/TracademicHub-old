@@ -39,7 +39,6 @@ module.exports.haveMinimumInstructorAccessPrivilege = function (req, res, next) 
         .catch(function (error) {
             return res.status(500).end(error.errmsg);
         });
-
 };
 
 module.exports.haveMinimumAdminAccessPrivilege = function (req, res, next) {
@@ -65,12 +64,13 @@ module.exports.haveAuthority = function (req, res, next) {
 
     UserModel.findById(req.params.userID) // find target user access privilege
         .then(function (targetUser) {
-            console.log('===== have same privilege? =====', targetUser.accessPrivilege === req.user.accessPrivilege);
-            // if both users have same access privilege, then continue, if not deep check privilege value
-            return (targetUser.accessPrivilege === req.user.accessPrivilege) ? next() : deepPrivilegeCheck(req.user.accessPrivilege, targetUser.accessPrivilege);
+            if (req.user._id.equals(targetUser._id)) // cannot perform self upgrade/downgrade
+                return res.status(400).send('Cannot upgrade/downgrade access privilege for yourself.').end('Bad Request');
+            else // if both users have same access privilege, then continue, if not deep check privilege value
+                return (targetUser.accessPrivilege.equals(req.user.accessPrivilege)) ? next() : deepPrivilegeCheck(req.user.accessPrivilege, targetUser.accessPrivilege);
         })
         .catch(function (error) {
-            return res.status(500).end(error.errmsg);
+            return res.status(500).end(error.errmsg + ">>> have authority catch 1");
         });
 
     function deepPrivilegeCheck(reqUserAccessID, targetUserAccessID) {
@@ -90,7 +90,7 @@ module.exports.haveAuthority = function (req, res, next) {
                 return (reqUserAccessValue < targetUserAccessValue) ? res.status(403).send(noAuthorityError()).end('Forbidden') : next();
             })
             .catch(function (error) {
-                return res.status(500).end(error.errmsg);
+                return res.status(500).end(error.errmsg + ">>> have authority catch 2");
             });
     }
 };
