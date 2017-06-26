@@ -45,12 +45,10 @@ router.post('/', function (req, res) {
     res.send('POST request accepted.');
 });
 
-router.patch('/:userID/privilege/:accessID', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
-    UserModel.findByIdAndUpdate(req.params.userID, {$set: {accessPrivilege: req.params.accessID}}, {new: true})
+router.patch('/:userID/privilege/:accessID', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
+    UserModel.updateAccessPrivilege(req.params.userID, req.params.accessID)
         .then(function (user) {
-            console.log(user);
-            res.json(user);
-            // TODO
+            res.json(util.retrieveBasicUserData(user)).end();
         })
         .catch(function (error) {
             return res.status(500).end(error.errmsg);
