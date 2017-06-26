@@ -65,7 +65,7 @@ module.exports.haveAuthority = function (req, res, next) {
     UserModel.findById(req.params.userID) // find target user access privilege
         .then(function (targetUser) {
             if (req.user._id.equals(targetUser._id)) // cannot perform self upgrade/downgrade
-                return res.status(400).send('Cannot upgrade/downgrade access privilege for yourself.').end('Bad Request');
+                return res.status(400).send('You cannot perform this action for yourself.').end('Bad Request');
             else // if both users have same access privilege, then continue, if not deep check privilege value
                 return (targetUser.accessPrivilege.equals(req.user.accessPrivilege)) ? next() : deepPrivilegeCheck(req.user.accessPrivilege, targetUser.accessPrivilege);
         })
