@@ -12,6 +12,7 @@ router.post('/local-login', _validateReqBodyUTORidAndPassword, function (req, re
             return res.status(error.errcode).end(error.errmsg);
         } else {
             req.login(user, function () {
+                user.updateLastLoginDate();
                 return res.json(util.retrieveBasicUserData(user)).end();
             });
         }

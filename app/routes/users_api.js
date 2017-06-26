@@ -5,7 +5,7 @@ var UserModel = require('../db_models/User');
 
 // users URI: .../api/users/
 router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, function (req, res) {
-    UserModel.getAllUsers()
+    UserModel.find({})
         .then(function (userArray) {
             var resultArray = userArray.map(function (user) {
                 return util.retrieveBasicUserData(user);

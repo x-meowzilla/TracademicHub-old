@@ -27,11 +27,13 @@ var userSchema = new Schema({
 
 // static methods
 userSchema.statics.findByUTORID = function (utorid) {
+    "use strict";
     var user = this.model('User');
     return user.findOne({utorid: utorid});
 };
 
 userSchema.statics.findByAccessPrivilege = function (accessID) {
+    "use strict";
     var user = this.model('User');
     return user.find({accessPrivilege: accessID});
 };
@@ -43,6 +45,7 @@ userSchema.statics.getAllUsers = function () {
 
 // method for local user
 userSchema.methods.encryptPassword = function (password) {
+    "use strict";
     var user = this;
     var salt = crypto.randomBytes(16).toString('base64');
     var hash = crypto.createHmac('sha512', salt).update(password).digest('base64');
@@ -53,6 +56,7 @@ userSchema.methods.encryptPassword = function (password) {
 
 // method for local user
 userSchema.methods.verifyPassword = function (password) {
+    "use strict";
     var user = this;
     if (user.password && user.password.salt) {
         var hash = crypto.createHmac('sha512', user.password.salt).update(password).digest('base64');
@@ -63,24 +67,35 @@ userSchema.methods.verifyPassword = function (password) {
 };
 
 userSchema.methods.getFullName = function () {
+    "use strict";
     var user = this;
     return {firstName: user.name.firstName, lastName: user.name.lastName};
 };
 
 userSchema.methods.setFullName = function (firstName, lastName) {
+    "use strict";
     var user = this;
     user.name.firstName = firstName;
     user.name.lastName = lastName;
 };
 
 userSchema.methods.getPreferredName = function () {
+    "use strict";
     var user = this;
     return user.name.preferredName;
 };
 
 userSchema.methods.setPreferredName = function (preferredName) {
+    "use strict";
     var user = this;
     user.name.preferredName = preferredName;
+};
+
+userSchema.methods.updateLastLoginDate = function () {
+    "use strict";
+    var user = this;
+    user.lastLoginDate = Date.now();
+    user.save();
 };
 
 // userSchema.methods.getAccessLevel = function () {
