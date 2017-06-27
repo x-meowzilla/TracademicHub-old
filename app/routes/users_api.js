@@ -45,6 +45,10 @@ router.post('/', function (req, res) {
     res.send('POST request accepted.');
 });
 
+router.post('/:userID/avatar', function (req, res) {
+
+});
+
 router.patch('/:userID/privilege/:accessID', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
     UserModel.updateAccessPrivilege(req.params.userID, req.params.accessID)
         .then(function (user) {
@@ -59,9 +63,9 @@ router.patch('/:userID/privilege/:accessID', mw.checkAuthentication, mw.haveMini
 //     res.send('DELETE!! delete all entries');
 // });
 //
-// router.delete('/:userID', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
-//     res.send('DELETE!! delete one entry');
-// });
+router.delete('/:userID', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
+    res.send('DELETE!! delete one entry');
+});
 
 
 module.exports = router;
