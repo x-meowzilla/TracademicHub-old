@@ -26,6 +26,7 @@ User API Documentation
             + studentNumber: (string) U of T unique student number [_Optional_]
             + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
             + biography: (string) [_Optional_]
+            + isActive: (boolean) Return True if this account is active, false otherwise.
             + lastLoginDate: (Date) last login date in UTC format [_Optional_]
     + **Response:** 400
         + Body:
@@ -54,6 +55,7 @@ User API Documentation
             + studentNumber: (string) U of T unique student number [_Optional_]
             + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
             + biography: (string) [_Optional_]
+            + isActive: (boolean) Return True if this account is active, false otherwise.
             + lastLoginDate: (Date) last login date in UTC format [_Optional_]
     + **Response:** 400
         + Body:
@@ -84,6 +86,7 @@ User API Documentation
             + studentNumber: (string) U of T unique student number [_Optional_]
             + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
             + biography: (string) [_Optional_]
+            + isActive: (boolean) Return True if this account is active, false otherwise.
             + lastLoginDate: (Date) last login date in UTC format [_Optional_]
     + **Response:** 401
         + Body:
@@ -112,6 +115,7 @@ User API Documentation
             + studentNumber: (string) U of T unique student number [_Optional_]
             + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
             + biography: (string) [_Optional_]
+            + isActive: (boolean) Return True if this account is active, false otherwise.
             + lastLoginDate: (Date) last login date in UTC format [_Optional_]
     + **Response:** 401
         + Body:
@@ -139,6 +143,7 @@ User API Documentation
             + studentNumber: (string) U of T unique student number [_Optional_]
             + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
             + biography: (string) [_Optional_]
+            + isActive: (boolean) Return True if this account is active, false otherwise.
             + lastLoginDate: (Date) last login date in UTC format [_Optional_]
     + **Response:** 401
         + Body:
@@ -166,6 +171,7 @@ User API Documentation
             + studentNumber: (string) U of T unique student number [_Optional_]
             + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
             + biography: (string) [_Optional_]
+            + isActive: (boolean) Return True if this account is active, false otherwise.
             + lastLoginDate: (Date) last login date in UTC format [_Optional_]
     + **Response:** 400
         + Body:
