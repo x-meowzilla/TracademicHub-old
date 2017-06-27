@@ -16,6 +16,95 @@
             </div>
         </div>
 
+        <!--data table-->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><i class="fa fa-table"></i> Points Received History </h4>
+                    </div>
+                    <div class="panel-body">
+                        <!--records display number-->
+                        <div class="row gridHead">
+                            <div class="col-md-3">
+                                <div class="grid-option-setting"><strong>Show
+                                    <select ng-model="viewby" class="select-width" ng-change="setPage(1)">
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="30">15</option>
+                                        <option value="50">100</option>
+                                    </select> entries
+                                </strong></div>
+                            </div>
+
+                            <!--search bar-->
+                            <div class="col-md-3 pull-right">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                    <input type="text" class="form-control" placeholder="Search" ng-model="searchRecord">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th sort-Records order="fullName", sort="sort">Assignee Full Name</th>
+                                        <th sort-Records order="preferredName", sort="sort">Assignee Preferred Name</th>
+                                        <th sort-Records order="category", sort="sort">Category</th>
+                                        <th sort-Records order="course", sort="sort">Course</th>
+                                        <th sort-Records order="date", sort="sort">Date</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr ng-repeat="item in items.slice((pager.currentPage-1)*viewby, pager.currentPage*viewby) | orderBy:sort.sortingOrder:sort.reverse | filter:searchRecord">
+                                        <td>{{item.fullName}}</td>
+                                        <td>{{item.preferredName}}</td>
+                                        <td>{{item.category}}</td>
+                                        <td>{{item.course}}</td>
+                                        <td>{{item.date}}</td>
+                                    </tr>
+                                    </tbody>
+
+                                    <tfoot>
+                                    <td colspan="5" ng-if="items.length == 0" class="text-center">
+                                        <strong>There's no data.</strong>
+                                    </td>
+                                    </tfoot>
+                                </table>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- pager -->
+                                        <ul class="pagination">
+                                            <li ng-class="{disabled:pager.currentPage === 1}">
+                                                <a ng-click="setPage(1)">First</a>
+                                            </li>
+                                            <li ng-class="{disabled:pager.currentPage === 1}">
+                                                <a ng-click="setPage(pager.currentPage - 1)">Previous</a>
+                                            </li>
+                                            <li ng-repeat="page in range(pager.currentPage, pager.gap)"
+                                                ng-class="{active:pager.currentPage === page}">
+                                                <a ng-click="setPage(page)">{{page}}</a>
+                                            </li>
+                                            <li ng-class="{disabled:pager.currentPage === getTotalPagesNum()}">
+                                                <a ng-click="setPage(pager.currentPage + 1)">Next</a>
+                                            </li>
+                                            <li ng-class="{disabled:pager.currentPage === getTotalPagesNum()}">
+                                                <a ng-click="setPage(getTotalPagesNum())">Last</a>
+                                            </li>
+                                        </ul>
+                                        <span class="pull-right"><strong>Showing {{(pager.currentPage-1)*viewby}} to {{pager.currentPage*viewby}} of {{items.length}} entities</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="table-responsive">
             <table th-datatables="{pagingType: 'full_numbers'}" class="display table table-bordered table-hover table-striped" cellspacing="0">
                 <thead>
