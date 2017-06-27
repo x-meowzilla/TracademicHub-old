@@ -63,7 +63,7 @@
             transclude: true,
             scope: {
                 order: '@',
-                sort: '@'
+                sort: '='
             },
             template :
             ' <i ng-click="sort_by(order)">'+

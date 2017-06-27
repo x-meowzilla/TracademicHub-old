@@ -73,6 +73,12 @@
         $scope.dataTableFactory = _DataTableFactory;
         $scope.dataTableFactory.items = $scope.items;
         $scope.totalPagesNum = _DataTableFactory.getTotalPagesNum();
+
+        $scope.sort = {
+            sortingOrder : '',
+            reverse : false
+        };
+
     };
 
 }());
