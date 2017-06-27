@@ -7,6 +7,8 @@ module.exports.checkAuthentication = function (req, res, next) {
 
     if (!req.isAuthenticated())
         return res.status(401).send('Please login before performing this action.').end('Unauthorized');
+    else if (!req.user.isActive)
+        return res.status(403).send('Permission denied. Your account is inactive. Please contact instructor to re-active your account.').end('Forbidden');
     else
         return next();
 };

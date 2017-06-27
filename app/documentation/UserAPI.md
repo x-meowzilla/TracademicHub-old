@@ -91,6 +91,10 @@ User API Documentation
     + **Response:** 403
         + Body:
             + errmsg: 'Permission denied. You must have at least TEACHING ASSISTANT access privilege to perform this action.'
+    + **Response:** 403
+        + Body:
+            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-active your account.'
+                        
 
 + **READ**
     + **Description:** Retrieve a specific user data by user ID.
@@ -115,6 +119,9 @@ User API Documentation
     + **Response:** 403
         + Body:
             + errmsg: 'Permission denied. You must have at least TEACHING ASSISTANT access privilege to perform this action.'
+    + **Response:** 403
+        + Body:
+            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-active your account.'
 
 + **READ**
     + **Description:** Retrieve all users data by based on access privilege ID.
@@ -139,6 +146,9 @@ User API Documentation
     + **Response:** 403
         + Body:
             + errmsg: 'Permission denied. You must have at least INSTRUCTOR access privilege to perform this action.'
+    + **Response:** 403
+        + Body:
+            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-active your account.'
 
 + **UPDATE**
     + **Description:** Adjust target user access privilege
@@ -169,6 +179,9 @@ User API Documentation
     + **Response:** 403
         + Body:
             + errmsg: 'Permission denied. Insufficient access privilege to perform this action. Target user has equal or higher access privilege.'
+    + **Response:** 403
+        + Body:
+            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-active your account.'
 
 ========== insert below ==========
 

@@ -10,6 +10,7 @@ var userSchema = new Schema({
     accessPrivilege: {type: Schema.Types.ObjectId, ref: 'AccessPrivilege', required: true},
     createDate: {type: Date, default: Date.now},
     lastLoginDate: {type: Date, index: true, sparse: true},
+    isActive: {type: Boolean, default: true, required: true},
     isLocalUser: {type: Boolean, sparse: true},
     password: {
         salt: {type: String},
