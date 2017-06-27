@@ -11,6 +11,7 @@
     function dataTableFactory($filter) {
         return{
             viewby : '5',
+            operations: [5, 10, 15],
             gap: 5,
             items: [],
             searchRecord: '',

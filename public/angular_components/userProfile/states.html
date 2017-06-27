@@ -37,10 +37,7 @@
                                 <div class="col-md-3">
                                     <div class="grid-option-setting"><strong>Show
                                         <select ng-model="dataTableFactory.viewby" class="select-width" ng-change="dataTableFactory.setPage(1)">
-                                            <option value="5">5</option>
-                                            <option value="10">10</option>
-                                            <option value="30">15</option>
-                                            <option value="50">50</option>
+                                            <option ng-repeat="op in dataTableFactory.operations">{{op}}</option>
                                         </select> entries
                                     </strong></div>
                                 </div>
