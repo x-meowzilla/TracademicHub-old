@@ -27,72 +27,117 @@
             </div>
         </div>
 
+
         <!--table view-->
-        <div class="table-responsive" ng-if="tableDisplay">
-            <table th-datatables="{pagingType: 'full_numbers'}" class="display table table-bordered table-hover table-striped" cellspacing="0">
-                <thead>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Preferred Name</th>
-                    <th>Utorid</th>
-                    <th>Email</th>
-                    <th>Access Level</th>
-                    <th>Last Login Date</th>
-                </tr>
-                </thead>
-                <tfoot>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Preferred Name</th>
-                    <th>Utorid</th>
-                    <th>Email</th>
-                    <th>Access Level</th>
-                    <th>Last Login Date</th>
-                </tr>
-                </tfoot>
-                <tbody>
-                <!--<tr ng-repeat="user in userDatas">-->
-                    <!--<td>{{user.firstName}}</td>-->
-                    <!--<td>{{user.lastName}}</td>-->
-                    <!--<td>{{user.preferredName}}</td>-->
-                    <!--<td>{{user.utorid}}</td>-->
-                    <!--<td>{{user.email}}</td>-->
-                    <!--<td>{{user.accessLevel}}</td>-->
-                    <!--<td>{{user.accessLevel}}</td>-->
-                <!--</tr>-->
-                <tr>
-                    <td>a</td>
-                    <td>a</td>
-                    <td>a</td>
-                    <td>a</td>
-                    <td>a</td>
-                    <td>a</td>
-                    <td>a</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+        <div class="row" ng-if="tableDisplay">
+            <div class="col-lg-12">
+                <!--records display number-->
+                <div class="row gridHead">
+                    <div class="col-md-3">
+                        <div class="grid-option-setting"><strong>Show
+                            <select ng-model="dataTableFactory.viewby" class="select-width" ng-change="dataTableFactory.setPage(1)">
+                                <option ng-repeat="op in dataTableFactory.operations">{{op}}</option>
+                            </select> entries
+                        </strong></div>
+                    </div>
 
-        <!--card view-->
-        <div ng-if="!tableDisplay">
-            <div class="grid-option-setting"><strong>Show
-                <select ng-init="viewby='10'" ng-model="viewby" class="select-width">
-                    <option>10</option>
-                    <option>30</option>
-                    <option>50</option>
-                </select> entries
-            </strong></div>
+                    <!--search bar-->
+                    <div class="col-md-3 pull-right">
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                            <input type="text" class="form-control" placeholder="Search" ng-model="dataTableFactory.searchRecord">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th sort-Records order="fullName", sort="sort">Assignee Full Name</th>
+                                <th sort-Records order="preferredName", sort="sort">Assignee Preferred Name</th>
+                                <th sort-Records order="category", sort="sort">Category</th>
+                                <th sort-Records order="course", sort="sort">Course</th>
+                                <th sort-Records order="date", sort="sort">Date</th>
+                            </tr>
+                            </thead>
 
-            <div class="row">
-                <div class="col-md-4" ng-repeat="row in userDatas">
-                    <div class="panel panel-default col-md-12">
-                        {{row}}
+                            <tr ng-repeat="item in items.slice((dataTableFactory.currentPage-1)*dataTableFactory.viewby, dataTableFactory.currentPage*dataTableFactory.viewby) | orderBy:sort.sortingOrder:sort.reverse | filter:dataTableFactory.searchRecord">
+                                <td>{{item.fullName}}</td>
+                                <td>{{item.preferredName}}</td>
+                                <td>{{item.category}}</td>
+                                <td>{{item.course}}</td>
+                                <td>{{item.date}}</td>
+                            </tr>
+                            </tbody>
+
+                            <tfoot>
+                            <td colspan="5" ng-if="items.length == 0" class="text-center">
+                                <strong>There's no data.</strong>
+                            </td>
+                            </tfoot>
+                        </table>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!-- pager -->
+                                <ul class="pagination">
+                                    <li ng-class="{disabled:dataTableFactory.currentPage === 1}">
+                                        <a ng-click="dataTableFactory.setPage(1)">First</a>
+                                    </li>
+                                    <li ng-class="{disabled:dataTableFactory.currentPage === 1}">
+                                        <a ng-click="dataTableFactory.setPage(dataTableFactory.currentPage - 1)">Previous</a>
+                                    </li>
+                                    <li ng-repeat="page in dataTableFactory.range(dataTableFactory.currentPage)"
+                                        ng-class="{active:dataTableFactory.currentPage === page}">
+                                        <a ng-click="dataTableFactory.setPage(page)">{{page}}</a>
+                                    </li>
+                                    <li ng-class="{disabled:dataTableFactory.currentPage === totalPagesNum}">
+                                        <a ng-click="dataTableFactory.setPage(dataTableFactory.currentPage + 1)">Next</a>
+                                    </li>
+                                    <li ng-class="{disabled:dataTableFactory.currentPage === totalPagesNum}">
+                                        <a ng-click="dataTableFactory.setPage(totalPagesNum)">Last</a>
+                                    </li>
+                                </ul>
+                                <span class="pull-right"><strong>Showing {{(dataTableFactory.currentPage-1)*dataTableFactory.viewby}} to {{dataTableFactory.currentPage*dataTableFactory.viewby}} of {{items.length}} entities</strong></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- /.flex-row  -->
+        </div>
+
+        <!--card view-->
+        <div class="row" ng-if="!tableDisplay">
+            <div class="col-lg-12">
+                <!--records display number-->
+                <div class="row gridHead">
+                    <div class="col-md-3">
+                        <div class="grid-option-setting"><strong>Show
+                            <select ng-model="dataTableFactory.viewby" class="select-width" ng-change="dataTableFactory.setPage(1)">
+                                <option ng-repeat="op in dataTableFactory.operations">{{op}}</option>
+                            </select> entries
+                        </strong></div>
+                    </div>
+
+                    <!--search bar-->
+                    <div class="col-md-3 pull-right">
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                            <input type="text" class="form-control" placeholder="Search" ng-model="dataTableFactory.searchRecord">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="col-md-4" ng-repeat="row in userDatas">
+                            <div class="panel panel-default col-md-12">
+                                {{row}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
