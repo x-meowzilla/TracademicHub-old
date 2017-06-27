@@ -74,6 +74,12 @@
                                             <td>{{item.date}}</td>
                                         </tr>
                                         </tbody>
+
+                                        <tfoot>
+                                        <td colspan="5" ng-if="items.length == 0" class="text-center">
+                                            <strong>There's no data.</strong>
+                                        </td>
+                                        </tfoot>
                                     </table>
 
                                     <div class="row">
