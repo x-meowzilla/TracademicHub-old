@@ -74,6 +74,15 @@
 
 
 /*Profile Page*/
+.avatar{
+    content: url("../images/default-avatar.png");
+}
+
+.avatar-large{
+    height: 230px;
+    width: 230px;
+}
+
 #editProfileBtn{
     color: #2e6da4;
 }
@@ -400,3 +409,36 @@ div.material-table table td:last-child {
 .grid-option-setting{
     padding-bottom: 10px;
 }
+
+.name-card-setting{
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    padding: 10px;
+    width: 100%;
+    height: 200px;
+}
+
+.name-card-setting:hover {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.name-card-setting h4{
+    color: #286090;
+}
+
+.crap-word {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.avatar-small{
+    height: 100px;
+    width: 100px;
+    margin-top: 40px;
+}
+
