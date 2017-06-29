@@ -11,7 +11,7 @@ var userSchema = new Schema({
     createDate: {type: Date, default: Date.now},
     lastLoginDate: {type: Date, index: true, sparse: true},
     isActive: {type: Boolean, default: true, required: true},
-    isLocalUser: {type: Boolean, sparse: true},
+    isLocalUser: {type: Boolean, default: false, required: true},
     password: {
         salt: {type: String},
         hash: {type: String}
