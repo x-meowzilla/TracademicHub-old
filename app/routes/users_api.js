@@ -9,6 +9,7 @@ router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, functio
     var findDoc = {};
     for (var arg in req.query) {
         switch (arg) {
+            case '_id':
             case 'utorid':
             case 'email':
             case 'studentNumber':
@@ -31,16 +32,6 @@ router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, functio
                 return util.retrieveBasicUserData(user);
             });
             return res.json(resultArray).end();
-        })
-        .catch(function (error) {
-            return res.status(500).end(error.errmsg);
-        });
-});
-
-router.get('/:userID', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, function (req, res) {
-    UserModel.findById(req.params.userID)
-        .then(function (user) {
-            return res.json(util.retrieveBasicUserData(user)).end();
         })
         .catch(function (error) {
             return res.status(500).end(error.errmsg);
