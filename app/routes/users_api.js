@@ -15,7 +15,6 @@ router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, functio
             case 'studentNumber':
             case 'accessPrivilege':
             case 'isActive':
-            case 'isLocalUser':
                 findDoc[arg] = req.query[arg];
                 break;
             case 'firstName':
@@ -46,7 +45,7 @@ router.post('/:userID/avatar', function (req, res) {
 
 });
 
-router.patch('/:userID/basic-update', mw.checkAuthentication, function (req, res) {
+router.patch('/:userID/update/user-info', mw.checkAuthentication, function (req, res) {
     "use strict";
     var updateDoc = {};
     for (var arg in req.query) {
@@ -71,7 +70,7 @@ router.patch('/:userID/basic-update', mw.checkAuthentication, function (req, res
         });
 });
 
-router.patch('/:userID/restrict-update', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
+router.patch('/:userID/update/user-access', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
     "use strict";
     var updateDoc = {};
     for (var arg in req.query) {
