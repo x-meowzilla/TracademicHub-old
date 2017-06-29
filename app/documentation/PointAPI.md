@@ -28,7 +28,7 @@ Point API Documentation
             + errmsg: 'Please login before performing this action.'
     + **Response:** 403
         + Body:
-            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-active your account.'
+            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-activate your account.'
             
 + **CREATE**
     + **Description:** Create and save a point record.
@@ -58,7 +58,7 @@ Point API Documentation
             + errmsg: 'Permission denied. You must have at least TEACHING ASSISTANT access privilege to perform this action.'
     + **Response:** 403
         + Body:
-            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-active your account.'
+            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-activate your account.'
 
 + **DELETE**
     + **Description:** Delete points based on given query string condition.
@@ -89,4 +89,4 @@ Point API Documentation
             + errmsg: 'Permission denied. You must have at least INSTRUCTOR access privilege to perform this action.'
     + **Response:** 403
         + Body:
-            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-active your account.'
+            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-activate your account.'
