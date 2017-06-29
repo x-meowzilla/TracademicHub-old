@@ -13,19 +13,10 @@ var pointSchema = new Schema({
 
 }, {collection: 'PointsCollection'});
 
-pointSchema.statics.getAllHistory = function () {
+pointSchema.statics.findPointData = function (findDoc) {
+    "use strict";
     var point = this.model('Point');
-    return point.find({});
-};
-
-pointSchema.statics.getHistoryByAssignerID = function (assignerID) {
-    var point = this.model('Point');
-    return point.find({assigner: {id: assignerID}});
-};
-
-pointSchema.statics.getHistoryByAssigneeID = function (assigneeID) {
-    var point = this.model('Point');
-    return point.find({assignee: {id: assigneeID}});
+    return point.find(findDoc);
 };
 
 pointSchema.statics.deleteByID = function (pointID) {
