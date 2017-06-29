@@ -50,21 +50,43 @@ router.post('/:userID/avatar', function (req, res) {
 });
 
 router.patch('/:userID/privilege/:accessID', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
-    UserModel.updateAccessPrivilege(req.params.userID, req.params.accessID)
+    UserModel.adjustAccessPrivilege(req.params.userID, req.params.accessID)
         .then(function (user) {
-            res.json(util.retrieveBasicUserData(user)).end();
+            return res.json(util.retrieveBasicUserData(user)).end();
         })
         .catch(function (error) {
             return res.status(500).end(error.errmsg);
         });
 });
 
-// router.delete('/', function (req, res) {
-//     res.send('DELETE!! delete all entries');
-// });
-//
-router.delete('/:userID', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
-    res.send('DELETE!! delete one entry');
+router.patch('/deactivate/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
+    UserModel.deactivateUsers()
+        .then(function (user) {
+            return res.json(util.retrieveBasicUserData(user)).end();
+        })
+        .catch(function (error) {
+            return res.status(500).end(error.errmsg);
+        });
+});
+
+router.patch('/:userID/activate/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
+    UserModel.activateUserById(req.params.userID)
+        .then(function (user) {
+            return res.json(util.retrieveBasicUserData(user)).end();
+        })
+        .catch(function (error) {
+            return res.status(500).end(error.errmsg);
+        });
+});
+
+router.patch('/:userID/deactivate/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
+    UserModel.deactivateUserById(req.params.userID)
+        .then(function (user) {
+            return res.json(util.retrieveBasicUserData(user)).end();
+        })
+        .catch(function (error) {
+            return res.status(500).end(error.errmsg);
+        });
 });
 
 

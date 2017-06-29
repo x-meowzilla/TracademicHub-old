@@ -39,10 +39,28 @@ userSchema.statics.findByAccessPrivilege = function (accessID) {
     return user.find({accessPrivilege: accessID});
 };
 
-userSchema.statics.updateAccessPrivilege = function (userID, newAccessID) {
+userSchema.statics.adjustAccessPrivilege = function (userID, newAccessID) {
     "use strict";
     var user = this.model('User');
     return user.findByIdAndUpdate(userID, {$set: {accessPrivilege: newAccessID}}, {new: true});
+};
+
+userSchema.statics.deactivateUsers = function () {
+    "use strict";
+    var user = this.model('User');
+    return user.update({isLocalUser: false}, {isActive: false}, {multi: true});
+};
+
+userSchema.statics.activateUserById = function (userID) {
+    "use strict";
+    var user = this.model('User');
+    return user.findByIdAndUpdate(userID, {$set: {isActive: true}}, {new: true});
+};
+
+userSchema.statics.deactivateUserById = function (userID) {
+    "use strict";
+    var user = this.model('User');
+    return user.findByIdAndUpdate(userID, {$set: {isActive: false}}, {new: true});
 };
 
 // method for local user
@@ -99,17 +117,6 @@ userSchema.methods.updateLastLoginDate = function () {
     user.lastLoginDate = Date.now();
     return user.save();
 };
-
-// userSchema.methods.getAccessLevel = function () {
-//     var user = this;
-//     return user.accessPrivilege;
-// };
-//
-// userSchema.methods.setAccessLevel = function (accessPrivilege) {
-//     var user = this;
-//     user.accessPrivilege = accessPrivilege;
-// };
-
 
 var UserModel = mongoose.model('User', userSchema);
 module.exports = UserModel;
