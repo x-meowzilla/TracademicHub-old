@@ -77,14 +77,6 @@
         $scope.currentpage = 1;
         $scope.operations = [10, 20, 30];
         $scope.searchrecord = '';
-
-
-        // $scope.dataTableFactory = _DataTableFactory;
-        // $scope.dataTableFactory.items = $scope.items;
-        // $scope.dataTableFactory.viewby = '10';
-        // $scope.dataTableFactory.operations = [10, 30, 50, 100];
-        // $scope.totalPagesNum = _DataTableFactory.getTotalPagesNum();
-
     }
 
 }());

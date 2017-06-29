@@ -5,9 +5,9 @@
         .module('TracademicHub')
         .controller('userManagementController', userManagementController);
 
-    userManagementController.$inject = ['$scope', '_CheckAuthentication', '_AjaxRequest', '_DataTableFactory']; // dependency injection
+    userManagementController.$inject = ['$scope', '_CheckAuthentication', '_AjaxRequest']; // dependency injection
 
-    function userManagementController($scope, _CheckAuthentication, _AjaxRequest, _DataTableFactory) {
+    function userManagementController($scope, _CheckAuthentication, _AjaxRequest) {
         $scope.isAuthenticated = function () {
             return _CheckAuthentication.isAuthenticated();
         };
@@ -82,17 +82,14 @@
                 )
         }());
 
-
-        $scope.dataTableFactory = _DataTableFactory;
-        $scope.dataTableFactory.items = $scope.items;
-        $scope.totalPagesNum = _DataTableFactory.getTotalPagesNum();
-        $scope.dataTableFactory.viewby = '10';
-        $scope.dataTableFactory.operations = [10, 30, 50, 100];
-
         $scope.sort = {
             sortingOrder : '',
             reverse : false
         };
+        $scope.viewby = '10';
+        $scope.currentpage = 1;
+        $scope.operations = [10, 20, 30];
+        $scope.searchrecord = '';
     }
 
 }());
