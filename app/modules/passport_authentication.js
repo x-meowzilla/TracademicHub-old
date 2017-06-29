@@ -22,12 +22,12 @@ module.exports = function (passport) {
     passport.use('saml', new SamlStrategy(passportConfig.samlData, function (profile, done) {
         var utorid = profile['urn:oid:1.3.6.1.4.1.15465.3.1.8'];
         var email = profile['urn:oid:0.9.2342.19200300.100.1.3'];
-        UserModel.findByUTORID(utorid)
-            .then(function (user) {
+        UserModel.findUserData({utorid: utorid})
+            .then(function (userArray) {
                 // if a student is late to register for the course, but student data is already imported,
                 // the student can still login via UofT login but we won't find any entry from our database,
                 // so we automatically create an empty user entry and let student fill out rest of the data
-                return user ? done(null, user) : createUser(done);
+                return (userArray.length !== 0) ? done(null, userArray[0]) : createUser(done);
             })
             .catch(function (error) {
                 return done(error, false);
@@ -47,21 +47,31 @@ module.exports = function (passport) {
 
     // local strategy
     passport.use('local', new LocalStrategy({usernameField: 'utorid'}, function (utorid, password, done) {
-        UserModel.findByUTORID(utorid)
-            .then(function (user) {
-                if (!user)
+        UserModel.findUserData({utorid: utorid})
+            .then(function (userArray) {
+                if (userArray.length === 0)
                     return {error: {errcode: 404, errmsg: 'Login failed. Username "' + utorid + '" does not exist.'}, user: false};
-                if (!user.verifyPassword(password))
+                if (!userArray[0].verifyPassword(password))
                     return {error: {errcode: 401, errmsg: 'Login failed. Incorrect Password.'}, user: false};
                 else
-                    return {error: null, user: user};
+                    return {error: null, user: userArray[0]};
             })
             .then(function (result) {
-                return done(result.error, result.user);
+                return result.error ? done(result.error, result.user) : updateLoginDateAndReturnUserData(result.user);
             })
             .catch(function (error) {
                 return done(error, false);
             });
+
+        function updateLoginDateAndReturnUserData(user) {
+            user.updateLastLoginDate()
+                .then(function (user) {
+                    return done(null, user);
+                })
+                .catch(function (error) {
+                    return done(error, false);
+                });
+        }
     }));
 
 };

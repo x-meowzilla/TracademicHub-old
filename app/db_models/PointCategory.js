@@ -7,19 +7,20 @@ var pointCategorySchema = new Schema({
 
 }, {collection: 'PointCategoryReference'});
 
-pointCategorySchema.statics.getAllCategoryNames = function () {
+pointCategorySchema.statics.getPointCategoryData = function () {
     var category = this.model('PointCategory');
     return category.find({});
 };
 
-pointCategorySchema.statics.findByCategoryName = function (categoryName) {
+pointCategorySchema.statics.findByPointCategoryName = function (categoryName) {
     var category = this.model('PointCategory');
-    return category.findOne({name: categoryName})
+    return category.findOne({name: {'$regex': '^' + categoryName + '$', '$options': 'i'}});
+    // return category.findOne({name: categoryName})
 };
 
-pointCategorySchema.statics.deleteByCategoryName = function (categoryName) {
+pointCategorySchema.statics.deleteCategoryData = function (deleteDoc) {
     var category = this.model('PointCategory');
-    return category.remove({name: categoryName});
+    return category.remove(deleteDoc);
 };
 
 var PointCategoryModel = mongoose.model('PointCategory', pointCategorySchema);

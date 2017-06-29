@@ -5,31 +5,27 @@ var UserModel = require('../db_models/User');
 
 // users URI: .../api/users/
 router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, function (req, res) {
-    UserModel.getAllUsers()
-        .then(function (userArray) {
-            var resultArray = userArray.map(function (user) {
-                return util.retrieveBasicUserData(user);
-            });
-            return res.json(resultArray).end();
-        })
-        .catch(function (error) {
-            return res.status(500).end(error.errmsg);
-        });
-});
+    "use strict";
+    var findDoc = {};
+    for (var arg in req.query) {
+        switch (arg) {
+            case '_id':
+            case 'utorid':
+            case 'email':
+            case 'studentNumber':
+            case 'accessPrivilege':
+            case 'isActive':
+                findDoc[arg] = req.query[arg];
+                break;
+            case 'firstName':
+            case 'lastName':
+            case 'preferredName':
+                findDoc['name.' + arg] = req.query[arg];
+                break;
+        }
+    }
 
-router.get('/:userID', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, function (req, res) {
-    UserModel.findById(req.params.userID)
-        .then(function (user) {
-            return res.json(util.retrieveBasicUserData(user)).end();
-        })
-        .catch(function (error) {
-            return res.status(500).end(error.errmsg);
-        });
-});
-
-router.get('/privilege/:accessID', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
-    // get users by access privilege
-    UserModel.findByAccessPrivilege(req.params.accessID)
+    UserModel.findUserData(findDoc)
         .then(function (userArray) {
             var resultArray = userArray.map(function (user) {
                 return util.retrieveBasicUserData(user);
@@ -45,29 +41,65 @@ router.post('/', function (req, res) {
     res.send('POST request accepted.');
 });
 
-router.patch('/:userID/privilege/:accessID', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
-    UserModel.findByIdAndUpdate(req.params.userID, {$set: {accessPrivilege: req.params.accessID}}, {new: true})
+router.post('/:userID/avatar', function (req, res) {
+
+});
+
+router.patch('/:userID/update/user-info', mw.checkAuthentication, function (req, res) {
+    "use strict";
+    var updateDoc = {};
+    for (var arg in req.query) {
+        switch (arg) {
+            case 'firstName':
+            case 'lastName':
+            case 'preferredName':
+                updateDoc['name.' + arg] = req.query[arg];
+                break;
+            case 'biography':
+                updateDoc[arg] = req.query[arg];
+                break;
+        }
+    }
+
+    UserModel.updateUserData(req.params.userID, updateDoc)
         .then(function (user) {
-            console.log(user);
-            res.json(user);
-            // TODO
+            return res.json(util.retrieveBasicUserData(user)).end();
         })
         .catch(function (error) {
             return res.status(500).end(error.errmsg);
         });
 });
 
-// router.delete('/', function (req, res) {
-//     res.send('DELETE!! delete all entries');
-// });
-//
-router.delete('/:userID', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
+router.patch('/:userID/update/user-access', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
+    "use strict";
+    var updateDoc = {};
+    for (var arg in req.query) {
+        switch (arg) {
+            case 'accessPrivilege':
+            case 'isActive':
+                updateDoc[arg] = req.query[arg];
+                break;
+        }
+    }
 
-    // console.log(req);
-
-
-    res.send('DELETE!! delete one entry');
+    UserModel.updateUserData(req.params.userID, updateDoc)
+        .then(function (user) {
+            return res.json(util.retrieveBasicUserData(user)).end();
+        })
+        .catch(function (error) {
+            return res.status(500).end(error.errmsg);
+        });
 });
+
+// router.patch('/deactivate/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
+//     UserModel.deactivateUsers()
+//         .then(function (user) {
+//             return res.json(util.retrieveBasicUserData(user)).end();
+//         })
+//         .catch(function (error) {
+//             return res.status(500).end(error.errmsg);
+//         });
+// });
 
 
 module.exports = router;
