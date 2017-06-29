@@ -58,20 +58,18 @@ router.post('/:userID/avatar', function (req, res) {
 router.patch('/:userID/basic-update', mw.checkAuthentication, function (req, res) {
     "use strict";
     var updateDoc = {};
-    var name = {};
     for (var arg in req.query) {
         switch (arg) {
             case 'firstName':
             case 'lastName':
             case 'preferredName':
-                name[arg] = req.query[arg];
+                updateDoc['name.' + arg] = req.query[arg];
                 break;
             case 'biography':
                 updateDoc[arg] = req.query[arg];
                 break;
         }
     }
-    if (Object.keys(name).length !== 0) updateDoc.name = name;
 
     UserModel.updateUserData(req.params.userID, updateDoc)
         .then(function (user) {
@@ -88,10 +86,8 @@ router.patch('/:userID/restrict-update', mw.checkAuthentication, mw.haveMinimumI
     for (var arg in req.query) {
         switch (arg) {
             case 'accessPrivilege':
-                updateDoc[arg] = req.query[arg];
-                break;
             case 'isActive':
-                updateDoc[arg] = (req.query[arg] === 'true');
+                updateDoc[arg] = req.query[arg];
                 break;
         }
     }
