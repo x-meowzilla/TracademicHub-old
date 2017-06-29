@@ -68,13 +68,10 @@ module.exports.haveAuthority = function (req, res, next) {
         .then(function (targetUser) {
             if (req.user._id.equals(targetUser._id)) // cannot perform self upgrade/downgrade
                 return res.status(400).send('You cannot perform this action for yourself.').end('Bad Request');
-
-            if (req.user.accessPrivilege.equals(targetUser.accessPrivilege)) { // if both users have same access privilege
-                if (!req.params.accessID) return res.status(403).send(noAuthorityError()).end('Forbidden'); // check if accessID param exist
-                else return deepPrivilegeCheck(req.user.accessPrivilege, req.params.accessID); // check if req user is upgrading target user access privilege
-            } else { // deep check privilege value
+            else if (req.user.accessPrivilege.equals(targetUser.accessPrivilege)) // if both users have same access privilege, then check if req user is upgrading target user access privilege
+                return deepPrivilegeCheck(req.user.accessPrivilege, req.params.accessID);
+            else // deep check privilege value
                 return deepPrivilegeCheck(req.user.accessPrivilege, targetUser.accessPrivilege);
-            }
         })
         .catch(function (error) {
             return res.status(500).end(error.errmsg + ">>> have authority catch 1");
