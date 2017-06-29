@@ -91,15 +91,15 @@ router.patch('/:userID/update/user-access', mw.checkAuthentication, mw.haveMinim
         });
 });
 
-router.patch('/:userID/deactivate/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
-    UserModel.deactivateUserById(req.params.userID)
-        .then(function (user) {
-            return res.json(util.retrieveBasicUserData(user)).end();
-        })
-        .catch(function (error) {
-            return res.status(500).end(error.errmsg);
-        });
-});
+// router.patch('/deactivate/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
+//     UserModel.deactivateUsers()
+//         .then(function (user) {
+//             return res.json(util.retrieveBasicUserData(user)).end();
+//         })
+//         .catch(function (error) {
+//             return res.status(500).end(error.errmsg);
+//         });
+// });
 
 
 module.exports = router;
