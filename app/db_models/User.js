@@ -10,7 +10,8 @@ var userSchema = new Schema({
     accessPrivilege: {type: Schema.Types.ObjectId, ref: 'AccessPrivilege', required: true},
     createDate: {type: Date, default: Date.now},
     lastLoginDate: {type: Date, index: true, sparse: true},
-    isLocalUser: {type: Boolean, sparse: true},
+    isActive: {type: Boolean, default: true, required: true},
+    isLocalUser: {type: Boolean, default: false, required: true},
     password: {
         salt: {type: String},
         hash: {type: String}
@@ -26,23 +27,28 @@ var userSchema = new Schema({
 }, {collection: 'UsersCollection', autoIndex: false}); // for production use
 
 // static methods
-userSchema.statics.findByUTORID = function (utorid) {
+userSchema.statics.findUserData = function (findDoc) {
+    "use strict";
     var user = this.model('User');
-    return user.findOne({utorid: utorid});
+    return user.find(findDoc);
 };
 
-userSchema.statics.findByAccessPrivilege = function (accessID) {
+userSchema.statics.updateUserData = function (userID, updateDoc) {
+    "use strict";
     var user = this.model('User');
-    return user.find({accessPrivilege: accessID});
+    return user.findByIdAndUpdate(userID, {$set: updateDoc}, {new: true});
 };
 
-userSchema.statics.getAllUsers = function () {
+userSchema.statics.deactivateUsers = function () {
+    "use strict";
     var user = this.model('User');
-    return user.find({});
+    return user.update({isLocalUser: false}, {isActive: false}, {multi: true});
 };
+
 
 // method for local user
 userSchema.methods.encryptPassword = function (password) {
+    "use strict";
     var user = this;
     var salt = crypto.randomBytes(16).toString('base64');
     var hash = crypto.createHmac('sha512', salt).update(password).digest('base64');
@@ -53,6 +59,7 @@ userSchema.methods.encryptPassword = function (password) {
 
 // method for local user
 userSchema.methods.verifyPassword = function (password) {
+    "use strict";
     var user = this;
     if (user.password && user.password.salt) {
         var hash = crypto.createHmac('sha512', user.password.salt).update(password).digest('base64');
@@ -63,36 +70,36 @@ userSchema.methods.verifyPassword = function (password) {
 };
 
 userSchema.methods.getFullName = function () {
+    "use strict";
     var user = this;
     return {firstName: user.name.firstName, lastName: user.name.lastName};
 };
 
 userSchema.methods.setFullName = function (firstName, lastName) {
+    "use strict";
     var user = this;
     user.name.firstName = firstName;
     user.name.lastName = lastName;
 };
 
 userSchema.methods.getPreferredName = function () {
+    "use strict";
     var user = this;
     return user.name.preferredName;
 };
 
 userSchema.methods.setPreferredName = function (preferredName) {
+    "use strict";
     var user = this;
     user.name.preferredName = preferredName;
 };
 
-// userSchema.methods.getAccessLevel = function () {
-//     var user = this;
-//     return user.accessPrivilege;
-// };
-//
-// userSchema.methods.setAccessLevel = function (accessPrivilege) {
-//     var user = this;
-//     user.accessPrivilege = accessPrivilege;
-// };
-
+userSchema.methods.updateLastLoginDate = function () {
+    "use strict";
+    var user = this;
+    user.lastLoginDate = Date.now();
+    return user.save();
+};
 
 var UserModel = mongoose.model('User', userSchema);
 module.exports = UserModel;

@@ -14,10 +14,8 @@ privilegeSchema.statics.findByPrivilegeValueAndDescription = function (accessVal
     return access.findOne({value: accessValue, description: description});
 };
 
-privilegeSchema.statics.findTest = function (reqUserAccessID, targetUserAccessID) {
-
-    // TODO - still under construction
-
+privilegeSchema.statics.findByIds = function (reqUserAccessID, targetUserAccessID) {
+    // this method will return 2 access privilege objects to compare the value
     var access = this.model('AccessPrivilege');
     return access.find({_id: {$in: [mongoose.Types.ObjectId(reqUserAccessID), mongoose.Types.ObjectId(targetUserAccessID)]}});
 };

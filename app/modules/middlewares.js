@@ -7,6 +7,8 @@ module.exports.checkAuthentication = function (req, res, next) {
 
     if (!req.isAuthenticated())
         return res.status(401).send('Please login before performing this action.').end('Unauthorized');
+    else if (!req.user.isActive)
+        return res.status(403).send('Permission denied. Your account is inactive. Please contact instructor to re-active your account.').end('Forbidden');
     else
         return next();
 };
@@ -39,7 +41,6 @@ module.exports.haveMinimumInstructorAccessPrivilege = function (req, res, next) 
         .catch(function (error) {
             return res.status(500).end(error.errmsg);
         });
-
 };
 
 module.exports.haveMinimumAdminAccessPrivilege = function (req, res, next) {
@@ -57,32 +58,44 @@ module.exports.haveMinimumAdminAccessPrivilege = function (req, res, next) {
         });
 };
 
-
 module.exports.haveAuthority = function (req, res, next) {
-    // TODO - still under construction
-    // Note: when calling this middleware function, target user id: req.params.userID must present!!
-    var targetUserID = req.params.userID;
+    "use strict";
 
-    UserModel.findById(targetUserID)
+    if (req.user._id.equals(req.params.userID))
+        return res.status(400).send('You cannot perform this action for yourself.').end('Bad Request');
+
+    UserModel.findById(req.params.userID)
         .then(function (targetUser) {
-            return targetUser.accessPrivilege;
-        })
-        .then(function (targetUserAccessID) {
-            console.log('====2=====', req.user.accessPrivilege);
-            console.log('====2=====', targetUserAccessID);
-
-            return PrivilegeModel.findTest(req.user.accessPrivilege, targetUserAccessID);
-        })
-        .then(function (array) {
-            console.log('====3=====', array);
-
-            next();
+            if (req.user.accessPrivilege.equals(targetUser.accessPrivilege)) // both users have the same access privilege
+                return res.status(403).send(noAuthorityError()).end('Forbidden');
+            else
+                return deepPrivilegeCheck(req.user.accessPrivilege, targetUser.accessPrivilege);
         })
         .catch(function (error) {
-            return res.status(500).end(error.errmsg);
-        })
-};
+            return res.status(500).end(error.errmsg + ">>> have authority catch 1");
+        });
 
+    function deepPrivilegeCheck(reqUserPrivilegeID, targetPrivilegeID) {
+        PrivilegeModel.findByIds(reqUserPrivilegeID, targetPrivilegeID)
+            .then(function (array) {
+                // access privilege array must contain 2 objects
+                var reqUserAccessValue = null;
+                var targetAccessValue = null;
+                // compare the access privilege id to identify the value
+                if (array[0]._id.equals(reqUserPrivilegeID)) {
+                    reqUserAccessValue = array[0].value;
+                    targetAccessValue = array[1].value;
+                } else {
+                    reqUserAccessValue = array[1].value;
+                    targetAccessValue = array[0].value;
+                }
+                return (reqUserAccessValue <= targetAccessValue) ? res.status(403).send(noAuthorityError()).end('Forbidden') : next();
+            })
+            .catch(function (error) {
+                return res.status(500).end(error.errmsg + ">>> have authority catch 2");
+            });
+    }
+};
 
 function noPrivilegeError(accessDescription) {
     var errmsg = 'Permission denied. You must have ';
@@ -91,5 +104,5 @@ function noPrivilegeError(accessDescription) {
 }
 
 function noAuthorityError() {
-
+    return 'Permission denied. Insufficient access privilege to perform this action. Target user has equal or higher access privilege.';
 }
