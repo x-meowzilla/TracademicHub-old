@@ -144,6 +144,34 @@ User API Documentation
     + **Response:** 403
         + Body:
             + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-active your account.'
+
++ **UPDATE**
+    + **Description:** update target user access privilege and activate/deactivate account
+    + **Request:** ```PATCH /api/users/:userID/update/user-access```
+        + By default, if no query string present, user data is not changed.
+        + **Pre-requisite:**
+            + User must login and this account must be activated.
+            + User must have minimum INSTRUCTOR access privilege.
+        + **Query String Options:**
+            + accessPrivilege: (string) access privilege ID
+            + isActive: (boolean)
+            + preferredName: (string)
+            + biography: (string)
+    + **Response:** 200
+        + Content-Type: ```application/json```
+        + Body:
+            + _id: (string) unique user ID
+            + utorid: (string)
+            + email: (string)
+            + name: (object)
+                + firstName: (string)
+                + lastName: (string)
+                + preferredName: (string) [_Optional_]
+            + studentNumber: (string) U of T unique student number [_Optional_]
+            + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+            + biography: (string) [_Optional_]
+            + isActive: (boolean) Return True if this account is active, false otherwise.
+            + lastLoginDate: (Date) last login date in UTC format [_Optional_]
     + **Response:** 400
         + Body:
             + errmsg: 'You cannot perform this action for yourself.'
@@ -152,10 +180,13 @@ User API Documentation
             + errmsg: 'Please login before performing this action.'
     + **Response:** 403
         + Body:
+            + errmsg: 'Permission denied. You must have at least INSTRUCTOR access privilege to perform this action.'
+    + **Response:** 403
+        + Body:
             + errmsg: 'Permission denied. Insufficient access privilege to perform this action. Target user has equal or higher access privilege.'
     + **Response:** 403
         + Body:
-            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-active your account.'
+            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-activate your account.'
 
 ========== insert below ==========
 

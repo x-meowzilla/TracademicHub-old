@@ -70,7 +70,7 @@ router.patch('/:userID/update/user-info', mw.checkAuthentication, function (req,
         });
 });
 
-router.patch('/:userID/restrict-update', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
+router.patch('/:userID/update/user-access', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
     "use strict";
     var updateDoc = {};
     for (var arg in req.query) {
