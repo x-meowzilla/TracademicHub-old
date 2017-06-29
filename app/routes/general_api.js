@@ -19,12 +19,13 @@ router.post('/local-login', _validateReqBodyUTORidAndPassword, function (req, re
 });
 
 router.post('/local-register', _validateReqBodyUTORidAndPassword, _validateReqBodyFirstNameAndLastName, function (req, res) {
-    UserModel.findByUTORID(req.body.utorid) // Note: utorid is the name field for all users.
-        .then(function (user) {
-            return user ? res.status(409).end('Username "' + user.utorid + '" already exists.') : createLocalUser();
+    UserModel.findUserData({utorid: req.body.utorid}) // Note: utorid is the name field for all users.
+        .then(function (userArray) {
+            console.log(userArray);
+            return userArray.length !== 0 ? res.status(409).end('Username "' + userArray[0].utorid + '" already exists.') : createLocalUser();
         })
         .catch(function (error) {
-            res.status(500).end(error.errmsg);
+            res.status(500).end(error);
         });
 
     function createLocalUser() {
@@ -45,7 +46,7 @@ router.post('/local-register', _validateReqBodyUTORidAndPassword, _validateReqBo
                 return res.json(util.retrieveBasicUserData(user)).end();
             })
             .catch(function (error) {
-                res.status(500).end(error.errmsg);
+                res.status(500).end(error);
             });
     }
 });

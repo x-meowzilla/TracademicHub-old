@@ -26,7 +26,7 @@ router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, functio
         }
     }
 
-    UserModel.find(findDoc)
+    UserModel.findUserData(findDoc)
         .then(function (userArray) {
             var resultArray = userArray.map(function (user) {
                 return util.retrieveBasicUserData(user);

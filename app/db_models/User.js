@@ -27,16 +27,10 @@ var userSchema = new Schema({
 }, {collection: 'UsersCollection', autoIndex: false}); // for production use
 
 // static methods
-userSchema.statics.findByUTORID = function (utorid) {
+userSchema.statics.findUserData = function (findDoc) {
     "use strict";
     var user = this.model('User');
-    return user.findOne({utorid: utorid});
-};
-
-userSchema.statics.findByAccessPrivilege = function (accessID) {
-    "use strict";
-    var user = this.model('User');
-    return user.find({accessPrivilege: accessID});
+    return user.find(findDoc);
 };
 
 userSchema.statics.updateUserData = function (userID, updateDoc) {
