@@ -49,8 +49,25 @@ router.post('/:userID/avatar', function (req, res) {
 
 });
 
-router.patch('/:userID/privilege/:accessID', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
-    UserModel.adjustAccessPrivilege(req.params.userID, req.params.accessID)
+router.patch('/:userID/basic-update', mw.checkAuthentication, function (req, res) {
+    "use strict";
+    var updateDoc = {};
+    var name = {};
+    for (var arg in req.query) {
+        switch (arg) {
+            case 'firstName':
+            case 'lastName':
+            case 'preferredName':
+                name[arg] = req.query[arg];
+                break;
+            case 'biography':
+                updateDoc[arg] = req.query[arg];
+                break;
+        }
+    }
+    if (Object.keys(name).length !== 0) updateDoc.name = name;
+
+    UserModel.updateUserData(req.params.userID, updateDoc)
         .then(function (user) {
             return res.json(util.retrieveBasicUserData(user)).end();
         })
@@ -59,18 +76,21 @@ router.patch('/:userID/privilege/:accessID', mw.checkAuthentication, mw.haveMini
         });
 });
 
-router.patch('/deactivate/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
-    UserModel.deactivateUsers()
-        .then(function (user) {
-            return res.json(util.retrieveBasicUserData(user)).end();
-        })
-        .catch(function (error) {
-            return res.status(500).end(error.errmsg);
-        });
-});
+router.patch('/:userID/restrict-update', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
+    "use strict";
+    var updateDoc = {};
+    for (var arg in req.query) {
+        switch (arg) {
+            case 'accessPrivilege':
+                updateDoc[arg] = req.query[arg];
+                break;
+            case 'isActive':
+                updateDoc[arg] = (req.query[arg] === 'true');
+                break;
+        }
+    }
 
-router.patch('/:userID/activate/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
-    UserModel.activateUserById(req.params.userID)
+    UserModel.updateUserData(req.params.userID, updateDoc)
         .then(function (user) {
             return res.json(util.retrieveBasicUserData(user)).end();
         })
