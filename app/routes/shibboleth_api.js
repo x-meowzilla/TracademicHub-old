@@ -10,7 +10,7 @@ router.get('/Login', function (req, res) {
         },
         function (error, user) { // user guaranteed exists! check passport_authentication.js
             if (error) {
-                return res.status(500).end(error.errmsg);
+                return res.status(500).send(error).end();
             } else {
                 req.login(user, function () {
                     return res.json(util.retrieveBasicUserData(user)).end();

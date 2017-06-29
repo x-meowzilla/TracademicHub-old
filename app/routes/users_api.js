@@ -33,7 +33,7 @@ router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, functio
             return res.json(resultArray).end();
         })
         .catch(function (error) {
-            return res.status(500).end(error.errmsg);
+            return res.status(500).send(error).end();
         });
 });
 
@@ -66,7 +66,7 @@ router.patch('/:userID/update/user-info', mw.checkAuthentication, function (req,
             return res.json(util.retrieveBasicUserData(user)).end();
         })
         .catch(function (error) {
-            return res.status(500).end(error.errmsg);
+            return res.status(500).send(error).end();
         });
 });
 
@@ -87,7 +87,7 @@ router.patch('/:userID/update/user-access', mw.checkAuthentication, mw.haveMinim
             return res.json(util.retrieveBasicUserData(user)).end();
         })
         .catch(function (error) {
-            return res.status(500).end(error.errmsg);
+            return res.status(500).send(error).end();
         });
 });
 

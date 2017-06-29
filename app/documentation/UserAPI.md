@@ -5,7 +5,7 @@ User API Documentation
 
 + **CREATE**
     + **Description:** Register a local master user account with admin access privilege.
-    + **Request:** ```POST /api/local-register/```
+    + **Request:** ```PUT /api/local-register/```
         + Content-Type: ```application/json```
         + Body:
             + utorid: (string) master account username 

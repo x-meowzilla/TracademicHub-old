@@ -26,7 +26,7 @@ router.get('/', mw.checkAuthentication, function (req, res) {
             return res.json(pointsArray).end();
         })
         .catch(function (error) {
-            return res.status(500).end(error.errmsg);
+            return res.status(500).send(error).end();
         });
 });
 
@@ -35,10 +35,10 @@ router.post('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, functi
     // req.body = {assigneeID, pointCategoryID, [pointValue]},
     UserModel.findById(req.body.assigneeID)
         .then(function (assignee) {
-            return assignee ? grantPoint(req.user._id, assignee._id, req.body.pointValue, req.body.pointCategoryID) : res.status(404).send('Target assignee id: "' + req.params.assigneeID + '" does not exist.').end('Not Found');
+            return assignee ? grantPoint(req.user._id, assignee._id, req.body.pointValue, req.body.pointCategoryID) : res.status(404).send('Target assignee id: "' + req.params.assigneeID + '" does not exist.').end();
         })
         .catch(function (error) {
-            return res.status(500).end(error + ' 1');
+            return res.status(500).send(error).end();
         });
 
     function grantPoint(assignerID, assigneeID, pointValue, pointCategoryID) {
@@ -48,7 +48,7 @@ router.post('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, functi
                 return res.json(point).end();
             })
             .catch(function (error) {
-                return res.status(500).end(error + ' 2');
+                return res.status(500).send(error).end();
             });
     }
 });
@@ -70,7 +70,7 @@ router.delete('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivile
     }
 
     if (Object.keys(deleteDoc).length === 0) { // strictly check here. Valid query string must present!
-        return res.status(400).send('Failed to delete. Delete option not found.').end('Bad Request');
+        return res.status(400).send('Failed to delete. Delete option not found.').end();
     } else {
         PointModel.deletePointData(deleteDoc)
             .then(function (result) {
