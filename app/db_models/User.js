@@ -39,10 +39,10 @@ userSchema.statics.findByAccessPrivilege = function (accessID) {
     return user.find({accessPrivilege: accessID});
 };
 
-userSchema.statics.adjustAccessPrivilege = function (userID, newAccessID) {
+userSchema.statics.updateUserData = function (userID, updateDoc) {
     "use strict";
     var user = this.model('User');
-    return user.findByIdAndUpdate(userID, {$set: {accessPrivilege: newAccessID}}, {new: true});
+    return user.findByIdAndUpdate(userID, {$set: updateDoc}, {new: true});
 };
 
 userSchema.statics.deactivateUsers = function () {
@@ -51,17 +51,6 @@ userSchema.statics.deactivateUsers = function () {
     return user.update({isLocalUser: false}, {isActive: false}, {multi: true});
 };
 
-userSchema.statics.activateUserById = function (userID) {
-    "use strict";
-    var user = this.model('User');
-    return user.findByIdAndUpdate(userID, {$set: {isActive: true}}, {new: true});
-};
-
-userSchema.statics.deactivateUserById = function (userID) {
-    "use strict";
-    var user = this.model('User');
-    return user.findByIdAndUpdate(userID, {$set: {isActive: false}}, {new: true});
-};
 
 // method for local user
 userSchema.methods.encryptPassword = function (password) {
