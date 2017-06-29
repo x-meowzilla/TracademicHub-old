@@ -155,8 +155,6 @@ User API Documentation
         + **Query String Options:**
             + accessPrivilege: (string) access privilege ID
             + isActive: (boolean)
-            + preferredName: (string)
-            + biography: (string)
     + **Response:** 200
         + Content-Type: ```application/json```
         + Body:
