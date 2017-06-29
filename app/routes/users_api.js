@@ -1,4 +1,6 @@
 var router = require('express').Router();
+var multer = require('multer');
+var upload = multer({storage: multer.memoryStorage()});
 var mw = require('../modules/middlewares');
 var util = require('../modules/utility');
 var UserModel = require('../db_models/User');
