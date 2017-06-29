@@ -73,6 +73,17 @@ User API Documentation
 + **READ**
     + **Description:** Retrieve all users data.
     + **Request:** ```GET /api/users/```
+        + By default, this request returns all users in the database
+        + **Query String Options:**
+            + _id: (string) unique user ID
+            + utorid: (string)
+            + email: (string)
+            + studentNumber: (number)
+            + accessPrivilege: (string) access privilege ID
+            + isActive: (boolean)
+            + firstName: (string)
+            + lastName: (string)
+            + preferredName: (string)
     + **Response:** 200
         + Content-Type: ```application/json```
         + Body: (array of object)
@@ -94,63 +105,6 @@ User API Documentation
     + **Response:** 403
         + Body:
             + errmsg: 'Permission denied. You must have at least TEACHING ASSISTANT access privilege to perform this action.'
-    + **Response:** 403
-        + Body:
-            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-active your account.'
-                        
-
-+ **READ**
-    + **Description:** Retrieve a specific user data by user ID.
-    + **Request:** ```GET /api/users/:userID```
-    + **Response:** 200
-        + Content-Type: ```application/json```
-        + Body:
-            + _id: (string) unique user ID
-            + utorid: (string)
-            + email: (string)
-            + name: (object)
-                + firstName: (string)
-                + lastName: (string)
-                + preferredName: (string) [_Optional_]
-            + studentNumber: (string) U of T unique student number [_Optional_]
-            + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
-            + biography: (string) [_Optional_]
-            + isActive: (boolean) Return True if this account is active, false otherwise.
-            + lastLoginDate: (Date) last login date in UTC format [_Optional_]
-    + **Response:** 401
-        + Body:
-            + errmsg: 'Please login before performing this action.'
-    + **Response:** 403
-        + Body:
-            + errmsg: 'Permission denied. You must have at least TEACHING ASSISTANT access privilege to perform this action.'
-    + **Response:** 403
-        + Body:
-            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-active your account.'
-
-+ **READ**
-    + **Description:** Retrieve all users data by based on access privilege ID.
-    + **Request:** ```GET /api/users/privilege/:accessID```
-    + **Response:** 200
-        + Content-Type: ```application/json```
-        + Body: (array of object)
-            + _id: (string) unique user ID
-            + utorid: (string)
-            + email: (string)
-            + name: (object)
-                + firstName: (string)
-                + lastName: (string)
-                + preferredName: (string) [_Optional_]
-            + studentNumber: (string) U of T unique student number [_Optional_]
-            + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
-            + biography: (string) [_Optional_]
-            + isActive: (boolean) Return True if this account is active, false otherwise.
-            + lastLoginDate: (Date) last login date in UTC format [_Optional_]
-    + **Response:** 401
-        + Body:
-            + errmsg: 'Please login before performing this action.'
-    + **Response:** 403
-        + Body:
-            + errmsg: 'Permission denied. You must have at least INSTRUCTOR access privilege to perform this action.'
     + **Response:** 403
         + Body:
             + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-active your account.'

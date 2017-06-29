@@ -15,7 +15,6 @@ router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, functio
             case 'studentNumber':
             case 'accessPrivilege':
             case 'isActive':
-            case 'isLocalUser':
                 findDoc[arg] = req.query[arg];
                 break;
             case 'firstName':
