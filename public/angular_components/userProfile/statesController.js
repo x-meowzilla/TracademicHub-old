@@ -74,9 +74,9 @@
             sortingOrder : '',
             reverse : false
         };
-        $scope.viewby = '10';
+        $scope.viewby = '5';
         $scope.currentpage = 1;
-        $scope.operations = [10, 15, 20];
+        $scope.operations = [5, 10, 20];
         $scope.searchrecord = '';
 
     };

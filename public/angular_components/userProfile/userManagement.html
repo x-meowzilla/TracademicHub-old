@@ -1,4 +1,4 @@
-<div class="userProfilewrapper" ng-class="{'toggled': toggled}">
+<div class="userProfilewrapper" ng-controller="userManagementController" ng-class="{'toggled': toggled}">
 
     <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
     <div ng-include="'angular_components/userProfile/settings_sidebar.html'"></div>
@@ -31,32 +31,36 @@
         <!--table view-->
         <div class="row" ng-if="tableDisplay">
             <div class="col-lg-12" page-Control gap="5" viewby="viewby" currentpage="currentpage" operations="operations" items="items" searchrecord="searchrecord">
-                <table class="table table-bordered table-striped table-responsive">
-                    <thead>
-                    <tr>
-                        <th sort-Records order="fullName", sort="sort">Assignee Full Name</th>
-                        <th sort-Records order="preferredName", sort="sort">Assignee Preferred Name</th>
-                        <th sort-Records order="category", sort="sort">Category</th>
-                        <th sort-Records order="course", sort="sort">Course</th>
-                        <th sort-Records order="date", sort="sort">Date</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="item in items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby">
-                        <td>{{item.fullName}}</td>
-                        <td>{{item.preferredName}}</td>
-                        <td>{{item.category}}</td>
-                        <td>{{item.course}}</td>
-                        <td>{{item.date}}</td>
-                    </tr>
-                    </tbody>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th sort-Records order="fullName", sort="sort">First Name</th>
+                            <th sort-Records order="preferredName", sort="sort">Last Name</th>
+                            <th sort-Records order="category", sort="sort">Preferred Name</th>
+                            <th sort-Records order="course", sort="sort">Email</th>
+                            <th sort-Records order="date", sort="sort">Access Privilege</th>
+                            <th sort-Records order="date", sort="sort">Last Login Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby">
+                            <td>{{item.name.firstName}}</td>
+                            <td>{{item.name.lastName}}</td>
+                            <td>{{item.name.preferredName}}</td>
+                            <td>{{item.email}}</td>
+                            <td>{{item.accessPrivilege}}</td>
+                            <td>{{item.lastLoginDate}}</td>
+                        </tr>
+                        </tbody>
 
-                    <tfoot>
-                    <td colspan="5" ng-if="(items|filter:searchrecord).length == 0" class="text-center">
-                        <strong>DATA NOT FOUND.</strong>
-                    </td>
-                    </tfoot>
-                </table>
+                        <tfoot>
+                        <td colspan="5" ng-if="(items|filter:searchrecord).length == 0" class="text-center">
+                            <strong>DATA NOT FOUND.</strong>
+                        </td>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -73,8 +77,9 @@
                                 <div class="col-lg-8 col-md-8 col-sm-8">
                                     <h4 class="crap-word text-center">{{item.name.firstName + " " +item.name.lastName}}</h4>
                                     <div class="crap-word" ng-if="item.name.preferredName"><strong>Preferred Name: </strong><div>{{item.name.preferredName}}</div></div>
-                                    <div class="crap-word"><strong>Email </strong><div>{{item.email}}</div></div>
-                                    <div class="crap-word"><strong>Access Privilege </strong><div>{{item.accessPrivilege}}</div></div>
+                                    <div class="crap-word"><strong>Email: </strong><div>{{item.email}}</div></div>
+                                    <div class="crap-word"><strong>Access Privilege: </strong><div>{{item.accessPrivilege}}</div></div>
+                                    <div class="crap-word"><strong>Last Login Date: </strong><div>{{item.lastLoginDate}}</div></div>
                                 </div>
                             </div>
                         </div>

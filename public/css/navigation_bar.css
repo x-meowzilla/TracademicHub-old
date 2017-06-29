@@ -23,3 +23,10 @@
 .dropdown-menu-short-width {
     width: 140px;
 }
+
+
+@media(max-width:320px) {
+    .navbar-name {
+        display: none;
+    }
+}

@@ -32,9 +32,9 @@
                 searchrecord: '='
             },
             template:
-            '<div class="row gridHead">' +
-            '<div class="col-sm-5">' +
             '<!--select number of displayed rows-->' +
+            '<div class="row gridHead">' +
+            '<div class="col-sm-3">' +
             '<div class="grid-option-setting">' +
             '<strong>Show' +
             '<select ng-model="viewby" class="select-width" ng-change="setPage(1)">' +
