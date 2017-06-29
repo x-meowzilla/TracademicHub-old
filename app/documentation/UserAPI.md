@@ -1,7 +1,7 @@
 User API Documentation
 ------------
 
-#### Local User (Internal Use Only)
+### Local User (Internal Use Only)
 
 + **CREATE**
     + **Description:** Register a local master user account with admin access privilege.
@@ -68,12 +68,15 @@ User API Documentation
             + errmsg: 'Login failed. Username "utorid" does not exist.'
 
 
-#### All Users
+### All Users
 
 + **READ**
     + **Description:** Retrieve all users data.
     + **Request:** ```GET /api/users/```
         + By default, this request returns all users in the database
+        + **Pre-requisite:**
+            + User must login and this account must be activated.
+            + User must have minimum TA access privilege.
         + **Query String Options:**
             + _id: (string) unique user ID
             + utorid: (string)
@@ -86,7 +89,7 @@ User API Documentation
             + preferredName: (string)
     + **Response:** 200
         + Content-Type: ```application/json```
-        + Body: (array of object)
+        + Body: ```array of object```
             + _id: (string) unique user ID
             + utorid: (string)
             + email: (string)
@@ -110,11 +113,19 @@ User API Documentation
             + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-active your account.'
 
 + **UPDATE**
-    + **Description:** Adjust target user access privilege
-    + **Request:** ```PATCH /api/users/:userID/privilege/:accessID```
+    + **Description:** update target user basic personal information
+    + **Request:** ```PATCH /api/users/:userID/update/user-info```
+        + By default, if no query string present, user data is not changed.
+        + **Pre-requisite:**
+            + User must login and this account must be activated.
+        + **Query String Options:**
+            + firstName: (string)
+            + lastName: (string)
+            + preferredName: (string)
+            + biography: (string)
     + **Response:** 200
         + Content-Type: ```application/json```
-        + Body: (array of object)
+        + Body:
             + _id: (string) unique user ID
             + utorid: (string)
             + email: (string)
@@ -127,9 +138,12 @@ User API Documentation
             + biography: (string) [_Optional_]
             + isActive: (boolean) Return True if this account is active, false otherwise.
             + lastLoginDate: (Date) last login date in UTC format [_Optional_]
-    + **Response:** 400
+    + **Response:** 401
         + Body:
-            + errmsg: 'Missing required field "userID" in URI.'
+            + errmsg: 'Please login before performing this action.'
+    + **Response:** 403
+        + Body:
+            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-active your account.'
     + **Response:** 400
         + Body:
             + errmsg: 'You cannot perform this action for yourself.'

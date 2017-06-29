@@ -45,7 +45,7 @@ router.post('/:userID/avatar', function (req, res) {
 
 });
 
-router.patch('/:userID/basic-update', mw.checkAuthentication, function (req, res) {
+router.patch('/:userID/update/user-info', mw.checkAuthentication, function (req, res) {
     "use strict";
     var updateDoc = {};
     for (var arg in req.query) {
