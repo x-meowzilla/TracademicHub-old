@@ -18,79 +18,34 @@
 
         <!--data table-->
         <div class="row">
-            <div class="col-lg-12">
-                <!--records display number-->
-                <div class="row gridHead">
-                    <div class="col-md-3">
-                        <div class="grid-option-setting"><strong>Show
-                            <select ng-model="dataTableFactory.viewby" class="select-width" ng-change="dataTableFactory.setPage(1)">
-                                <option ng-repeat="op in dataTableFactory.operations">{{op}}</option>
-                            </select> entries
-                        </strong></div>
-                    </div>
+            <div class="col-lg-12" page-Control gap="5" viewby="viewby" currentpage="currentpage" operations="operations" items="items" searchrecord="searchrecord">
+                <table class="table table-bordered table-striped table-responsive">
+                    <thead>
+                    <tr>
+                        <th sort-Records order="fullName", sort="sort">Assignee Full Name</th>
+                        <th sort-Records order="preferredName", sort="sort">Assignee Preferred Name</th>
+                        <th sort-Records order="category", sort="sort">Category</th>
+                        <th sort-Records order="course", sort="sort">Course</th>
+                        <th sort-Records order="date", sort="sort">Date</th>
+                    </tr>
+                    </thead>
 
-                    <!--search bar-->
-                    <div class="col-md-3 pull-right">
-                        <div class="input-group">
-                            <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                            <input type="text" class="form-control" placeholder="Search" ng-model="dataTableFactory.searchRecord">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <table class="table table-bordered table-striped table-responsive">
-                            <thead>
-                            <tr>
-                                <th sort-Records order="fullName", sort="sort">Assignee Full Name</th>
-                                <th sort-Records order="preferredName", sort="sort">Assignee Preferred Name</th>
-                                <th sort-Records order="category", sort="sort">Category</th>
-                                <th sort-Records order="course", sort="sort">Course</th>
-                                <th sort-Records order="date", sort="sort">Date</th>
-                            </tr>
-                            </thead>
+                    <tbody>
+                    <tr ng-repeat="item in items.slice((currentpage-1)*viewby, currentpage*viewby) | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord">
+                        <td>{{item.fullName}}</td>
+                        <td>{{item.preferredName}}</td>
+                        <td>{{item.category}}</td>
+                        <td>{{item.course}}</td>
+                        <td>{{item.date}}</td>
+                    </tr>
+                    </tbody>
 
-                            <tr ng-repeat="item in items.slice((dataTableFactory.currentPage-1)*dataTableFactory.viewby, dataTableFactory.currentPage*dataTableFactory.viewby) | orderBy:sort.sortingOrder:sort.reverse | filter:dataTableFactory.searchRecord">
-                                <td>{{item.fullName}}</td>
-                                <td>{{item.preferredName}}</td>
-                                <td>{{item.category}}</td>
-                                <td>{{item.course}}</td>
-                                <td>{{item.date}}</td>
-                            </tr>
-                            </tbody>
-
-                            <tfoot>
-                            <td colspan="5" ng-if="items.length == 0" class="text-center">
-                                <strong>There's no data.</strong>
-                            </td>
-                            </tfoot>
-                        </table>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <!-- pager -->
-                                <ul class="pagination">
-                                    <li ng-class="{disabled:dataTableFactory.currentPage === 1}">
-                                        <a ng-click="dataTableFactory.setPage(1)">First</a>
-                                    </li>
-                                    <li ng-class="{disabled:dataTableFactory.currentPage === 1}">
-                                        <a ng-click="dataTableFactory.setPage(dataTableFactory.currentPage - 1)">Previous</a>
-                                    </li>
-                                    <li ng-repeat="page in dataTableFactory.range(dataTableFactory.currentPage)"
-                                        ng-class="{active:dataTableFactory.currentPage === page}">
-                                        <a ng-click="dataTableFactory.setPage(page)">{{page}}</a>
-                                    </li>
-                                    <li ng-class="{disabled:dataTableFactory.currentPage === totalPagesNum}">
-                                        <a ng-click="dataTableFactory.setPage(dataTableFactory.currentPage + 1)">Next</a>
-                                    </li>
-                                    <li ng-class="{disabled:dataTableFactory.currentPage === totalPagesNum}">
-                                        <a ng-click="dataTableFactory.setPage(totalPagesNum)">Last</a>
-                                    </li>
-                                </ul>
-                                <span class="pull-right"><strong>Showing {{(dataTableFactory.currentPage-1)*dataTableFactory.viewby}} to {{dataTableFactory.currentPage*dataTableFactory.viewby}} of {{items.length}} entities</strong></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <tfoot>
+                    <td colspan="5" ng-if="items.length == 0" class="text-center">
+                        <strong>There's no data.</strong>
+                    </td>
+                    </tfoot>
+                </table>
             </div>
         </div>
 

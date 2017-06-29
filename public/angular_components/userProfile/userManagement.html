@@ -130,11 +130,40 @@
 
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="col-md-4" ng-repeat="row in userDatas">
-                            <div class="panel panel-default col-md-12">
-                                {{row}}
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="col-md-4" ng-repeat="item in items.slice((dataTableFactory.currentPage-1)*dataTableFactory.viewby, dataTableFactory.currentPage*dataTableFactory.viewby) | filter:dataTableFactory.searchRecord">
+                                    <div class="panel panel-default col-md-12">
+                                        {{item}}
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- pager -->
+                        <ul class="pagination">
+                            <li ng-class="{disabled:dataTableFactory.currentPage === 1}">
+                                <a ng-click="dataTableFactory.setPage(1)">First</a>
+                            </li>
+                            <li ng-class="{disabled:dataTableFactory.currentPage === 1}">
+                                <a ng-click="dataTableFactory.setPage(dataTableFactory.currentPage - 1)">Previous</a>
+                            </li>
+                            <li ng-repeat="page in dataTableFactory.range(dataTableFactory.currentPage)"
+                                ng-class="{active:dataTableFactory.currentPage === page}">
+                                <a ng-click="dataTableFactory.setPage(page)">{{page}}</a>
+                            </li>
+                            <li ng-class="{disabled:dataTableFactory.currentPage === totalPagesNum}">
+                                <a ng-click="dataTableFactory.setPage(dataTableFactory.currentPage + 1)">Next</a>
+                            </li>
+                            <li ng-class="{disabled:dataTableFactory.currentPage === totalPagesNum}">
+                                <a ng-click="dataTableFactory.setPage(totalPagesNum)">Last</a>
+                            </li>
+                        </ul>
+                        <span class="pull-right"><strong>Showing {{(dataTableFactory.currentPage-1)*dataTableFactory.viewby}} to {{dataTableFactory.currentPage*dataTableFactory.viewby}} of {{items.length}} entities</strong></span>
                     </div>
                 </div>
             </div>

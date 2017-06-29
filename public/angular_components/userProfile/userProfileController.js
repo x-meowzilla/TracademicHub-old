@@ -4,48 +4,8 @@
     angular
         .module('TracademicHub')
         .controller('userProfileController', userProfileController)
-        .factory('_DataTableFactory', dataTableFactory)
-        .directive('sortRecords', sortRecords);
-
-    dataTableFactory.$inject = ['$filter'];
-    function dataTableFactory($filter) {
-        return{
-            viewby : '5',
-            operations: [5, 10, 15],
-            gap: 5,
-            items: [],
-            searchRecord: '',
-            currentPage: 1,
-
-            getTotalPagesNum : function () {
-                return Math.ceil($filter('filter')(this.items, this.searchRecord).length/this.viewby);
-            },
-
-            range : function (start) {
-                var end =  start + this.gap;
-                var size = this.getTotalPagesNum(this.items, this.searchRecord);
-                var ret = [];
-
-                if (size < end) {
-                    end = size + 1;
-                    start = size > this.gap ? size - this.gap : 1;
-                }
-                for (var i = start; i < end; i++) {
-                    ret.push(i);
-                }
-                return ret;
-            },
-
-            setPage : function (page) {
-                if (page < 1 || page > this.getTotalPagesNum(this.items, this.searchRecord)) {
-                    return;
-                }
-
-                // get pager object
-                this.currentPage = page;
-            }
-        }
-    }
+        .directive('sortRecords', sortRecords)
+        .directive('pageControl', pageControl);
 
     function userProfileController($scope, _CheckAuthentication) {
         $scope.isAuthenticated = function () {
@@ -56,6 +16,97 @@
             return _CheckAuthentication.getAccessLevel();
         };
 
+    }
+
+    pageControl.$inject = ['$filter'];
+    function pageControl($filter) {
+        return {
+            restrict: 'A',
+            transclude: true,
+            scope: {
+                gap: '@',
+                viewby: '=',
+                operations: '=',
+                currentpage: '=',
+                items: '=',
+                searchrecord: '='
+            },
+            template:
+            '<div class="row gridHead">' +
+            '<div class="col-sm-5">' +
+            '<div class="grid-option-setting">' +
+            '<strong>Show' +
+            '<select ng-model="viewby" class="select-width" ng-change="setPage(1)">' +
+            '<option ng-repeat="op in operations">{{op}}</option>' +
+            '</select> entries' +
+            '</strong></div>' +
+            '</div>' +
+            '<div class="col-sm-5 pull-right">' +
+            '<div class="input-group">' +
+            '<div class="input-group-addon"><i class="fa fa-search"></i></div>' +
+            '<input type="text" class="form-control" placeholder="Search" ng-model="searchrecord">' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '<div class="row">' +
+            '<div class="col-md-12">' +
+            '<ng-transclude></ng-transclude>' +
+            '<div class="row">' +
+            '<div class="col-md-12">' +
+            '<ul class="pagination">' +
+            '<li ng-class="{disabled:currentpage === 1}">' +
+            '<a ng-click="setPage(1)">First</a>' +
+            '</li>' +
+            '<li ng-class="{disabled:currentpage === 1}">' +
+            '<a ng-click="setPage(currentpage - 1)">Previous</a>' +
+            '</li>' +
+            '<li ng-repeat="page in range(currentpage)"' +
+            'ng-class="{active:currentpage === page}">' +
+            '<a ng-click="setPage(page)">{{page}}</a>' +
+            '</li>' +
+            '<li ng-class="{disabled:currentpage === getTotalPagesNum()}">' +
+            '<a ng-click="setPage(currentpage + 1)">Next</a>' +
+            '</li>' +
+            '<li ng-class="{disabled:currentpage === getTotalPagesNum()}">' +
+            '<a ng-click="setPage(getTotalPagesNum())">Last</a>' +
+            '</li>' +
+            '</ul>' +
+            '<span class="pull-right"><strong>Showing {{(currentpage-1)*viewby}} to {{currentpage*viewby}} of {{items.length}} entities</strong></span>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>',
+            link: function (scope) {
+
+                scope.getTotalPagesNum = function () {
+                    return Math.ceil($filter('filter')(scope.items, scope.searchrecord).length/scope.viewby);
+                };
+
+                scope.range = function (start) {
+                    var end =  start + scope.gap;
+                    var size = scope.getTotalPagesNum(scope.items, scope.searchrecord);
+                    var ret = [];
+
+                    if (size < end) {
+                        end = size + 1;
+                        start = size > scope.gap ? size - scope.gap : 1;
+                    }
+                    for (var i = start; i < end; i++) {
+                        ret.push(i);
+                    }
+                    return ret;
+                };
+
+                scope.setPage = function (page) {
+                    if (page < 1 || page > scope.getTotalPagesNum(scope.items, scope.searchrecord)) {
+                        return;
+                    }
+
+                    // get pager object
+                    scope.currentpage = page;
+                };
+            }
+        }
     }
 
     function sortRecords() {
