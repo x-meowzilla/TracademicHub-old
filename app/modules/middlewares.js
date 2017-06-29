@@ -58,33 +58,31 @@ module.exports.haveMinimumAdminAccessPrivilege = function (req, res, next) {
         });
 };
 
-
 module.exports.haveAuthority = function (req, res, next) {
     "use strict";
-    // Note: when calling this middleware function, target user id: req.params.userID must present!!
-    if (!req.params.userID) return res.status(400).send('Missing required field "userID" in URI.').end('Bad Request');
 
-    UserModel.findById(req.params.userID) // find target user access privilege
+    if (req.user._id.equals(req.params.userID))
+        return res.status(400).send('You cannot perform this action for yourself.').end('Bad Request');
+
+    UserModel.findById(req.params.userID)
         .then(function (targetUser) {
-            if (req.user._id.equals(targetUser._id)) // cannot perform self upgrade/downgrade
-                return res.status(400).send('You cannot perform this action for yourself.').end('Bad Request');
-            else if (req.user.accessPrivilege.equals(targetUser.accessPrivilege)) // if both users have same access privilege, then check if req user is upgrading target user access privilege
-                return deepPrivilegeCheck(req.user.accessPrivilege, req.params.accessID);
-            else // deep check privilege value
+            if (req.user.accessPrivilege.equals(targetUser.accessPrivilege)) // both users have the same access privilege
+                return res.status(403).send(noAuthorityError()).end('Forbidden');
+            else
                 return deepPrivilegeCheck(req.user.accessPrivilege, targetUser.accessPrivilege);
         })
         .catch(function (error) {
             return res.status(500).end(error.errmsg + ">>> have authority catch 1");
         });
 
-    function deepPrivilegeCheck(reqUserAccessID, targetAccessID) {
-        PrivilegeModel.findByIds(reqUserAccessID, targetAccessID)
+    function deepPrivilegeCheck(reqUserPrivilegeID, targetPrivilegeID) {
+        PrivilegeModel.findByIds(reqUserPrivilegeID, targetPrivilegeID)
             .then(function (array) {
                 // access privilege array must contain 2 objects
                 var reqUserAccessValue = null;
                 var targetAccessValue = null;
                 // compare the access privilege id to identify the value
-                if (array[0]._id.equals(reqUserAccessID)) {
+                if (array[0]._id.equals(reqUserPrivilegeID)) {
                     reqUserAccessValue = array[0].value;
                     targetAccessValue = array[1].value;
                 } else {
