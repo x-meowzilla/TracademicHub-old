@@ -57,11 +57,21 @@ module.exports = function (passport) {
                     return {error: null, user: user};
             })
             .then(function (result) {
-                return done(result.error, result.user);
+                return result.error ? done(result.error, result.user) : updateLoginDateAndReturnUserData(result.user);
             })
             .catch(function (error) {
                 return done(error, false);
             });
+
+        function updateLoginDateAndReturnUserData(user) {
+            user.updateLastLoginDate()
+                .then(function (user) {
+                    return done(null, user);
+                })
+                .catch(function (error) {
+                    return done(error, false);
+                });
+        }
     }));
 
 };

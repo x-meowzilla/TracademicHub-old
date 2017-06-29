@@ -97,7 +97,7 @@ userSchema.methods.updateLastLoginDate = function () {
     "use strict";
     var user = this;
     user.lastLoginDate = Date.now();
-    user.save();
+    return user.save();
 };
 
 // userSchema.methods.getAccessLevel = function () {
