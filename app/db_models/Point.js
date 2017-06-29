@@ -3,8 +3,6 @@ var Schema = mongoose.Schema;
 
 var pointSchema = new Schema({
 
-    // TODO - check embedded model design vs normalized model design
-
     assignerID: {type: Schema.Types.ObjectId, ref: 'User', required: true},
     assigneeID: {type: Schema.Types.ObjectId, ref: 'User', required: true},
     grantDate: {type: Date, default: Date.now, required: true},
@@ -19,9 +17,10 @@ pointSchema.statics.findPointData = function (findDoc) {
     return point.find(findDoc);
 };
 
-pointSchema.statics.deleteByID = function (pointID) {
+pointSchema.statics.deletePointData = function (deleteDoc) {
+    "use strict";
     var point = this.model('Point');
-    return point.remove({_id: pointID});
+    return point.remove(deleteDoc);
 };
 
 var PointModel = mongoose.model('Point', pointSchema);
