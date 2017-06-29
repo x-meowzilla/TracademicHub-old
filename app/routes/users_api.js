@@ -5,7 +5,27 @@ var UserModel = require('../db_models/User');
 
 // users URI: .../api/users/
 router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, function (req, res) {
-    UserModel.find({})
+    "use strict";
+    var findDoc = {};
+    for (var arg in req.query) {
+        switch (arg) {
+            case 'utorid':
+            case 'email':
+            case 'studentNumber':
+            case 'accessPrivilege':
+            case 'isActive':
+            case 'isLocalUser':
+                findDoc[arg] = req.query[arg];
+                break;
+            case 'firstName':
+            case 'lastName':
+            case 'preferredName':
+                findDoc['name.' + arg] = req.query[arg];
+                break;
+        }
+    }
+
+    UserModel.find(findDoc)
         .then(function (userArray) {
             var resultArray = userArray.map(function (user) {
                 return util.retrieveBasicUserData(user);
@@ -21,20 +41,6 @@ router.get('/:userID', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, 
     UserModel.findById(req.params.userID)
         .then(function (user) {
             return res.json(util.retrieveBasicUserData(user)).end();
-        })
-        .catch(function (error) {
-            return res.status(500).end(error.errmsg);
-        });
-});
-
-router.get('/privilege/:accessID', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
-    // get users by access privilege
-    UserModel.findByAccessPrivilege(req.params.accessID)
-        .then(function (userArray) {
-            var resultArray = userArray.map(function (user) {
-                return util.retrieveBasicUserData(user);
-            });
-            return res.json(resultArray).end();
         })
         .catch(function (error) {
             return res.status(500).end(error.errmsg);
