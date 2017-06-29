@@ -29,9 +29,8 @@
                         <th sort-Records order="date", sort="sort">Date</th>
                     </tr>
                     </thead>
-
                     <tbody>
-                    <tr ng-repeat="item in items.slice((currentpage-1)*viewby, currentpage*viewby) | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord">
+                    <tr ng-repeat="item in items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby">
                         <td>{{item.fullName}}</td>
                         <td>{{item.preferredName}}</td>
                         <td>{{item.category}}</td>

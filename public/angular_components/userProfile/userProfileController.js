@@ -34,6 +34,7 @@
             template:
             '<div class="row gridHead">' +
             '<div class="col-sm-5">' +
+            '<!--select number of displayed rows-->' +
             '<div class="grid-option-setting">' +
             '<strong>Show' +
             '<select ng-model="viewby" class="select-width" ng-change="setPage(1)">' +
@@ -41,6 +42,7 @@
             '</select> entries' +
             '</strong></div>' +
             '</div>' +
+            '<!--search bar-->' +
             '<div class="col-sm-5 pull-right">' +
             '<div class="input-group">' +
             '<div class="input-group-addon"><i class="fa fa-search"></i></div>' +
@@ -53,6 +55,7 @@
             '<ng-transclude></ng-transclude>' +
             '<div class="row">' +
             '<div class="col-md-12">' +
+            '<!--pagination controller-->' +
             '<ul class="pagination">' +
             '<li ng-class="{disabled:currentpage === 1}">' +
             '<a ng-click="setPage(1)">First</a>' +
