@@ -35,27 +35,42 @@
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
                         <tr>
-                            <th sort-Records order="fullName", sort="sort">First Name</th>
-                            <th sort-Records order="preferredName", sort="sort">Last Name</th>
-                            <th sort-Records order="category", sort="sort">Preferred Name</th>
-                            <th sort-Records order="course", sort="sort">Email</th>
-                            <th sort-Records order="date", sort="sort">Access Privilege</th>
-                            <th sort-Records order="date", sort="sort">Last Login Date</th>
+                            <th><input type="checkbox" ng-model="selectedAll" ng-click="checkAll(pagedItems)" /></th>
+                            <th sort-Records order="firstName", sort="sort">First Name</th>
+                            <th sort-Records order="lastName", sort="sort">Last Name</th>
+                            <th sort-Records order="preferredName", sort="sort">Preferred Name</th>
+                            <th sort-Records order="email", sort="sort">Email</th>
+                            <th sort-Records order="accessPrivilege", sort="sort">Access Privilege</th>
+                            <th sort-Records order="lastLoginDate", sort="sort">Last Login Date</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="item in items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby">
+                        <tr ng-repeat="item in (pagedItems = (items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby))">
+                            <td><input type="checkbox" ng-model="item.selected" ng-click="checkRow(item.selected)"/></td>
                             <td>{{item.name.firstName}}</td>
                             <td>{{item.name.lastName}}</td>
                             <td>{{item.name.preferredName}}</td>
                             <td>{{item.email}}</td>
                             <td>{{item.accessPrivilege}}</td>
                             <td>{{item.lastLoginDate}}</td>
+                            <td class="text-center">
+                                <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button>
+                            </td>
+                            <td class="text-center">
+                                <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button>
+                            </td>
                         </tr>
                         </tbody>
 
                         <tfoot>
-                        <td colspan="5" ng-if="(items|filter:searchrecord).length == 0" class="text-center">
+                        <td colspan="5" ng-if="(items|filter:searchrecord).length != 0 && checkedNumber>1">
+                            <button class="btn btn-danger checkedAllSection">Delete All</button>
+                            <button class="btn btn-primary checkedAllSection">Modify Access Privilege</button>
+                            <strong class="">{{checkedNumber}} record selected</strong>
+                        </td>
+                        <td colspan="9" ng-if="(items|filter:searchrecord).length == 0" class="text-center">
                             <strong>DATA NOT FOUND.</strong>
                         </td>
                         </tfoot>
@@ -71,10 +86,10 @@
                     <div class="col-lg-12">
                         <div class="col-md-6 col-lg-4" ng-repeat="item in items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby">
                             <div class="col-md-12 name-card-setting">
-                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                <div class="col-xs-4">
                                     <img class="img-circle avatar-small avatar">
                                 </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8">
+                                <div class="col-xs-8">
                                     <h4 class="crap-word text-center">{{item.name.firstName + " " +item.name.lastName}}</h4>
                                     <div class="crap-word" ng-if="item.name.preferredName"><strong>Preferred Name: </strong><div>{{item.name.preferredName}}</div></div>
                                     <div class="crap-word"><strong>Email: </strong><div>{{item.email}}</div></div>
