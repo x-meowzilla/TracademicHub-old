@@ -35,7 +35,7 @@
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
                         <tr>
-                            <th><input type="checkbox" ng-model="selectedAll" ng-click="checkAll(pagedItems, currentpage)" /></th>{{selectedAll}}  {{currentpage}}   {{checkedPages.indexOf(currentpage)}}   {{checkedPages}}
+                            <th><input type="checkbox" ng-model="selectedAll" ng-init="selectedAll=checkedPages.indexOf(currentpage) !== -1" ng-click="checkAll(pagedItems, currentpage)" /></th>
                             <th sort-Records order="firstName", sort="sort">First Name</th>
                             <th sort-Records order="lastName", sort="sort">Last Name</th>
                             <th sort-Records order="preferredName", sort="sort">Preferred Name</th>
@@ -48,7 +48,7 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="item in (pagedItems = (items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby))">
-                            <td><input type="checkbox" ng-model="item.selected" ng-click="checkRow(item.selected, pagedItems)"/></td>
+                            <td><input type="checkbox" ng-model="item.selected" ng-click="checkRow(item.selected, pagedItems, currentpage)"/></td>
                             <td>{{item.name.firstName}}</td>
                             <td>{{item.name.lastName}}</td>
                             <td>{{item.name.preferredName}}</td>

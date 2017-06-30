@@ -68,7 +68,6 @@
                 // remove current page from checked pages list
                 $scope.checkedPages.splice(idx, 1);
             }
-            console.log($scope.checkedPages);
 
             angular.forEach(pagedItems, function (item) {
                 var checked = $scope.checkedPages.indexOf(currentpage) !== -1;
@@ -81,14 +80,13 @@
             });
         };
 
-        $scope.checkRow = function (selectState, pagedItems) {
+        $scope.checkRow = function (selectState, pagedItems, currentpage) {
             $scope.checkedNumber = $scope.checkedNumber + (selectState ? 1 : -1);
             if($scope.checkedNumber === pagedItems.length)
             {
                 $scope.checkedPages.push(currentpage);
             }
         };
-
     }
 
 }());
