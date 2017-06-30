@@ -39,7 +39,7 @@
                 };
 
                 scope.range = function (start) {
-                    var end =  start + scope.gap;
+                    var end =  parseInt(start) + parseInt(scope.gap);
                     var size = scope.getTotalPagesNum(scope.items, scope.searchrecord);
                     var ret = [];
 
