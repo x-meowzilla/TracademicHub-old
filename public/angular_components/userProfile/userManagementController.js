@@ -82,11 +82,24 @@
 
         $scope.checkRow = function (selectState, pagedItems, currentpage) {
             $scope.checkedNumber = $scope.checkedNumber + (selectState ? 1 : -1);
+
             if($scope.checkedNumber === pagedItems.length)
             {
+                $scope.selectedAll.checked = true;
                 $scope.checkedPages.push(currentpage);
             }
+            else if($scope.selectedAll.checked)
+            {
+                $scope.selectedAll.checked = false;
+                var idx = $scope.checkedPages.indexOf(currentpage);
+                $scope.checkedPages.splice(idx, 1);
+            }
         };
+
+        $scope.selectedAll = {checked: true};
+        $scope.$watch('currentpage', function(newValue, oldValue) {
+            $scope.selectedAll.checked=$scope.checkedPages.indexOf(newValue) !== -1;
+        }, true);
     }
 
 }());

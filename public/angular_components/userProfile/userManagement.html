@@ -30,12 +30,12 @@
 
         <!--table view-->
         <div class="row" ng-if="tableDisplay">
-            <div class="col-lg-12" page-Control gap="5" viewby="viewby" currentpage="currentpage" operations="operations" items="items" searchrecord="searchrecord">
+            <div class="col-lg-12" page-Control gap="5" viewby="viewby" currentpage="$parent.currentpage" operations="operations" items="items" searchrecord="searchrecord">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
                         <tr>
-                            <th><input type="checkbox" ng-model="selectedAll" ng-init="selectedAll=checkedPages.indexOf(currentpage) !== -1" ng-click="checkAll(pagedItems, currentpage)" /></th>
+                            <th><input type="checkbox" ng-model="selectedAll.checked" ng-click="checkAll(pagedItems, currentpage)" /></th>
                             <th sort-Records order="firstName", sort="sort">First Name</th>
                             <th sort-Records order="lastName", sort="sort">Last Name</th>
                             <th sort-Records order="preferredName", sort="sort">Preferred Name</th>
