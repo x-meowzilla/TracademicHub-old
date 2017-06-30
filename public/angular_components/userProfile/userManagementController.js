@@ -51,20 +51,42 @@
         $scope.operations = [10, 20, 30];
         $scope.searchrecord = '';
 
-        // check all in table view
+        // check mutiple rows in table view
         $scope.checkedNumber = 0;
-        $scope.pagedItems = [];
-        $scope.checkAll = function (pagedItems) {
-            $scope.selectedAll = !$scope.selectedAll;
+        $scope.checkedPages = [];
+
+        $scope.checkAll = function (pagedItems, currentpage) {
+            var idx = $scope.checkedPages.indexOf(currentpage);
+
+            if(idx === -1)
+            {
+                // add current page to checked pages list
+                $scope.checkedPages.push(currentpage);
+            }
+            else
+            {
+                // remove current page from checked pages list
+                $scope.checkedPages.splice(idx, 1);
+            }
+            console.log($scope.checkedPages);
+
             angular.forEach(pagedItems, function (item) {
-                item.selected = $scope.selectedAll;
-                $scope.checkedNumber = $scope.checkedNumber + (item.selected ? 1 : -1);
+                var checked = $scope.checkedPages.indexOf(currentpage) !== -1;
+                if(checked != item.selected)
+                {
+                    // selected from true to false: -1, selected from false to true: +1
+                    $scope.checkedNumber = $scope.checkedNumber + (!item.selected ? 1 : -1);
+                }
+                item.selected = checked;
             });
         };
-        
-        $scope.checkRow = function (selectState) {
+
+        $scope.checkRow = function (selectState, pagedItems) {
             $scope.checkedNumber = $scope.checkedNumber + (selectState ? 1 : -1);
-            $scope.selectedAll = $scope.checkedNumber === $scope.pagedItems.length;
+            if($scope.checkedNumber === pagedItems.length)
+            {
+                $scope.checkedPages.push(currentpage);
+            }
         };
 
     }
