@@ -86,15 +86,23 @@
                     <div class="col-lg-12">
                         <div class="col-md-6 col-lg-4" ng-repeat="item in items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby">
                             <div class="col-md-12 name-card-setting">
-                                <div class="col-xs-4">
-                                    <img class="img-circle avatar-small avatar">
-                                </div>
-                                <div class="col-xs-8">
+                                <div class="col-md-12">
+                                    <div class="pull-left">
+                                        <button class="btn btn-info btn-xs btn-circle" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button>
+                                        <button class="btn btn-danger btn-xs btn-circle" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button>
+                                    </div>
                                     <h4 class="crap-word text-center">{{item.name.firstName + " " +item.name.lastName}}</h4>
-                                    <div class="crap-word" ng-if="item.name.preferredName"><strong>Preferred Name: </strong><div>{{item.name.preferredName}}</div></div>
-                                    <div class="crap-word"><strong>Email: </strong><div>{{item.email}}</div></div>
-                                    <div class="crap-word"><strong>Access Privilege: </strong><div>{{item.accessPrivilege}}</div></div>
-                                    <div class="crap-word"><strong>Last Login Date: </strong><div>{{item.lastLoginDate}}</div></div>
+                                </div>
+                                <div class="pull-left">
+                                    <div class="col-xs-4">
+                                        <img class="img-circle avatar-small avatar">
+                                    </div>
+                                    <div class="col-xs-8">
+                                        <div class="crap-word" ng-if="item.name.preferredName"><strong>Preferred Name: </strong><div>{{item.name.preferredName}}</div></div>
+                                        <div class="crap-word"><strong>Email: </strong><div>{{item.email}}</div></div>
+                                        <div class="crap-word"><strong>Access Privilege: </strong><div>{{item.accessPrivilege}}</div></div>
+                                        <div class="crap-word"><strong>Last Login Date: </strong><div>{{item.lastLoginDate}}</div></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
