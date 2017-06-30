@@ -16,18 +16,7 @@
             return _CheckAuthentication.getAccessLevel();
         };
 
-        // grid view
-        (function () {
-            _AjaxRequest.get('/api/users/')
-                .then(
-                function successCallback(result) {
-                    $scope.userDatas = result.data;
-                },
-                function errorCallback(error) {
-                    console.error(error);
-                }
-            )
-        }());
+        $scope.items = [];
 
         (function () {
             _AjaxRequest.get('/api/users/')
