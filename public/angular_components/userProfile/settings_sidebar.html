@@ -1,7 +1,7 @@
 <div class="sidebar navbar-default">
     <ul class="nav side-nav">
         <li>
-            <a href="/settings"><i class="fa fa-fw fa-dashboard"></i> Profile</a>
+            <a href="/profile"><i class="fa fa-fw fa-dashboard"></i> Profile</a>
         </li>
         <li>
             <a ng-href="/states"><i class="fa fa-fw fa-bar-chart-o"></i> States Details</a>
@@ -10,11 +10,11 @@
             <a href="/leaderBoardRank"><i class="fa fa-fw fa-table"></i> LeaderBoard Rank</a>
         </li>
         <li>
-            <a href="/manageProducts"><i class="fa fa-fw fa-wrench"></i> Manage Products</a>
+            <a href="/manageProducts"><i class="fa fa-fw fa-book"></i> Manage Products</a>
         </li>
         <!--ng-if="isAuthenticated()"-->
         <li>
-            <a href="javascript:;" data-toggle="collapse" data-target="#history"><i class="fa fa-fw fa-arrows-v"></i> History <i class="fa fa-fw fa-caret-down"></i></a>
+            <a href="javascript:;" data-toggle="collapse" data-target="#history"><i class="fa fa-fw fa-history"></i> History <i class="fa fa-fw fa-caret-down"></i></a>
             <ul id="history" class="collapse">
                 <li>
                     <a href="/pointsHistory">Points History</a>
@@ -26,10 +26,13 @@
         </li>
         <!--ng-if="isAuthenticated()"-->
         <li>
-            <a href="javascript:;" data-toggle="collapse" data-target="#management"><i class="fa fa-fw fa-arrows-v"></i> Management <i class="fa fa-fw fa-caret-down"></i></a>
+            <a href="javascript:;" data-toggle="collapse" data-target="#management"><i class="fa fa-fw fa-wrench"></i> Management <i class="fa fa-fw fa-caret-down"></i></a>
             <ul id="management" class="collapse">
                 <li>
                     <a href="/userManagement">User Management</a>
+                </li>
+                <li>
+                    <a href="/pointManagement">Point Management</a>
                 </li>
                 <li>
                     <a href="#">Dropdown Item</a>

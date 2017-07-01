@@ -11,7 +11,7 @@
                 .when('/', {
                     templateUrl: 'angular_components/homepage/homepage.html'
                 })
-                .when('/settings', {
+                .when('/profile', {
                     templateUrl: 'angular_components/userProfile/userProfile.html'
                 })
                 .when('/leaderBoardRank', {
@@ -28,6 +28,9 @@
                 })
                 .when('/userManagement', {
                     templateUrl: 'angular_components/userProfile/userManagement.html'
+                })
+                .when('/pointManagement', {
+                    templateUrl: 'angular_components/userProfile/pointManagement.html'
                 })
                 .otherwise({
                     templateUrl: 'angular_components/error_pages/404.html'
