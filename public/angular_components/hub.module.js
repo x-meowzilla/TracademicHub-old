@@ -32,6 +32,9 @@
                 .when('/pointManagement', {
                     templateUrl: 'angular_components/userProfile/pointManagement.html'
                 })
+                .when('/privilegeManagement', {
+                    templateUrl: 'angular_components/userProfile/privilegeManagement.html'
+                })
                 .otherwise({
                     templateUrl: 'angular_components/error_pages/404.html'
                 });

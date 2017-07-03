@@ -45,9 +45,7 @@
             template :
             '<div class="col-md-4 col-sm-6 col-xs-12">' +
             '<div class="panel panelBorder categoryPanel">' +
-            '<div class="panel-heading">' +
-            '<h2 class="panel-title">{{name}}</h2>' +
-            '</div>' +
+            '<div class="panel-heading"><h2 class="panel-title">{{name}}</h2></div>' +
             '<div class="panel-body">' +
             '<div class="categoryDescription">{{description}}</div>' +
             '<hr>' +

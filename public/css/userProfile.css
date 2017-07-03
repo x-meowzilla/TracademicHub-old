@@ -571,12 +571,11 @@ div.material-table table td:last-child {
 
 /*point management*/
 .categoryPanel {
-    height: 250px;
+    height: 200px;
 }
 
 .panelBorder {
     display: block;
-    padding: 4px;
     margin-bottom: 20px;
     line-height: 1.42857143;
     background-color: #fff;
@@ -585,7 +584,7 @@ div.material-table table td:last-child {
     -webkit-transition: border .2s ease-in-out;
     -o-transition: border .2s ease-in-out;
     transition: border .2s ease-in-out;
-    padding: 15px;
+    padding: 5px;
 }
 
 .categoryDescription {
@@ -606,4 +605,16 @@ div.material-table table td:last-child {
 .inputUser{
     margin-bottom: 20px;
     width: 300px;
+}
+
+
+/*privilege management*/
+.privilegeCard {
+    height: 300px;
+    overflow: scroll;
+}
+
+.privilegeDetail {
+    height: 180px;
+    overflow: scroll;
 }
