@@ -21,16 +21,95 @@
                 <div class="panel-group">
                     <div class="panel panel-warning">
                         <div class="panel-heading">
-                            <div class="panel-title">
-                                <div data-toggle="collapse" href="#collapse1" class="btn">
-                                    <div><strong>Add New Privilege Management <span class="fa fa-angle-double-down"></span></strong></div>
-                                </div>
+                            <div class="panel-title btn" data-toggle="collapse" href="#collapse1">
+                                <div><strong>Add New Privilege Management <span class="fa fa-angle-double-down"></span></strong></div>
                             </div>
                         </div>
                         <div id="collapse1" class="panel-collapse collapse">
                             <div class="panel-body">
-                                <div class="panelBorder"></div>
-                                <div class="panelBorder"></div>
+                                <div class="col-xs-12 well">
+                                    <!--input access privilege name-->
+                                    <div class="col-xs-12 col-sm-7">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><strong>Access Privilege Name</strong></span>
+                                            <input type="text" class="form-control" name="msg" placeholder="Enter New Access Privilege Name">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-5">
+                                        <button class="btn btn-success">Add Access Privilege</button>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-xs-12">
+                                    <div class="col-md-6">
+                                        <div class="panelBorder privilegeWrapper">
+                                            <h4>Select Accessable Pages</h4>
+                                            <hr>
+                                            <div class="privilege-group">
+                                                <div class="privilege privilege-info">
+                                                    <input type="checkbox" id="page1" name="checkbox" value="0">
+                                                    <label for="page1">
+                                                        <span class="privilege-title">Page 1</span>
+                                                        <span class="privilege-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In semper quam nunc.</span>
+                                                    </label>
+                                                </div>
+                                                <div class="privilege privilege-info">
+                                                    <input type="checkbox" id="page2" name="checkbox" value="1">
+                                                    <label for="page2">
+                                                        <span class="privilege-title">Page 2</span>
+                                                        <span class="privilege-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In semper quam nunc.</span>
+                                                    </label>
+                                                </div>
+                                                <div class="privilege privilege-info">
+                                                    <input type="checkbox" id="page3" name="checkbox" value="2">
+                                                    <label for="page3">
+                                                        <span class="privilege-title">Page 3</span>
+                                                        <span class="privilege-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In semper quam nunc.</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="panelBorder privilegeWrapper">
+                                            <h4>Select Accessable Operations</h4>
+                                            <hr>
+                                            <div class="privilege-group">
+                                                <div class="privilege">
+                                                    <input type="checkbox" id="op1" name="checkbox" value="0">
+                                                    <label for="op1">
+                                                        <span class="privilege-title">Operation 1</span>
+                                                        <span class="privilege-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In semper quam nunc.</span>
+                                                    </label>
+                                                </div>
+                                                <div class="privilege">
+                                                    <input type="checkbox" id="op2" name="checkbox" value="1">
+                                                    <label for="op2">
+                                                        <span class="privilege-title">Operation 2</span>
+                                                        <span class="privilege-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In semper quam nunc.</span>
+                                                    </label>
+                                                </div>
+                                                <div class="privilege">
+                                                    <input type="checkbox" id="op3" name="checkbox" value="2">
+                                                    <label for="op3">
+                                                        <span class="privilege-title">Operation 3</span>
+                                                        <span class="privilege-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In semper quam nunc.</span>
+                                                    </label>
+                                                </div>
+                                                <div class="privilege">
+                                                    <input type="checkbox" id="op4" name="checkbox" value="2">
+                                                    <label for="op4">
+                                                        <span class="privilege-title">Operation 4</span>
+                                                        <span class="privilege-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In semper quam nunc.</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
@@ -39,7 +118,7 @@
             </div>
 
             <div class="col-lg-12">
-                <div class="col-sm-6 col-xs-12">
+                <div class="col-md-6 col-sm-4 col-xs-12">
                     <div class="panel panel-info privilegeCard">
                         <div class="panel-heading text-center"><h2 class="panel-title">Professor</h2></div>
                         <div class="panel-body">
@@ -76,7 +155,7 @@
 
                 </div>
 
-                <div class="col-sm-6 col-xs-12">
+                <div class="col-md-6 col-sm-4 col-xs-12">
                     <div class="panel panel-info privilegeCard">
                         <div class="panel-heading text-center"><h2 class="panel-title">Student</h2></div>
                         <div class="panel-body">
@@ -113,7 +192,7 @@
 
                 </div>
 
-                <div class="col-sm-6 col-xs-12">
+                <div class="col-md-6 col-sm-4 col-xs-12">
                     <div class="panel panel-info privilegeCard">
                         <div class="panel-heading text-center"><h2 class="panel-title">TA</h2></div>
                         <div class="panel-body">

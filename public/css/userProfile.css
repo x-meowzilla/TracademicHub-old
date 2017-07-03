@@ -609,6 +609,68 @@ div.material-table table td:last-child {
 
 
 /*privilege management*/
+.privilege-group {
+    margin: 15px 0;
+}
+
+.privilege input[type="checkbox"]:empty {
+    display: none;
+}
+
+.privilege input[type="checkbox"]:empty ~ label span {
+    display: inline-block;
+}
+
+.privilege input[type="checkbox"]:empty ~ label span.privilege-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 5px 5px 5px 50px;
+}
+
+.privilege input[type="checkbox"]:empty ~ label span.privilege-description {
+    font-style: italic;
+    color: #5e5e5e;
+    margin: 5px 5px 5px 50px;
+}
+
+.privilege input[type="checkbox"]:checked ~ label:before {
+    content: '\f046';
+}
+
+.privilege input[type="checkbox"]:checked ~ label {
+    color: #fafafa;
+    background-color: #5bc0de;
+}
+
+.privilege input[type="checkbox"] ~ label:before {
+    font-family: 'FontAwesome';
+    content: '\f096';
+    position: absolute;
+    top: 50%;
+    margin-top: -11px;
+    left: 15px;
+    font-size: 22px;
+}
+
+.privilege input[type="checkbox"] ~ label {
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+}
+
+.privilege input[type="checkbox"] ~ label:focus,
+.privilege input[type="checkbox"] ~ label:hover {
+    box-shadow: 0px 0px 3px #333;
+}
+
+.privilegeWrapper {
+    overflow: scroll;
+    height: 400px;
+}
+
 .privilegeCard {
     height: 300px;
     overflow: scroll;
