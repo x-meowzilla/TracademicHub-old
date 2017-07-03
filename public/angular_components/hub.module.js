@@ -26,6 +26,12 @@
                 .when('/pointsHistory', {
                     templateUrl: 'angular_components/userProfile/pointsHistory.html'
                 })
+                .when('/loginHistory', {
+                    templateUrl: 'angular_components/userProfile/loginHistory.html'
+                })
+                .when('/userManagementHistory', {
+                    templateUrl: 'angular_components/userProfile/userManagementHistory.html'
+                })
                 .when('/userManagement', {
                     templateUrl: 'angular_components/userProfile/userManagement.html'
                 })
