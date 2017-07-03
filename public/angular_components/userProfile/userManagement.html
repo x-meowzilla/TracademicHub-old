@@ -66,8 +66,9 @@
 
                         <tfoot>
                         <td colspan="5" ng-if="(items|filter:searchrecord).length != 0 && checkedNumber>1">
-                            <button class="btn btn-danger checkedAllSection">Delete All</button>
-                            <button class="btn btn-primary checkedAllSection">Modify Access Privilege</button>
+                            <a class="btn btn-danger checkedAllSection">Delete All</a>
+                            <a class="btn btn-primary checkedAllSection">Modify Access Privilege</a>
+                            <a href="/pointManagement" class="btn btn-info checkedAllSection">Give Points</a>
                             <strong class="">{{checkedNumber}} record selected</strong>
                         </td>
                         <td colspan="9" ng-if="(items|filter:searchrecord).length == 0" class="text-center">

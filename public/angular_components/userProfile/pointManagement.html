@@ -12,10 +12,118 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    <span>Manage Products</span>
+                    <span>Points Management</span>
                 </h1>
             </div>
-        </div>
 
+            <!--category section-->
+            <div class="col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Assign Points</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div category-card name="category.categoryName" description="category.description" ng-repeat="category in categories"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!--select user section-->
+            <div class="col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Select Users</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-xs-12 col-sm-4">
+                            <div class="well well-lg selectUserSection">
+                                <!--input student name-->
+                                <div class="input-group col-sm-12 inputUser">
+                                    <span class="input-group-addon">Student Name</span>
+                                    <input type="text" class="form-control" name="msg">
+                                </div>
+                                <!--input student number-->
+                                <div class="input-group col-sm-12 inputUser">
+                                    <span class="input-group-addon">Student Number</span>
+                                    <input type="text" class="form-control" name="msg">
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="text-center">
+                                        <a class="btn btn-success givePointsBtn">Add</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-8">
+                            <div class="table-responsive selectUserSection">
+                                <table class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                    <td colspan="5" ng-if="users.length!==0" class="text-center">
+                                        <button class="btn btn-danger btn-lg">Delete All</button>
+                                        <button class="btn btn-info btn-lg">Give Points</button>
+                                        <strong class="">{{users.length}} users selected</strong>
+                                    </td>
+                                    <td colspan="5" ng-if="users.length===0" class="text-center">
+                                        <strong> NO USER CHOSEN. </strong>
+                                    </td>
+                                    </thead>
+                                    <thead>
+                                    <tr>
+                                        <th>Assignee First Name</th>
+                                        <th>Assignee Last Name</th>
+                                        <th>Assignee Preferred Name</th>
+                                        <th>Email</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="user in users">
+                                        <td>{{user.name.firstName}}</td>
+                                        <td>{{user.name.lastName}}</td>
+                                        <td>{{user.name.preferredName}}</td>
+                                        <td>{{user.email}}</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <td colspan="5" ng-if="users.length!==0" class="text-center">
+                                        <button class="btn btn-danger btn-lg">Delete All</button>
+                                        <button class="btn btn-info btn-lg">Give Points</button>
+                                        <strong class="">{{users.length}} users selected</strong>
+                                    </td>
+                                    <td colspan="5" ng-if="users.length===0" class="text-center">
+                                        <strong> NO USER CHOSEN. </strong>
+                                    </td>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+            <!--<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">-->
+                <!--<div class="thumbnail">-->
+                    <!--<div class="caption">-->
+                        <!--<div class='col-lg-12'>-->
+                            <!--<span class="glyphicon glyphicon-credit-card"></span>-->
+                            <!--<span class="glyphicon glyphicon-trash pull-right text-primary"></span>-->
+                        <!--</div>-->
+                        <!--<div class='col-lg-12 well well-add-card'>-->
+                            <!--<h4>John Deo Mobilel</h4>-->
+                        <!--</div>-->
+                        <!--<div class='col-lg-12'>-->
+                            <!--<p>4111xxxxxxxx3265</p>-->
+                            <!--<p class"text-muted">Exp: 12-08</p>-->
+                        <!--</div>-->
+                        <!--<button type="button" class="btn btn-primary btn-xs btn-update btn-add-card">Update</button>-->
+                        <!--<button type="button" class="btn btn-danger btn-xs btn-update btn-add-card">Vrify Now</button>-->
+                        <!--<span class='glyphicon glyphicon-exclamation-sign text-danger pull-right icon-style'></span>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
     </div>
 </div>

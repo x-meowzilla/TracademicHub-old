@@ -4,6 +4,7 @@
     angular
         .module('TracademicHub')
         .controller('userProfileController', userProfileController)
+        .factory('_AssignPoints', assignPoints)
         .directive('sortRecords', sortRecords)
         .directive('pageControl', pageControl);
 
@@ -16,6 +17,20 @@
             return _CheckAuthentication.getAccessLevel();
         };
 
+    }
+    
+    function assignPoints() {
+        return {
+
+            users: [],
+
+            addPoints: function () {
+                return this.users;
+            },
+            deletePoints: function () {
+                return this.users;
+            }
+        };
     }
 
     pageControl.$inject = ['$filter'];
