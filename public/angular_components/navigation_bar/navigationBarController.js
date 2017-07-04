@@ -59,6 +59,7 @@
 
                     var userData = result.data;
                     _CheckAuthentication._isAuthenticated = true;
+                    _CheckAuthentication._currentUser = userData;
                     _CheckAuthentication._displayName = getDisplayName(userData);
                     // _CheckAuthentication._accessLevel = userData.accessPrivilege;
 

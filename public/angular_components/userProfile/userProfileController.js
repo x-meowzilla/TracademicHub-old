@@ -17,6 +17,9 @@
             return _CheckAuthentication.getAccessLevel();
         };
 
+        $scope.currentUser = _CheckAuthentication._currentUser;
+        $scope.displayName = _CheckAuthentication._displayName;
+
     }
     
     function assignPoints() {
