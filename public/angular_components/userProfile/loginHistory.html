@@ -23,20 +23,20 @@
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
                         <tr>
-                            <th sort-Records order="fullName", sort="sort">Assignee Full Name</th>
-                            <th sort-Records order="preferredName", sort="sort">Assignee Preferred Name</th>
-                            <th sort-Records order="category", sort="sort">Category</th>
-                            <th sort-Records order="course", sort="sort">Course</th>
-                            <th sort-Records order="date", sort="sort">Date</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Preferred Name</th>
+                            <th>Access Privilege</th>
+                            <th>Last Login Date</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="item in items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby">
-                            <td>{{item.fullName}}</td>
-                            <td>{{item.preferredName}}</td>
-                            <td>{{item.category}}</td>
-                            <td>{{item.course}}</td>
-                            <td>{{item.date}}</td>
+                            <td>{{item.name.firstName}}</td>
+                            <td>{{item.name.lastName}}</td>
+                            <td>{{item.name.preferredName}}</td>
+                            <td>{{item.accessPrivilege}}</td>
+                            <td>{{item.lastLoginDate}}</td>
                         </tr>
                         </tbody>
 
