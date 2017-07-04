@@ -9,24 +9,37 @@
 
             $routeProvider
                 .when('/', {
-                    templateUrl: 'angular_components/homepage/homepage.html',
-                    controller: 'homepageController'
+                    templateUrl: 'angular_components/homepage/homepage.html'
                 })
-                .when('/settings', {
-                    templateUrl: 'angular_components/userProfile/userProfile.html',
-                    controller: 'userProfileController'
+                .when('/profile', {
+                    templateUrl: 'angular_components/userProfile/userProfile.html'
                 })
                 .when('/leaderBoardRank', {
-                    templateUrl: 'angular_components/userProfile/leaderBoardRank.html',
-                    controller: 'leaderBoardRankController'
+                    templateUrl: 'angular_components/userProfile/leaderBoardRank.html'
                 })
                 .when('/states', {
-                    templateUrl: 'angular_components/userProfile/states.html',
-                    controller: 'statesController'
+                    templateUrl: 'angular_components/userProfile/states.html'
                 })
                 .when('/manageProducts', {
-                    templateUrl: 'angular_components/userProfile/manageProducts.html',
-                    controller: 'manageProductsController'
+                    templateUrl: 'angular_components/userProfile/manageProducts.html'
+                })
+                .when('/pointsHistory', {
+                    templateUrl: 'angular_components/userProfile/pointsHistory.html'
+                })
+                .when('/loginHistory', {
+                    templateUrl: 'angular_components/userProfile/loginHistory.html'
+                })
+                .when('/userManagementHistory', {
+                    templateUrl: 'angular_components/userProfile/userManagementHistory.html'
+                })
+                .when('/userManagement', {
+                    templateUrl: 'angular_components/userProfile/userManagement.html'
+                })
+                .when('/pointManagement', {
+                    templateUrl: 'angular_components/userProfile/pointManagement.html'
+                })
+                .when('/privilegeManagement', {
+                    templateUrl: 'angular_components/userProfile/privilegeManagement.html'
                 })
                 .otherwise({
                     templateUrl: 'angular_components/error_pages/404.html'

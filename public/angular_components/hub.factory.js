@@ -21,6 +21,7 @@
 
             _isAuthenticated: false,
             _accessLevel: -1,
+            _currentUser: null,
             _displayName: "",
 
             isAuthenticated: function () {

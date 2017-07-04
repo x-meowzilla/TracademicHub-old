@@ -46,6 +46,21 @@
     background-color: #000 !important;
 }
 
+.side-nav>li>ul {
+    padding: 0;
+}
+
+.side-nav>li>ul>li>a {
+    display: block;
+    padding: 10px 15px 10px 38px;
+    text-decoration: none;
+    color: #999;
+}
+
+.side-nav>li>ul>li>a:hover {
+    color: #fff;
+}
+
 #sidebar-btn{
     display: none;
 }
@@ -74,6 +89,23 @@
 
 
 /*Profile Page*/
+.avatar{
+    content: url("../images/default-avatar.png");
+}
+
+.avatar-large{
+    height: 230px;
+    width: 230px;
+}
+
+.givePointsBtn{
+    margin-top: 5px;
+    border-radius: 15px;
+    color:#0275d8;
+    background-color:transparent;
+    border-color:#0275d8
+}
+
 #editProfileBtn{
     color: #2e6da4;
 }
@@ -145,4 +177,506 @@
 
 .progress-meter > .meter.meter-right > .meter-text {
     text-align: right;
+}
+
+.user-info-list>li{
+    overflow-x: scroll;
+}
+
+
+
+/*data tables*/
+div.material-table {
+    padding: 0;
+}
+
+div.material-table .hiddensearch {
+    padding: 0 14px 0 24px;
+    border-bottom: solid 1px #DDDDDD;
+    display: none;
+}
+
+div.material-table .hiddensearch input {
+    margin: 0;
+    border: transparent 0 !important;
+    height: 48px;
+    color: rgba(0, 0, 0, .84);
+}
+
+div.material-table .hiddensearch input:active {
+    border: transparent 0 !important;
+}
+
+div.material-table table {
+    table-layout: fixed;
+}
+
+div.material-table .table-header {
+    height: 64px;
+    padding-left: 24px;
+    padding-right: 14px;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    display: flex;
+    border-bottom: solid 1px #DDDDDD;
+}
+
+div.material-table .table-header .actions {
+    display: -webkit-flex;
+    margin-left: auto;
+}
+
+div.material-table .table-header .btn-flat {
+    min-width: 36px;
+    padding: 0 8px;
+}
+
+div.material-table .table-header input {
+    margin: 0;
+    height: auto;
+}
+
+div.material-table .table-header i {
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 24px;
+}
+
+div.material-table .table-footer {
+    height: 56px;
+    padding-left: 24px;
+    padding-right: 14px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
+    -webkit-align-items: center;
+    align-items: center;
+    font-size: 12px !important;
+    color: rgba(0, 0, 0, 0.54);
+}
+
+div.material-table .table-footer .dataTables_length {
+    display: -webkit-flex;
+    display: flex;
+}
+
+div.material-table .table-footer label {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.54);
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    /* works with row or column */
+
+    flex-direction: row;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+
+div.material-table .table-footer .select-wrapper {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    /* works with row or column */
+
+    flex-direction: row;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+
+div.material-table .table-footer .dataTables_info,
+div.material-table .table-footer .dataTables_length {
+    margin-right: 32px;
+}
+
+div.material-table .table-footer .material-pagination {
+    display: flex;
+    margin: 0;
+}
+
+div.material-table .table-footer .material-pagination li:first-child {
+    margin-right: 24px;
+}
+
+div.material-table .table-footer .material-pagination li a {
+    color: rgba(0, 0, 0, 0.54);
+}
+
+div.material-table .table-footer .select-wrapper input.select-dropdown {
+    margin: 0;
+    border-bottom: none;
+    height: auto;
+    line-height: normal;
+    font-size: 12px;
+    width: 40px;
+    text-align: right;
+}
+
+div.material-table .table-footer select {
+    background-color: transparent;
+    width: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    height: auto;
+    margin-left: 20px;
+}
+
+div.material-table .table-title {
+    font-size: 20px;
+    color: #000;
+}
+
+div.material-table table tr td {
+    padding: 0 0 0 56px;
+    height: 48px;
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.87);
+    border-bottom: solid 1px #DDDDDD;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div.material-table table tr td a {
+    color: inherit;
+}
+
+div.material-table table tr td a i {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.54);
+}
+
+div.material-table table tr {
+    font-size: 12px;
+}
+
+div.material-table table th {
+    font-size: 12px;
+    font-weight: 500;
+    color: #757575;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 0;
+    height: 56px;
+    padding-left: 56px;
+    vertical-align: middle;
+    outline: none !important;
+}
+
+div.material-table table th.sorting_asc,
+div.material-table table th.sorting_desc {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+div.material-table table th.sorting:after,
+div.material-table table th.sorting_asc:after,
+div.material-table table th.sorting_desc:after {
+    font-weight: normal;
+    font-style: normal;
+    font-size: 16px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    word-wrap: normal;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    content: "arrow_back";
+    -webkit-transform: rotate(90deg);
+    vertical-align: middle;
+}
+
+div.material-table table th.sorting:hover:after,
+div.material-table table th.sorting_asc:after,
+div.material-table table th.sorting_desc:after {
+    display: inline-block;
+}
+
+div.material-table table th.sorting_desc:after {
+    content: "arrow_forward";
+}
+
+div.material-table table tbody tr:hover {
+    background-color: #EEE;
+}
+
+div.material-table table th:first-child,
+div.material-table table td:first-child {
+    padding: 0 0 0 24px;
+}
+
+div.material-table table th:last-child,
+div.material-table table td:last-child {
+    padding: 0 14px 0 0;
+}
+
+/*functional operation to grid*/
+.gridHead{
+    margin-bottom: 3px;
+}
+
+.select-width{
+    width:49px;
+    height: 30px;
+}
+
+/*user management page*/
+.grid-option-setting{
+    padding-bottom: 10px;
+}
+
+.name-card-setting{
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    padding: 10px;
+    width: 100%;
+    height: 230px;
+}
+
+.name-card-setting:hover {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.name-card-setting h4{
+    color: #286090;
+}
+
+.crap-word {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.avatar-small{
+    height: 100px;
+    width: 100px;
+    margin-top: 20px;
+}
+
+.checkedAllSection{
+    margin-right: 20px;
+}
+
+.btn-circle {
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    padding: 3px 3px;
+    font-size: 10px;
+    line-height: 1.5;
+    border-radius: 30px;
+    margin: 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+
+
+
+/*product management*/
+/*switch button*/
+.switchbtn {
+    position: relative;
+    width: 90px;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select: none;
+}
+
+.switchbtn-checkbox {
+    display: none;
+}
+
+.switchbtn-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #27A1CA;
+}
+
+.switchbtn-inner {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+    -moz-transition: margin 0.3s ease-in 0s;
+    -webkit-transition: margin 0.3s ease-in 0s;
+    -o-transition: margin 0.3s ease-in 0s;
+    transition: margin 0.3s ease-in 0s;
+}
+
+.switchbtn-inner:before, .switchbtn-inner:after {
+    display: block;
+    float: left;
+    width: 50%;
+    height: 25px;
+    padding: 0;
+    line-height: 21px;
+    font-size: 15px;
+    color: white;
+    font-weight: bold;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+}
+
+.switchbtn-inner:before {
+    content: "Enable";
+    padding-left: 5px;
+    background-color: #FFFFFF;
+    color: #27A1CA;
+}
+
+.switchbtn-inner:after {
+    content: "Disable";
+    padding-right: 5px;
+    background-color: #9d9d9d;
+    color: #FFFFFF;
+    text-align: right;
+}
+
+.switchbtn-switch {
+    display: block;
+    width: 25px;
+    margin: 0px;
+    background: #27A1CA;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 65px;
+    -moz-transition: all 0.3s ease-in 0s;
+    -webkit-transition: all 0.3s ease-in 0s;
+    -o-transition: all 0.3s ease-in 0s;
+    transition: all 0.3s ease-in 0s;
+}
+
+.switchbtn-checkbox:checked + .switchbtn-label .switchbtn-inner {
+    margin-left: 0;
+}
+
+.switchbtn-checkbox:checked + .switchbtn-label .switchbtn-switch {
+    right: 0px;
+}
+
+/*point management*/
+.categoryPanel {
+    height: 200px;
+}
+
+.panelBorder {
+    display: block;
+    margin-bottom: 20px;
+    line-height: 1.42857143;
+    background-color: #fff;
+    border: 6px solid #D9D9D9;
+    border-radius: 15px;
+    -webkit-transition: border .2s ease-in-out;
+    -o-transition: border .2s ease-in-out;
+    transition: border .2s ease-in-out;
+    padding: 5px;
+}
+
+.categoryDescription {
+    height: 50px;
+    overflow-y: scroll;
+}
+
+.assignPoints {
+    margin: 1px;
+    height: 20px;
+    width: 100px;
+}
+
+.selectUserSection{
+    height: 250px;
+}
+
+.inputUser{
+    margin-bottom: 20px;
+    width: 300px;
+}
+
+
+/*privilege management*/
+.privilege-group {
+    margin: 15px 0;
+}
+
+.privilege input[type="checkbox"]:empty {
+    display: none;
+}
+
+.privilege input[type="checkbox"]:empty ~ label span {
+    display: inline-block;
+}
+
+.privilege input[type="checkbox"]:empty ~ label span.privilege-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 5px 5px 5px 50px;
+}
+
+.privilege input[type="checkbox"]:empty ~ label span.privilege-description {
+    font-style: italic;
+    color: #5e5e5e;
+    margin: 5px 5px 5px 50px;
+}
+
+.privilege input[type="checkbox"]:checked ~ label:before {
+    content: '\f046';
+}
+
+.privilege input[type="checkbox"]:checked ~ label {
+    color: #fafafa;
+    background-color: #5bc0de;
+}
+
+.privilege input[type="checkbox"] ~ label:before {
+    font-family: 'FontAwesome';
+    content: '\f096';
+    position: absolute;
+    top: 50%;
+    margin-top: -11px;
+    left: 15px;
+    font-size: 22px;
+}
+
+.privilege input[type="checkbox"] ~ label {
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+}
+
+.privilege input[type="checkbox"] ~ label:focus,
+.privilege input[type="checkbox"] ~ label:hover {
+    box-shadow: 0px 0px 3px #333;
+}
+
+.privilegeWrapper {
+    overflow: scroll;
+    height: 400px;
+}
+
+.privilegeCard {
+    height: 300px;
+    overflow: scroll;
+}
+
+.privilegeDetail {
+    height: 180px;
+    overflow: scroll;
 }
