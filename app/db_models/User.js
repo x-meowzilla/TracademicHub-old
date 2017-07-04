@@ -30,7 +30,7 @@ var userSchema = new Schema({
 userSchema.statics.findUserData = function (findDoc) {
     "use strict";
     var user = this.model('User');
-    return user.find(findDoc);
+    return user.find(findDoc).populate('accessPrivilege');
 };
 
 userSchema.statics.updateUserData = function (userID, updateDoc) {

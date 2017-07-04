@@ -22,7 +22,11 @@ module.exports.retrieveBasicUserData = function (user) {
         email: user.email,
         name: user.name,
         studentNumber: user.studentNumber,
-        accessPrivilege: user.accessPrivilege,
+        accessPrivilege: {
+            _id: user.accessPrivilege._id,
+            value: user.accessPrivilege.value,
+            description: user.accessPrivilege.description
+        },
         biography: user.biography,
         isActive: user.isActive,
         lastLoginDate: user.lastLoginDate

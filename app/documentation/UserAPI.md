@@ -24,7 +24,10 @@ User API Documentation
                 + lastName: (string)
                 + preferredName: (string) [_Optional_]
             + studentNumber: (string) U of T unique student number [_Optional_]
-            + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+            + accessPrivilege: (object)
+                + _id: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+                + value: (number) access privilege value
+                + description: (string) access privilege description
             + biography: (string) [_Optional_]
             + isActive: (boolean) Return True if this account is active, false otherwise.
             + lastLoginDate: (Date) last login date in UTC format [_Optional_]
@@ -53,7 +56,10 @@ User API Documentation
                 + lastName: (string)
                 + preferredName: (string) [_Optional_]
             + studentNumber: (string) U of T unique student number [_Optional_]
-            + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+            + accessPrivilege: (object)
+                + _id: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+                + value: (number) access privilege value
+                + description: (string) access privilege description
             + biography: (string) [_Optional_]
             + isActive: (boolean) Return True if this account is active, false otherwise.
             + lastLoginDate: (Date) last login date in UTC format [_Optional_]
@@ -98,7 +104,10 @@ User API Documentation
                 + lastName: (string)
                 + preferredName: (string) [_Optional_]
             + studentNumber: (string) U of T unique student number [_Optional_]
-            + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+            + accessPrivilege: (object)
+                + _id: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+                + value: (number) access privilege value
+                + description: (string) access privilege description
             + biography: (string) [_Optional_]
             + isActive: (boolean) Return True if this account is active, false otherwise.
             + lastLoginDate: (Date) last login date in UTC format [_Optional_]
@@ -134,7 +143,10 @@ User API Documentation
                 + lastName: (string)
                 + preferredName: (string) [_Optional_]
             + studentNumber: (string) U of T unique student number [_Optional_]
-            + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+            + accessPrivilege: (object)
+                + _id: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+                + value: (number) access privilege value
+                + description: (string) access privilege description
             + biography: (string) [_Optional_]
             + isActive: (boolean) Return True if this account is active, false otherwise.
             + lastLoginDate: (Date) last login date in UTC format [_Optional_]
@@ -153,6 +165,10 @@ User API Documentation
             + User must login and this account must be activated.
             + User must have minimum INSTRUCTOR access privilege.
         + **Query String Options:**
+            + firstName: (string)
+            + lastName: (string)
+            + email: (string)
+            + studentNumber: (number)
             + accessPrivilege: (string) access privilege ID
             + isActive: (boolean)
     + **Response:** 200
@@ -166,7 +182,10 @@ User API Documentation
                 + lastName: (string)
                 + preferredName: (string) [_Optional_]
             + studentNumber: (string) U of T unique student number [_Optional_]
-            + accessPrivilege: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+            + accessPrivilege: (object)
+                + _id: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+                + value: (number) access privilege value
+                + description: (string) access privilege description
             + biography: (string) [_Optional_]
             + isActive: (boolean) Return True if this account is active, false otherwise.
             + lastLoginDate: (Date) last login date in UTC format [_Optional_]

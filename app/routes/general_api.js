@@ -37,7 +37,7 @@ router.put('/local-register', _validateReqBodyUTORidAndPassword, _validateReqBod
                 user.utorid = req.body.utorid;
                 user.encryptPassword(req.body.password);
                 user.setFullName(req.body.firstName, req.body.lastName);
-                user.email = req.body.utorid + '-test@tracademichub.com'; // create a fake email address for now
+                user.email = req.body.utorid + '-test@tracademic.utsc.utoronto.ca'; // create a fake email address for now
                 user.accessPrivilege = adminAccess;
                 return user.save()
             })
