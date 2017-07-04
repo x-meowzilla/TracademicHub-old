@@ -1,0 +1,119 @@
+<div class="userProfilewrapper" ng-controller="userManagementController" ng-class="{'toggled': toggled}">
+
+    <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+    <div ng-include="'angular_components/userProfile/settings_sidebar.html'"></div>
+    <!-- /.navbar-collapse -->
+
+    <!--Page Views-->
+    <div class="userProfile-page-wrapper">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    <span>Users Management</span>
+                </h1>
+            </div>
+        </div>
+
+        <!--switch views control buttons-->
+        <div class="well well-sm" ng-init="tableDisplay = true">
+            <strong>Display</strong>
+            <div class="btn-group">
+                <span id="list" class="btn btn-default btn-sm" ng-click="tableDisplay = true" ng-class="{active: tableDisplay}" >
+                    <span class="glyphicon glyphicon-th-list"></span> List</span>
+                <span id="grid" class="btn btn-default btn-sm" ng-click="tableDisplay = false" ng-class="{active: !tableDisplay}">
+                    <span class="glyphicon glyphicon-th"></span> Grid</span>
+            </div>
+        </div>
+
+
+        <!--table view-->
+        <div class="row" ng-if="tableDisplay">
+            <div class="col-lg-12" page-Control gap="5" viewby="viewby" currentpage="$parent.currentpage" operations="operations" items="items" searchrecord="searchrecord">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" ng-model="selectedAll.checked" ng-click="checkAll(pagedItems, currentpage)" /></th>
+                            <th sort-Records order="firstName", sort="sort">First Name</th>
+                            <th sort-Records order="lastName", sort="sort">Last Name</th>
+                            <th sort-Records order="preferredName", sort="sort">Preferred Name</th>
+                            <th sort-Records order="email", sort="sort">Email</th>
+                            <th sort-Records order="accessPrivilege", sort="sort">Access Privilege</th>
+                            <th sort-Records order="lastLoginDate", sort="sort">Last Login Date</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in (pagedItems = (items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby))">
+                            <td><input type="checkbox" ng-model="item.selected" ng-click="checkRow(item.selected, pagedItems, currentpage)"/></td>
+                            <td>{{item.name.firstName}}</td>
+                            <td>{{item.name.lastName}}</td>
+                            <td>{{item.name.preferredName}}</td>
+                            <td>{{item.email}}</td>
+                            <td>{{item.accessPrivilege}}</td>
+                            <td>{{item.lastLoginDate}}</td>
+                            <td class="text-center">
+                                <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button>
+                            </td>
+                            <td class="text-center">
+                                <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                        <tfoot>
+                        <td colspan="5" ng-if="(items|filter:searchrecord).length != 0 && checkedNumber>1">
+                            <a class="btn btn-danger checkedAllSection">Delete All</a>
+                            <a class="btn btn-primary checkedAllSection">Modify Access Privilege</a>
+                            <a href="/pointManagement" class="btn btn-info checkedAllSection">Give Points</a>
+                            <strong class="">{{checkedNumber}} record selected</strong>
+                        </td>
+                        <td colspan="9" ng-if="(items|filter:searchrecord).length == 0" class="text-center">
+                            <strong>DATA NOT FOUND.</strong>
+                        </td>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!--card view-->
+        <div class="row" ng-if="!tableDisplay">
+            <div class="col-lg-12" page-Control gap="5" viewby="viewby" currentpage="currentpage" operations="operations" items="items" searchrecord="searchrecord">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="col-md-6 col-lg-4" ng-repeat="item in items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby">
+                            <div class="col-md-12 name-card-setting">
+                                <div class="col-md-12">
+                                    <div class="pull-left">
+                                        <button class="btn btn-info btn-xs btn-circle" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button>
+                                        <button class="btn btn-danger btn-xs btn-circle" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button>
+                                    </div>
+                                    <h4 class="crap-word text-center">{{item.name.firstName + " " +item.name.lastName}}</h4>
+                                </div>
+                                <div class="pull-left">
+                                    <div class="col-xs-4">
+                                        <img class="img-circle avatar-small avatar">
+                                    </div>
+                                    <div class="col-xs-8">
+                                        <div class="crap-word" ng-if="item.name.preferredName"><strong>Preferred Name: </strong><div>{{item.name.preferredName}}</div></div>
+                                        <div class="crap-word"><strong>Email: </strong><div>{{item.email}}</div></div>
+                                        <div class="crap-word"><strong>Access Privilege: </strong><div>{{item.accessPrivilege}}</div></div>
+                                        <div class="crap-word"><strong>Last Login Date: </strong><div>{{item.lastLoginDate}}</div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="(items|filter:searchrecord).length == 0" class="text-center">
+                            <h2>DATA NOT FOUND.</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

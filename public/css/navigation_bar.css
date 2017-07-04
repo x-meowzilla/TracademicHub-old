@@ -1,5 +1,5 @@
 .navbar-logo {
-    background: url(../img/th-logo.png) no-repeat center center;
+    background: url(../images/th-logo.png) no-repeat center center;
     background-size: cover;
     text-align: center;
     width: 36px;
@@ -22,4 +22,11 @@
 
 .dropdown-menu-short-width {
     width: 140px;
+}
+
+
+@media(max-width:320px) {
+    .navbar-name {
+        display: none;
+    }
 }

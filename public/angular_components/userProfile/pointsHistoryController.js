@@ -3,11 +3,12 @@
 
     angular
         .module('TracademicHub')
-        .controller('statesController', statesController)
+        .controller('pointsHistoryController', pointsHistoryController);
 
-    statesController.$inject = ['$scope', '_CheckAuthentication', '_AjaxRequest']; // dependency injection
 
-    function statesController($scope, _CheckAuthentication, _AjaxRequest) {
+    pointsHistoryController.$inject = ['$scope', '_CheckAuthentication', '_AjaxRequest']; // dependency injection
+
+    function pointsHistoryController($scope, _CheckAuthentication, _AjaxRequest) {
         $scope.isAuthenticated = function () {
             return _CheckAuthentication.isAuthenticated();
         };
@@ -74,9 +75,9 @@
             sortingOrder : '',
             reverse : false
         };
-        $scope.viewby = '5';
+        $scope.viewby = '10';
         $scope.currentpage = 1;
-        $scope.operations = [5, 10, 20];
+        $scope.operations = [10, 15, 20];
         $scope.searchrecord = '';
 
     };

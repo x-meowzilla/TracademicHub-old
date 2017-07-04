@@ -1,0 +1,47 @@
+<!--select number of displayed rows-->
+<div class="row gridHead">
+    <div class="col-sm-3">
+        <div class="grid-option-setting">
+            <strong>Show
+                <select ng-model="viewby" class="select-width" ng-change="setPage(1)">
+                    <option ng-repeat="op in operations">{{op}}</option>
+                </select> entries
+            </strong></div>
+    </div>
+    <!--search bar-->
+    <div class="col-sm-5 pull-right">
+        <div class="input-group">
+            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+            <input type="text" class="form-control" placeholder="Search" ng-model="searchrecord">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <ng-transclude></ng-transclude>
+        <div class="row">
+            <div class="col-md-12">
+                <!--pagination controller-->
+                <ul class="pagination">
+                    <li ng-class="{disabled:currentpage === 1}">
+                        <a ng-click="setPage(1)">First</a>
+                    </li>
+                    <li ng-class="{disabled:currentpage === 1}">
+                        <a ng-click="setPage(currentpage - 1)">Previous</a>
+                    </li>
+                    <li ng-repeat="page in range(currentpage)"
+                        ng-class="{active:currentpage === page}">
+                        <a ng-click="setPage(page)">{{page}}</a>
+                    </li>
+                    <li ng-class="{disabled:currentpage === getTotalPagesNum()}">
+                        <a ng-click="setPage(currentpage + 1)">Next</a>
+                    </li>
+                    <li ng-class="{disabled:currentpage === getTotalPagesNum()}">
+                        <a ng-click="setPage(getTotalPagesNum())">Last</a>
+                    </li>
+                </ul>
+                <span class="pull-right"><strong>Showing {{(currentpage-1)*viewby}} to {{currentpage*viewby}} of {{items.length}} entities</strong></span>
+            </div>
+        </div>
+    </div>
+</div>
