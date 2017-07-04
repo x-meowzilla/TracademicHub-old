@@ -5,8 +5,8 @@
         .module('TracademicHub')
         .controller('navbarController', navbarController);
 
-    navbarController.$inject = ['$scope', '_UTORidAuthentication', '_CheckAuthentication', '_AjaxRequest']; // dependency injection
-    function navbarController($scope, _UTORidAuthentication, _CheckAuthentication, _AjaxRequest) {
+    navbarController.$inject = ['$scope', '_UTORidAuthentication', '_AjaxRequest']; // dependency injection
+    function navbarController($scope, _UTORidAuthentication, _AjaxRequest) {
 
         var isMasterAccessEnabled = false;
 
@@ -15,15 +15,7 @@
         };
 
         $scope.isAuthenticated = function () {
-            return _CheckAuthentication.isAuthenticated();
-        };
-
-        $scope.getDisplayName = function () {
-            return _CheckAuthentication.getDisplayName();
-        };
-
-        $scope.getAccessLevel = function () {
-            return _CheckAuthentication.getAccessLevel();
+            return window.localStorage.getItem('currentUser') !== null;
         };
 
         $scope.isMasterLoginEnabled = function () {
@@ -51,17 +43,13 @@
                 utorid: $scope.masterUsername,
                 password: $scope.masterPassword
             };
-            //testtest
-            console.log("he" + $scope.masterUsername);
             _AjaxRequest.post('/api/local-login', formData, true).then(
                 function successCallback(result) {
-                    console.log(result);
 
                     var userData = result.data;
-                    _CheckAuthentication._isAuthenticated = true;
-                    _CheckAuthentication._currentUser = userData;
-                    _CheckAuthentication._displayName = getDisplayName(userData);
-                    // _CheckAuthentication._accessLevel = userData.accessPrivilege;
+                    window.localStorage.setItem('isAuthenticated', true);
+                    window.localStorage.setItem('currentUser', userData);
+                    window.localStorage.setItem('displayName', getDisplayName(userData));
 
                     // TODO - show login successful banner
 
@@ -74,6 +62,7 @@
                             return userData.utorid;
                         }
                     }
+
                 },
                 function errorCallback(error) {
                     console.log(error.data);
@@ -85,6 +74,7 @@
         $scope.logout = function () {
             _AjaxRequest.get('/api/logout').then(
                 function successCallback(result) {
+                    window.localStorage.clear();
                     console.log(result);
                 },
                 function errorCallback(error) {

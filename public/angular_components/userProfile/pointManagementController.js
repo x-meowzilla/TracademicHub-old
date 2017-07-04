@@ -6,16 +6,9 @@
         .controller('pointManagementController', pointManagementController)
         .directive('categoryCard', categoryCard);
 
-    pointManagementController.$inject = ['$scope', '_CheckAuthentication', '_AjaxRequest', '_AssignPoints']; // dependency injection
+    pointManagementController.$inject = ['$scope', '_AjaxRequest', '_AssignPoints']; // dependency injection
 
-    function pointManagementController($scope, _CheckAuthentication, _AjaxRequest, _AssignPoints) {
-        $scope.isAuthenticated = function () {
-            return _CheckAuthentication.isAuthenticated();
-        };
-
-        $scope.getAccessLevel = function () {
-            return _CheckAuthentication.getAccessLevel();
-        };
+    function pointManagementController($scope, _AjaxRequest, _AssignPoints) {
 
         $scope.categories = [
             {"categoryName":"Teaching Points", "description": "blah blah description"},

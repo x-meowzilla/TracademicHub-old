@@ -5,16 +5,9 @@
         .module('TracademicHub')
         .controller('leaderBoardRankController', leaderBoardRankController);
 
-    leaderBoardRankController.$inject = ['$scope', '_CheckAuthentication', '_AjaxRequest']; // dependency injection
+    leaderBoardRankController.$inject = ['$scope', '_AjaxRequest']; // dependency injection
 
-    function leaderBoardRankController($scope, _CheckAuthentication, _AjaxRequest) {
-        $scope.isAuthenticated = function () {
-            return _CheckAuthentication.isAuthenticated();
-        };
-
-        $scope.getAccessLevel = function () {
-            return _CheckAuthentication.getAccessLevel();
-        };
+    function leaderBoardRankController($scope, _AjaxRequest) {
 
         (function () {
             _AjaxRequest.get('/api/points/history')

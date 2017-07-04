@@ -28,12 +28,6 @@
                         <span>Admin</span>
                     </a>
                 </li>
-                <li ng-if="isAuthenticated()">
-                    <a href="dashboard">
-                        <span><i class="fa fa-tachometer fa-fw"></i></span>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
                 <li ng-if="!isAuthenticated()">
                     <a href="/" ng-click="UTORidLogin()">
                         <span><i class="fa fa-sign-in fa-fw"></i></span>
@@ -62,28 +56,17 @@
                         </li>
                     </ul>
                 </li>
-
-                <li class="dropdown" data-target="#navbar_user_dropdown" ng-if="isAuthenticated()">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <span>Sign-in as:</span>
-                        <span id="signed_in_username"><strong>{{getDisplayName()}}</strong></span>
-                        <span class="caret"></span>
+                <li ng-if="isAuthenticated()">
+                    <a ng-href="/profile">
+                        <span><i class="fa fa-user fa-fw"></i></span>
+                        <span>{{}} Settings</span>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-right dropdown-menu-short-width" id="navbar_user_dropdown">
-                        <li>
-                            <a ng-href="/profile">
-                                <span><i class="fa fa-user fa-fw"></i></span>
-                                <span>Settings</span>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#" ng-click="logout()">
-                                <span><i class="fa fa-sign-out fa-fw"></i></span>
-                                <span>Logout</span>
-                            </a>
-                        </li>
-                    </ul>
+                </li>
+                <li ng-if="isAuthenticated()" ng-click="logout()">
+                    <a ng-href="#">
+                        <span><i class="fa fa-sign-out fa-fw"></i></span>
+                        <span>Logout</span>
+                    </a>
                 </li>
             </ul>
         </div>

@@ -8,17 +8,10 @@
         .directive('sortRecords', sortRecords)
         .directive('pageControl', pageControl);
 
-    function userProfileController($scope, _CheckAuthentication) {
-        $scope.isAuthenticated = function () {
-            return _CheckAuthentication.isAuthenticated();
-        };
+    function userProfileController($scope) {
 
-        $scope.getAccessLevel = function () {
-            return _CheckAuthentication.getAccessLevel();
-        };
-
-        $scope.currentUser = _CheckAuthentication._currentUser;
-        $scope.displayName = _CheckAuthentication._displayName;
+        $scope.currentUser = window.localStorage.getItem('currentUser');
+        $scope.displayName = window.localStorage.getItem('displayName');
 
     }
     

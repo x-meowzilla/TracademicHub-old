@@ -6,16 +6,9 @@
         .controller('userManagementHistoryController', userManagementHistoryController);
 
 
-    userManagementHistoryController.$inject = ['$scope', '_CheckAuthentication', '_AjaxRequest']; // dependency injection
+    userManagementHistoryController.$inject = ['$scope', '_AjaxRequest']; // dependency injection
 
-    function userManagementHistoryController($scope, _CheckAuthentication, _AjaxRequest) {
-        $scope.isAuthenticated = function () {
-            return _CheckAuthentication.isAuthenticated();
-        };
-
-        $scope.getAccessLevel = function () {
-            return _CheckAuthentication.getAccessLevel();
-        };
+    function userManagementHistoryController($scope, _AjaxRequest) {
 
         $scope.items = [
             {"name":{"preferredName":"asdfasd123123f","firstName":"asfva1","lastName":"jgdf"}, "email":"abc@gmail.com", "accessPrivilege":"Student", "operationType":"add", "operationTime":"2017-06-29T17:07:04.837Z"},

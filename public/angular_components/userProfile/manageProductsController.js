@@ -6,16 +6,9 @@
         .controller('manageProductsController', manageProductsController)
         .directive('switchButton', switchButton);
 
-    manageProductsController.$inject = ['$scope', '_CheckAuthentication', '_AjaxRequest']; // dependency injection
+    manageProductsController.$inject = ['$scope', '_AjaxRequest']; // dependency injection
 
-    function manageProductsController($scope, _CheckAuthentication) {
-        $scope.isAuthenticated = function () {
-            return _CheckAuthentication.isAuthenticated();
-        };
-
-        $scope.getAccessLevel = function () {
-            return _CheckAuthentication.getAccessLevel();
-        };
+    function manageProductsController($scope) {
 
     }
 

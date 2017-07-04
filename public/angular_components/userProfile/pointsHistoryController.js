@@ -6,16 +6,9 @@
         .controller('pointsHistoryController', pointsHistoryController);
 
 
-    pointsHistoryController.$inject = ['$scope', '_CheckAuthentication', '_AjaxRequest']; // dependency injection
+    pointsHistoryController.$inject = ['$scope', '_AjaxRequest']; // dependency injection
 
-    function pointsHistoryController($scope, _CheckAuthentication, _AjaxRequest) {
-        $scope.isAuthenticated = function () {
-            return _CheckAuthentication.isAuthenticated();
-        };
-
-        $scope.getAccessLevel = function () {
-            return _CheckAuthentication.getAccessLevel();
-        };
+    function pointsHistoryController($scope, _AjaxRequest) {
 
         $scope.items = [
             {"fullName":1,"preferredName":"name 1","category":"description 1","course":"field3 1","date":"field4 1"},
