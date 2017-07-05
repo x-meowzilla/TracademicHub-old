@@ -42,17 +42,9 @@
             '<div class="panel-body">' +
             '<div class="categoryDescription">{{description}}</div>' +
             '<hr>' +
-            '<div class="col-xs-12">' +
-            '<div class="col-xs-6">' +
-            '<select class="assignPoints">' +
-            '<option>None</option>' +
-            '<option>Add Points</option>' +
-            '<option>Delete Points</option>' +
-            '</select>' +
-            '</div>' +
-            '<div class="col-xs-6">' +
-            '<input type="number" min="0" class="assignPoints"/>' +
-            '</div>' +
+            '<div class="input-group">' +
+            '<span class="input-group-addon">Enter points: </span>' +
+            '<input type="number" min="0" class="form-control">' +
             '</div>' +
             '</div>' +
             '</div>' +

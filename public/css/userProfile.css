@@ -126,6 +126,7 @@
     border-width: 1px 1px 1px 5px;
     margin-bottom: 5px;
     padding: 20px;
+    overflow: auto;
 }
 
 .bs-callout-danger {
@@ -570,10 +571,6 @@ div.material-table table td:last-child {
 }
 
 /*point management*/
-.categoryPanel {
-    height: 200px;
-}
-
 .panelBorder {
     display: block;
     margin-bottom: 20px;
@@ -587,24 +584,14 @@ div.material-table table td:last-child {
     padding: 5px;
 }
 
+.categoryPanel {
+    height: 220px;
+}
+
 .categoryDescription {
+    color: #5e5e5e;
     height: 50px;
     overflow-y: scroll;
-}
-
-.assignPoints {
-    margin: 1px;
-    height: 20px;
-    width: 100px;
-}
-
-.selectUserSection{
-    height: 250px;
-}
-
-.inputUser{
-    margin-bottom: 20px;
-    width: 300px;
 }
 
 

@@ -59,7 +59,7 @@
                 <li ng-if="isAuthenticated()">
                     <a ng-href="/profile">
                         <span><i class="fa fa-user fa-fw"></i></span>
-                        <span>{{displayName}}'s Settings</span>
+                        <span>{{displayName()}}'s Settings</span>
                     </a>
                 </li>
                 <li ng-if="isAuthenticated()" ng-click="logout()">
