@@ -75,12 +75,6 @@ userSchema.methods.setFullName = function (firstName, lastName) {
     user.name.lastName = lastName;
 };
 
-userSchema.methods.getPreferredName = function () {
-    "use strict";
-    var user = this;
-    return user.name.preferredName;
-};
-
 userSchema.methods.setPreferredName = function (preferredName) {
     "use strict";
     var user = this;
