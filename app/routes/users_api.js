@@ -11,7 +11,7 @@ var PrivilegeModel = require('../db_models/AccessPrivilege');
 router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, function (req, res) {
     "use strict";
     var findDoc = {};
-    for (var arg in req.query) {
+    Object.keys(req.query).forEach(function (arg) {
         switch (arg) {
             case '_id':
             case 'utorid':
@@ -27,8 +27,7 @@ router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, functio
                 findDoc['name.' + arg] = req.query[arg];
                 break;
         }
-    }
-
+    });
     UserModel.findUserData(findDoc)
         .then(function (userArray) {
             var resultArray = userArray.map(function (user) {
@@ -117,7 +116,7 @@ router.post('/:userID/avatar', uploadLocal.single('avatar'), function (req, res)
 router.patch('/:userID/update/user-info', mw.checkAuthentication, function (req, res) {
     "use strict";
     var updateDoc = {};
-    for (var arg in req.query) {
+    Object.keys(req.query).forEach(function (arg) {
         switch (arg) {
             case 'firstName':
             case 'lastName':
@@ -128,8 +127,7 @@ router.patch('/:userID/update/user-info', mw.checkAuthentication, function (req,
                 updateDoc[arg] = req.query[arg];
                 break;
         }
-    }
-
+    });
     UserModel.updateUserData(req.params.userID, updateDoc)
         .then(function (user) {
             return res.json(util.retrieveBasicUserData(user)).end();
@@ -142,7 +140,7 @@ router.patch('/:userID/update/user-info', mw.checkAuthentication, function (req,
 router.patch('/:userID/update/user-access', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
     "use strict";
     var updateDoc = {};
-    for (var arg in req.query) {
+    Object.keys(req.query).forEach(function (arg) {
         switch (arg) {
             case 'firstName':
             case 'lastName':
@@ -155,8 +153,7 @@ router.patch('/:userID/update/user-access', mw.checkAuthentication, mw.haveMinim
                 updateDoc[arg] = req.query[arg];
                 break;
         }
-    }
-
+    });
     UserModel.updateUserData(req.params.userID, updateDoc)
         .then(function (user) {
             return res.json(util.retrieveBasicUserData(user)).end();

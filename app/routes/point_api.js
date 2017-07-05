@@ -9,7 +9,7 @@ var UserModel = require('../db_models/User');
 router.get('/', mw.checkAuthentication, function (req, res) {
     "use strict";
     var findDoc = {};
-    for (var arg in req.query) {
+    Object.keys(req.query).forEach(function (arg) {
         switch (arg) {
             case '_id':
             case 'assignerID':
@@ -20,8 +20,7 @@ router.get('/', mw.checkAuthentication, function (req, res) {
                 findDoc[arg] = req.query[arg];
                 break;
         }
-    }
-
+    });
     PointModel.findPointData(findDoc)
         .then(function (pointsArray) {
             var resultArray = pointsArray.map(function (point) {
@@ -46,8 +45,7 @@ router.post('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, functi
         });
 
     function grantPoint(assignerID, assigneeID, pointValue, pointCategoryID) {
-        var pointModel = new PointModel({assigner: assignerID, assignee: assigneeID, value: pointValue ? pointValue : 1, category: pointCategoryID});
-        pointModel.save()
+        new PointModel({assigner: assignerID, assignee: assigneeID, value: pointValue ? pointValue : 1, category: pointCategoryID}).save()
             .then(function (point) {
                 return res.json(point).end();
             })
@@ -60,7 +58,7 @@ router.post('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, functi
 router.delete('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
     "use strict";
     var deleteDoc = {};
-    for (var arg in req.query) {
+    Object.keys(req.query).forEach(function (arg) {
         switch (arg) {
             case '_id':
             case 'assignerID':
@@ -71,8 +69,7 @@ router.delete('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivile
                 deleteDoc[arg] = req.query[arg];
                 break;
         }
-    }
-
+    });
     if (Object.keys(deleteDoc).length === 0) { // strictly check here. Valid query string must present!
         return res.status(400).send('Failed to delete. Delete option not found.').end();
     } else {
