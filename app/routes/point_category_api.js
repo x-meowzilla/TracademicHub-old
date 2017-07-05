@@ -10,7 +10,7 @@ router.get('/', mw.checkAuthentication, function (req, res) {
             return res.json(categoryArray).end();
         })
         .catch(function (error) {
-            return res.status(500).end(error.errmsg);
+            return res.status(500).send(error).end();
         });
 });
 
@@ -18,10 +18,10 @@ router.put('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege,
     "use strict";
     PointCategoryModel.findByPointCategoryName(req.body.categoryName)
         .then(function (category) {
-            return category ? res.status(409).send('Create point category failed. \'' + category.name + '\' category exists.').end('Conflict') : createPointCategory();
+            return category ? res.status(409).send('Create point category failed. \'' + category.name + '\' category exists.').end() : createPointCategory();
         })
         .catch(function (error) {
-            res.status(500).end(error.errmsg);
+            res.status(500).send(error).end();
         });
 
     function createPointCategory() {
@@ -31,7 +31,7 @@ router.put('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege,
                 res.json(category).end();
             })
             .catch(function (error) {
-                res.status(500).end(error.errmsg);
+                res.status(500).send(error).end();
             });
     }
 });
@@ -49,7 +49,7 @@ router.delete('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivile
     }
 
     if (Object.keys(deleteDoc).length === 0) { // strictly check here. Valid query string must present!
-        return res.status(400).send('Failed to delete. Delete option not found.').end('Bad Request');
+        return res.status(400).send('Failed to delete. Delete option not found.').end();
     } else {
         PointCategoryModel.deleteCategoryData(deleteDoc)
             .then(function (result) {

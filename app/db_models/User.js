@@ -13,8 +13,8 @@ var userSchema = new Schema({
     isActive: {type: Boolean, default: true, required: true},
     isLocalUser: {type: Boolean, default: false, required: true},
     password: {
-        salt: {type: String},
-        hash: {type: String}
+        salt: {type: String, sparse: true, unique: true},
+        hash: {type: String, sparse: true, unique: true}
     },
     name: {
         firstName: {type: String, required: true},
@@ -24,13 +24,13 @@ var userSchema = new Schema({
     biography: {type: String, default: ''},
     avatarPath: {type: String, default: null}
 
-}, {collection: 'UsersCollection', autoIndex: false}); // for production use
+}, {collection: 'UsersCollection'});
 
 // static methods
 userSchema.statics.findUserData = function (findDoc) {
     "use strict";
     var user = this.model('User');
-    return user.find(findDoc);
+    return user.find(findDoc).populate('accessPrivilege');
 };
 
 userSchema.statics.updateUserData = function (userID, updateDoc) {
@@ -38,13 +38,6 @@ userSchema.statics.updateUserData = function (userID, updateDoc) {
     var user = this.model('User');
     return user.findByIdAndUpdate(userID, {$set: updateDoc}, {new: true});
 };
-
-userSchema.statics.deactivateUsers = function () {
-    "use strict";
-    var user = this.model('User');
-    return user.update({isLocalUser: false}, {isActive: false}, {multi: true});
-};
-
 
 // method for local user
 userSchema.methods.encryptPassword = function (password) {
@@ -80,12 +73,6 @@ userSchema.methods.setFullName = function (firstName, lastName) {
     var user = this;
     user.name.firstName = firstName;
     user.name.lastName = lastName;
-};
-
-userSchema.methods.getPreferredName = function () {
-    "use strict";
-    var user = this;
-    return user.name.preferredName;
 };
 
 userSchema.methods.setPreferredName = function (preferredName) {

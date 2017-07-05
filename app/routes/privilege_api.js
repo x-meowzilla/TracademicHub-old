@@ -1,56 +1,29 @@
 var router = require('express').Router();
 var mw = require('../modules/middlewares');
-var PointModel = require('../db_models/Point');
-var UserModel = require('../db_models/User');
+var PrivilegeModel = require('../db_models/AccessPrivilege');
 
-
-// point URI: .../api/points/
-router.get('/', mw.checkAuthentication, function (req, res) {
+// point URI: .../api/privilege/
+router.get('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
     "use strict";
     var findDoc = {};
     for (var arg in req.query) {
         switch (arg) {
             case '_id':
-            case 'assignerID':
-            case 'assigneeID':
-            case 'grantDate':
             case 'value':
-            case 'categoryID':
+            case 'description':
                 findDoc[arg] = req.query[arg];
                 break;
         }
     }
 
-    PointModel.findPointData(findDoc)
+    PrivilegeModel.findAccessPrivilegeData(findDoc)
         .then(function (pointsArray) {
+            console.log(pointsArray);
             return res.json(pointsArray).end();
         })
         .catch(function (error) {
             return res.status(500).send(error).end();
         });
-});
-
-router.post('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, function (req, res) {
-    "use strict";
-    // req.body = {assigneeID, pointCategoryID, [pointValue]},
-    UserModel.findById(req.body.assigneeID)
-        .then(function (assignee) {
-            return assignee ? grantPoint(req.user._id, assignee._id, req.body.pointValue, req.body.pointCategoryID) : res.status(404).send('Target assignee id: "' + req.params.assigneeID + '" does not exist.').end();
-        })
-        .catch(function (error) {
-            return res.status(500).send(error).end();
-        });
-
-    function grantPoint(assignerID, assigneeID, pointValue, pointCategoryID) {
-        var pointModel = new PointModel({assignerID: assignerID, assigneeID: assigneeID, value: pointValue ? pointValue : 1, categoryID: pointCategoryID});
-        pointModel.save()
-            .then(function (point) {
-                return res.json(point).end();
-            })
-            .catch(function (error) {
-                return res.status(500).send(error).end();
-            });
-    }
 });
 
 router.delete('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
@@ -59,11 +32,8 @@ router.delete('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivile
     for (var arg in req.query) {
         switch (arg) {
             case '_id':
-            case 'assignerID':
-            case 'assigneeID':
-            case 'grantDate':
             case 'value':
-            case 'categoryID':
+            case 'description':
                 deleteDoc[arg] = req.query[arg];
                 break;
         }
@@ -72,7 +42,7 @@ router.delete('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivile
     if (Object.keys(deleteDoc).length === 0) { // strictly check here. Valid query string must present!
         return res.status(400).send('Failed to delete. Delete option not found.').end();
     } else {
-        PointModel.deletePointData(deleteDoc)
+        PrivilegeModel.deleteAccessPrivilegeData(deleteDoc)
             .then(function (result) {
                 return result.result.n;
             })
