@@ -50,10 +50,10 @@ module.exports = function () {
     }());
 
     // (function initializeLearningPointsCategory() {
-    //     var learningPtsCategory = new PointsCategoryModel({name: 'Learning Point'});
+    //     var learningPtsCategory = new PointsCategoryModel({description: 'Learning Point'});
     //     learningPtsCategory.save()
     //         .then(function (category) {
-    //             console.log('Points category created. Name: ' + category.name);
+    //             console.log('Points category created. Name: ' + category.description);
     //         })
     //         .catch(function (error) {
     //             console.log('Learning points category exists.');
@@ -61,10 +61,10 @@ module.exports = function () {
     // }());
     //
     // (function initializeExperiencePointsCategory() {
-    //     var expPtsCategory = new PointsCategoryModel({name: 'Experience Point'});
+    //     var expPtsCategory = new PointsCategoryModel({description: 'Experience Point'});
     //     expPtsCategory.save()
     //         .then(function (category) {
-    //             console.log('Points category created. Name: ' + category.name);
+    //             console.log('Points category created. Name: ' + category.description);
     //         })
     //         .catch(function (error) {
     //             console.log('Experience points category exists.');
@@ -72,10 +72,10 @@ module.exports = function () {
     // }());
     //
     // (function initializeChallengePointsCategory() {
-    //     var challengePtsCategory = new PointsCategoryModel({name: 'Challenge Point'});
+    //     var challengePtsCategory = new PointsCategoryModel({description: 'Challenge Point'});
     //     challengePtsCategory.save()
     //         .then(function (category) {
-    //             console.log('Points category created. Name: ' + category.name);
+    //             console.log('Points category created. Name: ' + category.description);
     //         })
     //         .catch(function (error) {
     //             console.log('Challenge points category exists.');
