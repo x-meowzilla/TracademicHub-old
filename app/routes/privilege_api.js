@@ -15,7 +15,7 @@ router.get('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege,
                 break;
         }
     });
-    PrivilegeModel.getAccessPrivilegeData(findDoc)
+    PrivilegeModel.findAccessPrivilegeData(findDoc)
         .then(function (pointsArray) {
             return res.json(pointsArray).end();
         })

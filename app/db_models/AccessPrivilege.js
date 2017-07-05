@@ -22,7 +22,7 @@ privilegeSchema.statics.findByIds = function (reqUserAccessID, targetUserAccessI
     return access.find({_id: {$in: [mongoose.Types.ObjectId(reqUserAccessID), mongoose.Types.ObjectId(targetUserAccessID)]}});
 };
 
-privilegeSchema.statics.getAccessPrivilegeData = function (findDoc) {
+privilegeSchema.statics.findAccessPrivilegeData = function (findDoc) {
     "use strict";
     var access = this.model('AccessPrivilege');
     return access.find(findDoc);

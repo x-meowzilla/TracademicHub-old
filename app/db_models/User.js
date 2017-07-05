@@ -36,7 +36,7 @@ userSchema.statics.findUserData = function (findDoc) {
 userSchema.statics.updateUserData = function (userID, updateDoc) {
     "use strict";
     var user = this.model('User');
-    return user.findByIdAndUpdate(userID, {$set: updateDoc}, {new: true});
+    return user.findByIdAndUpdate(userID, {$set: updateDoc}, {new: true}).populate('accessPrivilege');
 };
 
 // method for local user
