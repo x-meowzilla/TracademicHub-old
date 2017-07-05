@@ -18,6 +18,10 @@
             return window.localStorage.getItem('currentUser') !== null;
         };
 
+        $scope.displayName = function (){
+            return window.localStorage.getItem('displayName');
+        };
+
         $scope.isMasterLoginEnabled = function () {
             return isMasterAccessEnabled;
         };
@@ -47,11 +51,7 @@
                 function successCallback(result) {
 
                     var userData = result.data;
-                    window.localStorage.setItem('isAuthenticated', true);
-                    window.localStorage.setItem('currentUser', userData);
-                    window.localStorage.setItem('displayName', getDisplayName(userData));
-
-                    // TODO - show login successful banner
+                    window.localStorage.setItem('currentUser', JSON.stringify(userData));
 
                     function getDisplayName(userData) {
                         if (userData.name.preferredName) {
@@ -62,7 +62,9 @@
                             return userData.utorid;
                         }
                     }
+                    window.localStorage.setItem('displayName', getDisplayName(userData));
 
+                    // TODO - show login successful banner
                 },
                 function errorCallback(error) {
                     console.log(error.data);

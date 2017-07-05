@@ -10,7 +10,7 @@
 
     function userProfileController($scope) {
 
-        $scope.currentUser = window.localStorage.getItem('currentUser');
+        $scope.currentUser = JSON.parse(window.localStorage.getItem('currentUser'));
         $scope.displayName = window.localStorage.getItem('displayName');
 
     }
