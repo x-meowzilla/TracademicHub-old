@@ -33,3 +33,26 @@ module.exports.retrieveBasicUserData = function (user) {
     }
 
 };
+
+module.exports.retrieveBasicPointData = function (point) {
+    "use strict";
+
+    return {
+        _id: point._id,
+        assigner: {
+            _id: point.assigner._id,
+            name: point.assigner.name
+        },
+        assignee: {
+            _id: point.assignee._id,
+            name: point.assignee.name
+        },
+        value: point.value,
+        category: {
+            _id: point.category._id,
+            name: point.category.name
+        },
+        grantDate: point.grantDate
+    }
+
+};

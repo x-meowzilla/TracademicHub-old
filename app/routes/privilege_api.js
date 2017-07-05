@@ -18,7 +18,6 @@ router.get('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege,
 
     PrivilegeModel.findAccessPrivilegeData(findDoc)
         .then(function (pointsArray) {
-            console.log(pointsArray);
             return res.json(pointsArray).end();
         })
         .catch(function (error) {

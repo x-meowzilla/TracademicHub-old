@@ -40,7 +40,7 @@ Point API Documentation
         + Body:
             + assigneeID: (string) unique user ID
             + pointValue: (number) the value of this point [_Optional_]
-            + categoryID: (boolean) point category ID (ID refer to PointCollection collection)
+            + pointCategoryID: (boolean) point category ID (ID refer to PointCollection collection)
     + **Response:** 200
         + Content-Type: ```application/json```
         + Body:

@@ -1,5 +1,6 @@
 var router = require('express').Router();
 var mw = require('../modules/middlewares');
+var util = require('../modules/utility');
 var PointModel = require('../db_models/Point');
 var UserModel = require('../db_models/User');
 
@@ -23,7 +24,10 @@ router.get('/', mw.checkAuthentication, function (req, res) {
 
     PointModel.findPointData(findDoc)
         .then(function (pointsArray) {
-            return res.json(pointsArray).end();
+            var resultArray = pointsArray.map(function (point) {
+                return util.retrieveBasicPointData(point);
+            });
+            return res.json(resultArray).end();
         })
         .catch(function (error) {
             return res.status(500).send(error).end();
@@ -42,7 +46,7 @@ router.post('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, functi
         });
 
     function grantPoint(assignerID, assigneeID, pointValue, pointCategoryID) {
-        var pointModel = new PointModel({assignerID: assignerID, assigneeID: assigneeID, value: pointValue ? pointValue : 1, categoryID: pointCategoryID});
+        var pointModel = new PointModel({assigner: assignerID, assignee: assigneeID, value: pointValue ? pointValue : 1, category: pointCategoryID});
         pointModel.save()
             .then(function (point) {
                 return res.json(point).end();
