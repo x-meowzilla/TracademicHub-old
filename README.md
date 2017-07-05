@@ -1,11 +1,6 @@
 Tracademic Hub
 ---------------
 
-+ Directory Overview
-    + app - nodejs related components
-    + public - frontend UI
-        + angular_components - angularjs components
-    
 + Gmail Account Registration:
     + Email: tracademic.hub@gmail.com
     + Password: TracademicHub@UTSC0
@@ -17,3 +12,9 @@ Tracademic Hub
     2. Database admin (visible after login to console):
         + username: THDBadmin
         + password: TracademicHub
+
++ API Documentation:
+    1. [User API Documentation](./app/documentation/UserAPI.md)
+    2. [Points API Documentation](./app/documentation/PointAPI.md)
+    3. []()
+    4. []()
