@@ -23,8 +23,10 @@
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
                         <tr>
-                            <th sort-Records order="fullName", sort="sort">Assignee Full Name</th>
-                            <th sort-Records order="preferredName", sort="sort">Assignee Preferred Name</th>
+                            <th sort-Records order="assigneeFullName", sort="sort">Assignee Full Name</th>
+                            <th sort-Records order="assigneePreferredName", sort="sort">Assignee Preferred Name</th>
+                            <th sort-Records order="assignerFullName", sort="sort">Assigner Full Name</th>
+                            <th sort-Records order="assignerPreferredName", sort="sort">Assigner Preferred Name</th>
                             <th sort-Records order="category", sort="sort">Category</th>
                             <th sort-Records order="course", sort="sort">Course</th>
                             <th sort-Records order="date", sort="sort">Date</th>
@@ -33,6 +35,8 @@
                         <tbody>
                         <tr ng-repeat="item in items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby">
                             <td>{{item.fullName}}</td>
+                            <td>{{item.fullName}}</td>
+                            <td>{{item.preferredName}}</td>
                             <td>{{item.preferredName}}</td>
                             <td>{{item.category}}</td>
                             <td>{{item.course}}</td>
