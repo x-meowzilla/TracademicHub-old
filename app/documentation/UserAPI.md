@@ -13,6 +13,7 @@ User API Documentation
             + password: (string) master account password
             + firstName: (string) master user first name
             + lastName: (string) master user last name
+            + preferredName: (string) [_Optional_]
     + **Response:** 200
         + Content-Type: ```application/json```
         + Body:

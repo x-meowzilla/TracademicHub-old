@@ -9,7 +9,7 @@ var PrivilegeModel = require('../db_models/AccessPrivilege');
 router.post('/local-login', _validateReqBodyUTORidAndPassword, function (req, res) {
     passport.authenticate('local', {session: true}, function (error, user) {
         if (error) {
-            return res.status(error.errcode).send(error.errmsg).end();
+            return res.status(error.code).send(error.message).end();
         } else {
             req.login(user, function () {
                 return res.json(util.retrieveBasicUserData(user)).end();
@@ -28,15 +28,17 @@ router.put('/local-register', _validateReqBodyUTORidAndPassword, _validateReqBod
         });
 
     function createLocalUser() {
-        PrivilegeModel.findByPrivilegeValueAndDescription(util.ACCESS_ADMIN, util.ACCESS_ADMIN_DESCRIPTION)
-            .then(function (adminAccess) {
-                return adminAccess._id;
+        PrivilegeModel.findAccessPrivilegeData({value: util.ACCESS_ADMIN, description: util.ACCESS_ADMIN_DESCRIPTION})
+            .then(function (accessArray) {
+                return accessArray[0]._id;
             })
             .then(function (adminAccess) {
                 var user = new UserModel();
                 user.utorid = req.body.utorid;
                 user.encryptPassword(req.body.password);
-                user.setFullName(req.body.firstName, req.body.lastName);
+                user.name.firstName = req.body.firstName;
+                user.name.lastName = req.body.lastName;
+                user.name.preferredName = req.body.preferredName ? req.body.preferredName : '';
                 user.email = req.body.utorid + '-test@tracademic.utsc.utoronto.ca'; // create a fake email address for now
                 user.accessPrivilege = adminAccess;
                 return user.save();

@@ -51,10 +51,10 @@ router.post('/', uploadMemory.single('csvfile'), function (req, res) {
         return res.status(400).send('Student CSV file is not properly formatted.').end();
     // if the header is valid, then generate user data object
     var userDataArray = generateUserData(header, csv.content);
-    PrivilegeModel.findByPrivilegeValueAndDescription(util.ACCESS_STUDENT, util.ACCESS_STUDENT_DESCRIPTION)
-        .then(function (stuAccess) { // map student access to each user data object
+    PrivilegeModel.findAccessPrivilegeData({value: util.ACCESS_STUDENT, description: util.ACCESS_STUDENT_DESCRIPTION})
+        .then(function (accessArray) { // map student access to each user data object
             return userDataArray.map(function (userData) {
-                userData.accessPrivilege = stuAccess._id;
+                userData.accessPrivilege = accessArray[0]._id;
                 return userData;
             });
         })
