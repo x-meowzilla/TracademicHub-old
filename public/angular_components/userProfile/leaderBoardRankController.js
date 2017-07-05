@@ -5,9 +5,9 @@
         .module('TracademicHub')
         .controller('leaderBoardRankController', leaderBoardRankController);
 
-    leaderBoardRankController.$inject = ['$scope', '_AjaxRequest']; // dependency injection
+    leaderBoardRankController.$inject = ['$scope', '$location', '_AjaxRequest']; // dependency injection
 
-    function leaderBoardRankController($scope, _AjaxRequest) {
+    function leaderBoardRankController($scope, $location, _AjaxRequest) {
 
         (function () {
             _AjaxRequest.get('/api/points/history')
@@ -70,6 +70,11 @@
         $scope.currentpage = 1;
         $scope.operations = [10, 20, 30];
         $scope.searchrecord = '';
+        
+        $scope.viewUserProfile = function (user) {
+            $location.path( "/profile" );
+
+        }
     }
 
 }());

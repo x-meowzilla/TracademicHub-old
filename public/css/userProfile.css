@@ -667,3 +667,8 @@ div.material-table table td:last-child {
     height: 180px;
     overflow: scroll;
 }
+
+.cursor {
+    cursor: pointer;
+    cursor: hand;
+}

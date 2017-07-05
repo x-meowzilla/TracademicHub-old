@@ -2,7 +2,7 @@ var router = require('express').Router();
 var mw = require('../modules/middlewares');
 var PrivilegeModel = require('../db_models/AccessPrivilege');
 
-// point URI: .../api/privilege/
+// point URI: .../api/privileges/
 router.get('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
     "use strict";
     var findDoc = {};
