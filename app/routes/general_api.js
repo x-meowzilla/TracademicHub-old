@@ -39,7 +39,7 @@ router.put('/local-register', _validateReqBodyUTORidAndPassword, _validateReqBod
                 user.setFullName(req.body.firstName, req.body.lastName);
                 user.email = req.body.utorid + '-test@tracademic.utsc.utoronto.ca'; // create a fake email address for now
                 user.accessPrivilege = adminAccess;
-                return user.save()
+                return user.save();
             })
             .then(function (user) {
                 return res.json(util.retrieveBasicUserData(user)).end();
@@ -74,7 +74,7 @@ function _validateReqBodyFirstNameAndLastName(req, res, next) {
         errmsg = 'Missing required field "firstName" in request body.';
     else if (!req.body.lastName)
         errmsg = 'Missing required field "lastName" in request body.';
-    return errmsg ? res.status(400).send(errmsg).end() : next()
+    return errmsg ? res.status(400).send(errmsg).end() : next();
 }
 
 module.exports = router;

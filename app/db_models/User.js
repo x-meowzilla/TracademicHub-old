@@ -62,25 +62,6 @@ userSchema.methods.verifyPassword = function (password) {
     }
 };
 
-userSchema.methods.getFullName = function () {
-    "use strict";
-    var user = this;
-    return {firstName: user.name.firstName, lastName: user.name.lastName};
-};
-
-userSchema.methods.setFullName = function (firstName, lastName) {
-    "use strict";
-    var user = this;
-    user.name.firstName = firstName;
-    user.name.lastName = lastName;
-};
-
-userSchema.methods.setPreferredName = function (preferredName) {
-    "use strict";
-    var user = this;
-    user.name.preferredName = preferredName;
-};
-
 userSchema.methods.updateLastLoginDate = function () {
     "use strict";
     var user = this;

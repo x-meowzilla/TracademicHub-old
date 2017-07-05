@@ -60,7 +60,7 @@ mongoose.connection.on('open', function (error) {
     return error ? console.error(error) : console.log('Connected to mongodb.');
 });
 mongoose.connection.on('disconnected', function (error) {
-    return error ? console.error(error) : console.log('Disconnected from mongodb.')
+    return error ? console.error(error) : console.log('Disconnected from mongodb.');
 });
 mongoose.connection.on('error', function (error) {
     return console.error(error);

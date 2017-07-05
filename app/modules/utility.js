@@ -30,7 +30,7 @@ module.exports.retrieveBasicUserData = function (user) {
         biography: user.biography,
         isActive: user.isActive,
         lastLoginDate: user.lastLoginDate
-    }
+    };
 
 };
 
@@ -53,6 +53,6 @@ module.exports.retrieveBasicPointData = function (point) {
             name: point.category.name
         },
         grantDate: point.grantDate
-    }
+    };
 
 };

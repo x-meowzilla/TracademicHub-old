@@ -21,10 +21,10 @@ module.exports.haveMinimumTAAccessPrivilege = function (req, res, next) {
             if (userAccess.value < util.ACCESS_TA)
                 return res.status(403).send(noPrivilegeError(util.ACCESS_TA_DESCRIPTION)).end('Forbidden');
             else
-                return next()
+                return next();
         })
         .catch(function (error) {
-            return res.status(500).end(error.errmsg);
+            return res.status(500).send(error.message).end();
         });
 };
 
@@ -36,10 +36,10 @@ module.exports.haveMinimumInstructorAccessPrivilege = function (req, res, next) 
             if (userAccess.value < util.ACCESS_INSTRUCTOR)
                 return res.status(403).send(noPrivilegeError(util.ACCESS_INSTRUCTOR_DESCRIPTION)).end('Forbidden');
             else
-                return next()
+                return next();
         })
         .catch(function (error) {
-            return res.status(500).end(error.errmsg);
+            return res.status(500).send(error.message).end();
         });
 };
 
@@ -51,10 +51,10 @@ module.exports.haveMinimumAdminAccessPrivilege = function (req, res, next) {
             if (userAccess.value !== util.ACCESS_ADMIN)
                 return res.status(403).send(noPrivilegeError(util.ACCESS_ADMIN_DESCRIPTION)).end('Forbidden');
             else
-                return next()
+                return next();
         })
         .catch(function (error) {
-            return res.status(500).end(error.errmsg);
+            return res.status(500).send(error.message).end();
         });
 };
 
@@ -72,7 +72,7 @@ module.exports.haveAuthority = function (req, res, next) {
                 return deepPrivilegeCheck(req.user.accessPrivilege, targetUser.accessPrivilege);
         })
         .catch(function (error) {
-            return res.status(500).end(error.errmsg + ">>> have authority catch 1");
+            return res.status(500).send(error.message).end();
         });
 
     function deepPrivilegeCheck(reqUserPrivilegeID, targetPrivilegeID) {
@@ -92,7 +92,7 @@ module.exports.haveAuthority = function (req, res, next) {
                 return (reqUserAccessValue <= targetAccessValue) ? res.status(403).send(noAuthorityError()).end('Forbidden') : next();
             })
             .catch(function (error) {
-                return res.status(500).end(error.errmsg + ">>> have authority catch 2");
+                return res.status(500).send(error.message).end();
             });
     }
 };

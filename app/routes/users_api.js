@@ -62,7 +62,7 @@ router.post('/', uploadMemory.single('csvfile'), function (req, res) {
         .then(function (userDataArray) { // save user, if duplicate exists, ignore it.
             userDataArray.forEach(function (userData) {
                 new UserModel(userData).save().catch(function (error) {
-                    console.log('Student ' + userData.utorid + ' already exists.')
+                    console.log('Student ' + userData.utorid + ' already exists.');
                 });
             });
             return res.send('Imported from student CSV file. New student data saved to the database. Existing students remain unchanged.').end();
