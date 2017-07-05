@@ -1,27 +1,22 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var pointCategorySchema = new Schema({
+var categorySchema = new Schema({
 
-    name: {type: String, unique: true, required: true}
+    description: {type: String, unique: true, required: true}
 
 }, {collection: 'PointCategoryReference'});
 
-pointCategorySchema.statics.getPointCategoryData = function () {
+categorySchema.statics.getPointCategoryData = function (findDoc) {
     var category = this.model('PointCategory');
-    return category.find({});
+    if (findDoc.description) findDoc.description = {'$regex': '^' + findDoc.description + '$', '$options': 'i'}; // case insensitive
+    return category.find(findDoc);
 };
 
-pointCategorySchema.statics.findByPointCategoryName = function (categoryName) {
-    var category = this.model('PointCategory');
-    return category.findOne({name: {'$regex': '^' + categoryName + '$', '$options': 'i'}});
-    // return category.findOne({name: categoryName})
-};
-
-pointCategorySchema.statics.deleteCategoryData = function (deleteDoc) {
+categorySchema.statics.deleteCategoryData = function (deleteDoc) {
     var category = this.model('PointCategory');
     return category.remove(deleteDoc);
 };
 
-var PointCategoryModel = mongoose.model('PointCategory', pointCategorySchema);
+var PointCategoryModel = mongoose.model('PointCategory', categorySchema);
 module.exports = PointCategoryModel;

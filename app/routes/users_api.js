@@ -43,7 +43,7 @@ router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, functio
 
 
 router.post('/', uploadMemory.single('csvfile'), function (req, res) {
-
+    "use strict";
     // read csv file content from buffer and split file header and content, then generate file header and its corresponding indices
     var csv = processFileData(req.file.buffer.toString());
     var header = generateFileHeader(csv.header);

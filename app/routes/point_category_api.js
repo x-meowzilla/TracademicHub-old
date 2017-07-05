@@ -5,7 +5,16 @@ var PointCategoryModel = require('../db_models/PointCategory');
 // point category URI: .../api/points-category/
 router.get('/', mw.checkAuthentication, function (req, res) {
     "use strict";
-    PointCategoryModel.getPointCategoryData()
+    var findDoc = {};
+    Object.keys(req.query).forEach(function (arg) {
+        switch (arg) {
+            case '_id':
+            case 'description':
+                findDoc[arg] = req.query[arg];
+                break;
+        }
+    });
+    PointCategoryModel.getPointCategoryData(findDoc)
         .then(function (categoryArray) {
             return res.json(categoryArray).end();
         })
@@ -16,17 +25,16 @@ router.get('/', mw.checkAuthentication, function (req, res) {
 
 router.put('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
     "use strict";
-    PointCategoryModel.findByPointCategoryName(req.body.categoryName)
-        .then(function (category) {
-            return category ? res.status(409).send('Create point category failed. \'' + category.name + '\' category exists.').end() : createPointCategory();
+    PointCategoryModel.getPointCategoryData({description: req.body.description})
+        .then(function (categoryArray) {
+            return (categoryArray.length !== 0) ? res.status(409).send('Failed to create point category. \'' + categoryArray[0].description + '\' category exists.').end() : createPointCategory(req.body.description);
         })
         .catch(function (error) {
             res.status(500).send(error).end();
         });
 
-    function createPointCategory() {
-        var category = new PointCategoryModel({name: req.body.categoryName});
-        category.save()
+    function createPointCategory(description) {
+        new PointCategoryModel({description: description}).save()
             .then(function (category) {
                 res.json(category).end();
             })
@@ -39,15 +47,14 @@ router.put('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege,
 router.delete('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
     "use strict";
     var deleteDoc = {};
-    for (var arg in req.query) {
+    Object.keys(req.query).forEach(function (arg) {
         switch (arg) {
             case '_id':
-            case 'categoryName':
+            case 'description':
                 deleteDoc[arg] = req.query[arg];
                 break;
         }
-    }
-
+    });
     if (Object.keys(deleteDoc).length === 0) { // strictly check here. Valid query string must present!
         return res.status(400).send('Failed to delete. Delete option not found.').end();
     } else {
@@ -56,7 +63,7 @@ router.delete('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivile
                 return result.result.n;
             })
             .then(function (numRecords) {
-                return numRecords ? 'Delete succeeded. ' + result.result.n + ' records deleted.' : 'Attention: No record has been deleted.';
+                return numRecords ? 'Delete succeeded. ' + numRecords + ' records deleted.' : 'No record has been deleted.';
             })
             .then(function (msg) {
                 return res.send(msg).end();
