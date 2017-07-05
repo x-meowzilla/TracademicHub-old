@@ -8,12 +8,12 @@ Point Category API Documentation
         + **Pre-requisite:**
             + User must login and this account must be activated.
         + **Query String Options:**
-            + _id: (string) unique point ID
+            + _id: (string) unique point category ID
             + description: (string) unique point category description
     + **Response:** 200
         + Content-Type: ```application/json```
         + Body: ```array of object```
-            + _id: (string) unique point ID
+            + _id: (string) unique point category ID
             + name: (string) unique point category description
     + **Response:** 401
         + Body:
@@ -34,7 +34,7 @@ Point Category API Documentation
     + **Response:** 200
         + Content-Type: ```application/json```
         + Body:
-            + _id: (string) unique point ID
+            + _id: (string) unique point category ID
             + description: (string) unique point category description
     + **Response:** 401
         + Body:
@@ -50,14 +50,14 @@ Point Category API Documentation
             + errmsg: 'Failed to create point category. 'Category' category exists.'
 
 + **DELETE**
-    + **Description:** Delete points based on given query string condition.
+    + **Description:** Delete point category records based on given query string condition.
     + **Request:** ```DELETE /api/points-category/```
         + By default, if no query string is given, then error raised.
         + **Pre-requisite:**
             + User must login and this account must be activated.
             + User must have minimum INSTRUCTOR access privilege.
         + **Query String Options:**
-            + _id: (string) unique point ID
+            + _id: (string) unique point category ID
             + description: (string) unique point category description
     + **Response:** 200
         + Body: 'Delete succeeded. # records deleted.'
