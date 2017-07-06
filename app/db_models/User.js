@@ -24,7 +24,7 @@ var userSchema = new Schema({
     biography: {type: String, default: ''},
     avatarPath: {type: String, default: null}
 
-}, {collection: 'UsersCollection'});
+}, {collection: 'collection-Users'});
 
 // static methods
 userSchema.statics.findUserData = function (findDoc) {
@@ -36,7 +36,7 @@ userSchema.statics.findUserData = function (findDoc) {
 userSchema.statics.updateUserData = function (userID, updateDoc) {
     "use strict";
     var user = this.model('User');
-    return user.findByIdAndUpdate(userID, {$set: updateDoc}, {new: true});
+    return user.findByIdAndUpdate(userID, {$set: updateDoc}, {new: true}).populate('accessPrivilege');
 };
 
 // method for local user
@@ -60,25 +60,6 @@ userSchema.methods.verifyPassword = function (password) {
     } else {
         return false;
     }
-};
-
-userSchema.methods.getFullName = function () {
-    "use strict";
-    var user = this;
-    return {firstName: user.name.firstName, lastName: user.name.lastName};
-};
-
-userSchema.methods.setFullName = function (firstName, lastName) {
-    "use strict";
-    var user = this;
-    user.name.firstName = firstName;
-    user.name.lastName = lastName;
-};
-
-userSchema.methods.setPreferredName = function (preferredName) {
-    "use strict";
-    var user = this;
-    user.name.preferredName = preferredName;
 };
 
 userSchema.methods.updateLastLoginDate = function () {

@@ -2,6 +2,102 @@ var PrivilegeModel = require('../db_models/AccessPrivilege');
 var UserModel = require('../db_models/User');
 var util = require('./utility');
 
+module.exports.sanitizeReqBodyHandler = function (req, res, next) {
+    "use strict";
+
+    Object.keys(req.body).forEach(function (arg) {
+        req.sanitizeBody(arg).trim().escape();
+        switch (arg) {
+            // user
+            case 'utorid':
+                req.checkBody(arg, 'UTORid must be alphanumeric characters').isAlphanumeric();
+                break;
+            case 'password':
+                req.checkBody(arg, 'Password must be at least 6 characters long').isByteLength(6);
+                break;
+            case 'firstName':
+                req.checkBody(arg, 'First name must be letters').isAlpha();
+                break;
+            case 'lastName':
+                req.checkBody(arg, 'Last name must be letters').isAlpha();
+                break;
+            case 'preferredName':
+            // point
+            case 'assigneeID':
+            case 'pointCategoryID':
+            case 'pointValue':
+            // point category
+            case 'description':
+                break;
+        }
+    });
+    req.getValidationResult()
+        .then(function (result) {
+            if (!result.isEmpty()) {
+                var errorArray = [];
+                result.array().forEach(function (error) {
+                    errorArray.push(error.msg);
+                });
+                return res.status(400).json(errorArray.join(" & ")).end();
+            } else {
+                return next();
+            }
+        });
+};
+
+module.exports.sanitizeURIParamsHandler = function (req, res, next) {
+    "use strict";
+
+    Object.keys(req.params).forEach(function (arg) {
+        req.sanitizeParams(arg).trim().escape();
+        switch (arg) {
+            case 'userID':
+                req.checkParams(arg, 'Invalid URI param element');
+                break;
+        }
+    });
+    req.getValidationResult()
+        .then(function (result) {
+            return result.isEmpty() ? next() : res.status(400).json(result.array()[0].msg).end();
+        });
+};
+
+module.exports.sanitizeQueryStringHandler = function (req, res, next) {
+    "use strict";
+
+    Object.keys(req.query).forEach(function (arg) {
+        req.sanitizeQuery(arg).trim().escape();
+        switch (arg) {
+            // general
+            case '_id':
+            // user
+            case 'utorid':
+            case 'email':
+            case 'studentNumber':
+            case 'accessPrivilege':
+            case 'isActive':
+            case 'firstName':
+            case 'lastName':
+            case 'preferredName':
+            case 'biography':
+            // points
+            case 'assignerID':
+            case 'assigneeID':
+            case 'grantDate':
+            case 'value': // also in access privilege
+            case 'categoryID':
+            // point category
+            case 'description': // also in access privilege
+                req.checkQuery(arg, 'Invalid query string options');
+                break;
+        }
+    });
+    req.getValidationResult()
+        .then(function (result) {
+            return result.isEmpty() ? next() : res.status(400).json(result.array()[0].msg).end();
+        });
+};
+
 module.exports.checkAuthentication = function (req, res, next) {
     "use strict";
 
@@ -21,10 +117,10 @@ module.exports.haveMinimumTAAccessPrivilege = function (req, res, next) {
             if (userAccess.value < util.ACCESS_TA)
                 return res.status(403).send(noPrivilegeError(util.ACCESS_TA_DESCRIPTION)).end('Forbidden');
             else
-                return next()
+                return next();
         })
         .catch(function (error) {
-            return res.status(500).end(error.errmsg);
+            return res.status(500).send(error.message).end();
         });
 };
 
@@ -36,10 +132,10 @@ module.exports.haveMinimumInstructorAccessPrivilege = function (req, res, next) 
             if (userAccess.value < util.ACCESS_INSTRUCTOR)
                 return res.status(403).send(noPrivilegeError(util.ACCESS_INSTRUCTOR_DESCRIPTION)).end('Forbidden');
             else
-                return next()
+                return next();
         })
         .catch(function (error) {
-            return res.status(500).end(error.errmsg);
+            return res.status(500).send(error.message).end();
         });
 };
 
@@ -51,10 +147,10 @@ module.exports.haveMinimumAdminAccessPrivilege = function (req, res, next) {
             if (userAccess.value !== util.ACCESS_ADMIN)
                 return res.status(403).send(noPrivilegeError(util.ACCESS_ADMIN_DESCRIPTION)).end('Forbidden');
             else
-                return next()
+                return next();
         })
         .catch(function (error) {
-            return res.status(500).end(error.errmsg);
+            return res.status(500).send(error.message).end();
         });
 };
 
@@ -72,7 +168,7 @@ module.exports.haveAuthority = function (req, res, next) {
                 return deepPrivilegeCheck(req.user.accessPrivilege, targetUser.accessPrivilege);
         })
         .catch(function (error) {
-            return res.status(500).end(error.errmsg + ">>> have authority catch 1");
+            return res.status(500).send(error.message).end();
         });
 
     function deepPrivilegeCheck(reqUserPrivilegeID, targetPrivilegeID) {
@@ -92,7 +188,7 @@ module.exports.haveAuthority = function (req, res, next) {
                 return (reqUserAccessValue <= targetAccessValue) ? res.status(403).send(noAuthorityError()).end('Forbidden') : next();
             })
             .catch(function (error) {
-                return res.status(500).end(error.errmsg + ">>> have authority catch 2");
+                return res.status(500).send(error.message).end();
             });
     }
 };

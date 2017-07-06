@@ -13,6 +13,7 @@ User API Documentation
             + password: (string) master account password
             + firstName: (string) master user first name
             + lastName: (string) master user last name
+            + preferredName: (string) [_Optional_]
     + **Response:** 200
         + Content-Type: ```application/json```
         + Body:
@@ -75,6 +76,27 @@ User API Documentation
 
 
 ### All Users
+
++ **CREATE**
+    + **Description:** Create student account and save record to database
+    + **Request:** ```POST /api/users/```
+        + Body: ```form-data```
+            + csvfile: (file) student csv file. **Maximum file size: 32MB!**
+                + Note: This file should have the following required headers: **UTORiD**, **First Name**, **Last Name**, **Student Number**, **Email** 
+    + **Response:** 200
+        + Body: 'Imported from student CSV file. Total # records found: # new student records saved successfully. # existing student records remain unchanged.'
+    + **Response:** 400
+        + Body:
+            + errmsg: 'Student CSV file is not properly formatted.'
+    + **Response:** 401
+        + Body:
+            + errmsg: 'Please login before performing this action.'
+    + **Response:** 403
+        + Body:
+            + errmsg: 'Permission denied. You must have at least INSTRUCTOR access privilege to perform this action.'
+    + **Response:** 403
+        + Body:
+            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-activate your account.'
 
 + **READ**
     + **Description:** Retrieve all users data.

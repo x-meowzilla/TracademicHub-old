@@ -14,7 +14,7 @@ router.get('/', mw.checkAuthentication, function (req, res) {
                 break;
         }
     });
-    PointCategoryModel.getPointCategoryData(findDoc)
+    PointCategoryModel.findPointCategoryData(findDoc)
         .then(function (categoryArray) {
             return res.json(categoryArray).end();
         })
@@ -25,7 +25,7 @@ router.get('/', mw.checkAuthentication, function (req, res) {
 
 router.put('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
     "use strict";
-    PointCategoryModel.getPointCategoryData({description: req.body.description})
+    PointCategoryModel.findPointCategoryData({description: req.body.description})
         .then(function (categoryArray) {
             return (categoryArray.length !== 0) ? res.status(409).send('Failed to create point category. \'' + categoryArray[0].description + '\' category exists.').end() : createPointCategory(req.body.description);
         })

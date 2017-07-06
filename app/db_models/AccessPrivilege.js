@@ -6,14 +6,8 @@ var privilegeSchema = new Schema({
     value: {type: Number, required: true, unique: true},
     description: {type: String, required: true, unique: true}
 
-}, {collection: 'AccessPrivilegeReference'});
+}, {collection: 'reference-AccessPrivilege'});
 
-
-privilegeSchema.statics.findByPrivilegeValueAndDescription = function (accessValue, description) {
-    "use strict";
-    var access = this.model('AccessPrivilege');
-    return access.findOne({value: accessValue, description: description});
-};
 
 privilegeSchema.statics.findByIds = function (reqUserAccessID, targetUserAccessID) {
     "use strict";
@@ -22,7 +16,7 @@ privilegeSchema.statics.findByIds = function (reqUserAccessID, targetUserAccessI
     return access.find({_id: {$in: [mongoose.Types.ObjectId(reqUserAccessID), mongoose.Types.ObjectId(targetUserAccessID)]}});
 };
 
-privilegeSchema.statics.getAccessPrivilegeData = function (findDoc) {
+privilegeSchema.statics.findAccessPrivilegeData = function (findDoc) {
     "use strict";
     var access = this.model('AccessPrivilege');
     return access.find(findDoc);
