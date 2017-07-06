@@ -6,7 +6,8 @@ module.exports.sanitizeReqBodyHandler = function (req, res, next) {
     "use strict";
 
     Object.keys(req.body).forEach(function (arg) {
-        req.sanitizeBody(arg).trim().escape();
+        req.sanitizeBody(arg).trim();
+        req.sanitizeBody(arg).escape();
         switch (arg) {
             // user
             case 'utorid':
@@ -31,42 +32,50 @@ module.exports.sanitizeReqBodyHandler = function (req, res, next) {
                 break;
         }
     });
-    req.getValidationResult()
-        .then(function (result) {
-            if (!result.isEmpty()) {
-                var errorArray = [];
-                result.array().forEach(function (error) {
-                    errorArray.push(error.msg);
+    req.asyncValidationErrors()
+        .then(
+            function onSuccess() {
+                next();
+            },
+            function onError(errorArray) {
+                var msgArray = [];
+                errorArray.forEach(function (error) {
+                    msgArray.push(error.msg);
                 });
-                return res.status(400).json(errorArray.join(" & ")).end();
-            } else {
-                return next();
+                return res.status(400).json(msgArray.join(" & ")).end();
             }
-        });
+        );
 };
 
 module.exports.sanitizeURIParamsHandler = function (req, res, next) {
     "use strict";
 
     Object.keys(req.params).forEach(function (arg) {
-        req.sanitizeParams(arg).trim().escape();
+        req.sanitizeParams(arg).trim();
+        req.sanitizeParams(arg).escape();
         switch (arg) {
             case 'userID':
                 req.checkParams(arg, 'Invalid URI param element');
                 break;
         }
     });
-    req.getValidationResult()
-        .then(function (result) {
-            return result.isEmpty() ? next() : res.status(400).json(result.array()[0].msg).end();
-        });
+    req.asyncValidationErrors()
+        .then(
+            function onSuccess() {
+                next();
+            },
+            function onError(errorArray) {
+                return res.status(400).json(errorArray[0].msg).end();
+            }
+        );
 };
 
 module.exports.sanitizeQueryStringHandler = function (req, res, next) {
     "use strict";
 
     Object.keys(req.query).forEach(function (arg) {
-        req.sanitizeQuery(arg).trim().escape();
+        req.sanitizeQuery(arg).trim();
+        req.sanitizeQuery(arg).escape();
         switch (arg) {
             // general
             case '_id':
@@ -92,10 +101,15 @@ module.exports.sanitizeQueryStringHandler = function (req, res, next) {
                 break;
         }
     });
-    req.getValidationResult()
-        .then(function (result) {
-            return result.isEmpty() ? next() : res.status(400).json(result.array()[0].msg).end();
-        });
+    req.asyncValidationErrors()
+        .then(
+            function onSuccess() {
+                next();
+            },
+            function onError(errorArray) {
+                return res.status(400).json(errorArray[0].msg).end();
+            }
+        );
 };
 
 module.exports.checkAuthentication = function (req, res, next) {
