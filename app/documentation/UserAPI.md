@@ -77,6 +77,27 @@ User API Documentation
 
 ### All Users
 
++ **CREATE**
+    + **Description:** Create student account and save record to database
+    + **Request:** ```POST /api/users/```
+        + Body: ```form-data```
+            + csvfile: (file) student csv file.
+                + Note: This file should have the following required headers: **UTORiD**, **First Name**, **Last Name**, **Student Number**, **Email** 
+    + **Response:** 200
+        + Body: 'Imported from student CSV file. New student data saved to the database. Existing students remain unchanged.'
+    + **Response:** 400
+        + Body:
+            + errmsg: 'Student CSV file is not properly formatted.'
+    + **Response:** 401
+        + Body:
+            + errmsg: 'Please login before performing this action.'
+    + **Response:** 403
+        + Body:
+            + errmsg: 'Permission denied. You must have at least INSTRUCTOR access privilege to perform this action.'
+    + **Response:** 403
+        + Body:
+            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-activate your account.'
+
 + **READ**
     + **Description:** Retrieve all users data.
     + **Request:** ```GET /api/users/```
