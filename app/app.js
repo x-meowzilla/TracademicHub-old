@@ -13,6 +13,7 @@ var Promise = require('bluebird');
 // config files
 var serverConfig = require('./configurations/server_config');
 var dbConfig = require('./configurations/db_config');
+var mw = require('./modules/middlewares');
 var passportAuthModule = require('./modules/passport_authentication');
 var modelInitialization = require('./model_init');
 
@@ -68,49 +69,13 @@ mongoose.connection.on('error', function (error) {
 
 modelInitialization();
 
-// check and sanitize request body function
-app.use(function sanitizeReqBodyHandler(req, res, next) {
-    Object.keys(req.body).forEach(function (arg) {
-        req.sanitizeBody(arg).escape();
-        switch (arg) {
-            case 'utorid':
-                req.checkBody(arg, 'UTORid must be alphanumeric characters').isAlphanumeric();
-                break;
-            case 'email':
-                req.checkBody(arg, 'Invalid email address').isEmail();
-                break;
-            case 'password':
-                req.checkBody(arg, 'Password should be alphanumeric characters').isAlphanumeric();
-                req.checkBody(arg, 'Password must be at least 6 characters long').isByteLength(6);
-                break;
-            case 'firstName':
-                req.checkBody(arg, 'First name must be letters').isAlpha();
-                break;
-            case 'lastName':
-                req.checkBody(arg, 'Last name must be letters').isAlpha();
-                break;
-            case 'preferredName':
-            case 'categoryName':
-                break;
-        }
-    });
-
-    req.getValidationResult()
-        .then(function (result) {
-            if (!result.isEmpty()) {
-                var list = [];
-                result.array().forEach(function (error) {
-                    list.push(error.msg);
-                });
-                return res.status(400).json(list.join(" & ")).end();
-            } else {
-                next();
-            }
-        });
-});
-
 // api routers - these routers should put after sanitation function
 app.use('/', express.static('public'));
+
+// check and sanitize request body function
+app.use(mw.sanitizeReqBodyHandler);
+app.use(mw.sanitizeURIParamsHandler);
+app.use(mw.sanitizeQueryStringHandler);
 
 // to be removed. debugging purpose
 app.use(function (req, res, next) {

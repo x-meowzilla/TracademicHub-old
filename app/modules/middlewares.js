@@ -2,6 +2,59 @@ var PrivilegeModel = require('../db_models/AccessPrivilege');
 var UserModel = require('../db_models/User');
 var util = require('./utility');
 
+module.exports.sanitizeReqBodyHandler = function (req, res, next) {
+    "use strict";
+    Object.keys(req.body).forEach(function (arg) {
+        req.sanitizeBody(arg).escape();
+        switch (arg) {
+            case 'utorid':
+                req.checkBody(arg, 'UTORid must be alphanumeric characters').isAlphanumeric();
+                break;
+            case 'email':
+                req.checkBody(arg, 'Invalid email address').isEmail();
+                break;
+            case 'password':
+                req.checkBody(arg, 'Password should be alphanumeric characters').isAlphanumeric();
+                req.checkBody(arg, 'Password must be at least 6 characters long').isByteLength(6);
+                break;
+            case 'firstName':
+                req.checkBody(arg, 'First name must be letters').isAlpha();
+                break;
+            case 'lastName':
+                req.checkBody(arg, 'Last name must be letters').isAlpha();
+                break;
+            case 'preferredName':
+            case 'categoryName':
+                break;
+        }
+    });
+
+    req.getValidationResult()
+        .then(function (result) {
+            if (!result.isEmpty()) {
+                var list = [];
+                result.array().forEach(function (error) {
+                    list.push(error.msg);
+                });
+                return res.status(400).json(list.join(" & ")).end();
+            } else {
+                next();
+            }
+        });
+};
+
+module.exports.sanitizeURIParamsHandler = function (req, res, next) {
+    "use strict";
+    console.log('in uri');
+    next();
+};
+
+module.exports.sanitizeQueryStringHandler = function (req, res, next) {
+    "use strict";
+    console.log('in query string');
+    next();
+};
+
 module.exports.checkAuthentication = function (req, res, next) {
     "use strict";
 
