@@ -7,14 +7,11 @@ module.exports.sanitizeReqBodyHandler = function (req, res, next) {
     Object.keys(req.body).forEach(function (arg) {
         req.sanitizeBody(arg).escape();
         switch (arg) {
+            // user
             case 'utorid':
                 req.checkBody(arg, 'UTORid must be alphanumeric characters').isAlphanumeric();
                 break;
-            case 'email':
-                req.checkBody(arg, 'Invalid email address').isEmail();
-                break;
             case 'password':
-                req.checkBody(arg, 'Password should be alphanumeric characters').isAlphanumeric();
                 req.checkBody(arg, 'Password must be at least 6 characters long').isByteLength(6);
                 break;
             case 'firstName':
@@ -24,11 +21,15 @@ module.exports.sanitizeReqBodyHandler = function (req, res, next) {
                 req.checkBody(arg, 'Last name must be letters').isAlpha();
                 break;
             case 'preferredName':
-            case 'categoryName':
+            // point
+            case 'assigneeID':
+            case 'pointCategoryID':
+            case 'pointValue':
+            // point category
+            case 'description':
                 break;
         }
     });
-
     req.getValidationResult()
         .then(function (result) {
             if (!result.isEmpty()) {
