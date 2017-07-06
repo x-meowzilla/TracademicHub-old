@@ -4,8 +4,9 @@ var util = require('./utility');
 
 module.exports.sanitizeReqBodyHandler = function (req, res, next) {
     "use strict";
+
     Object.keys(req.body).forEach(function (arg) {
-        req.sanitizeBody(arg).escape();
+        req.sanitizeBody(arg).trim().escape();
         switch (arg) {
             // user
             case 'utorid':
@@ -33,13 +34,13 @@ module.exports.sanitizeReqBodyHandler = function (req, res, next) {
     req.getValidationResult()
         .then(function (result) {
             if (!result.isEmpty()) {
-                var list = [];
+                var errorArray = [];
                 result.array().forEach(function (error) {
-                    list.push(error.msg);
+                    errorArray.push(error.msg);
                 });
-                return res.status(400).json(list.join(" & ")).end();
+                return res.status(400).json(errorArray.join(" & ")).end();
             } else {
-                next();
+                return next();
             }
         });
 };
