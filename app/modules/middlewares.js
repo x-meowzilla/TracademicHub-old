@@ -64,8 +64,38 @@ module.exports.sanitizeURIParamsHandler = function (req, res, next) {
 
 module.exports.sanitizeQueryStringHandler = function (req, res, next) {
     "use strict";
-    console.log('in query string');
-    next();
+
+    Object.keys(req.query).forEach(function (arg) {
+        req.sanitizeQuery(arg).trim().escape();
+        switch (arg) {
+            // general
+            case '_id':
+            // user
+            case 'utorid':
+            case 'email':
+            case 'studentNumber':
+            case 'accessPrivilege':
+            case 'isActive':
+            case 'firstName':
+            case 'lastName':
+            case 'preferredName':
+            case 'biography':
+            // points
+            case 'assignerID':
+            case 'assigneeID':
+            case 'grantDate':
+            case 'value': // also in access privilege
+            case 'categoryID':
+            // point category
+            case 'description': // also in access privilege
+                req.checkQuery(arg, 'Invalid query string options');
+                break;
+        }
+    });
+    req.getValidationResult()
+        .then(function (result) {
+            return result.isEmpty() ? next() : res.status(400).json(result.array()[0].msg).end();
+        });
 };
 
 module.exports.checkAuthentication = function (req, res, next) {
