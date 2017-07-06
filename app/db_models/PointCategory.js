@@ -5,7 +5,7 @@ var categorySchema = new Schema({
 
     description: {type: String, unique: true, required: true}
 
-}, {collection: 'PointCategoryReference'});
+}, {collection: 'reference-PointCategory'});
 
 categorySchema.statics.findPointCategoryData = function (findDoc) {
     var category = this.model('PointCategory');

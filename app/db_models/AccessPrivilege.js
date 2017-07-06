@@ -6,7 +6,7 @@ var privilegeSchema = new Schema({
     value: {type: Number, required: true, unique: true},
     description: {type: String, required: true, unique: true}
 
-}, {collection: 'AccessPrivilegeReference'});
+}, {collection: 'reference-AccessPrivilege'});
 
 
 privilegeSchema.statics.findByIds = function (reqUserAccessID, targetUserAccessID) {

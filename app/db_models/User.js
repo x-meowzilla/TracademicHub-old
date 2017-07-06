@@ -24,7 +24,7 @@ var userSchema = new Schema({
     biography: {type: String, default: ''},
     avatarPath: {type: String, default: null}
 
-}, {collection: 'UsersCollection'});
+}, {collection: 'collection-Users'});
 
 // static methods
 userSchema.statics.findUserData = function (findDoc) {
