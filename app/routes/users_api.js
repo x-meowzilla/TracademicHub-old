@@ -1,4 +1,5 @@
 var router = require('express').Router();
+var Promise = require('bluebird');
 var multer = require('multer');
 var uploadMemory = multer({storage: multer.memoryStorage(), limits: {files: 1, fileSize: 50 * 1024 * 1024}}); // csv file 50MB file size limit
 var uploadLocal = multer({dest: 'app/user_uploads/', limits: {files: 1, fileSize: 500 * 1024}}); // avatar image 500 kB file size limit
@@ -58,12 +59,29 @@ router.post('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege
             });
         })
         .then(function (userDataArray) { // save user, if duplicate exists, ignore it.
+            var result = [];
             userDataArray.forEach(function (userData) {
-                new UserModel(userData).save().catch(function (error) {
-                    console.log('Student ' + userData.utorid + ' already exists.');
-                });
+                result.push(new UserModel(userData).save()
+                    .then(function (user) {
+                        return true;
+                    })
+                    .catch(function (error) {
+                        return false;
+                    })
+                );
             });
-            return res.send('Imported from student CSV file. New student data saved to the database. Existing students remain unchanged.').end();
+            return Promise.all(result); // this solution returns an array of boolean indicating save new or get existing records to database
+        })
+        .then(function (resultArray) {
+            var total = resultArray.length;
+            var newRecord = resultArray.reduce(function (sum, boolResult) {
+                return sum + boolResult;
+            }, 0);
+            var oldRecord = total - newRecord;
+            var response = 'Imported from student CSV file. Total ' + total + ' records found: ';
+            response += newRecord ? newRecord + ' new student records saved successfully. ' : '';
+            response += oldRecord ? oldRecord + ' existing student records remain unchanged.' : '';
+            return res.send(response).end();
         })
         .catch(function (error) {
             return res.status(500).send(error.message).end();
