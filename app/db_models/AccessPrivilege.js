@@ -9,12 +9,6 @@ var privilegeSchema = new Schema({
 }, {collection: 'AccessPrivilegeReference'});
 
 
-privilegeSchema.statics.findByPrivilegeValueAndDescription = function (accessValue, description) {
-    "use strict";
-    var access = this.model('AccessPrivilege');
-    return access.findOne({value: accessValue, description: description});
-};
-
 privilegeSchema.statics.findByIds = function (reqUserAccessID, targetUserAccessID) {
     "use strict";
     // this method will return 2 access privilege objects to compare the value
