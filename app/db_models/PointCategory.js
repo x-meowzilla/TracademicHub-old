@@ -5,9 +5,9 @@ var categorySchema = new Schema({
 
     description: {type: String, unique: true, required: true}
 
-}, {collection: 'PointCategoryReference'});
+}, {collection: 'reference-PointCategory'});
 
-categorySchema.statics.getPointCategoryData = function (findDoc) {
+categorySchema.statics.findPointCategoryData = function (findDoc) {
     var category = this.model('PointCategory');
     if (findDoc.description) findDoc.description = {'$regex': '^' + findDoc.description + '$', '$options': 'i'}; // case insensitive
     return category.find(findDoc);

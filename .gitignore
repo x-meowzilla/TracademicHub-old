@@ -1,3 +1,3 @@
 .idea
-*.iml
 node_modules
+#app/user_uploads/ # to be uncommented in production

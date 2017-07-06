@@ -22,27 +22,19 @@ module.exports = function (passport) {
     passport.use('saml', new SamlStrategy(passportConfig.samlData, function (profile, done) {
         var utorid = profile['urn:oid:1.3.6.1.4.1.15465.3.1.8'];
         var email = profile['urn:oid:0.9.2342.19200300.100.1.3'];
-        UserModel.findUserData({utorid: utorid})
+        UserModel.findUserData({utorid: utorid, email: email})
             .then(function (userArray) {
-                // if a student is late to register for the course, but student data is already imported,
-                // the student can still login via UofT login but we won't find any entry from our database,
-                // so we automatically create an empty user entry and let student fill out rest of the data
-                return (userArray.length !== 0) ? done(null, userArray[0]) : createUser(done);
+                if (userArray.length === 0)
+                    return {error: {code: 404, message: 'Login failed. UTORid \'' + utorid + '\' not enrolled in this course.'}, user: false};
+                else
+                    return {error: null, user: userArray[0]};
+            })
+            .then(function (result) {
+                return result.error ? done(result.error, result.user) : updateLoginDateAndReturnUserData(result.user, done);
             })
             .catch(function (error) {
                 return done(error, false);
             });
-
-        function createUser(done) {
-            var user = new UserModel({utorid: utorid, email: email});
-            user.save()
-                .then(function (user) {
-                    return done(null, user);
-                })
-                .catch(function (error) {
-                    return done(error, false);
-                });
-        }
     }));
 
     // local strategy
@@ -50,28 +42,27 @@ module.exports = function (passport) {
         UserModel.findUserData({utorid: utorid})
             .then(function (userArray) {
                 if (userArray.length === 0)
-                    return {error: {errcode: 404, errmsg: 'Login failed. Username "' + utorid + '" does not exist.'}, user: false};
+                    return {error: {code: 404, message: 'Login failed. Username "' + utorid + '" does not exist.'}, user: false};
                 if (!userArray[0].verifyPassword(password))
-                    return {error: {errcode: 401, errmsg: 'Login failed. Incorrect Password.'}, user: false};
+                    return {error: {code: 401, message: 'Login failed. Incorrect Password.'}, user: false};
                 else
                     return {error: null, user: userArray[0]};
             })
             .then(function (result) {
-                return result.error ? done(result.error, result.user) : updateLoginDateAndReturnUserData(result.user);
+                return result.error ? done(result.error, result.user) : updateLoginDateAndReturnUserData(result.user, done);
             })
             .catch(function (error) {
                 return done(error, false);
             });
-
-        function updateLoginDateAndReturnUserData(user) {
-            user.updateLastLoginDate()
-                .then(function (user) {
-                    return done(null, user);
-                })
-                .catch(function (error) {
-                    return done(error, false);
-                });
-        }
     }));
 
+    function updateLoginDateAndReturnUserData(user, done) {
+        user.updateLastLoginDate()
+            .then(function (user) {
+                return done(null, user);
+            })
+            .catch(function (error) {
+                return done(error, false);
+            });
+    }
 };

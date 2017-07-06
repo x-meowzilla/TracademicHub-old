@@ -9,7 +9,7 @@ var pointSchema = new Schema({
     value: {type: Number, default: 1, required: true},
     category: {type: Schema.Types.ObjectId, ref: 'PointCategory', required: true}
 
-}, {collection: 'PointsCollection'});
+}, {collection: 'collection-Points'});
 
 pointSchema.statics.findPointData = function (findDoc) {
     "use strict";

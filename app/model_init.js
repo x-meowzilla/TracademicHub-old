@@ -13,7 +13,7 @@ module.exports = function () {
             })
             .catch(function (error) {
                 console.log('Admin access exists.');
-            })
+            });
     }());
 
     (function initInstructorAccessPrivilege() {
@@ -24,7 +24,7 @@ module.exports = function () {
             })
             .catch(function (error) {
                 console.log('Instructor access exists.');
-            })
+            });
     }());
 
     (function initTeachingAssistantAccessPrivilege() {
@@ -35,7 +35,7 @@ module.exports = function () {
             })
             .catch(function (error) {
                 console.log('Teaching Assistant access exists.');
-            })
+            });
     }());
 
     (function initStudentAccessPrivilege() {
@@ -46,7 +46,7 @@ module.exports = function () {
             })
             .catch(function (error) {
                 console.log('Student access exists.');
-            })
+            });
     }());
 
     // (function initializeLearningPointsCategory() {
@@ -57,7 +57,7 @@ module.exports = function () {
     //         })
     //         .catch(function (error) {
     //             console.log('Learning points category exists.');
-    //         })
+    //         });
     // }());
     //
     // (function initializeExperiencePointsCategory() {
@@ -68,7 +68,7 @@ module.exports = function () {
     //         })
     //         .catch(function (error) {
     //             console.log('Experience points category exists.');
-    //         })
+    //         });
     // }());
     //
     // (function initializeChallengePointsCategory() {
@@ -79,7 +79,7 @@ module.exports = function () {
     //         })
     //         .catch(function (error) {
     //             console.log('Challenge points category exists.');
-    //         })
+    //         });
     // }());
 
 };

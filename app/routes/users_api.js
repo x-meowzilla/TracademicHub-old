@@ -1,7 +1,8 @@
 var router = require('express').Router();
+var Promise = require('bluebird');
 var multer = require('multer');
-var uploadMemory = multer({storage: multer.memoryStorage(), limits: {files: 1, fileSize: 50 * 1024 * 1024}}); // csv file 50MB file size limit
-var uploadLocal = multer({dest: 'app/user_uploads/', limits: {files: 1, fileSize: 500 * 1024}}); // avatar image 500 kB file size limit
+var uploadMemory = multer({storage: multer.memoryStorage(), limits: {files: 1, fileSize: 32 * 1024 * 1024}}); // csv file 32MB file size limit
+var uploadLocal = multer({dest: 'app/user_uploads/', limits: {files: 1, fileSize: 500 * 1024}}); // avatar image 500kB file size limit
 var mw = require('../modules/middlewares');
 var util = require('../modules/utility');
 var UserModel = require('../db_models/User');
@@ -11,7 +12,7 @@ var PrivilegeModel = require('../db_models/AccessPrivilege');
 router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, function (req, res) {
     "use strict";
     var findDoc = {};
-    for (var arg in req.query) {
+    Object.keys(req.query).forEach(function (arg) {
         switch (arg) {
             case '_id':
             case 'utorid':
@@ -27,8 +28,7 @@ router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, functio
                 findDoc['name.' + arg] = req.query[arg];
                 break;
         }
-    }
-
+    });
     UserModel.findUserData(findDoc)
         .then(function (userArray) {
             var resultArray = userArray.map(function (user) {
@@ -41,8 +41,7 @@ router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, functio
         });
 });
 
-
-router.post('/', uploadMemory.single('csvfile'), function (req, res) {
+router.post('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, uploadMemory.single('csvfile'), function (req, res) {
     "use strict";
     // read csv file content from buffer and split file header and content, then generate file header and its corresponding indices
     var csv = processFileData(req.file.buffer.toString());
@@ -52,20 +51,37 @@ router.post('/', uploadMemory.single('csvfile'), function (req, res) {
         return res.status(400).send('Student CSV file is not properly formatted.').end();
     // if the header is valid, then generate user data object
     var userDataArray = generateUserData(header, csv.content);
-    PrivilegeModel.findByPrivilegeValueAndDescription(util.ACCESS_STUDENT, util.ACCESS_STUDENT_DESCRIPTION)
-        .then(function (stuAccess) { // map student access to each user data object
+    PrivilegeModel.findAccessPrivilegeData({value: util.ACCESS_STUDENT, description: util.ACCESS_STUDENT_DESCRIPTION})
+        .then(function (accessArray) { // map student access to each user data object
             return userDataArray.map(function (userData) {
-                userData.accessPrivilege = stuAccess._id;
+                userData.accessPrivilege = accessArray[0]._id;
                 return userData;
             });
         })
         .then(function (userDataArray) { // save user, if duplicate exists, ignore it.
+            var result = [];
             userDataArray.forEach(function (userData) {
-                new UserModel(userData).save().catch(function (error) {
-                    console.log('Student ' + userData.utorid + ' already exists.')
-                });
+                result.push(new UserModel(userData).save()
+                    .then(function (user) {
+                        return true;
+                    })
+                    .catch(function (error) {
+                        return false;
+                    })
+                );
             });
-            return res.send('Imported from student CSV file. New student data saved to the database. Existing students remain unchanged.').end();
+            return Promise.all(result); // this solution returns an array of boolean indicating save new or get existing records to database
+        })
+        .then(function (resultArray) {
+            var total = resultArray.length;
+            var newRecord = resultArray.reduce(function (sum, boolResult) {
+                return sum + boolResult;
+            }, 0);
+            var oldRecord = total - newRecord;
+            var response = 'Imported from student CSV file. Total ' + total + ' records found: ';
+            response += newRecord ? newRecord + ' new student records saved successfully. ' : '';
+            response += oldRecord ? oldRecord + ' existing student records remain unchanged.' : '';
+            return res.send(response).end();
         })
         .catch(function (error) {
             return res.status(500).send(error.message).end();
@@ -117,7 +133,7 @@ router.post('/:userID/avatar', uploadLocal.single('avatar'), function (req, res)
 router.patch('/:userID/update/user-info', mw.checkAuthentication, function (req, res) {
     "use strict";
     var updateDoc = {};
-    for (var arg in req.query) {
+    Object.keys(req.query).forEach(function (arg) {
         switch (arg) {
             case 'firstName':
             case 'lastName':
@@ -128,8 +144,7 @@ router.patch('/:userID/update/user-info', mw.checkAuthentication, function (req,
                 updateDoc[arg] = req.query[arg];
                 break;
         }
-    }
-
+    });
     UserModel.updateUserData(req.params.userID, updateDoc)
         .then(function (user) {
             return res.json(util.retrieveBasicUserData(user)).end();
@@ -142,7 +157,7 @@ router.patch('/:userID/update/user-info', mw.checkAuthentication, function (req,
 router.patch('/:userID/update/user-access', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
     "use strict";
     var updateDoc = {};
-    for (var arg in req.query) {
+    Object.keys(req.query).forEach(function (arg) {
         switch (arg) {
             case 'firstName':
             case 'lastName':
@@ -155,8 +170,7 @@ router.patch('/:userID/update/user-access', mw.checkAuthentication, mw.haveMinim
                 updateDoc[arg] = req.query[arg];
                 break;
         }
-    }
-
+    });
     UserModel.updateUserData(req.params.userID, updateDoc)
         .then(function (user) {
             return res.json(util.retrieveBasicUserData(user)).end();
