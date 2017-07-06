@@ -47,8 +47,19 @@ module.exports.sanitizeReqBodyHandler = function (req, res, next) {
 
 module.exports.sanitizeURIParamsHandler = function (req, res, next) {
     "use strict";
-    console.log('in uri');
-    next();
+
+    Object.keys(req.params).forEach(function (arg) {
+        req.sanitizeParams(arg).trim().escape();
+        switch (arg) {
+            case 'userID':
+                req.checkParams(arg, 'Invalid URI param element');
+                break;
+        }
+    });
+    req.getValidationResult()
+        .then(function (result) {
+            return result.isEmpty() ? next() : res.status(400).json(result.array()[0].msg).end();
+        });
 };
 
 module.exports.sanitizeQueryStringHandler = function (req, res, next) {
