@@ -92,7 +92,7 @@ app.use('/api/points-category', pointsCategoryAPI);
 
 // rewrite vitual urls to angular app to enable refreshing of internal pages, only works for GET
 app.get('/*', function (req, res) {
-    res.sendfile(path.resolve('public/index.html'));
+    res.sendFile(path.resolve('public/index.html'));
 });
 
 

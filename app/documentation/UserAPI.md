@@ -81,7 +81,7 @@ User API Documentation
     + **Description:** Create student account and save record to database
     + **Request:** ```POST /api/users/```
         + Body: ```form-data```
-            + csvfile: (file) student csv file.
+            + csvfile: (file) student csv file. **Maximum file size: 32MB!**
                 + Note: This file should have the following required headers: **UTORiD**, **First Name**, **Last Name**, **Student Number**, **Email** 
     + **Response:** 200
         + Body: 'Imported from student CSV file. Total # records found: # new student records saved successfully. # existing student records remain unchanged.'

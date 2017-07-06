@@ -1,8 +1,8 @@
 var router = require('express').Router();
 var Promise = require('bluebird');
 var multer = require('multer');
-var uploadMemory = multer({storage: multer.memoryStorage(), limits: {files: 1, fileSize: 50 * 1024 * 1024}}); // csv file 50MB file size limit
-var uploadLocal = multer({dest: 'app/user_uploads/', limits: {files: 1, fileSize: 500 * 1024}}); // avatar image 500 kB file size limit
+var uploadMemory = multer({storage: multer.memoryStorage(), limits: {files: 1, fileSize: 32 * 1024 * 1024}}); // csv file 32MB file size limit
+var uploadLocal = multer({dest: 'app/user_uploads/', limits: {files: 1, fileSize: 500 * 1024}}); // avatar image 500kB file size limit
 var mw = require('../modules/middlewares');
 var util = require('../modules/utility');
 var UserModel = require('../db_models/User');
