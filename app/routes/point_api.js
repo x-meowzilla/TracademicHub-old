@@ -78,7 +78,7 @@ router.delete('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivile
                 return result.result.n;
             })
             .then(function (numRecords) {
-                return numRecords ? 'Delete succeeded. ' + result.result.n + ' records deleted.' : 'Attention: No record has been deleted.';
+                return numRecords ? 'Delete succeeded. ' + numRecords + ' records deleted.' : 'No record has been deleted.';
             })
             .then(function (msg) {
                 return res.send(msg).end();
