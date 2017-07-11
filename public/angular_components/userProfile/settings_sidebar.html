@@ -1,7 +1,7 @@
-<div class="sidebar navbar-default">
+<div class="sidebar navbar-default" ng-controller="settingsSidebarController">
     <ul class="nav side-nav">
         <li>
-            <a href="/profile"><i class="fa fa-fw fa-dashboard"></i> Profile</a>
+            <a href="/profile" ng-click="viewUserProfile()"><i class="fa fa-fw fa-dashboard"></i> Profile</a>
         </li>
         <li>
             <a ng-href="/states"><i class="fa fa-fw fa-bar-chart-o"></i> States Details</a>

@@ -5,13 +5,14 @@
         .module('TracademicHub')
         .controller('leaderBoardRankController', leaderBoardRankController);
 
-    leaderBoardRankController.$inject = ['$scope', '$location', '_AjaxRequest']; // dependency injection
+    leaderBoardRankController.$inject = ['$scope', '$location', '_AjaxRequest', '_ViewProfile']; // dependency injection
 
-    function leaderBoardRankController($scope, $location, _AjaxRequest) {
+    function leaderBoardRankController($scope, $location, _AjaxRequest, _ViewProfile) {
 
         (function () {
             _AjaxRequest.get('/api/points/history')
                 .then(
+                    // change to get leader board rank endpoint, get userID
                     function successCallback(result) {
                         $scope.pointsHistoryData = result.data;
                     },
@@ -73,8 +74,10 @@
         
         $scope.viewUserProfile = function (user) {
             $location.path( "/profile" );
+            // pass userId of selected user.
+            _ViewProfile.setUser('123456');
 
-        }
+        };
     }
 
 }());
