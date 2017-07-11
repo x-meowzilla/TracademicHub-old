@@ -3,8 +3,35 @@
 
     angular
         .module('TracademicHub')
+        .factory('_Authentication', authentication)
         .factory('_UTORidAuthentication', utoridAuthentication)
         .factory('_AjaxRequest', ajaxRequest);
+
+    function authentication() {
+        return {
+            isAuthenticated: function () {
+                return window.localStorage.getItem('currentUser') !== null;
+            },
+            
+            setCurrentUser: function (user) {
+                window.localStorage.setItem('currentUser', user);
+                return user;
+            },
+            
+            getCurrentUser: function () {
+                return JSON.parse(window.localStorage.getItem('currentUser'));
+            },
+            
+            setDisplayName: function (name) {
+                window.localStorage.setItem('displayName', name);
+                return name;
+            },
+
+            getDisplayName: function () {
+               return  window.localStorage.getItem('displayName');
+            }
+        }
+    }
 
     function utoridAuthentication() {
         return {

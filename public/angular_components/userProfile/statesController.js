@@ -5,11 +5,11 @@
         .module('TracademicHub')
         .controller('statesController', statesController)
 
-    statesController.$inject = ['$scope', '_AjaxRequest']; // dependency injection
+    statesController.$inject = ['$scope', '_Authentication', '_AjaxRequest']; // dependency injection
 
-    function statesController($scope, _AjaxRequest) {
-        $scope.currentUser = JSON.parse(window.localStorage.getItem('currentUser'));
-        $scope.displayName = window.localStorage.getItem('displayName');
+    function statesController($scope, _Authentication, _AjaxRequest) {
+        $scope.currentUser = _Authentication.getCurrentUser();
+        $scope.displayName = _Authentication.getDisplayName();
 
         $scope.items = [
             {"fullName":1,"preferredName":"name 1","category":"description 1","course":"field3 1","date":"field4 1"},

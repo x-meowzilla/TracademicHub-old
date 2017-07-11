@@ -57,13 +57,13 @@
                     authenticate: false
                 });
         })
-        .run(function($rootScope, $location){
+        .run(function($rootScope, $location, _Authentication){
 
             $rootScope.$on('$routeChangeStart', function (event, next) {
-                if (next.$$route.authenticate && window.localStorage.getItem('currentUser') === null) {
+                if (next.$$route.authenticate && !_Authentication.isAuthenticated()) {
                     console.log('DENY');
-                    event.preventDefault();
-                    $location.path('/');
+                    // event.preventDefault();
+                    // $location.path('/');
                 }
                 else {
                     console.log('ALLOW');
