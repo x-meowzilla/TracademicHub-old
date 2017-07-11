@@ -56,7 +56,7 @@
                             <td>{{item.accessPrivilege}}</td>
                             <td>{{item.lastLoginDate}}</td>
                             <td class="text-center">
-                                <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button>
+                                <button class="btn btn-primary btn-xs" data-ng-click="editUser(item)" data-title="Edit" data-toggle="modal" data-target="#editUserProfilePage"><span class="glyphicon glyphicon-pencil"></span></button>
                             </td>
                             <td class="text-center">
                                 <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button>
@@ -114,6 +114,9 @@
                 </div>
             </div>
         </div>
+
+        <!--Edit user profile page-->
+        <div ng-include="'angular_components/userProfile/editUserProfile.html'"></div>
 
     </div>
 </div>

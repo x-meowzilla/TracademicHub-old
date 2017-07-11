@@ -27,14 +27,6 @@
                 )
         }());
 
-        // fill in edit profile form
-        $scope.editFirstName = $scope.currentUser.name.firstName;
-        $scope.editLastName = $scope.currentUser.name.lastName;
-        $scope.editPreferredName = $scope.currentUser.name.preferredName;
-        $scope.editEmail = $scope.currentUser.email;
-        $scope.editPrivilege = $scope.currentUser.accessPrivilege;
-        $scope.editBiography = $scope.currentUser.biography;
-
     }
 
 }());
