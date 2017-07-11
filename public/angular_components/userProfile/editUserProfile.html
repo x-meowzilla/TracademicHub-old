@@ -48,11 +48,9 @@
                             <div class="form-group">
                                 <label class="col-lg-3 control-label">Access Privilege:</label>
                                 <div class="col-lg-8">
-                                    <div class="ui-select">
-                                        <select name='accessLevel' ng-model="editPrivilege"  class="form-control" ng-disabled="!isAuthenticated()" required>
-                                            <option ng-repeat="privilege in privileges" value={{privilege.description}}>{{privilege.description}}</option>
-                                        </select>
-                                    </div>
+                                    <select name='accessLevel' ng-model="editPrivilege"  class="form-control" ng-disabled="!isAuthenticated()" required>
+                                        <option ng-repeat="privilege in privileges" value={{privilege.description}}>{{privilege.description}}</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">

@@ -67,7 +67,7 @@
                         <tfoot>
                         <td colspan="5" ng-if="(items|filter:searchrecord).length != 0 && checkedNumber>1">
                             <a class="btn btn-danger checkedAllSection">Delete All</a>
-                            <a class="btn btn-primary checkedAllSection">Modify Access Privilege</a>
+                            <a class="btn btn-primary checkedAllSection" data-title="ModifyPrivilege" data-toggle="modal" data-target="#modifyPrivilegeModal">Modify Access Privilege</a>
                             <a href="/pointManagement" class="btn btn-info checkedAllSection">Give Points</a>
                             <strong class="">{{checkedNumber}} record selected</strong>
                         </td>
@@ -117,6 +117,31 @@
 
         <!--Edit user profile page-->
         <div ng-include="'angular_components/userProfile/editUserProfile.html'"></div>
+
+        <!--Modify Access Privilege-->
+        <div class="modal fade" id="modifyPrivilegeModal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Assign Access Privilege</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-muted">Assign access privilege for selected users: </div>
+                        <select name='accessLevel' class="form-control" required>
+                            <option value="notSelected" selected>Choose one from following..</option>
+                            <option ng-repeat="privilege in privileges" value={{privilege.description}}>{{privilege.description}}</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modifyPrivilegeModal">Assign</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
     </div>
 </div>

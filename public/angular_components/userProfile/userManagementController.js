@@ -98,6 +98,21 @@
         $scope.editUser = function (user) {
             _ViewProfile.setUser('abcde');
         };
+
+        // edit profile form
+        $scope.privileges = [];
+        (function () {
+            _AjaxRequest.get('/api/privileges/')
+                .then(
+                    function successCallback(result) {
+                        console.log(result.data);
+                        $scope.privileges = result.data;
+                    },
+                    function errorCallback(error) {
+                        console.error(error);
+                    }
+                )
+        }());
     }
 
 }());
