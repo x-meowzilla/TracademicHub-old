@@ -5,9 +5,9 @@
         .module('TracademicHub')
         .controller('userManagementController', userManagementController);
 
-    userManagementController.$inject = ['$scope', '$location', '_AjaxRequest', '_ViewProfile', '_AssignPoints']; // dependency injection
+    userManagementController.$inject = ['$scope', '$location', '_Authentication', '_AjaxRequest', '_ViewProfile', '_AssignPoints']; // dependency injection
 
-    function userManagementController($scope, $location, _AjaxRequest, _ViewProfile, _AssignPoints) {
+    function userManagementController($scope, $location, _Authentication, _AjaxRequest, _ViewProfile, _AssignPoints) {
 
         $scope.currentUser = _ViewProfile.getUser();
 
@@ -19,7 +19,7 @@
                 .then(
                     function successCallback(result) {
                         $scope.items = result.data.filter(function (item) {
-                            return item._id !== $scope.currentUser._id;
+                            return item._id !== _Authentication.getCurrentUser()._id;
                         });
                     },
                     function errorCallback(error) {
