@@ -7,7 +7,7 @@
         .factory('_ViewProfile', viewProfile)
         .directive('sortRecords', sortRecords)
         .directive('pageControl', pageControl)
-        .directive('confirmClick', confirmClick);
+        .directive('ngConfirmClick', ngConfirmClick);
 
     viewProfile.$inject = ['_AjaxRequest'];
     function viewProfile(_AjaxRequest) {
@@ -138,7 +138,7 @@
         }
     }
     
-    function confirmClick() {
+    function ngConfirmClick() {
         return {
             link: function (scope, element, attr) {
                 var msg = attr.confirmClick || "Are you sure?";

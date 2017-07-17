@@ -62,7 +62,7 @@
                                 </button>
                             </td>
                             <td class="text-center">
-                                <button class="btn btn-danger btn-xs" confirm-click="Are you sure to delete this user?" ng-click="deleteUser(item)" ng-disabled="item._id === currentUserId"><span class="glyphicon glyphicon-trash"></span></button>
+                                <button class="btn btn-danger btn-xs" ng-confirm-click="Are you sure to delete this record ?" confirmed-click="deleteUser(item)" ng-disabled="item._id === currentUserId"><span class="glyphicon glyphicon-trash"></span></button>
                             </td>
                         </tr>
                         </tbody>
