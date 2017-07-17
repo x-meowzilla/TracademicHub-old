@@ -62,13 +62,13 @@
                                 <td>{{user.name.preferredName}}</td>
                                 <td>{{user.email}}</td>
                                 <td class="text-center">
-                                    <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button>
+                                    <button class="btn btn-danger btn-xs" data-title="Delete" ng-click="removeAssignee(user)" ><span class="glyphicon glyphicon-trash"></span></button>
                                 </td>
                             </tr>
                             </tbody>
                             <tfoot>
                             <td colspan="5" ng-if="users.length!==0" class="text-center">
-                                <button class="btn btn-danger">Clear All</button>
+                                <button class="btn btn-danger" ng-click="clearSelectedUser()">Clear All</button>
                                 <button class="btn btn-info">Give Points</button>
                                 <strong class="">{{users.length}} users selected</strong>
                             </td>

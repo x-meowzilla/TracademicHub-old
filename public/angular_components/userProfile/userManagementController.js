@@ -5,9 +5,9 @@
         .module('TracademicHub')
         .controller('userManagementController', userManagementController);
 
-    userManagementController.$inject = ['$scope', '$location', '$route', '_AjaxRequest', '_ViewProfile', '_AssignPoints']; // dependency injection
+    userManagementController.$inject = ['$scope', '$location', '_AjaxRequest', '_ViewProfile', '_AssignPoints']; // dependency injection
 
-    function userManagementController($scope, $location, $route, _AjaxRequest, _ViewProfile, _AssignPoints) {
+    function userManagementController($scope, $location, _AjaxRequest, _ViewProfile, _AssignPoints) {
 
         $scope.currentUser = _ViewProfile.getUser();
 
@@ -101,7 +101,9 @@
             _AjaxRequest.patch('/api/users/' + user._id + '/update/user-access?' + $.param({isActive: false}))
                 .then(
                     function successCallback(result) {
-                        $route.reload();
+                        $scope.items = $scope.items.filter(function (item) {
+                            return item._id !== result.data._id;
+                        });
                     },
                     function errorCallback(error) {
                         console.error(error);
@@ -114,15 +116,9 @@
             angular.forEach(users, function (user) {
                 if(user._id !== $scope.currentUser._id)
                 {
-                    _AjaxRequest.patch('/api/users/' + user._id + '/update/user-access?' + $.param({isActive: false}))
-                        .then(
-                            function errorCallback(error) {
-                                console.error(error);
-                            }
-                        )
+                    $scope.deleteUser(user);
                 }
             });
-            $route.reload();
         };
 
         // edit privileges of (mutiple) users
@@ -153,7 +149,6 @@
                         )
                 }
             });
-            $route.reload();
         };
 
         // give points to selected user

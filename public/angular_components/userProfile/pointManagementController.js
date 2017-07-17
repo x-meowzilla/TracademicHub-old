@@ -18,6 +18,17 @@
 
         $scope.users = _AssignPoints.getAssignees();
 
+        $scope.clearSelectedUser = function () {
+            _AssignPoints.setAssignees([]);
+            $scope.users = [];
+        }
+        
+        $scope.removeAssignee = function (assignee) {
+            $scope.users = $scope.users.filter(function (item) {
+                return item._id !== assignee._id;
+            });
+        }
+
     }
 
     function categoryCard(){
