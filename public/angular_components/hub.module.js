@@ -61,12 +61,8 @@
 
             $rootScope.$on('$routeChangeStart', function (event, next) {
                 if (next.$$route.authenticate && !_Authentication.isAuthenticated()) {
-                    console.log('DENY');
-                    // event.preventDefault();
-                    // $location.path('/');
-                }
-                else {
-                    console.log('ALLOW');
+                    event.preventDefault();
+                    $location.path('/');
                 }
             });
 

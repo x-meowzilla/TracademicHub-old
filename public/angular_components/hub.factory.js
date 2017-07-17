@@ -54,6 +54,9 @@
             put: function (apiURL, reqBody, isJSON) {
                 return $http.put(apiURL, reqBody, {headers: isJSON ? {'Content-Type': 'application/json'} : {}});
             },
+            patch: function (apiURL, reqBody, isJSON) {
+                return $http.patch(apiURL, reqBody, {headers: isJSON ? {'Content-Type': 'application/json'} : {}});
+            },
             delete: function (apiURL) {
                 // TODO - method to be discussed
                 return $http.delete(apiURL);

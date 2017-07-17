@@ -56,20 +56,22 @@
                             <td>{{item.accessPrivilege}}</td>
                             <td>{{item.lastLoginDate}}</td>
                             <td class="text-center">
-                                <button class="btn btn-primary btn-xs" data-ng-click="editUser(item)" data-title="Edit" data-toggle="modal" data-target="#editUserProfilePage"><span class="glyphicon glyphicon-pencil"></span></button>
+                                <button class="btn btn-primary btn-xs" ng-click="viewUserProfile(item)" confirm-click="Are you sure to delete this user?">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </button>
                             </td>
                             <td class="text-center">
-                                <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button>
+                                <button class="btn btn-danger btn-xs" ng-click="deleteUser(item)" ng-disabled="item._id === currentUserId"><span class="glyphicon glyphicon-trash"></span></button>
                             </td>
                         </tr>
                         </tbody>
 
                         <tfoot>
-                        <td colspan="5" ng-if="(items|filter:searchrecord).length != 0 && checkedNumber>1">
-                            <a class="btn btn-danger checkedAllSection">Delete All</a>
+                        <td colspan="6" ng-if="pagedItems.length != 0 && checkedNumber>1">
+                            <a class="btn btn-danger checkedAllSection" ng-click="deleteSelectedUsers(pagedItems)">Delete Selected Users</a>
                             <a class="btn btn-primary checkedAllSection" data-title="ModifyPrivilege" data-toggle="modal" data-target="#modifyPrivilegeModal">Modify Access Privilege</a>
                             <a href="/pointManagement" class="btn btn-info checkedAllSection">Give Points</a>
-                            <strong class="">{{checkedNumber}} record selected</strong>
+                            <span><strong class="">{{checkedNumber}} record selected</strong></span>
                         </td>
                         <td colspan="9" ng-if="(items|filter:searchrecord).length == 0" class="text-center">
                             <strong>DATA NOT FOUND.</strong>
@@ -89,7 +91,7 @@
                             <div class="col-md-12 name-card-setting">
                                 <div class="col-md-12">
                                     <div class="pull-left">
-                                        <button class="btn btn-info btn-xs btn-circle" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button>
+                                        <button class="btn btn-info btn-xs btn-circle" ng-click="viewUserProfile(item)" ><span class="glyphicon glyphicon-pencil"></span></button>
                                         <button class="btn btn-danger btn-xs btn-circle" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button>
                                     </div>
                                     <h4 class="crap-word text-center">{{item.name.firstName + " " +item.name.lastName}}</h4>
@@ -115,8 +117,6 @@
             </div>
         </div>
 
-        <!--Edit user profile page-->
-        <div ng-include="'angular_components/userProfile/editUserProfile.html'"></div>
 
         <!--Modify Access Privilege-->
         <div class="modal fade" id="modifyPrivilegeModal" role="dialog">

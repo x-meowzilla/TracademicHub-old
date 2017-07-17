@@ -5,26 +5,17 @@
         .module('TracademicHub')
         .controller('userManagementController', userManagementController);
 
-    userManagementController.$inject = ['$scope', '_AjaxRequest', '_ViewProfile']; // dependency injection
+    userManagementController.$inject = ['$scope', '$location', '$route', '_AjaxRequest', '_ViewProfile']; // dependency injection
 
-    function userManagementController($scope, _AjaxRequest, _ViewProfile) {
+    function userManagementController($scope, $location, $route, _AjaxRequest, _ViewProfile) {
 
-        // $scope.items = [];
-        $scope.items = [{"_id":"59544e374609bf493b5c6023","utorid":"admin1","email":"admin1-test@tracademichub.com","name":{"preferredName":"asdfasd123123f","firstName":"asfva","lastName":"jgdf"},"accessPrivilege":"59544c9117b4fb4805c4d941","biography":"","lastLoginDate":"2017-06-29T17:07:04.837Z"},
-            {"_id":"59544e374609bf493b5c6023","utorid":"admin1","email":"admin1-test@tracademichub.com","name":{"preferredName":"asdfasd123123f","firstName":"sv","lastName":"tr"},"accessPrivilege":"59544c9117b4fb4805c4d941","biography":"","lastLoginDate":"2017-06-29T17:07:04.837Z"},
-            {"_id":"59544e374609bf493b5c6023","utorid":"admin1","email":"admin1-test@tracademichub.com","name":{"preferredName":"asdfasd123123f","firstName":"sv","lastName":"tr"},"accessPrivilege":"59544c9117b4fb4805c4d941","biography":"","lastLoginDate":"2017-06-29T17:07:04.837Z"},
-            {"_id":"59544e374609bf493b5c6023","utorid":"admin1","email":"admin1-test@tracademichub.com","name":{"preferredName":"asdfasd123123f","firstName":"sv","lastName":"tr"},"accessPrivilege":"59544c9117b4fb4805c4d941","biography":"","lastLoginDate":"2017-06-29T17:07:04.837Z"},
-            {"_id":"59544e374609bf493b5c6023","utorid":"admin1","email":"admin1-test@tracademichub.com","name":{"preferredName":"asdfasd123123f","firstName":"sv","lastName":"tr"},"accessPrivilege":"59544c9117b4fb4805c4d941","biography":"","lastLoginDate":"2017-06-29T17:07:04.837Z"},
-            {"_id":"59544e374609bf493b5c6023","utorid":"admin1","email":"admin1-test@tracademichub.com","name":{"preferredName":"asdfasd123123f","firstName":"sv","lastName":"tr"},"accessPrivilege":"59544c9117b4fb4805c4d941","biography":"","lastLoginDate":"2017-06-29T17:07:04.837Z"},
-            {"_id":"59544e374609bf493b5c6023","utorid":"admin1","email":"admin1-test@tracademichub.com","name":{"preferredName":"asdfasd123123f","firstName":"sv","lastName":"tr"},"accessPrivilege":"59544c9117b4fb4805c4d941","biography":"","lastLoginDate":"2017-06-29T17:07:04.837Z"},
-            {"_id":"59544e374609bf493b5c6023","utorid":"admin1","email":"admin1-test@tracademichub.com","name":{"preferredName":"asdfasd123123f","firstName":"sv","lastName":"tr"},"accessPrivilege":"59544c9117b4fb4805c4d941","biography":"","lastLoginDate":"2017-06-29T17:07:04.837Z"},
-            {"_id":"59544e374609bf493b5c6023","utorid":"admin1","email":"admin1-test@tracademichub.com","name":{"preferredName":"asdfasd123123f","firstName":"sv","lastName":"tr"},"accessPrivilege":"59544c9117b4fb4805c4d941","biography":"","lastLoginDate":"2017-06-29T17:07:04.837Z"},
-            {"_id":"59544e374609bf493b5c6023","utorid":"admin1","email":"admin1-test@tracademichub.com","name":{"preferredName":"asdfasd123123f","firstName":"sv","lastName":"tr"},"accessPrivilege":"59544c9117b4fb4805c4d941","biography":"","lastLoginDate":"2017-06-29T17:07:04.837Z"},
-            {"_id":"59544e374609bf493b5c6023","utorid":"admin1","email":"admin1-test@tracademichub.com","name":{"preferredName":"asdfasd123123f","firstName":"sv","lastName":"tr"},"accessPrivilege":"59544c9117b4fb4805c4d941","biography":"","lastLoginDate":"2017-06-29T17:07:04.837Z"},
-            {"_id":"59544e374609bf493b5c6023","utorid":"admin1","email":"admin1-test@tracademichub.com","name":{"preferredName":"asdfasd123123f","firstName":"qwerasv","lastName":"gsdf"},"accessPrivilege":"59544c9117b4fb4805c4d941","biography":"","lastLoginDate":"2017-06-29T17:07:04.837Z"}];
+        $scope.currentUserId = _ViewProfile.getUser()._id;
+
+
+        $scope.items = [];
 
         (function () {
-            _AjaxRequest.get('/api/users/')
+            _AjaxRequest.get('/api/users/?' + $.param({isActive: true}))
                 .then(
                     function successCallback(result) {
                         $scope.items = result.data;
@@ -95,17 +86,43 @@
         }, true);
 
 
-        $scope.editUser = function (user) {
-            _ViewProfile.setUser('abcde');
+        // edit user profile
+        $scope.viewUserProfile = function (user) {
+            $location.path( "/profile" );
+            // pass userId of selected user.
+            _ViewProfile.setUser('abcd');
+
         };
 
-        // edit profile form
+        // delete/deactive user
+        $scope.deleteUser = function (user) {
+            _AjaxRequest.patch('/api/users/' + user._id + '/update/user-access?' + $.param({isActive: false}))
+                .then(
+                    function successCallback(result) {
+                        $route.reload();
+                    },
+                    function errorCallback(error) {
+                        console.error(error);
+                    }
+                )
+        };
+        
+        // delete all selected user
+        $scope.deleteSelectedUsers = function (users) {
+            angular.forEach(users, function (user) {
+                if(user._id !== $scope.currentUserId)
+                {
+                    $scope.deleteUser(user);
+                }
+            });
+        };
+
+        // edit privileges of (mutiple) users
         $scope.privileges = [];
         (function () {
             _AjaxRequest.get('/api/privileges/')
                 .then(
                     function successCallback(result) {
-                        console.log(result.data);
                         $scope.privileges = result.data;
                     },
                     function errorCallback(error) {

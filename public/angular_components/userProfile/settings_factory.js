@@ -6,24 +6,24 @@
         .factory('_AssignPoints', assignPoints)
         .factory('_ViewProfile', viewProfile)
         .directive('sortRecords', sortRecords)
-        .directive('pageControl', pageControl);
+        .directive('pageControl', pageControl)
+        .directive('confirmClick', confirmClick);
 
     viewProfile.$inject = ['_AjaxRequest'];
     function viewProfile(_AjaxRequest) {
         return {
-            // user: JSON.parse(window.localStorage.getItem('currentUser')),
-            user: {"_id":'59544e374609bf493b5c6023',"utorid":"admin1","email":"adminabc@tracademichub.com","name":{"preferredName":"kkk","firstName":"asfva","lastName":"jgdf"},"accessPrivilege":"59544c9117b4fb4805c4d941","biography":"","lastLoginDate":"2017-06-29T17:07:04.837Z"},
+            user: JSON.parse(window.localStorage.getItem('currentUser')),
 
             getUser: function () {
                 return this.user;
             },
 
             setUser: function (userId) {
-                // var currentUser = JSON.parse(window.localStorage.getItem('currentUser'));
-                // if (userId === currentUser._id)
-                // {
-                //     return currentUser;
-                // }
+                var currentUser = JSON.parse(window.localStorage.getItem('currentUser'));
+                if (userId === currentUser._id)
+                {
+                    return currentUser;
+                }
                 // _AjaxRequest.get('/api/points/history')
                 //     .then(
                 //         function successCallback(result) {
@@ -136,6 +136,20 @@
                 };
             }
         }
+    }
+    
+    function confirmClick() {
+        return {
+            link: function (scope, element, attr) {
+                var msg = attr.confirmClick || "Are you sure?";
+                var clickAction = attr.confirmedClick;
+                element.bind('click',function (event) {
+                    if ( window.confirm(msg) ) {
+                        scope.$eval(clickAction)
+                    }
+                });
+            }
+        };
     }
 
 }());
