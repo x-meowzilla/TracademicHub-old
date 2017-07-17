@@ -12,6 +12,7 @@
             <div class="col-lg-12">
                 <h1 class="page-header">
                     <span>Users Management</span>
+                    <i id="editProfileBtn" class="fa fa-fw fa-gear" ng-click="enableAllUsers()"></i>
                 </h1>
             </div>
         </div>
@@ -56,12 +57,12 @@
                             <td>{{item.accessPrivilege}}</td>
                             <td>{{item.lastLoginDate}}</td>
                             <td class="text-center">
-                                <button class="btn btn-primary btn-xs" ng-click="viewUserProfile(item)" confirm-click="Are you sure to delete this user?">
+                                <button class="btn btn-primary btn-xs" ng-click="viewUserProfile(item)">
                                     <span class="glyphicon glyphicon-pencil"></span>
                                 </button>
                             </td>
                             <td class="text-center">
-                                <button class="btn btn-danger btn-xs" ng-click="deleteUser(item)" ng-disabled="item._id === currentUserId"><span class="glyphicon glyphicon-trash"></span></button>
+                                <button class="btn btn-danger btn-xs" confirm-click="Are you sure to delete this user?" ng-click="deleteUser(item)" ng-disabled="item._id === currentUserId"><span class="glyphicon glyphicon-trash"></span></button>
                             </td>
                         </tr>
                         </tbody>

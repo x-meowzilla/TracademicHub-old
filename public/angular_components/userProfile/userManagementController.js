@@ -112,9 +112,15 @@
             angular.forEach(users, function (user) {
                 if(user._id !== $scope.currentUserId)
                 {
-                    $scope.deleteUser(user);
+                    _AjaxRequest.patch('/api/users/' + user._id + '/update/user-access?' + $.param({isActive: false}))
+                        .then(
+                            function errorCallback(error) {
+                                console.error(error);
+                            }
+                        )
                 }
             });
+            $route.reload();
         };
 
         // edit privileges of (mutiple) users
@@ -130,6 +136,42 @@
                     }
                 )
         }());
+
+
+        // delete all selected user
+        $scope.enableAllUsers = function () {
+            angular.forEach(users, function (user) {
+                if(user._id !== $scope.currentUserId)
+                {
+                    _AjaxRequest.patch('/api/users/' + user._id + '/update/user-access?' + $.param({isActive: false}))
+                        .then(
+                            function errorCallback(error) {
+                                console.error(error);
+                            }
+                        )
+                }
+            });
+            $route.reload();
+        };
+
+        $scope.enableAllUsers = function () {
+            _AjaxRequest.get('/api/users/?' + $.param({isActive: false}))
+                .then(
+                    function successCallback(result) {
+                        angular.forEach(result.data, function (user) {
+                            if(user._id !== $scope.currentUserId)
+                            {
+                                _AjaxRequest.patch('/api/users/' + user._id + '/update/user-access?' + $.param({isActive: true}))
+                                    .then(
+                                        function errorCallback(error) {
+                                            console.error(error);
+                                        }
+                                    )
+                            }
+                        });
+                    }
+                )
+        }
     }
 
 }());
