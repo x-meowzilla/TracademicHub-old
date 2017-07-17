@@ -5,9 +5,9 @@
         .module('TracademicHub')
         .controller('userManagementController', userManagementController);
 
-    userManagementController.$inject = ['$scope', '_AjaxRequest', '_ViewProfile']; // dependency injection
+    userManagementController.$inject = ['$scope', '$uibModal', '_AjaxRequest', '_ViewProfile']; // dependency injection
 
-    function userManagementController($scope, _AjaxRequest, _ViewProfile) {
+    function userManagementController($scope, $uibModal, _AjaxRequest, _ViewProfile) {
 
         // $scope.items = [];
         $scope.items = [{"_id":"59544e374609bf493b5c6023","utorid":"admin1","email":"admin1-test@tracademichub.com","name":{"preferredName":"asdfasd123123f","firstName":"asfva","lastName":"jgdf"},"accessPrivilege":"59544c9117b4fb4805c4d941","biography":"","lastLoginDate":"2017-06-29T17:07:04.837Z"},
@@ -95,17 +95,12 @@
         }, true);
 
 
-        $scope.editUser = function (user) {
-            _ViewProfile.setUser('abcde');
-        };
-
         // edit profile form
         $scope.privileges = [];
         (function () {
             _AjaxRequest.get('/api/privileges/')
                 .then(
                     function successCallback(result) {
-                        console.log(result.data);
                         $scope.privileges = result.data;
                     },
                     function errorCallback(error) {
@@ -113,6 +108,27 @@
                     }
                 )
         }());
+
+
+        $scope.openModal = function () {
+            console.log("hi there");
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'angular_components/userProfile/editUserProfile.html',
+                controller: 'editUserProfileController',
+                resolve: {
+                    items: function () {
+                        return $scope.items;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (user) {
+                $scope.selected = user;
+            }, function () {
+                console.log("come come")
+            });
+        };
     }
 
 }());

@@ -5,9 +5,9 @@
         .module('TracademicHub')
         .controller('editUserProfileController', editUserProfileController);
 
-    editUserProfileController.$inject = ['$scope', '_ViewProfile']; // dependency injection
+    editUserProfileController.$inject = ['$scope', '_ViewProfile', '_AjaxRequest']; // dependency injection
 
-    function editUserProfileController($scope, _ViewProfile) {
+    function editUserProfileController($scope, _ViewProfile, _AjaxRequest) {
 
         $scope.currentUser = _ViewProfile.getUser();
 
@@ -17,7 +17,6 @@
             _AjaxRequest.get('/api/privileges/')
                 .then(
                     function successCallback(result) {
-                        console.log(result.data);
                         $scope.privileges = result.data;
                     },
                     function errorCallback(error) {
