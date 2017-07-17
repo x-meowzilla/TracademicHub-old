@@ -15,16 +15,23 @@
             
             setCurrentUser: function (user) {
                 window.localStorage.setItem('currentUser', user);
-                return user;
             },
             
             getCurrentUser: function () {
                 return JSON.parse(window.localStorage.getItem('currentUser'));
             },
             
-            setDisplayName: function (name) {
-                window.localStorage.setItem('displayName', name);
-                return name;
+            setDisplayName: function (userData) {
+                var displayName = '';
+                if (userData.name.preferredName) {
+                    displayName = userData.name.preferredName;
+                } else if (userData.name.firstName && userData.name.lastName) {
+                    displayName = userData.name.firstName + ' ' + userData.name.lastName;
+                } else {
+                    displayName = userData.utorid;
+                }
+
+                window.localStorage.setItem('displayName', displayName);
             },
 
             getDisplayName: function () {

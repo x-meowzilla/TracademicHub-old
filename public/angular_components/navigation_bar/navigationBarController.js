@@ -53,16 +53,7 @@
                     var userData = result.data;
                     _Authentication.setCurrentUser(JSON.stringify(userData));
 
-                    function getDisplayName(userData) {
-                        if (userData.name.preferredName) {
-                            return userData.name.preferredName;
-                        } else if (userData.name.firstName && userData.name.lastName) {
-                            return userData.name.firstName + ' ' + userData.name.lastName;
-                        } else {
-                            return userData.utorid;
-                        }
-                    }
-                    _Authentication.setDisplayName(getDisplayName(userData));
+                    _Authentication.setDisplayName(userData);
 
                     // TODO - show login successful banner
                 },

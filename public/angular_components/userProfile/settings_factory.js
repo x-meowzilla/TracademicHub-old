@@ -9,8 +9,8 @@
         .directive('pageControl', pageControl)
         .directive('ngConfirmClick', ngConfirmClick);
 
-    viewProfile.$inject = ['_AjaxRequest'];
-    function viewProfile(_AjaxRequest) {
+    viewProfile.$inject = ['_AjaxRequest', '_Authentication'];
+    function viewProfile(_AjaxRequest, _Authentication) {
         return {
             user: JSON.parse(window.localStorage.getItem('currentUser')),
 
@@ -18,23 +18,11 @@
                 return this.user;
             },
 
-            setUser: function (userId) {
+            setUser: function (user) {
                 var currentUser = JSON.parse(window.localStorage.getItem('currentUser'));
-                if (userId === currentUser._id)
-                {
-                    return currentUser;
-                }
-                // _AjaxRequest.get('/api/points/history')
-                //     .then(
-                //         function successCallback(result) {
-                //             return result.data;
-                //         },
-                //         function errorCallback(error) {
-                //             console.error(error);
-                //         }
-                //     )
-                this.user = {"_id":userId,"utorid":"admin1","email":"adminabc@tracademichub.com","name":{"preferredName":"kkk","firstName":"asfva","lastName":"jgdf"},"accessPrivilege":"59544c9117b4fb4805c4d941","biography":"","lastLoginDate":"2017-06-29T17:07:04.837Z"};
-                return this.user;
+                this.user = user;
+
+                _Authentication.setDisplayName(user);
             }
         };
     }
@@ -44,6 +32,14 @@
 
             users: [],
 
+            setAssignees: function (users) {
+                this.users = users;
+            },
+            
+            getAssignees: function () {
+                return this.users;
+            },
+            
             addPoints: function () {
                 return this.users;
             },

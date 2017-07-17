@@ -5,11 +5,11 @@
         .module('TracademicHub')
         .controller('userManagementController', userManagementController);
 
-    userManagementController.$inject = ['$scope', '$location', '$route', '_AjaxRequest', '_ViewProfile']; // dependency injection
+    userManagementController.$inject = ['$scope', '$location', '$route', '_AjaxRequest', '_ViewProfile', '_AssignPoints']; // dependency injection
 
-    function userManagementController($scope, $location, $route, _AjaxRequest, _ViewProfile) {
+    function userManagementController($scope, $location, $route, _AjaxRequest, _ViewProfile, _AssignPoints) {
 
-        $scope.currentUserId = _ViewProfile.getUser()._id;
+        $scope.currentUser = _ViewProfile.getUser();
 
 
         $scope.items = [];
@@ -18,7 +18,9 @@
             _AjaxRequest.get('/api/users/?' + $.param({isActive: true}))
                 .then(
                     function successCallback(result) {
-                        $scope.items = result.data;
+                        $scope.items = result.data.filter(function (item) {
+                            return item._id !== $scope.currentUser._id;
+                        });
                     },
                     function errorCallback(error) {
                         console.error(error);
@@ -90,7 +92,7 @@
         $scope.viewUserProfile = function (user) {
             $location.path( "/profile" );
             // pass userId of selected user.
-            _ViewProfile.setUser('abcd');
+            _ViewProfile.setUser(user);
 
         };
 
@@ -110,7 +112,7 @@
         // delete all selected user
         $scope.deleteSelectedUsers = function (users) {
             angular.forEach(users, function (user) {
-                if(user._id !== $scope.currentUserId)
+                if(user._id !== $scope.currentUser._id)
                 {
                     _AjaxRequest.patch('/api/users/' + user._id + '/update/user-access?' + $.param({isActive: false}))
                         .then(
@@ -141,7 +143,7 @@
         // delete all selected user
         $scope.enableAllUsers = function () {
             angular.forEach(users, function (user) {
-                if(user._id !== $scope.currentUserId)
+                if(user._id !== $scope.currentUser._id)
                 {
                     _AjaxRequest.patch('/api/users/' + user._id + '/update/user-access?' + $.param({isActive: false}))
                         .then(
@@ -154,12 +156,19 @@
             $route.reload();
         };
 
+        // give points to selected user
+        $scope.getPoints = function (users) {
+            $location.path( "/pointManagement" );
+            _AssignPoints.setAssignees(users);
+        };
+
+        // may delete later!!!
         $scope.enableAllUsers = function () {
             _AjaxRequest.get('/api/users/?' + $.param({isActive: false}))
                 .then(
                     function successCallback(result) {
                         angular.forEach(result.data, function (user) {
-                            if(user._id !== $scope.currentUserId)
+                            if(user._id !== $scope.currentUser._id)
                             {
                                 _AjaxRequest.patch('/api/users/' + user._id + '/update/user-access?' + $.param({isActive: true}))
                                     .then(

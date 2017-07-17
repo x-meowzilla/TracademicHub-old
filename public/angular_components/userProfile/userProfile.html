@@ -36,7 +36,7 @@
                                     <img class="img-circle img-responsive avatar avatar-large center-block" alt="avatar">
                                 </figure>
                                 <div class="text-center">
-                                    <a href="/pointManagement" class="btn btn-info customBtn">Give Points</a>
+                                    <a href="/pointManagement" class="btn btn-info customBtn" ng-if="currentUser._id !== loginUser._id" ng-click="getPoints()">Give Points</a>
                                 </div>
                                 <!--Note: deleter later!!!-->
                                 <!--<div class="row">-->
