@@ -136,46 +136,12 @@
         }());
 
 
-        // delete all selected user
-        $scope.enableAllUsers = function () {
-            angular.forEach(users, function (user) {
-                if(user._id !== $scope.currentUser._id)
-                {
-                    _AjaxRequest.patch('/api/users/' + user._id + '/update/user-access?' + $.param({isActive: false}))
-                        .then(
-                            function errorCallback(error) {
-                                console.error(error);
-                            }
-                        )
-                }
-            });
-        };
-
         // give points to selected user
         $scope.getPoints = function (users) {
             $location.path( "/pointManagement" );
             _AssignPoints.setAssignees(users);
         };
 
-        // may delete later!!!
-        $scope.enableAllUsers = function () {
-            _AjaxRequest.get('/api/users/?' + $.param({isActive: false}))
-                .then(
-                    function successCallback(result) {
-                        angular.forEach(result.data, function (user) {
-                            if(user._id !== $scope.currentUser._id)
-                            {
-                                _AjaxRequest.patch('/api/users/' + user._id + '/update/user-access?' + $.param({isActive: true}))
-                                    .then(
-                                        function errorCallback(error) {
-                                            console.error(error);
-                                        }
-                                    )
-                            }
-                        });
-                    }
-                )
-        }
     }
 
 }());
