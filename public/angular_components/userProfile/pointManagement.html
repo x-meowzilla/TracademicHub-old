@@ -18,12 +18,14 @@
 
             <!--category section-->
             <div class="col-lg-12">
-                <div class="bs-callout bs-callout-danger">
+                <div class="bs-callout bs-callout-danger" ng-init="models = [{name:'Sam'},{name:'Harry'},{name:'Sally'}]">
                     <h4> Assign Points
                         <i class="fa fa-plus-circle titl-side-btn" data-title="AddPointCategory" data-toggle="modal" data-target="#addPointCategoryModal"></i>
                     </h4>
                     <h5 class="text-center" ng-if="categories.length === 0">No Points Category</h5>
-                    <div category-card category="category" ng-repeat="category in categories"></div>
+
+                    <div category-card ng-repeat="category in categories"></div>
+
                 </div>
             </div>
 
@@ -53,7 +55,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" ng-disabled="addCategoryForm.categoryName.$invalid || addCategoryForm.categoryDescription.$invalid"
+                            <button type="submit" class="btn btn-primary" ng-disabled="addCategoryForm.categoryName.$invalid || addCategoryForm.categoryDescription.$invalid || getAssignedPoints().length === 0"
                                     data-toggle="modal" data-target="#addCategoryForm" ng-click="addPointCategory(categoryName, categoryDescription)" data-dismiss="modal">Add</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
@@ -77,11 +79,12 @@
                                     <form class="col-xs-6" name="inputStudentNum">
                                         <div class="input-group">
                                             <span class="input-group-addon">Student Number</span>
-                                            <input type="text" class="form-control" name="studentNumber" ng-model="studentNum" required>
+                                            <input type="text" title="Enter the student number of the assignee." class="form-control" name="studentNumber" ng-model="studentNum" required>
                                         </div>
                                     </form>
                                     <div class="text-center col-xs-3">
-                                        <a class="btn btn-success customBtn" data-target="#inputStudentNum" ng-disabled="inputStudentNum.studentNumber.$invalid || categories.length === 0" ng-click="assignPoints(studentNum)"> Add Assignee </a>
+                                        <a class="btn btn-success customBtn" data-target="#inputStudentNum" ng-disabled="inputStudentNum.studentNumber.$invalid || categories.length === 0" ng-click="addAssignee(studentNum)"> Add Assignee </a>
+                                        <div ng-confirm-message confirmed="confirmed"></div>
                                     </div>
                                 </div>
                             </td>

@@ -7,7 +7,8 @@
         .factory('_ViewProfile', viewProfile)
         .directive('sortRecords', sortRecords)
         .directive('pageControl', pageControl)
-        .directive('ngConfirmClick', ngConfirmClick);
+        .directive('ngConfirmClick', ngConfirmClick)
+        .directive('ngConfirmMessage', ngConfirmMessage);
 
     viewProfile.$inject = ['_AjaxRequest', '_Authentication'];
     function viewProfile(_AjaxRequest, _Authentication) {
@@ -136,12 +137,32 @@
     
     function ngConfirmClick() {
         return {
+            restrict: 'A',
             link: function (scope, element, attr) {
                 element.bind('click',function (event) {
                     if ( window.confirm(attr.ngConfirmClick) ) {
                         scope.$eval(attr.confirmedClick)
                     }
                 });
+            }
+        };
+    }
+
+    ngConfirmMessage.$inject = ['$timeout'];
+    function ngConfirmMessage($timeout) {
+        return {
+            restrict: 'A',
+            scope: {
+                confirmed: '='
+            },
+            template:
+            '<div ng-show="confirmed.show" class="panel panel-info">' +
+            '<div class="panel-heading">{{confirmed.message}}</div>' +
+            '</div>',
+            link: function (scope) {
+                $timeout(function() {
+                    scope.confirmed.show = false;
+                }, 3000);
             }
         };
     }

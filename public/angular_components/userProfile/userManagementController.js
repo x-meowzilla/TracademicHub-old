@@ -15,7 +15,7 @@
         $scope.items = [];
 
         (function () {
-            _AjaxRequest.get('/api/users/?' + $.param({isActive: true}))
+            _AjaxRequest.get('/api/users?' + $.param({isActive: true}))
                 .then(
                     function successCallback(result) {
                         $scope.items = result.data.filter(function (item) {

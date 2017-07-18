@@ -19,7 +19,7 @@
                     function errorCallback(error) {
                         console.error(error);
                     }
-                )
+                );
         };
 
         $scope.categories = [];
@@ -66,11 +66,64 @@
                 return item._id !== assignee._id;
             });
         };
-        
-        $scope.assignPoints = function (studentNum) {
+
+        $scope.getAssignedPoints = function () {
+            var res = [];
+            angular.forEach($scope.categories, function (category) {
+                if(category.point)
+                {
+                    res.push({"id": category._id, "point": category.point});
+                }
+            });
+
+            return res;
+        };
+
+        $scope.confirmed = {};
+
+        $scope.addAssignee = function (studentNum) {
             if(studentNum)
             {
-                console.log(studentNum);
+                _AjaxRequest.get('/api/users?' + $.param({isActive: true, email: studentNum}))
+                    .then(
+                        function successCallback(result) {
+                            // if user does not exist or user is inactive
+                            if(result.data.length === 0)
+                            {
+                                $scope.confirmed.message = 'New Assignee is added in the table below.';
+                                $scope.confirmed.show = true;
+                            }
+                        },
+                        function errorCallback(error) {
+                            console.error(error);
+                        }
+                    );
+            }
+        };
+        
+        $scope.assignPoints = function () {
+            if(studentNum)
+            {
+                angular.forEach($scope.getAssignedPoints(), function (category) {
+                    _AjaxRequest.get('/api/users?' + $.param({isActive: true, studentNumber: studentNum}))
+                        .then(
+                            function successCallback(user) {
+                                _AjaxRequest.post('/api/points',
+                                    {assigneeID: user._id, pointValue: category.point, pointCategoryID: category._id})
+                                    .then(
+                                        function successCallback(result) {
+                                            getAllCategories();
+                                        },
+                                        function errorCallback(error) {
+                                            console.error(error);
+                                        }
+                                    );
+                            },
+                            function errorCallback(error) {
+                                console.error(error);
+                            }
+                        );
+                });
             }
         }
 
@@ -94,7 +147,7 @@
             '<hr>' +
             '<div class="input-group">' +
             '<span class="input-group-addon">Enter points: </span>' +
-            '<input type="number" min="0" class="form-control">' +
+            '<input type="number" min="0" class="form-control" ng-model="category.point"/>' +
             '</div>' +
             '</div>' +
             '</div>' +
