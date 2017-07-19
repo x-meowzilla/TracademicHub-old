@@ -7,19 +7,19 @@ var userSchema = new Schema({
     utorid: {type: String, required: true, unique: true}, // required!!
     email: {type: String, required: true, unique: true},
     studentNumber: {type: Number, sparse: true, unique: true},
-    accessPrivilege: {type: Schema.Types.ObjectId, ref: 'AccessPrivilege', required: true},
-    createDate: {type: Date, default: Date.now},
+    name: {
+        firstName: {type: String, required: true},
+        lastName: {type: String, required: true},
+        preferredName: {type: String, default: ''}
+    },
+    courseEnrolled: [{type: Schema.Types.ObjectId, ref: '', unique: true}],
+    createDate: {type: Date, default: Date.now, required: true},
     lastLoginDate: {type: Date, index: true, sparse: true},
     isActive: {type: Boolean, default: true, required: true},
     isLocalUser: {type: Boolean, default: false, required: true},
     password: {
         salt: {type: String, sparse: true, unique: true},
         hash: {type: String, sparse: true, unique: true}
-    },
-    name: {
-        firstName: {type: String, required: true},
-        lastName: {type: String, required: true},
-        preferredName: {type: String, default: ''}
     },
     biography: {type: String, default: ''},
     avatarPath: {type: String, default: null}
