@@ -16,9 +16,6 @@ router.get('/Login', function (req, res) {
                     return res.json(util.retrieveBasicUserData(user)).end();
                 });
             }
-            // if this user data has not been imported (name field exists), then redirect to update info page
-            // if (!user.name) res.redirect('/some-page-to-update-basic-user-info');
-            // return res.status(200).json(user).end();
         })(req, res);
 });
 
