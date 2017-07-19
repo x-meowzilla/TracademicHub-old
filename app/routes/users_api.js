@@ -9,7 +9,7 @@ var UserModel = require('../db_models/User');
 var PrivilegeModel = require('../db_models/AccessPrivilege');
 
 // users URI: .../api/users/
-router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, function (req, res) {
+router.get('/', mw.checkAuthentication, function (req, res) {
     "use strict";
     var findDoc = {};
     Object.keys(req.query).forEach(function (arg) {
@@ -41,7 +41,7 @@ router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, functio
         });
 });
 
-router.post('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, uploadMemory.single('csvfile'), function (req, res) {
+router.post('/', mw.checkAuthentication, uploadMemory.single('csvfile'), function (req, res) {
     "use strict";
     // read csv file content from buffer and split file header and content, then generate file header and its corresponding indices
     var csv = processFileData(req.file.buffer.toString());
@@ -154,7 +154,7 @@ router.patch('/:userID/update/user-info', mw.checkAuthentication, function (req,
         });
 });
 
-router.patch('/:userID/update/user-access', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, mw.haveAuthority, function (req, res) {
+router.patch('/:userID/update/user-access', mw.checkAuthentication, function (req, res) {
     "use strict";
     var updateDoc = {};
     Object.keys(req.query).forEach(function (arg) {

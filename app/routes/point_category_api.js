@@ -3,7 +3,7 @@ var mw = require('../modules/middlewares');
 var PointCategoryModel = require('../db_models/PointCategory');
 
 // point category URI: .../api/points-category/
-router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, function (req, res) {
+router.get('/', mw.checkAuthentication, function (req, res) {
     "use strict";
     var findDoc = {};
     Object.keys(req.query).forEach(function (arg) {
@@ -23,7 +23,7 @@ router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, functio
         });
 });
 
-router.put('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
+router.put('/', mw.checkAuthentication, function (req, res) {
     "use strict";
     PointCategoryModel.findPointCategoryData({description: req.body.description})
         .then(function (categoryArray) {
@@ -44,7 +44,7 @@ router.put('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege,
     }
 });
 
-router.delete('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
+router.delete('/', mw.checkAuthentication, function (req, res) {
     "use strict";
     var deleteDoc = {};
     Object.keys(req.query).forEach(function (arg) {

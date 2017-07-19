@@ -3,7 +3,7 @@ var mw = require('../modules/middlewares');
 var PrivilegeModel = require('../db_models/AccessPrivilege');
 
 // point URI: .../api/privilege/
-router.get('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
+router.get('/', mw.checkAuthentication, function (req, res) {
     "use strict";
     var findDoc = {};
     Object.keys(req.query).forEach(function (arg) {
@@ -24,7 +24,7 @@ router.get('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege,
         });
 });
 
-router.delete('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
+router.delete('/', mw.checkAuthentication, function (req, res) {
     "use strict";
     var deleteDoc = {};
     Object.keys(req.query).forEach(function (arg) {
