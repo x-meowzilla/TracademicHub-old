@@ -1,6 +1,6 @@
 var LocalStrategy = require('passport-local').Strategy;
 var SamlStrategy = require('passport-saml').Strategy;
-var passportConfig = require('../configurations/passport_config');
+var passportConfig = require('../configurations/passport_config').development;
 var fs = require('fs');
 
 var UserModel = require('../db_models/User');
@@ -20,8 +20,6 @@ module.exports = function (passport) {
     });
 
     // saml strategy
-    passportConfig.samlData.decryptionPvk = fs.readFileSync(passportConfig.samlData.decryptionPvk);
-    passportConfig.samlData.cert = fs.readFileSync(passportConfig.samlData.cert);
     passport.use('saml', new SamlStrategy(passportConfig.samlData, function (profile, done) {
         var utorid = profile['urn:oid:1.3.6.1.4.1.15465.3.1.8'];
         var email = profile['urn:oid:0.9.2342.19200300.100.1.3'];
