@@ -1,3 +1,4 @@
 .idea
 node_modules
+app/certificates/
 #app/user_uploads/ # to be uncommented in production
