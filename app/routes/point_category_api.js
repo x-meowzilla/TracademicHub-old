@@ -3,7 +3,7 @@ var mw = require('../modules/middlewares');
 var PointCategoryModel = require('../db_models/PointCategory');
 
 // point category URI: .../api/points-category/
-router.get('/', mw.checkAuthentication, function (req, res) {
+router.get('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, function (req, res) {
     "use strict";
     var findDoc = {};
     Object.keys(req.query).forEach(function (arg) {
