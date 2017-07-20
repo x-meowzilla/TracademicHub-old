@@ -1,6 +1,6 @@
 var router = require('express').Router();
 var passport = require('passport');
-var serverConfig = require('../configurations/server_config');
+var serverConfig = require('../configurations/server_config').development;
 var util = require('../modules/utility');
 var UserModel = require('../db_models/User');
 var PrivilegeModel = require('../db_models/AccessPrivilege');
