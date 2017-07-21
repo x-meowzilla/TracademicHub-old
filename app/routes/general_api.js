@@ -3,7 +3,7 @@ var passport = require('passport');
 var serverConfig = require('../configurations/server_config').development;
 var util = require('../modules/utility');
 var UserModel = require('../db_models/User');
-var PrivilegeModel = require('../db_models/AccessPrivilege');
+// var PrivilegeModel = require('../db_models/AccessPrivilege');
 
 // general API URI: .../api/
 router.post('/local-login', _validateReqBodyUTORidAndPassword, function (req, res) {
@@ -28,27 +28,27 @@ router.put('/local-register', _validateReqBodyUTORidAndPassword, _validateReqBod
         });
 
     function createLocalUser() {
-        PrivilegeModel.findAccessPrivilegeData({value: util.ACCESS_ADMIN, description: util.ACCESS_ADMIN_DESCRIPTION})
-            .then(function (accessArray) {
-                return accessArray[0]._id;
-            })
-            .then(function (adminAccess) {
-                var user = new UserModel();
-                user.utorid = req.body.utorid;
-                user.encryptPassword(req.body.password);
-                user.name.firstName = req.body.firstName;
-                user.name.lastName = req.body.lastName;
-                user.name.preferredName = req.body.preferredName ? req.body.preferredName : '';
-                user.email = req.body.utorid + '-test@tracademic.utsc.utoronto.ca'; // create a fake email address for now
-                user.accessPrivilege = adminAccess;
-                return user.save();
-            })
-            .then(function (user) {
-                return res.json(util.retrieveBasicUserData(user)).end();
-            })
-            .catch(function (error) {
-                res.status(500).send(error).end();
-            });
+        // PrivilegeModel.findAccessPrivilegeData({value: util.ACCESS_ADMIN, description: util.ACCESS_ADMIN_DESCRIPTION})
+        //     .then(function (accessArray) {
+        //         return accessArray[0]._id;
+        //     })
+        //     .then(function (adminAccess) {
+        //         var user = new UserModel();
+        //         user.utorid = req.body.utorid;
+        //         user.encryptPassword(req.body.password);
+        //         user.name.firstName = req.body.firstName;
+        //         user.name.lastName = req.body.lastName;
+        //         user.name.preferredName = req.body.preferredName ? req.body.preferredName : '';
+        //         user.email = req.body.utorid + '-test@tracademic.utsc.utoronto.ca'; // create a fake email address for now
+        //         user.accessPrivilege = adminAccess;
+        //         return user.save();
+        //     })
+        //     .then(function (user) {
+        //         return res.json(util.retrieveBasicUserData(user)).end();
+        //     })
+        //     .catch(function (error) {
+        //         res.status(500).send(error).end();
+        //     });
     }
 });
 

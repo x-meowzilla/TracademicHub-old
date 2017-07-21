@@ -1,4 +1,4 @@
-var PrivilegeModel = require('../db_models/AccessPrivilege');
+// var PrivilegeModel = require('../db_models/AccessPrivilege');
 var UserModel = require('../db_models/User');
 var util = require('./utility');
 

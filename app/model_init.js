@@ -1,4 +1,4 @@
-var PrivilegeModel = require('./db_models/AccessPrivilege');
+// var PrivilegeModel = require('./db_models/AccessPrivilege');
 var PointsCategoryModel = require('./db_models/PointCategory');
 var util = require('./modules/utility');
 

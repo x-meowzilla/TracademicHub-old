@@ -6,7 +6,7 @@ var uploadLocal = multer({dest: 'app/user_uploads/', limits: {files: 1, fileSize
 var mw = require('../modules/middlewares');
 var util = require('../modules/utility');
 var UserModel = require('../db_models/User');
-var PrivilegeModel = require('../db_models/AccessPrivilege');
+// var PrivilegeModel = require('../db_models/AccessPrivilege');
 
 // users URI: .../api/users/
 router.get('/', mw.checkAuthentication, function (req, res) {
@@ -51,41 +51,41 @@ router.post('/', mw.checkAuthentication, uploadMemory.single('csvfile'), functio
         return res.status(400).send('Student CSV file is not properly formatted.').end();
     // if the header is valid, then generate user data object
     var userDataArray = generateUserData(header, csv.content);
-    PrivilegeModel.findAccessPrivilegeData({value: util.ACCESS_STUDENT, description: util.ACCESS_STUDENT_DESCRIPTION})
-        .then(function (accessArray) { // map student access to each user data object
-            return userDataArray.map(function (userData) {
-                userData.accessPrivilege = accessArray[0]._id;
-                return userData;
-            });
-        })
-        .then(function (userDataArray) { // save user, if duplicate exists, ignore it.
-            var result = [];
-            userDataArray.forEach(function (userData) {
-                result.push(new UserModel(userData).save()
-                    .then(function (user) {
-                        return true;
-                    })
-                    .catch(function (error) {
-                        return false;
-                    })
-                );
-            });
-            return Promise.all(result); // this solution returns an array of boolean indicating save new or get existing records to database
-        })
-        .then(function (resultArray) {
-            var total = resultArray.length;
-            var newRecord = resultArray.reduce(function (sum, boolResult) {
-                return sum + boolResult;
-            }, 0);
-            var oldRecord = total - newRecord;
-            var response = 'Imported from student CSV file. Total ' + total + ' records found: ';
-            response += newRecord ? newRecord + ' new student records saved successfully. ' : '';
-            response += oldRecord ? oldRecord + ' existing student records remain unchanged.' : '';
-            return res.send(response).end();
-        })
-        .catch(function (error) {
-            return res.status(500).send(error.message).end();
-        });
+    // PrivilegeModel.findAccessPrivilegeData({value: util.ACCESS_STUDENT, description: util.ACCESS_STUDENT_DESCRIPTION})
+    //     .then(function (accessArray) { // map student access to each user data object
+    //         return userDataArray.map(function (userData) {
+    //             userData.accessPrivilege = accessArray[0]._id;
+    //             return userData;
+    //         });
+    //     })
+    //     .then(function (userDataArray) { // save user, if duplicate exists, ignore it.
+    //         var result = [];
+    //         userDataArray.forEach(function (userData) {
+    //             result.push(new UserModel(userData).save()
+    //                 .then(function (user) {
+    //                     return true;
+    //                 })
+    //                 .catch(function (error) {
+    //                     return false;
+    //                 })
+    //             );
+    //         });
+    //         return Promise.all(result); // this solution returns an array of boolean indicating save new or get existing records to database
+    //     })
+    //     .then(function (resultArray) {
+    //         var total = resultArray.length;
+    //         var newRecord = resultArray.reduce(function (sum, boolResult) {
+    //             return sum + boolResult;
+    //         }, 0);
+    //         var oldRecord = total - newRecord;
+    //         var response = 'Imported from student CSV file. Total ' + total + ' records found: ';
+    //         response += newRecord ? newRecord + ' new student records saved successfully. ' : '';
+    //         response += oldRecord ? oldRecord + ' existing student records remain unchanged.' : '';
+    //         return res.send(response).end();
+    //     })
+    //     .catch(function (error) {
+    //         return res.status(500).send(error.message).end();
+    //     });
 
     function processFileData(csvString) {
         var contentArray = csvString.split('\n').map(function (line) {

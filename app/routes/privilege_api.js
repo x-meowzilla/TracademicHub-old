@@ -1,6 +1,6 @@
 var router = require('express').Router();
 var mw = require('../modules/middlewares');
-var PrivilegeModel = require('../db_models/AccessPrivilege');
+// var PrivilegeModel = require('../db_models/AccessPrivilege');
 
 // point URI: .../api/privilege/
 router.get('/', mw.checkAuthentication, function (req, res) {
@@ -15,13 +15,13 @@ router.get('/', mw.checkAuthentication, function (req, res) {
                 break;
         }
     });
-    PrivilegeModel.findAccessPrivilegeData(findDoc)
-        .then(function (pointsArray) {
-            return res.json(pointsArray).end();
-        })
-        .catch(function (error) {
-            return res.status(500).send(error).end();
-        });
+    // PrivilegeModel.findAccessPrivilegeData(findDoc)
+    //     .then(function (pointsArray) {
+    //         return res.json(pointsArray).end();
+    //     })
+    //     .catch(function (error) {
+    //         return res.status(500).send(error).end();
+    //     });
 });
 
 router.delete('/', mw.checkAuthentication, function (req, res) {
@@ -39,19 +39,19 @@ router.delete('/', mw.checkAuthentication, function (req, res) {
     if (Object.keys(deleteDoc).length === 0) { // strictly check here. Valid query string must present!
         return res.status(400).send('Failed to delete. Delete option not found.').end();
     } else {
-        PrivilegeModel.deleteAccessPrivilegeData(deleteDoc)
-            .then(function (result) {
-                return result.result.n;
-            })
-            .then(function (numRecords) {
-                return numRecords ? 'Delete succeeded. ' + numRecords + ' records deleted.' : 'No record has been deleted.';
-            })
-            .then(function (msg) {
-                return res.send(msg).end();
-            })
-            .catch(function (error) {
-                return res.status(500).send(error).end();
-            });
+        // PrivilegeModel.deleteAccessPrivilegeData(deleteDoc)
+        //     .then(function (result) {
+        //         return result.result.n;
+        //     })
+        //     .then(function (numRecords) {
+        //         return numRecords ? 'Delete succeeded. ' + numRecords + ' records deleted.' : 'No record has been deleted.';
+        //     })
+        //     .then(function (msg) {
+        //         return res.send(msg).end();
+        //     })
+        //     .catch(function (error) {
+        //         return res.status(500).send(error).end();
+        //     });
     }
 });
 
