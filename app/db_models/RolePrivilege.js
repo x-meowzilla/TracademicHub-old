@@ -4,8 +4,9 @@ var Schema = mongoose.Schema;
 var privilegeSchema = new Schema({
 
     name: {type: String, required: true},
+    description: {type: String},
     course: {type: Schema.Types.ObjectId, ref: 'Course', required: true},
-    operations: [{type: Schema.Types.ObjectId, ref: ''}]
+    responsibility: [{type: Schema.Types.ObjectId, ref: 'PrivilegeResponsibility'}]
 
 }, {collection: 'collection-RolePrivileges'});
 
