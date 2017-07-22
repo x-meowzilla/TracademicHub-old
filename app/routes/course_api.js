@@ -1,0 +1,82 @@
+var router = require('express').Router();
+var CourseModel = require('../db_models/Course');
+
+router.get('/', function (req, res) {
+    "use strict";
+    var findDoc = {};
+    Object.keys(req.query).forEach(function (arg) {
+        switch (arg) {
+            case '_id':
+            case 'startDate':
+            case 'endDate':
+            case 'name':
+            case 'academicTerm':
+            case 'isActive':
+                findDoc[arg] = req.query[arg];
+                break;
+        }
+    });
+
+    CourseModel.findCourseData(findDoc)
+        .then(function (courseArray) {
+            return res.json(courseArray).end();
+        })
+        .catch(function (error) {
+            return res.status(500).send(error).end();
+        });
+
+});
+
+router.put('/', function (req, res) {
+    "use strict";
+    // req.body = {startDate, endDate, name, description, academicTerm (Fall, Winter, Summer, etc), rolePrivileges}
+    CourseModel.findCourseData({startDate: req.body.startDate, endDate: req.body.endDate, name: req.body.name})
+        .then(function (courseArray) {
+            return courseArray.length !== 0 ? res.status(409).send(getCourseExistsError(req.body)).end() : createCourse(req.body);
+        })
+        .catch(function (error) {
+            return res.status(500).send(error).end();
+        });
+
+    function createCourse(courseData) {
+        new CourseModel(courseData).save()
+            .then(function (course) {
+                return res.json(course).end();
+            })
+            .catch(function (error) {
+                return res.status(500).send(error).end();
+            });
+    }
+
+});
+
+router.patch('/:courseID/update', function (req, res) {
+    "use strict";
+    var updateDoc = {};
+    Object.keys(req.query).forEach(function (arg) {
+        switch (arg) {
+            case 'startDate':
+            case 'endDate':
+            case 'name':
+            case 'description':
+            case 'academicTerm':
+            case 'rolePrivileges':  // TODO?
+            case 'isActive':
+                updateDoc[arg] = req.query[arg];
+                break;
+        }
+    });
+    CourseModel.updateCourseData(req.params.courseID, updateDoc)
+        .then(function (course) {
+            return res.json(course).end();
+        })
+        .catch(function (error) {
+            return res.status(500).send(error).end();
+        });
+});
+
+function getCourseExistsError(courseData) {
+    return 'Course \'' + courseData.name + ' ' + courseData.academicTerm + ' ' + new Date(courseData.startDate).getFullYear() + '\' already exists.';
+}
+
+module.exports = router;
