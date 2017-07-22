@@ -12,7 +12,10 @@ var userSchema = new Schema({
         lastName: {type: String, required: true},
         preferredName: {type: String, default: ''}
     },
-    courseEnrolled: [{type: Schema.Types.ObjectId, ref: '', unique: true}],
+    courseEnrolled: [{
+        course: {type: Schema.Types.ObjectId, ref: 'Course', unique: true, required: true},
+        privilege: {type: Schema.Types.ObjectId, ref: 'AccessPrivilege', unique: true, required: true}
+    }],
     createDate: {type: Date, default: Date.now, required: true},
     lastLoginDate: {type: Date, index: true, sparse: true},
     isActive: {type: Boolean, default: true, required: true},
