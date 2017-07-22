@@ -20,10 +20,14 @@ var modelInitialization = require('./model_init');
 // API endpoint router files
 var shibbolethAuthAPI = require('./routes/shibboleth_api');
 var usersAPI = require('./routes/users_api');
-var privilegeAPI = require('./routes/privilege_api');
+var coursesAPI = require('./routes/course_api');
+// var privilegeAPI = require('./routes/privilege_api');
 var pointsAPI = require('./routes/point_api');
 var pointsCategoryAPI = require('./routes/point_category_api');
 var generalAPI = require('./routes/general_api');
+
+
+var rolePrivilegesAPI = require('./routes/role-privilege_api');
 
 
 // ----- app start here -----
@@ -54,9 +58,8 @@ app.use(expressValidator());
 app.use(favicon(path.join('public', 'favicon.ico')));
 
 // mongodb connection
-var mongooseOptions = {server: {socketOptions: {keepAlive: 100}}};
 mongoose.Promise = Promise;
-mongoose.connect(dbConfig.dbURL, mongooseOptions);
+mongoose.connect(dbConfig.dbURL, {useMongoClient: true, keepAlive: 100});
 mongoose.connection.on('open', function (error) {
     return error ? console.error(error) : console.log('Connected to mongodb.');
 });
@@ -66,8 +69,6 @@ mongoose.connection.on('disconnected', function (error) {
 mongoose.connection.on('error', function (error) {
     return console.error(error);
 });
-
-modelInitialization();
 
 // api routers - these routers should put after sanitation function
 app.use('/', express.static('public'));
@@ -85,7 +86,10 @@ app.use(function (req, res, next) {
 
 app.use('/api/', generalAPI);
 app.use('/api/users', usersAPI);
-app.use('/api/privileges', privilegeAPI);
+app.use('/api/courses', coursesAPI);
+// app.use('/api/privileges', privilegeAPI);
+app.use('/api/privileges', rolePrivilegesAPI);
+// app.use('/api/privileges/duty/', );
 app.use('/Shibboleth.sso', shibbolethAuthAPI);  // sign-in via Shibboleth Auth
 app.use('/api/points', pointsAPI);
 app.use('/api/points-category', pointsCategoryAPI);
