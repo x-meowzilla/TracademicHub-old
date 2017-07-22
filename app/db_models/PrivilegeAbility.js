@@ -1,14 +1,14 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var responsibilitySchema = new Schema({
+var abilitySchema = new Schema({
 
     name: {type: String, required: true},
     description: {type: String},
     codeNumber: {type: Number, index: true, unique: true, required: true}
 
-}, {collection: 'collection-PrivilegeDuties'});
+}, {collection: 'reference-PrivilegeAbilities'});
 
 
-var responsibilityModel = mongoose.model('PrivilegeDuty', responsibilitySchema);
-module.exports = responsibilityModel;
+var abilityModel = mongoose.model('PrivilegeAbility', abilitySchema);
+module.exports = abilityModel;
