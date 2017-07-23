@@ -13,7 +13,7 @@ var privilegeSchema = new Schema({
 
 privilegeSchema.statics.findAccessPrivilegeData = function (findDoc) {
     "use strict";
-    var privilege = this.model('RolePrivilege');
+    var privilege = this.model('AccessPrivilege');
     if (findDoc.name) findDoc.name = {'$regex': '^' + findDoc.name + '$', '$options': 'i'}; // case insensitive
     if (findDoc.description) findDoc.description = {'$regex': '^' + findDoc.description + '$', '$options': 'i'}; // case insensitive
     return privilege.find(findDoc)
