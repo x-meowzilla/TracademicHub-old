@@ -31,9 +31,7 @@ router.put('/local-register', _validateReqBodyUTORidAndPassword, _validateReqBod
         var user = new UserModel();
         user.utorid = req.body.utorid;
         user.encryptPassword(req.body.password);
-        user.name.firstName = req.body.firstName;
-        user.name.lastName = req.body.lastName;
-        user.name.preferredName = req.body.preferredName ? req.body.preferredName : '';
+        user.setLegalName(req.body.firstName, req.body.lastName, req.body.preferredName);
         user.email = req.body.utorid + '-test@tracademic.utsc.utoronto.ca'; // create a fake email address for now
         user.save()
             .then(function (user) {

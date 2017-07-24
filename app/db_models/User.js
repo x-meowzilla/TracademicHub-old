@@ -13,8 +13,8 @@ var userSchema = new Schema({
         preferredName: {type: String, default: ''}
     },
     courseEnrolled: [{
-        course: {type: Schema.Types.ObjectId, ref: 'Course', unique: true, required: true},
-        privilege: {type: Schema.Types.ObjectId, ref: 'AccessPrivilege', unique: true, required: true}
+        course: {type: Schema.Types.ObjectId, ref: 'Course', required: true},
+        privilege: {type: Schema.Types.ObjectId, ref: 'AccessPrivilege', required: true}
     }],
     createDate: {type: Date, default: Date.now, required: true},
     lastLoginDate: {type: Date, index: true, sparse: true},
@@ -63,6 +63,14 @@ userSchema.methods.verifyPassword = function (password) {
     } else {
         return false;
     }
+};
+
+userSchema.methods.setLegalName = function (fName, lName, pName) {
+    "use strict";
+    var user = this;
+    user.name.firstName = fName;
+    user.name.lastName = lName;
+    user.name.preferredName = pName ? pName : '';
 };
 
 userSchema.methods.updateLastLoginDate = function () {
