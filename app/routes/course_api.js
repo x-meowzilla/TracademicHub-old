@@ -1,5 +1,6 @@
 var router = require('express').Router();
 var CourseModel = require('../db_models/Course');
+var PrivilegeModel = require('../db_models/AccessPrivilege');
 
 router.get('/', function (req, res) {
     "use strict";
@@ -29,7 +30,7 @@ router.get('/', function (req, res) {
 
 router.put('/', function (req, res) {
     "use strict";
-    // req.body = {startDate, endDate, name, description, academicTerm (Fall, Winter, Summer, etc), rolePrivileges}
+    // req.body = {startDate, endDate, name, description, academicTerm (Fall, Winter, Summer, etc), userPrivileges}
     CourseModel.findCourseData({startDate: req.body.startDate, endDate: req.body.endDate, name: req.body.name})
         .then(function (courseArray) {
             return courseArray.length !== 0 ? res.status(409).send(getCourseExistsError(req.body)).end() : createCourse(req.body);
@@ -40,6 +41,29 @@ router.put('/', function (req, res) {
 
     function createCourse(courseData) {
         new CourseModel(courseData).save()
+            .then(function (course) {
+                return createAccessPrivileges(course);
+            })
+            .catch(function (error) {
+                return res.status(500).send(error).end();
+            });
+    }
+
+    function createAccessPrivileges(course) {
+        PrivilegeModel.createDefaultPrivileges(course._id)
+            .then(function (privilegeArray) {
+                var resultIDs = privilegeArray.map(function (privilege) {
+                    return privilege._id;
+                });
+                return updateCoursePrivilegeList(course._id, resultIDs);
+            })
+            .catch(function (error) {
+                return res.status(500).send(error).end();
+            });
+    }
+
+    function updateCoursePrivilegeList(courseID, privilegeIDs) {
+        CourseModel.updateCourseData(courseID, {userPrivileges: privilegeIDs})
             .then(function (course) {
                 return res.json(course).end();
             })
