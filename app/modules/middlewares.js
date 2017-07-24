@@ -209,7 +209,7 @@ module.exports.checkAuthentication = function (req, res, next) {
 
 function noPrivilegeError(accessDescription) {
     var errmsg = 'Permission denied. You must have ';
-    if (accessDescription !== util.ACCESS_ADMIN_DESCRIPTION) errmsg += 'at least ';
+    if (accessDescription !== util.ACCESS_ADMIN) errmsg += 'at least ';
     return errmsg + accessDescription.toUpperCase() + ' access privilege to perform this action.';
 }
 
