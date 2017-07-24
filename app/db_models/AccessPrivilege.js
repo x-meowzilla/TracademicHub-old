@@ -1,9 +1,10 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var util = require('../modules/utility');
 
 var privilegeSchema = new Schema({
 
-    name: {type: String, unique: true, required: true},
+    name: {type: String, required: true},
     description: {type: String},
     course: {type: Schema.Types.ObjectId, ref: 'Course', required: true},
     ability: [{type: Schema.Types.ObjectId, ref: 'PrivilegeAbility', index: true}]
@@ -21,6 +22,15 @@ privilegeSchema.statics.findAccessPrivilegeData = function (findDoc) {
         .populate('ability');
 };
 
+privilegeSchema.statics.createDefaultPrivileges = function (courseID) {
+    "use strict";
+    var privilege = this.model('AccessPrivilege');
+    var privilegeArray = [{name: util.ACCESS_ADMIN, description: util.ACCESS_ADMIN, course: courseID},
+        {name: util.ACCESS_INSTRUCTOR, description: util.ACCESS_INSTRUCTOR, course: courseID},
+        {name: util.ACCESS_TA, description: util.ACCESS_TA, course: courseID},
+        {name: util.ACCESS_STUDENT, description: util.ACCESS_STUDENT, course: courseID}];
+    return privilege.insertMany(privilegeArray);
+};
 
 var privilegeModel = mongoose.model('AccessPrivilege', privilegeSchema);
 module.exports = privilegeModel;

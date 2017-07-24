@@ -27,7 +27,7 @@ courseSchema.statics.findCourseData = function (findDoc) {
 courseSchema.statics.updateCourseData = function (courseID, updateDoc) {
     "use strict";
     var course = this.model('Course');
-    return course.findByIdAndUpdate(courseID, {$set: updateDoc}, {new: true}).populate('userPrivileges');
+    return course.findByIdAndUpdate(courseID, {$set: updateDoc}, {new: true}).populate('userPrivileges', ['_id', 'name', 'description', 'ability']);
 };
 
 var CourseModel = mongoose.model('Course', courseSchema);
