@@ -10,10 +10,9 @@
                     <!-- left column -->
                     <div class="col-md-3">
                         <div class="text-center">
-                            <img class="avatar img-circle" alt="avatar">
+                            <img class="avatar-large img-circle" alt="avatar" data-ng-src="{{inputimage}}">
                             <h6>Upload a different photo...</h6>
-
-                            <input type="file" class="form-control" accept="image/*">
+                            <input type="file" class="form-control" ng-model="inputimage" data-ng-accept="image/*" data-image-Upload data-inputimage="inputimage">
                         </div>
                     </div>
 

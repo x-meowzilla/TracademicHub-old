@@ -3,7 +3,8 @@
 
     angular
         .module('TracademicHub')
-        .controller('editUserProfileController', editUserProfileController);
+        .controller('editUserProfileController', editUserProfileController)
+        .directive('imageUpload', imageUpload);
 
     editUserProfileController.$inject = ['$scope', '_AjaxRequest', '_ViewProfile']; // dependency injection
 
@@ -33,9 +34,31 @@
         $scope.editEmail = $scope.currentUser.email;
         $scope.editPrivilege = $scope.currentUser.accessPrivilege;
         $scope.editBiography = $scope.currentUser.biography;
+        $scope.inputimage = "../images/default-avatar.png";
 
         // delete !!!
         $scope.userId = $scope.currentUser._id;
+
+    }
+    
+    function imageUpload() {
+        return {
+            scope: {
+                inputimage: "="
+            },
+            link: function(scope, element) {
+                element.bind("change", function(changeEvent) {
+                    var imageFile = changeEvent.target.files[0];
+                    var reader = new FileReader();
+                    reader.onload = function(loadEvent) {
+                        scope.$apply(function() {
+                            scope.inputimage = loadEvent.target.result;
+                        });
+                    }
+                    reader.readAsDataURL(imageFile);
+                });
+            }
+        }
     }
 
 }());

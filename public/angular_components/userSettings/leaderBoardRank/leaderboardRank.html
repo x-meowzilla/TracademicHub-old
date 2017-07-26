@@ -1,7 +1,7 @@
-<div class="userProfilewrapper" ng-controller="pointsHistoryController" ng-class="{'toggled': toggled}">
+<div class="userProfilewrapper" ng-controller="leaderBoardRankController" ng-class="{'toggled': toggled}">
 
     <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-    <div ng-include="'angular_components/userProfile/settings_sidebar.html'"></div>
+    <div ng-include="'angular_components/userSettings/settings_sidebar/settings_sidebar.html'"></div>
     <!-- /.navbar-collapse -->
 
     <!--Page Views-->
@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    <span>Points History</span>
+                    <span>LeaderBoard Rank</span>
                 </h1>
             </div>
         </div>
@@ -20,23 +20,22 @@
         <div class="row">
             <div class="col-lg-12" page-Control gap="5" viewby="viewby" currentpage="currentpage" operations="operations" items="items" searchrecord="searchrecord">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover">
+                    <table class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th sort-Records order="assigneeFullName", sort="sort">Assignee Full Name</th>
-                            <th sort-Records order="assigneePreferredName", sort="sort">Assignee Preferred Name</th>
-                            <th sort-Records order="assignerFullName", sort="sort">Assigner Full Name</th>
-                            <th sort-Records order="assignerPreferredName", sort="sort">Assigner Preferred Name</th>
+                            <th sort-Records order="firstName", sort="sort">First Name</th>
+                            <th sort-Records order="lastName", sort="sort">Last Name</th>
+                            <th sort-Records order="preferredName", sort="sort">Preferred Name</th>
                             <th sort-Records order="category", sort="sort">Category</th>
                             <th sort-Records order="course", sort="sort">Course</th>
                             <th sort-Records order="date", sort="sort">Date</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="item in items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby">
+                        <tr ng-repeat="item in items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby"
+                            class="cursor" ng-click="viewUserProfile(item)">
                             <td>{{item.fullName}}</td>
                             <td>{{item.fullName}}</td>
-                            <td>{{item.preferredName}}</td>
                             <td>{{item.preferredName}}</td>
                             <td>{{item.category}}</td>
                             <td>{{item.course}}</td>

@@ -7,8 +7,7 @@
         .factory('_ViewProfile', viewProfile)
         .directive('sortRecords', sortRecords)
         .directive('pageControl', pageControl)
-        .directive('ngConfirmClick', ngConfirmClick)
-        .directive('ngConfirmMessage', ngConfirmMessage);
+        .directive('ngConfirmClick', ngConfirmClick);
 
     viewProfile.$inject = ['_AjaxRequest', '_Authentication'];
     function viewProfile(_AjaxRequest, _Authentication) {
@@ -63,7 +62,7 @@
                 items: '=',
                 searchrecord: '='
             },
-            templateUrl: 'angular_components/userProfile/pageController.html',
+            templateUrl: 'angular_components/userSettings/common/pageController.html',
             link: function (scope) {
 
                 scope.getTotalPagesNum = function () {
@@ -144,25 +143,6 @@
                         scope.$eval(attr.confirmedClick)
                     }
                 });
-            }
-        };
-    }
-
-    ngConfirmMessage.$inject = ['$timeout'];
-    function ngConfirmMessage($timeout) {
-        return {
-            restrict: 'A',
-            scope: {
-                confirmed: '='
-            },
-            template:
-            '<div ng-show="confirmed.show" class="panel panel-info">' +
-            '<div class="panel-heading">{{confirmed.message}}</div>' +
-            '</div>',
-            link: function (scope) {
-                $timeout(function() {
-                    scope.confirmed.show = false;
-                }, 3000);
             }
         };
     }

@@ -89,10 +89,6 @@
 
 
 /*Profile Page*/
-.avatar{
-    content: url("../images/default-avatar.png");
-}
-
 .avatar-large{
     height: 230px;
     width: 230px;

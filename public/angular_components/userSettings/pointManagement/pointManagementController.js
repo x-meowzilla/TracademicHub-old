@@ -6,9 +6,9 @@
         .controller('pointManagementController', pointManagementController)
         .directive('categoryCard', categoryCard);
 
-    pointManagementController.$inject = ['$scope', '_AjaxRequest', '_AssignPoints']; // dependency injection
+    pointManagementController.$inject = ['$scope', '$timeout', '_AjaxRequest', '_AssignPoints']; // dependency injection
 
-    function pointManagementController($scope, _AjaxRequest, _AssignPoints) {
+    function pointManagementController($scope, $timeout, _AjaxRequest, _AssignPoints) {
 
         var getAllCategories = function () {
             _AjaxRequest.get('/api/points-category/')
@@ -79,19 +79,24 @@
             return res;
         };
 
-        $scope.confirmed = {};
 
         $scope.addAssignee = function (studentNum) {
             if(studentNum)
             {
-                _AjaxRequest.get('/api/users?' + $.param({isActive: true, email: studentNum}))
+                _AjaxRequest.get('/api/users?' + $.param({isActive: true, studentNumber: studentNum}))
                     .then(
                         function successCallback(result) {
-                            // if user does not exist or user is inactive
-                            if(result.data.length === 0)
+                            if(result.data.length === 1)
                             {
-                                $scope.confirmed.message = 'New Assignee is added in the table below.';
-                                $scope.confirmed.show = true;
+                                $scope.users.push(result.data[0]);
+                            }
+                            else if(result.data.length === 0)
+                            {
+                                // TODO: pop up user does not exist or user is inactive message.
+                            }
+                            else
+                            {
+                                console.error('One student number should only refer to one student.');
                             }
                         },
                         function errorCallback(error) {
