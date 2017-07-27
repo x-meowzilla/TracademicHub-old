@@ -9,8 +9,8 @@
         .directive('pageControl', pageControl)
         .directive('ngConfirmClick', ngConfirmClick);
 
-    viewProfile.$inject = ['_AjaxRequest', '_Authentication'];
-    function viewProfile(_AjaxRequest, _Authentication) {
+    viewProfile.$inject = ['_Authentication'];
+    function viewProfile(_Authentication) {
         return {
             user: JSON.parse(window.localStorage.getItem('currentUser')),
 
