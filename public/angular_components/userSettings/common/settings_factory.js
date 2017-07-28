@@ -7,7 +7,8 @@
         .factory('_ViewProfile', viewProfile)
         .directive('sortRecords', sortRecords)
         .directive('pageControl', pageControl)
-        .directive('ngConfirmClick', ngConfirmClick);
+        .directive('ngConfirmClick', ngConfirmClick)
+        .directive('fileChanged', fileChanged);
 
     viewProfile.$inject = ['_Authentication'];
     function viewProfile(_Authentication) {
@@ -35,11 +36,11 @@
             setAssignees: function (users) {
                 this.users = users;
             },
-            
+
             getAssignees: function () {
                 return this.users;
             },
-            
+
             addPoints: function () {
                 return this.users;
             },
@@ -133,7 +134,7 @@
             }
         }
     }
-    
+
     function ngConfirmClick() {
         return {
             restrict: 'A',
@@ -145,6 +146,27 @@
                 });
             }
         };
+    }
+
+    function fileChanged() {
+        return {
+            restrict: 'A',
+            scope: {
+                formname: '='
+            },
+            link: function(scope, element) {
+                element.bind("change", function(changeEvent) {
+                    var imageFile = changeEvent.target.files[0];
+                    var reader = new FileReader();
+                    reader.onload = function(loadEvent) {
+                        scope.$apply(function() {
+                            scope.formname.$pristine = false;
+                        });
+                    }
+                    reader.readAsDataURL(imageFile);
+                });
+            }
+        }
     }
 
 }());

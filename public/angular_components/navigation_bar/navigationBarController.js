@@ -51,7 +51,7 @@
                 function successCallback(result) {
 
                     var userData = result.data;
-                    _Authentication.setCurrentUser(JSON.stringify(userData));
+                    _Authentication.setCurrentUser(userData);
 
                     _Authentication.setDisplayName(userData);
 
