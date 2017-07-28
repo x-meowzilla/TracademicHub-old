@@ -44,7 +44,7 @@
             if($scope.editUserProfileForm.preferredName.$dirty)
             {
                 updateBasicInfo["preferredName"] = $scope.editUserInfo.editPreferredName;
-                $scope.currentUser["preferredName"] = $scope.editUserInfo.editPreferredName;
+                $scope.currentUser["name"]["preferredName"] = $scope.editUserInfo.editPreferredName;
             }
             if($scope.editUserProfileForm.biography.$dirty)
             {
@@ -70,12 +70,12 @@
             if($scope.editUserProfileForm.firstName.$dirty)
             {
                 updateMoreInfo["firstName"] = $scope.editUserInfo.editFirstName;
-                $scope.currentUser["firstName"] = $scope.editUserInfo.editFirstName;
+                $scope.currentUser["name"]["firstName"] = $scope.editUserInfo.editFirstName;
             }
             if($scope.editUserProfileForm.lastName.$dirty)
             {
                 updateMoreInfo["lastName"] = $scope.editUserInfo.editLastName;
-                $scope.currentUser["lastName"] = $scope.editUserInfo.editLastName;
+                $scope.currentUser["name"]["lastName"] = $scope.editUserInfo.editLastName;
             }
             if($scope.editUserProfileForm.email.$dirty)
             {
