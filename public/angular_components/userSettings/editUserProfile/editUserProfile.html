@@ -8,44 +8,44 @@
             <div class="modal-body">
                 <form class="row" role="form" name="editUserProfileForm">
                     <!-- left column -->
-                    <fieldset class="col-lg-3">
+                    <div class="col-lg-3">
                         <div class="text-center">
                             <img class="avatar-large img-circle" alt="avatar" data-ng-src="{{editUserInfo.inputimage}}">
                             <h6>Upload a different photo...</h6>
                             <input type="file" class="form-control" ng-model="editUserInfo.inputimage" accept="image/*" file-Changed formname="editUserProfileForm" filename="editUserInfo.inputimage">
                         </div>
-                    </fieldset>
+                    </div>
 
                     <!-- edit form column -->
-                    <!--Note: remove the value later!!!-->
-                    <div class="col-lg-9 personal-info">
-                        <fieldset class="form-horizontal">
+                    <div class="col-lg-9">
+                        <div class="form-horizontal">
                             <div class="form-group">
-                                <label class="col-lg-3 control-label">First name:</label>
+                                <label class="col-lg-3 control-label label-text pull-left">First name:</label>
                                 <div class="col-lg-8">
                                     <input class="form-control" type="text" name="firstName" ng-model="editUserInfo.editFirstName" ng-disabled="!isAuthenticated()" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-lg-3 control-label">Last name:</label>
+                                <label class="col-lg-3 control-label label-text pull-left">Last name:</label>
                                 <div class="col-lg-8">
                                     <input class="form-control" type="text" name="lastName" ng-model="editUserInfo.editLastName" ng-disabled="!isAuthenticated()" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-lg-3 control-label">Preferred Name:</label>
+                                <label class="col-lg-3 control-label label-text pull-left">Preferred Name:</label>
                                 <div class="col-lg-8">
-                                    <input class="form-control" name="preferredName" ng-model="editUserInfo.editPreferredName" type="text">
+                                    <input class="form-control" name="preferredName" ng-model="editUserInfo.editPreferredName" type="text" ng-pattern="/^[A-z]*$/">
+                                    <div class="text-danger pull-left" ng-show="editUserProfileForm.preferredName.$dirty && editUserProfileForm.preferredName.$error.pattern">Invalid preferred name</div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-lg-3 control-label">Email:</label>
+                                <label class="col-lg-3 control-label label-text pull-left">Email:</label>
                                 <div class="col-lg-8">
                                     <input class="form-control" name="email" ng-model="editUserInfo.editEmail" type="email" ng-disabled="!isAuthenticated()" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-lg-3 control-label">Access Privilege:</label>
+                                <label class="col-lg-3 control-label label-text pull-left">Access Privilege:</label>
                                 <div class="col-lg-8">
                                     <select name='privilege' ng-model="editUserInfo.editPrivilege"  class="form-control" ng-disabled="!isAuthenticated()" required>
                                         <option ng-repeat="privilege in privileges" value={{privilege.description}}>{{privilege.description}}</option>
@@ -53,12 +53,12 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-lg-3 control-label">Biography:</label>
+                                <label class="col-lg-3 control-label label-text pull-left">Biography:</label>
                                 <div class="col-lg-8">
                                     <textarea class="form-control" name="biography" ng-model="editUserInfo.editBiography" rows="5" cols="50"></textarea>
                                 </div>
                             </div>
-                        </fieldset>
+                        </div>
                     </div>
                 </form>
             </div>

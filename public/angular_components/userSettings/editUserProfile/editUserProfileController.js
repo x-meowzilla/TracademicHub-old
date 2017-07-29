@@ -53,13 +53,11 @@
                 _AjaxRequest.patch('/api/users/' + $scope.currentUser._id + '/update/user-info?' + $.param(updateBasicInfo))
                     .then(
                         function successCallback(result) {
-                            if(result.data._id === $scope.currentUser._id)
+                            if(result.data._id === _Authentication.getCurrentUser()._id)
                             {
                                 _Authentication.setCurrentUser($scope.currentUser);
                             }
                             $scope.clearForm();
-                            $location.path($scope.activetab);
-                            // TODO: show save successfully banner
                         },
                         function errorCallback(error) {
                             console.error(error);
@@ -93,13 +91,11 @@
                 _AjaxRequest.patch('/api/users/' + $scope.currentUser._id + '/update/user-access?' + $.param(updateMoreInfo))
                     .then(
                         function successCallback(result) {
-                            if(result.data._id === $scope.currentUser._id)
+                            if(result.data._id === _Authentication.getCurrentUser()._id)
                             {
                                 _Authentication.setCurrentUser($scope.currentUser);
                             }
                             $scope.clearForm();
-                            $location.path($scope.activetab);
-                            // TODO: show save successfully banner
                         },
                         function errorCallback(error) {
                             console.error(error);
