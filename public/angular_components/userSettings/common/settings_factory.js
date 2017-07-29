@@ -21,7 +21,7 @@
             },
 
             setUser: function (user) {
-                var currentUser = JSON.parse(window.localStorage.getItem('currentUser'));
+                var currentUser = window.localStorage.getItem('currentUser');
                 this.user = user;
             }
         };

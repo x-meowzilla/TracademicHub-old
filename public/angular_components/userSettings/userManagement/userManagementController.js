@@ -92,7 +92,6 @@
         // edit user profile
         $scope.viewUserProfile = function (user) {
             $location.path( "/profile" );
-            // pass userId of selected user.
             _ViewProfile.setUser(user);
 
         };

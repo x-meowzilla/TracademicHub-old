@@ -61,6 +61,10 @@
     color: #fff;
 }
 
+.activeTab {
+    background-color: #000000;
+}
+
 
 #sidebar-btn{
     display: none;

@@ -32,14 +32,14 @@
                     templateUrl: 'angular_components/userSettings/pointsHistory/pointsHistory.html',
                     authenticate: true
                 })
-                .when('/loginHistory', {
-                    templateUrl: 'angular_components/userSettings/loginHistory/loginHistory.html',
-                    authenticate: true
-                })
-                .when('/userManagementHistory', {
-                    templateUrl: 'angular_components/userSettings/userManagementHistory/userManagementHistory.html',
-                    authenticate: true
-                })
+                // .when('/loginHistory', {
+                //     templateUrl: 'angular_components/userSettings/loginHistory/loginHistory.html',
+                //     authenticate: true
+                // })
+                // .when('/userManagementHistory', {
+                //     templateUrl: 'angular_components/userSettings/userManagementHistory/userManagementHistory.html',
+                //     authenticate: true
+                // })
                 .when('/userManagement', {
                     templateUrl: 'angular_components/userSettings/userManagement/userManagement.html',
                     authenticate: true
@@ -58,12 +58,16 @@
                 });
         })
         .run(function($rootScope, $location, _Authentication){
-
             $rootScope.$on('$routeChangeStart', function (event, next) {
                 if (next.$$route.authenticate && !_Authentication.isAuthenticated()) {
                     event.preventDefault();
                     $location.path('/');
                 }
+            });
+
+            var path = function() { return $location.path();};
+            $rootScope.$watch(path, function(newVal, oldVal){
+                $rootScope.activetab = newVal;
             });
 
         });

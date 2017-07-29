@@ -5,10 +5,9 @@
         .module('TracademicHub')
         .controller('settingsSidebarController', settingsSidebarController);
 
-    settingsSidebarController.$inject = ['$scope', '$route', '_Authentication', '_AjaxRequest', '_ViewProfile']; // dependency injection
+    settingsSidebarController.$inject = ['$scope', '$route', '_Authentication', '_ViewProfile']; // dependency injection
 
-    function settingsSidebarController($scope, $route, _Authentication, _AjaxRequest, _ViewProfile) {
-
+    function settingsSidebarController($scope, $route, _Authentication, _ViewProfile) {
         $scope.viewUserProfile = function () {
             _ViewProfile.setUser(_Authentication.getCurrentUser());
             $route.reload();

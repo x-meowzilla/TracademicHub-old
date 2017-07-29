@@ -1,42 +1,45 @@
 <div class="sidebar" ng-controller="settingsSidebarController">
     <ul class="nav side-nav">
         <li>
-            <a href="/profile" ng-click="viewUserProfile()"><i class="fa fa-fw fa-dashboard"></i> Profile</a>
+            <a href="/profile" ng-click="viewUserProfile()" ng-class="{'activeTab': (activetab == '/profile')}"><i class="fa fa-fw fa-dashboard"></i> Profile</a>
         </li>
         <li>
-            <a ng-href="/states"><i class="fa fa-fw fa-bar-chart-o"></i> States Details</a>
+            <a href="/states" ng-class="{'activeTab': (activetab == '/states')}"><i class="fa fa-fw fa-bar-chart-o"></i> States Details</a>
         </li>
         <li>
-            <a href="/leaderBoardRank"><i class="fa fa-fw fa-table"></i> LeaderBoard Rank</a>
+            <a href="/leaderBoardRank" ng-class="{'activeTab': activetab == '/leaderBoardRank'}"><i class="fa fa-fw fa-table"></i> LeaderBoard Rank</a>
         </li>
         <li>
-            <a href="/manageProducts"><i class="fa fa-fw fa-book"></i> Manage Products</a>
+            <a href="/manageProducts" ng-class="{'activeTab': activetab == '/manageProducts'}"><i class="fa fa-fw fa-book"></i> Manage Products</a>
         </li>
         <li>
-            <a href="javascript:;" data-toggle="collapse" data-target="#history"><i class="fa fa-fw fa-history"></i> History <i class="fa fa-fw fa-caret-down"></i></a>
-            <ul id="history" class="collapse">
-                <li>
-                    <a href="/pointsHistory">Points History</a>
-                </li>
-                <li>
-                    <a href="/loginHistory">Login History</a>
-                </li>
-                <li>
-                    <a href="/userManagementHistory">User Management History</a>
-                </li>
-            </ul>
+            <a href="/pointsHistory" ng-class="{'activeTab': activetab == '/pointsHistory'}"><i class="fa fa-fw fa-history"></i>Points History</a>
         </li>
+        <!--<li>-->
+            <!--<a href="javascript:;" data-toggle="collapse" data-target="#history"><i class="fa fa-fw fa-history"></i> History <i class="fa fa-fw fa-caret-down"></i></a>-->
+            <!--<ul id="history" class="collapse">-->
+                <!--<li>-->
+                    <!--<a href="/pointsHistory" ng-class="{'activeTab': activetab == '/pointsHistory'}">Points History</a>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<a href="/loginHistory" ng-class="{'activeTab': activetab == '/loginHistory'}">Login History</a>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<a href="/userManagementHistory" ng-class="{'activeTab': activetab == '/userManagementHistory'}">User Management History</a>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</li>-->
         <li>
-            <a href="javascript:;" data-toggle="collapse" data-target="#management"><i class="fa fa-fw fa-wrench"></i> Management <i class="fa fa-fw fa-caret-down"></i></a>
+            <a href="javascript:;" data-toggle="collapse" data-target="#management" ng-class="{'activeTab': activetab.indexOf('Management')>-1}"><i class="fa fa-fw fa-wrench"></i> Management <i class="fa fa-fw fa-caret-down"></i></a>
             <ul id="management" class="collapse">
                 <li>
-                    <a href="/pointManagement">Point Management</a>
+                    <a href="/pointManagement" ng-class="{'activeTab': activetab == '/pointManagement'}">Point Management</a>
                 </li>
                 <li>
-                    <a href="/userManagement">User Management</a>
+                    <a href="/userManagement" ng-class="{'activeTab': activetab == '/userManagement'}">User Management</a>
                 </li>
                 <!--<li>-->
-                    <!--<a href="/privilegeManagement">Access Privilege Management</a>-->
+                    <!--<a href="/privilegeManagement" ng-class="{'activeTab': activetab == '/manageProducts'}">Access Privilege Management</a>-->
                 <!--</li>-->
             </ul>
         </li>
