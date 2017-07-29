@@ -57,7 +57,7 @@
                     .then(
                         function successCallback(result) {
                             _Authentication.setCurrentUser($scope.currentUser);
-                            $scope.editUserProfileForm.$setPristine();
+                            $scope.clearForm();
                             // TODO: show save successfully banner
                         },
                         function errorCallback(error) {
@@ -93,7 +93,7 @@
                     .then(
                         function successCallback(result) {
                             _Authentication.setCurrentUser($scope.currentUser);
-                            $scope.editUserProfileForm.$setPristine();
+                            $scope.clearForm();
                             // TODO: show save successfully banner
                         },
                         function errorCallback(error) {
@@ -107,17 +107,6 @@
             angular.element("input[type='file']").val(null);
             $scope.editUserInfo = angular.copy($scope.editUserInfoOrigin);
             $scope.editUserProfileForm.$setPristine();
-        };
-
-        $scope.imageUpload = function (changeEvent) {
-            var imageFile = changeEvent.target.files[0];
-            var reader = new FileReader();
-            reader.onload = function(loadEvent) {
-                $scope.$apply(function() {
-                    $scope.editUserInfo.inputimage = loadEvent.target.result;
-                });
-            }
-            reader.readAsDataURL(imageFile);
         };
 
     }

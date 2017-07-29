@@ -8,7 +8,8 @@
         .directive('sortRecords', sortRecords)
         .directive('pageControl', pageControl)
         .directive('ngConfirmClick', ngConfirmClick)
-        .directive('fileChanged', fileChanged);
+        .directive('fileChanged', fileChanged)
+        .directive('pwdCheck', pwdCheck);
 
     viewProfile.$inject = ['_Authentication'];
     function viewProfile(_Authentication) {
@@ -152,7 +153,8 @@
         return {
             restrict: 'A',
             scope: {
-                formname: '='
+                formname: '=',
+                filename: '='
             },
             link: function(scope, element) {
                 element.bind("change", function(changeEvent) {
@@ -160,6 +162,7 @@
                     var reader = new FileReader();
                     reader.onload = function(loadEvent) {
                         scope.$apply(function() {
+                            scope.filename = loadEvent.target.result;
                             scope.formname.$pristine = false;
                         });
                     }
@@ -167,6 +170,24 @@
                 });
             }
         }
+    }
+    
+    function pwdCheck() {
+        return {
+            require: 'ngModel',
+            scope: {
+              password: "=pwdCheck"
+            },
+            link: function(scope, element, attributes, ngModel) {
+                ngModel.$validators.matchPassword = function(modelValue) {
+                    return modelValue == scope.password;
+                };
+
+                scope.$watch("password", function() {
+                    ngModel.$validate();
+                });
+            }
+        };
     }
 
 }());

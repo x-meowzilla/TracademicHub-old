@@ -5,18 +5,19 @@
         .module('TracademicHub')
         .controller('addUserModalController', addUserModalController);
 
-    addUserModalController.$inject = ['$scope', '_AjaxRequest']; // dependency injection
+    addUserModalController.$inject = ['$scope', '$location', '_AjaxRequest']; // dependency injection
 
-    function addUserModalController($scope, _AjaxRequest) {
+    function addUserModalController($scope, $location, _AjaxRequest) {
         $scope.editUserInfoOrigin = {utorid: '', password: '', repassword: '', firstName: '', lastName: '', preferredName: '', email: '', accessPrivilege: ''};
         $scope.editUserInfo = angular.copy($scope.editUserInfoOrigin);
 
-        $scope.createUser = function () {
+        $scope.createAdmin = function () {
             console.log($scope.editUserInfo);
             var basicUserInfo = {utorid: $scope.editUserInfo.utorid};
             _AjaxRequest.put('/api/local-register/', $scope.editUserInfo)
                 .then(
                     function successCallback(result) {
+                        $scope.clearForm();
                         // TODO: show save successfully banner
                     },
                     function errorCallback(error) {
@@ -24,9 +25,20 @@
                     }
                 );
         };
-        
+
         $scope.importCSVFile = function () {
-            
+            _AjaxRequest.post('/api/users/', $scope.csvfile)
+                .then(
+                    function successCallback(result) {
+                        $location.path( "/userManagement" );
+                        $scope.clearForm();
+                        // TODO: show save successfully banner
+                    },
+                    function errorCallback(error) {
+                        // TODO: show save failed banner
+                        console.error(error);
+                    }
+                );
         };
 
         $scope.clearForm = function () {

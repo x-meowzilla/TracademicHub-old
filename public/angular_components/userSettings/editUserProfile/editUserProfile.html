@@ -6,13 +6,13 @@
                 <h4 class="modal-title">Edit Profile</h4>
             </div>
             <div class="modal-body">
-                <form class="row" role="form" name="editUserProfileForm" id="editUserProfileForma">
+                <form class="row" role="form" name="editUserProfileForm">
                     <!-- left column -->
                     <fieldset class="col-lg-3">
                         <div class="text-center">
                             <img class="avatar-large img-circle" alt="avatar" data-ng-src="{{editUserInfo.inputimage}}">
                             <h6>Upload a different photo...</h6>
-                            <input type="file" class="form-control" ng-model="editUserInfo.inputimage" accept="image/*" data-image-Upload>
+                            <input type="file" class="form-control" ng-model="editUserInfo.inputimage" accept="image/*" file-Changed formname="editUserProfileForm" filename="editUserInfo.inputimage">
                         </div>
                     </fieldset>
 
@@ -64,7 +64,7 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary" data-ng-disabled="editUserProfileForm.$invalid || editUserProfileForm.$pristine" data-toggle="modal" data-target="#editUserProfilePage" data-ng-click="updateUserProfile()">Save changes</button>
-                <button type="reset" class="btn btn-default" data-dismiss="modal" form="editUserProfileForma" data-ng-click="clearForm()">Cancel</button>
+                <button type="reset" class="btn btn-default" data-dismiss="modal" data-ng-click="clearForm()">Cancel</button>
             </div>
         </div>
     </div>
