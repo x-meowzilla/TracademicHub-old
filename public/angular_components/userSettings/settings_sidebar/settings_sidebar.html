@@ -1,4 +1,4 @@
-<div class="sidebar navbar-default" ng-controller="settingsSidebarController">
+<div class="sidebar" ng-controller="settingsSidebarController">
     <ul class="nav side-nav">
         <li>
             <a href="/profile" ng-click="viewUserProfile()"><i class="fa fa-fw fa-dashboard"></i> Profile</a>
@@ -12,7 +12,6 @@
         <li>
             <a href="/manageProducts"><i class="fa fa-fw fa-book"></i> Manage Products</a>
         </li>
-        <!--ng-if="isAuthenticated()"-->
         <li>
             <a href="javascript:;" data-toggle="collapse" data-target="#history"><i class="fa fa-fw fa-history"></i> History <i class="fa fa-fw fa-caret-down"></i></a>
             <ul id="history" class="collapse">
@@ -27,7 +26,6 @@
                 </li>
             </ul>
         </li>
-        <!--ng-if="isAuthenticated()"-->
         <li>
             <a href="javascript:;" data-toggle="collapse" data-target="#management"><i class="fa fa-fw fa-wrench"></i> Management <i class="fa fa-fw fa-caret-down"></i></a>
             <ul id="management" class="collapse">
@@ -37,9 +35,9 @@
                 <li>
                     <a href="/userManagement">User Management</a>
                 </li>
-                <li>
-                    <a href="/privilegeManagement">Access Privilege Management</a>
-                </li>
+                <!--<li>-->
+                    <!--<a href="/privilegeManagement">Access Privilege Management</a>-->
+                <!--</li>-->
             </ul>
         </li>
     </ul>
@@ -49,3 +47,4 @@
     <i class="fa fa-2x" ng-class="{'fa-angle-double-right': !toggled, 'fa-angle-double-left': toggled}"></i>
 </span>
 
+<div ng-include="'angular_components/navigation_bar/navigationBar.html'"></div>

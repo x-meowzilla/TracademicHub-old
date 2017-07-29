@@ -48,10 +48,10 @@
                     templateUrl: 'angular_components/userSettings/pointManagement/pointManagement.html',
                     authenticate: true
                 })
-                .when('/privilegeManagement', {
-                    templateUrl: 'angular_components/userSettings/privilegeManagement/privilegeManagement.html',
-                    authenticate: true
-                })
+                // .when('/privilegeManagement', {
+                //     templateUrl: 'angular_components/userSettings/privilegeManagement/privilegeManagement.html',
+                //     authenticate: true
+                // })
                 .otherwise({
                     templateUrl: 'angular_components/error_pages/404.html',
                     authenticate: false
