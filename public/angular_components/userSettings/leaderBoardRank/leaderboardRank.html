@@ -33,7 +33,7 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="item in items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby"
-                            class="cursor" ng-click="viewUserProfile(item)">
+                            class="hand-cursor" ng-click="viewUserProfile(item)">
                             <td>{{item.fullName}}</td>
                             <td>{{item.fullName}}</td>
                             <td>{{item.preferredName}}</td>
