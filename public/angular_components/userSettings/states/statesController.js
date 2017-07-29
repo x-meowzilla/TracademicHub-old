@@ -74,6 +74,69 @@
         $scope.operations = [5, 10, 20];
         $scope.searchrecord = '';
 
+
+        // Morris Data
+        Morris.Area({
+            element: 'morris-area-chart',
+            data: [{
+                period: '2010 Q1',
+                teaching: 2666,
+                experience: null,
+                challenge: 2647
+            }, {
+                period: '2010 Q2',
+                teaching: 2778,
+                experience: 2294,
+                challenge: 2441
+            }, {
+                period: '2010 Q3',
+                teaching: 4912,
+                experience: 1969,
+                challenge: 2501
+            }, {
+                period: '2010 Q4',
+                teaching: 3767,
+                experience: 3597,
+                challenge: 5689
+            }, {
+                period: '2011 Q1',
+                teaching: 6810,
+                experience: 1914,
+                challenge: 2293
+            }, {
+                period: '2011 Q2',
+                teaching: 5670,
+                experience: 4293,
+                challenge: 1881
+            }, {
+                period: '2011 Q3',
+                teaching: 4820,
+                experience: 3795,
+                challenge: 1588
+            }, {
+                period: '2011 Q4',
+                teaching: 15073,
+                experience: 5967,
+                challenge: 5175
+            }, {
+                period: '2012 Q1',
+                teaching: 10687,
+                experience: 4460,
+                challenge: 2028
+            }, {
+                period: '2012 Q2',
+                teaching: 8432,
+                experience: 5713,
+                challenge: 1791
+            }],
+            xkey: 'period',
+            ykeys: ['teaching', 'experience', 'challenge'],
+            labels: ['teaching points', 'experience points', 'challenge points'],
+            pointSize: 2,
+            hideHover: 'auto',
+            resize: true
+        });
+
     };
 
 }());
