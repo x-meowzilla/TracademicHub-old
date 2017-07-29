@@ -23,8 +23,6 @@
             setUser: function (user) {
                 var currentUser = JSON.parse(window.localStorage.getItem('currentUser'));
                 this.user = user;
-
-                _Authentication.setDisplayName(user);
             }
         };
     }

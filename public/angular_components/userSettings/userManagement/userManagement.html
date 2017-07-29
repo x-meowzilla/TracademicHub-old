@@ -57,7 +57,7 @@
                             <td>{{item.name.lastName}}</td>
                             <td>{{item.name.preferredName}}</td>
                             <td>{{item.email}}</td>
-                            <td>{{item.accessPrivilege}}</td>
+                            <td>{{item.accessPrivilege.description}}</td>
                             <td>{{item.lastLoginDate}}</td>
                             <td class="text-center">
                                 <button class="btn btn-primary btn-xs" ng-click="viewUserProfile(item)">
@@ -104,12 +104,12 @@
                                 </div>
                                 <div class="pull-left">
                                     <div class="col-xs-4">
-                                        <img class="img-circle avatar-small avatar">
+                                        <img class="img-circle avatar-small" data-ng-src="{{defaultAvatar}}">
                                     </div>
                                     <div class="col-xs-8">
                                         <div class="crap-word" ng-if="item.name.preferredName"><strong>Preferred Name: </strong><div>{{item.name.preferredName}}</div></div>
                                         <div class="crap-word"><strong>Email: </strong><div>{{item.email}}</div></div>
-                                        <div class="crap-word"><strong>Access Privilege: </strong><div>{{item.accessPrivilege}}</div></div>
+                                        <div class="crap-word"><strong>Access Privilege: </strong><div>{{item.accessPrivilege.description}}</div></div>
                                         <div class="crap-word"><strong>Last Login Date: </strong><div>{{item.lastLoginDate}}</div></div>
                                     </div>
                                 </div>

@@ -10,7 +10,17 @@
     function userProfileController($scope, $location, _AjaxRequest, _Authentication, _ViewProfile, _AssignPoints) {
 
         $scope.currentUser = _ViewProfile.getUser();
-        $scope.displayName = _Authentication.getDisplayName();
+
+        $scope.getDisplayName = function () {
+            var userData = $scope.currentUser;
+            if (userData.name.preferredName) {
+                return userData.name.preferredName;
+            } else if (userData.name.firstName && userData.name.lastName) {
+                return userData.name.firstName + ' ' + userData.name.lastName;
+            } else {
+                return  userData.utorid;
+            }
+        };
 
         $scope.loginUser = _Authentication.getCurrentUser();
 

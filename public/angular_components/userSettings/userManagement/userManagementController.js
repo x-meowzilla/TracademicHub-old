@@ -10,6 +10,7 @@
     function userManagementController($scope, $location, _Authentication, _AjaxRequest, _ViewProfile, _AssignPoints) {
 
         $scope.currentUser = _ViewProfile.getUser();
+        $scope.defaultAvatar = "../images/default-avatar.png";
 
 
         $scope.items = [];

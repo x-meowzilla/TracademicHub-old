@@ -11,6 +11,8 @@
         $scope.editUserInfoOrigin = {utorid: '', password: '', repassword: '', firstName: '', lastName: '', preferredName: '', email: '', accessPrivilege: ''};
         $scope.editUserInfo = angular.copy($scope.editUserInfoOrigin);
 
+        $scope.utoridExist = false;
+
         $scope.createAdmin = function () {
             console.log($scope.editUserInfo);
             var basicUserInfo = {utorid: $scope.editUserInfo.utorid};
@@ -18,10 +20,14 @@
                 .then(
                     function successCallback(result) {
                         $scope.clearForm();
-                        // TODO: show save successfully banner
+                        angular.element("#addUserModal").modal('hide');
                     },
                     function errorCallback(error) {
                         console.error(error);
+                        if(error.status === 409)
+                        {
+                            $scope.utoridExist = true;
+                        }
                     }
                 );
         };
