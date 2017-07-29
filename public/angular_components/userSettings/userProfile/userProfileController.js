@@ -5,11 +5,11 @@
         .module('TracademicHub')
         .controller('userProfileController', userProfileController);
 
-    userProfileController.$inject = ['$scope', '$location', '_AjaxRequest', '_Authentication', '_ViewProfile', '_AssignPoints']; // dependency injection
+    userProfileController.$inject = ['$scope', '$location', '_AjaxRequest', '_Authentication', '_AssignPoints']; // dependency injection
 
-    function userProfileController($scope, $location, _AjaxRequest, _Authentication, _ViewProfile, _AssignPoints) {
+    function userProfileController($scope, $location, _AjaxRequest, _Authentication, _AssignPoints) {
 
-        $scope.currentUser = _ViewProfile.getUser();
+        $scope.currentUser = _Authentication.getCurrentUser();
 
         $scope.getDisplayName = function () {
             var userData = $scope.currentUser;

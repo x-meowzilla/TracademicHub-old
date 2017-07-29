@@ -5,12 +5,9 @@
         .module('TracademicHub')
         .controller('editUserProfileController', editUserProfileController);
 
-    editUserProfileController.$inject = ['$scope', '_AjaxRequest', '_Authentication', '_ViewProfile']; // dependency injection
+    editUserProfileController.$inject = ['$scope', '_AjaxRequest', '_Authentication']; // dependency injection
 
-    function editUserProfileController($scope, _AjaxRequest, _Authentication, _ViewProfile) {
-
-        $scope.currentUser = _ViewProfile.getUser();
-
+    function editUserProfileController($scope, _AjaxRequest, _Authentication) {
         // edit profile form
         $scope.privileges = [];
         (function () {
@@ -56,8 +53,12 @@
                 _AjaxRequest.patch('/api/users/' + $scope.currentUser._id + '/update/user-info?' + $.param(updateBasicInfo))
                     .then(
                         function successCallback(result) {
-                            _Authentication.setCurrentUser($scope.currentUser);
+                            if(result.data._id === $scope.currentUser._id)
+                            {
+                                _Authentication.setCurrentUser($scope.currentUser);
+                            }
                             $scope.clearForm();
+                            $location.path($scope.activetab);
                             // TODO: show save successfully banner
                         },
                         function errorCallback(error) {
@@ -92,8 +93,12 @@
                 _AjaxRequest.patch('/api/users/' + $scope.currentUser._id + '/update/user-access?' + $.param(updateMoreInfo))
                     .then(
                         function successCallback(result) {
-                            _Authentication.setCurrentUser($scope.currentUser);
+                            if(result.data._id === $scope.currentUser._id)
+                            {
+                                _Authentication.setCurrentUser($scope.currentUser);
+                            }
                             $scope.clearForm();
+                            $location.path($scope.activetab);
                             // TODO: show save successfully banner
                         },
                         function errorCallback(error) {

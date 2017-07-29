@@ -5,11 +5,11 @@
         .module('TracademicHub')
         .controller('userManagementController', userManagementController);
 
-    userManagementController.$inject = ['$scope', '$location', '_Authentication', '_AjaxRequest', '_ViewProfile', '_AssignPoints']; // dependency injection
+    userManagementController.$inject = ['$scope', '$location', '_Authentication', '_AjaxRequest', '_AssignPoints']; // dependency injection
 
-    function userManagementController($scope, $location, _Authentication, _AjaxRequest, _ViewProfile, _AssignPoints) {
+    function userManagementController($scope, $location, _Authentication, _AjaxRequest, _AssignPoints) {
 
-        $scope.currentUser = _ViewProfile.getUser();
+        $scope.currentUser = _Authentication.getCurrentUser();
         $scope.defaultAvatar = "../images/default-avatar.png";
 
 
@@ -88,13 +88,6 @@
             $scope.selectedAll.checked=$scope.checkedPages.indexOf(newValue) !== -1;
         }, true);
 
-
-        // edit user profile
-        $scope.viewUserProfile = function (user) {
-            $location.path( "/profile" );
-            _ViewProfile.setUser(user);
-
-        };
 
         // delete/deactive user
         $scope.deleteUser = function (user) {

@@ -1,4 +1,4 @@
-<div class="modal fade" id="editUserProfilePage" ng-controller="editUserProfileController" role="dialog">
+<div class="modal fade" id="{{editProfileId}}" ng-controller="editUserProfileController" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -63,7 +63,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" data-ng-disabled="editUserProfileForm.$invalid || editUserProfileForm.$pristine" data-toggle="modal" data-target="#editUserProfilePage" data-ng-click="updateUserProfile()">Save changes</button>
+                <button type="submit" class="btn btn-primary" data-ng-disabled="editUserProfileForm.$invalid || editUserProfileForm.$pristine" data-toggle="modal" data-target="#{{editProfileId}}" data-ng-click="updateUserProfile()">Save changes</button>
                 <button type="reset" class="btn btn-default" data-dismiss="modal" data-ng-click="clearForm()">Cancel</button>
             </div>
         </div>

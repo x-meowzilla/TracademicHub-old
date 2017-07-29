@@ -1,7 +1,7 @@
 <div class="userSettingswrapper" ng-controller="userManagementController" ng-class="{'toggled': toggled}">
 
     <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-    <div ng-include="'angular_components/userSettings/settings_sidebar/settings_sidebar.html'"></div>
+    <div ng-include="'angular_components/userSettings/settings_sidebar.html'"></div>
     <!-- /.navbar-collapse -->
 
     <!--Page Views-->
@@ -17,9 +17,6 @@
             </div>
         </div>
 
-        <!-- Add User Modal -->
-        <div ng-include="'angular_components/userSettings/addUserModal/addUserModal.html'"></div>
-
         <!--switch views control buttons-->
         <div class="well well-sm" ng-init="tableDisplay = true">
             <strong>Display</strong>
@@ -30,7 +27,6 @@
                     <span class="glyphicon glyphicon-th"></span> Grid</span>
             </div>
         </div>
-
 
         <!--table view-->
         <div class="row" ng-if="tableDisplay">
@@ -60,9 +56,10 @@
                             <td>{{item.accessPrivilege.description}}</td>
                             <td>{{item.lastLoginDate}}</td>
                             <td class="text-center">
-                                <button class="btn btn-primary btn-xs" ng-click="viewUserProfile(item)">
+                                <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#{{item._id}}">
                                     <span class="glyphicon glyphicon-pencil"></span>
                                 </button>
+                                <edit-Profile user="item" pid="item._id"></edit-Profile>
                             </td>
                             <td class="text-center">
                                 <button class="btn btn-danger btn-xs" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteUser(item)">

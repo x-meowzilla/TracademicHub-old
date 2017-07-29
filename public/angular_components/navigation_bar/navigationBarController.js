@@ -5,8 +5,8 @@
         .module('TracademicHub')
         .controller('navbarController', navbarController);
 
-    navbarController.$inject = ['$scope', '_Authentication', '_UTORidAuthentication', '_AjaxRequest']; // dependency injection
-    function navbarController($scope, _Authentication, _UTORidAuthentication, _AjaxRequest) {
+    navbarController.$inject = ['$scope', '$route', '_Authentication', '_UTORidAuthentication', '_AjaxRequest']; // dependency injection
+    function navbarController($scope, $route, _Authentication, _UTORidAuthentication, _AjaxRequest) {
 
         var isMasterAccessEnabled = false;
 
@@ -74,7 +74,7 @@
                     console.log(error);
                 }
             )
-        }
+        };
 
     }
 

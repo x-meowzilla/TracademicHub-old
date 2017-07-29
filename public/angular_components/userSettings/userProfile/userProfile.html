@@ -1,7 +1,7 @@
 <div class="userSettingswrapper" ng-controller="userProfileController" ng-class="{'toggled': toggled}">
 
     <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-    <div ng-include="'angular_components/userSettings/settings_sidebar/settings_sidebar.html'"></div>
+    <div ng-include="'angular_components/userSettings/settings_sidebar.html'"></div>
     <!-- /.navbar-collapse -->
 
     <!--Page Views-->
@@ -16,13 +16,13 @@
                         <span>{{getDisplayName()}}</span>
                         <small>
                             Profile Overview
-                            <i class="fa fa-fw fa-gear titl-side-btn" data-toggle="modal" data-target="#editUserProfilePage"></i>
+                            <i class="fa fa-fw fa-gear titl-side-btn" data-toggle="modal" data-target="#{{currentUser._id}}"></i>
+                            <edit-Profile user="currentUser" pid="currentUser._id"></edit-Profile>
                         </small>
                     </h1>
                 </div>
             </div>
 
-            <!--Edit user profile page-->
             <div ng-include="'angular_components/userSettings/editUserProfile/editUserProfile.html'"></div>
 
             <div class="row">

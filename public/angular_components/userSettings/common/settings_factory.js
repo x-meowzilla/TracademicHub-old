@@ -4,28 +4,12 @@
     angular
         .module('TracademicHub')
         .factory('_AssignPoints', assignPoints)
-        .factory('_ViewProfile', viewProfile)
         .directive('sortRecords', sortRecords)
         .directive('pageControl', pageControl)
         .directive('ngConfirmClick', ngConfirmClick)
         .directive('fileChanged', fileChanged)
-        .directive('pwdCheck', pwdCheck);
-
-    viewProfile.$inject = ['_Authentication'];
-    function viewProfile(_Authentication) {
-        return {
-            user: JSON.parse(window.localStorage.getItem('currentUser')),
-
-            getUser: function () {
-                return this.user;
-            },
-
-            setUser: function (user) {
-                var currentUser = window.localStorage.getItem('currentUser');
-                this.user = user;
-            }
-        };
-    }
+        .directive('pwdCheck', pwdCheck)
+        .directive('editProfile', editProfile);
 
     function assignPoints() {
         return {
@@ -47,6 +31,45 @@
                 return this.users;
             }
         };
+    }
+
+
+    function sortRecords() {
+        return {
+            restrict: 'A',
+            transclude: true,
+            scope: {
+                order: '@',
+                sort: '='
+            },
+            template :
+            ' <i ng-click="sort_by(order)">'+
+            '    <span ng-transclude></span>'+
+            '    <i ng-class="selectedCls(order)"></i>'+
+            '</i>',
+            link: function(scope) {
+                // change sorting order
+                scope.sort_by = function(newSortingOrder) {
+                    var sort = scope.sort;
+
+                    if (sort.sortingOrder === newSortingOrder){
+                        sort.reverse = !sort.reverse;
+                    }
+
+                    sort.sortingOrder = newSortingOrder;
+                };
+
+
+                scope.selectedCls = function(column) {
+                    if(column === scope.sort.sortingOrder){
+                        return ('fa fa-caret-' + ((!scope.sort.reverse) ? 'down' : 'up'));
+                    }
+                    else{
+                        return'fa fa-sort'
+                    }
+                };
+            }
+        }
     }
 
     pageControl.$inject = ['$filter'];
@@ -96,44 +119,6 @@
         }
     }
 
-    function sortRecords() {
-        return {
-            restrict: 'A',
-            transclude: true,
-            scope: {
-                order: '@',
-                sort: '='
-            },
-            template :
-            ' <i ng-click="sort_by(order)">'+
-            '    <span ng-transclude></span>'+
-            '    <i ng-class="selectedCls(order)"></i>'+
-            '</i>',
-            link: function(scope) {
-                // change sorting order
-                scope.sort_by = function(newSortingOrder) {
-                    var sort = scope.sort;
-
-                    if (sort.sortingOrder === newSortingOrder){
-                        sort.reverse = !sort.reverse;
-                    }
-
-                    sort.sortingOrder = newSortingOrder;
-                };
-
-
-                scope.selectedCls = function(column) {
-                    if(column === scope.sort.sortingOrder){
-                        return ('fa fa-caret-' + ((!scope.sort.reverse) ? 'down' : 'up'));
-                    }
-                    else{
-                        return'fa fa-sort'
-                    }
-                };
-            }
-        }
-    }
-
     function ngConfirmClick() {
         return {
             restrict: 'A',
@@ -178,7 +163,7 @@
             },
             link: function(scope, element, attributes, ngModel) {
                 ngModel.$validators.matchPassword = function(modelValue) {
-                    return modelValue == scope.password;
+                    return modelValue === scope.password;
                 };
 
                 scope.$watch("password", function() {
@@ -186,6 +171,17 @@
                 });
             }
         };
+    }
+    
+    function editProfile() {
+        return {
+            restrict: 'EA',
+            scope: {
+                currentUser: '=user',
+                editProfileId: '=pid'
+            },
+            templateUrl:'angular_components/userSettings/editUserProfile/editUserProfile.html'
+        }
     }
 
 }());
