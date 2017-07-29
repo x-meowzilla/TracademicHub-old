@@ -97,7 +97,8 @@
                             <div class="col-md-12 name-card">
                                 <div class="col-md-12">
                                     <div class="pull-left">
-                                        <button class="btn btn-info btn-xs btn-circle" ng-click="viewUserProfile(item)" ><span class="glyphicon glyphicon-pencil"></span></button>
+                                        <button class="btn btn-info btn-xs btn-circle" data-toggle="modal" data-target="#{{item._id}}" ><span class="glyphicon glyphicon-pencil"></span></button>
+                                        <edit-Profile user="item" pid="item._id"></edit-Profile>
                                         <button class="btn btn-danger btn-xs btn-circle" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteUser(item)" ><span class="glyphicon glyphicon-trash"></span></button>
                                     </div>
                                     <h4 class="crap-word text-center">{{item.name.firstName + " " +item.name.lastName}}</h4>
