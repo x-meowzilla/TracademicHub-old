@@ -5,8 +5,7 @@ var util = require('../modules/utility');
 var privilegeSchema = new Schema({
 
     name: {type: String, required: true},
-    description: {type: String},
-    course: {type: Schema.Types.ObjectId, ref: 'Course', required: true},
+    course: {type: Schema.Types.ObjectId, ref: 'Course', index: true, required: true},
     ability: [{type: Schema.Types.ObjectId, ref: 'PrivilegeAbility', index: true}]
 
 }, {collection: 'collection-AccessPrivileges'});

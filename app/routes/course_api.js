@@ -1,6 +1,7 @@
 var router = require('express').Router();
 var CourseModel = require('../db_models/Course');
 var PrivilegeModel = require('../db_models/AccessPrivilege');
+var PrivilegeAbilityModel = require('../db_models/PrivilegeAbility');
 
 router.get('/', function (req, res) {
     "use strict";
@@ -84,7 +85,7 @@ router.patch('/:courseID/update', function (req, res) {
             case 'name':
             case 'description':
             case 'academicTerm':
-            case 'rolePrivileges':  // TODO?
+            case 'accessPrivileges':  // TODO?
             case 'isActive':
                 updateDoc[arg] = req.query[arg];
                 break;
