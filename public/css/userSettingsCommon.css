@@ -43,7 +43,7 @@
 .side-nav li a:hover,
 .side-nav li a:focus {
     outline: none;
-    background-color: #000000 !important;
+    background-color: #5e5e5e !important;
 }
 
 .side-nav>li>ul {

@@ -130,8 +130,8 @@
         }());
 
 
-        // give points to selected user
-        $scope.getPoints = function (users) {
+        // give points to selected user(s)
+        $scope.givePoints = function (users) {
             $location.path( "/pointManagement" );
             _AssignPoints.setAssignees(users);
         };

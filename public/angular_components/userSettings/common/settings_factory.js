@@ -174,8 +174,8 @@
         };
     }
 
-    userCardModal.$inject = ['$location', '_AjaxRequest', '_Authentication', '_AssignPoints'];
-    function userCardModal($location, _AjaxRequest, _Authentication, _AssignPoints) {
+    userCardModal.$inject = ['_AjaxRequest'];
+    function userCardModal(_AjaxRequest) {
         return {
             restrict: 'EA',
             scope: {},
@@ -183,8 +183,6 @@
             link: function ($scope) {
                 //delete!!!
                 $scope.currentUser = {"_id":"597bcf607eaaad767f14750f","utorid":"asdfasdfa","email":"asdfasdfa-test@tracademic.utsc.utoronto.ca","name":{"preferredName":"aaa","firstName":"asdf","lastName":"ad"},"accessPrivilege":{"_id":"597728b4431fa46ba1ca49f9","value":100,"description":"Admin"},"biography":"dd222","isActive":true};
-
-                $scope.loginUser = _Authentication.getCurrentUser();
 
                 $scope.avatarUrl = "../images/default-avatar.png";
                 // get user customized avatarUrl
@@ -209,13 +207,6 @@
                     } else {
                         return  userData.utorid;
                     }
-                };
-
-                // give points to current user
-                $scope.getPoints = function () {
-                    angular.element("#userCardId").modal('hide');
-                    // $location.path( "/pointManagement" );
-                    _AssignPoints.setAssignees($scope.currentUser);
                 };
 
             }

@@ -43,6 +43,7 @@
                             <th sort-Records order="email", sort="sort">Email</th>
                             <th sort-Records order="accessPrivilege", sort="sort">Access Privilege</th>
                             <th sort-Records order="lastLoginDate", sort="sort">Last Login Date</th>
+                            <th>Give Points</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
@@ -56,6 +57,11 @@
                             <td>{{item.email}}</td>
                             <td>{{item.accessPrivilege.description}}</td>
                             <td>{{item.lastLoginDate}}</td>
+                            <td class="text-center">
+                                <button class="btn btn-warning btn-xs" data-ng-click="givePoints([item])">
+                                    <span class="glyphicon glyphicon-gift"></span>
+                                </button>
+                            </td>
                             <td class="text-center">
                                 <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#{{item._id}}">
                                     <span class="glyphicon glyphicon-pencil"></span>
@@ -71,13 +77,16 @@
                         </tbody>
 
                         <tfoot>
-                        <td colspan="6" ng-if="pagedItems.length != 0 && checkedNumber>1">
+                        <td colspan="6" ng-if="pagedItems.length != 0 && checkedNumber > 1">
                             <span class="btn btn-danger checkedAllSection" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteSelectedUsers(pagedItems)">Delete Selected Users</span>
                             <span class="btn btn-primary checkedAllSection" data-title="ModifyPrivilege" data-toggle="modal" data-target="#modifyPrivilegeModal">Modify Access Privilege</span>
-                            <span class="btn btn-info checkedAllSection" ng-click="getPoints(pagedItems)">Give Points</span>
+                            <span class="btn btn-info checkedAllSection" ng-click="givePoints(pagedItems)">Give Points</span>
                             <span><strong class="">{{checkedNumber}} record selected</strong></span>
                         </td>
-                        <td colspan="9" ng-if="(items|filter:searchrecord).length == 0" class="text-center">
+                        <td colspan="10" ng-if="pagedItems.length == 0 || checkedNumber <= 1" class="text-center text-muted">
+                            Select Multiple Users and perform Bulk User Operations.
+                        </td>
+                        <td colspan="10" ng-if="(items|filter:searchrecord).length == 0" class="text-center">
                             <strong>DATA NOT FOUND.</strong>
                         </td>
                         </tfoot>
