@@ -17,26 +17,21 @@
                         <small>
                             Profile Overview
                             <i class="fa fa-fw fa-gear titl-side-btn" data-toggle="modal" data-target="#{{currentUser._id}}"></i>
-                            <edit-Profile user="currentUser" pid="currentUser._id"></edit-Profile>
                         </small>
                     </h1>
+                    <edit-Profile user="currentUser" pid="currentUser._id"></edit-Profile>
                 </div>
             </div>
-
-            <div ng-include="'angular_components/userSettings/editUserProfile/editUserProfile.html'"></div>
 
             <div class="row">
                 <div class="col-lg-12">
 
-                    <!-- resumt -->
                     <div class="panel panel-default">
+                        <!-- user basic information -->
                         <div class="panel-body">
                             <div class="col-xs-12 col-sm-4">
                                 <div>
                                     <img class="img-circle img-responsive avatar-large center-block" alt="avatar" data-ng-src="{{avatarUrl}}">
-                                </div>
-                                <div class="text-center">
-                                    <a href="/pointManagement" class="btn btn-info customBtn" ng-if="currentUser._id !== loginUser._id" ng-click="getPoints()">Give Points</a>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-8">
@@ -81,6 +76,7 @@
                             </div>
                         </div>
 
+                        <!-- states graphs -->
                         <div class="row">
                             <div class="col-lg-5">
                                 <div class="bs-callout bs-callout-danger">

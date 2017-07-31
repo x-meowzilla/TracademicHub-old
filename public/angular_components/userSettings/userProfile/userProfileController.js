@@ -5,9 +5,9 @@
         .module('TracademicHub')
         .controller('userProfileController', userProfileController);
 
-    userProfileController.$inject = ['$scope', '$location', '_AjaxRequest', '_Authentication', '_AssignPoints']; // dependency injection
+    userProfileController.$inject = ['$scope', '_AjaxRequest', '_Authentication']; // dependency injection
 
-    function userProfileController($scope, $location, _AjaxRequest, _Authentication, _AssignPoints) {
+    function userProfileController($scope, _AjaxRequest, _Authentication) {
 
         $scope.currentUser = _Authentication.getCurrentUser();
 
@@ -22,8 +22,6 @@
             }
         };
 
-        $scope.loginUser = _Authentication.getCurrentUser();
-
         $scope.avatarUrl = "../images/default-avatar.png";
         // get user customized avatarUrl
         (function () {
@@ -37,12 +35,6 @@
                     }
                 )
         }());
-
-        // give points to current user
-        $scope.getPoints = function () {
-            $location.path( "/pointManagement" );
-            _AssignPoints.setAssignees([$scope.currentUser]);
-        };
 
 
         // Morris data

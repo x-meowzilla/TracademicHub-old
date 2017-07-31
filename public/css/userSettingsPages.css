@@ -3,12 +3,6 @@
     overflow-x: scroll;
 }
 
-/*edit profile modal*/
-.label-text {
-    font-size: 18px;
-    color: #5e5e5e !important;
-}
-
 /*user management page*/
 .name-card{
     border-radius: 2px;

@@ -15,10 +15,8 @@
                     <i class="fa fa-fw fa-plus-circle titl-side-btn" data-toggle="modal" data-target="#addUserModal"></i>
                 </h1>
             </div>
+            <add-User-Modal></add-User-Modal>
         </div>
-
-        <!-- Add User Modal -->
-        <div ng-include="'angular_components/userSettings/addUserModal/addUserModal.html'"></div>
 
         <!--switch views control buttons-->
         <div class="well well-sm" ng-init="tableDisplay = true">
@@ -74,9 +72,9 @@
 
                         <tfoot>
                         <td colspan="6" ng-if="pagedItems.length != 0 && checkedNumber>1">
-                            <a class="btn btn-danger checkedAllSection" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteSelectedUsers(pagedItems)">Delete Selected Users</a>
-                            <a class="btn btn-primary checkedAllSection" data-title="ModifyPrivilege" data-toggle="modal" data-target="#modifyPrivilegeModal">Modify Access Privilege</a>
-                            <a href="/pointManagement" class="btn btn-info checkedAllSection" ng-click="getPoints(pagedItems)">Give Points</a>
+                            <span class="btn btn-danger checkedAllSection" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteSelectedUsers(pagedItems)">Delete Selected Users</span>
+                            <span class="btn btn-primary checkedAllSection" data-title="ModifyPrivilege" data-toggle="modal" data-target="#modifyPrivilegeModal">Modify Access Privilege</span>
+                            <span class="btn btn-info checkedAllSection" ng-click="getPoints(pagedItems)">Give Points</span>
                             <span><strong class="">{{checkedNumber}} record selected</strong></span>
                         </td>
                         <td colspan="9" ng-if="(items|filter:searchrecord).length == 0" class="text-center">

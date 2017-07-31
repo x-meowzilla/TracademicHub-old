@@ -1,4 +1,4 @@
-<div class="modal fade" id="{{editProfileId}}" ng-controller="editUserProfileController" role="dialog">
+<div class="modal fade" id="{{editProfileId}}" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -20,32 +20,32 @@
                     <div class="col-lg-9">
                         <div class="form-horizontal">
                             <div class="form-group">
-                                <label class="col-lg-3 control-label label-text pull-left">First name:</label>
+                                <label class="col-lg-3 control-label pull-left">First name:</label>
                                 <div class="col-lg-8">
                                     <input class="form-control" type="text" name="firstName" ng-model="editUserInfo.editFirstName" ng-disabled="!isAuthenticated()" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-lg-3 control-label label-text pull-left">Last name:</label>
+                                <label class="col-lg-3 control-label pull-left">Last name:</label>
                                 <div class="col-lg-8">
                                     <input class="form-control" type="text" name="lastName" ng-model="editUserInfo.editLastName" ng-disabled="!isAuthenticated()" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-lg-3 control-label label-text pull-left">Preferred Name:</label>
+                                <label class="col-lg-3 control-label pull-left">Preferred Name:</label>
                                 <div class="col-lg-8">
                                     <input class="form-control" name="preferredName" ng-model="editUserInfo.editPreferredName" type="text" ng-pattern="/^[A-z]*$/">
                                     <div class="text-danger pull-left" ng-show="editUserProfileForm.preferredName.$dirty && editUserProfileForm.preferredName.$error.pattern">Invalid preferred name</div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-lg-3 control-label label-text pull-left">Email:</label>
+                                <label class="col-lg-3 control-label pull-left">Email:</label>
                                 <div class="col-lg-8">
                                     <input class="form-control" name="email" ng-model="editUserInfo.editEmail" type="email" ng-disabled="!isAuthenticated()" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-lg-3 control-label label-text pull-left">Access Privilege:</label>
+                                <label class="col-lg-3 control-label pull-left">Access Privilege:</label>
                                 <div class="col-lg-8">
                                     <select name='privilege' ng-model="editUserInfo.editPrivilege"  class="form-control" ng-disabled="!isAuthenticated()" required>
                                         <option ng-repeat="privilege in privileges" value={{privilege.description}}>{{privilege.description}}</option>
@@ -53,7 +53,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-lg-3 control-label label-text pull-left">Biography:</label>
+                                <label class="col-lg-3 control-label pull-left">Biography:</label>
                                 <div class="col-lg-8">
                                     <textarea class="form-control" name="biography" ng-model="editUserInfo.editBiography" rows="5" cols="50"></textarea>
                                 </div>
