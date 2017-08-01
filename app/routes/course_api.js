@@ -1,7 +1,6 @@
 var router = require('express').Router();
 var CourseModel = require('../db_models/Course');
 var PrivilegeModel = require('../db_models/AccessPrivilege');
-var PrivilegeAbilityModel = require('../db_models/PrivilegeAbility');
 
 router.get('/', function (req, res) {
     "use strict";

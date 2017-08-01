@@ -11,7 +11,7 @@ var passport = require('passport');
 var Promise = require('bluebird');
 
 // config files
-var serverConfig = require('./configurations/server_config').development;
+var serverConfig = require('./configurations/server_config');
 var dbConfig = require('./configurations/db_config');
 var mw = require('./modules/middlewares');
 var passportAuthModule = require('./modules/passport_authentication');
