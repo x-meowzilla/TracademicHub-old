@@ -14,35 +14,28 @@
         $scope.defaultAvatar = "../images/default-avatar.png";
 
 
-        $scope.items = [];
+        $scope.allUsers = [];
+        $scope.users = [];
         $scope.getUsers = function (displayType) {
-            _AjaxRequest.get('/api/users')
-                .then(
-                    function successCallback(result) {
-                        $scope.items = result.data.filter(function (item) {
-                            var res = item._id !== _Authentication.getCurrentUser()._id;
-                            if(displayType === 'all')
-                            {
-                                return res && item.isActive;
-                            }
-                            else if(displayType === 'active')
-                            {
-                                return res && item.isActive;
-                            }
-                            else if(displayType === 'inactive')
-                            {
-                                return res && !item.isActive;
-                            }
-                            else
-                            {
-                                return res && item.lastLoginDate === nul;
-                            }
-                        });
-                    },
-                    function errorCallback(error) {
-                        console.error(error);
-                    }
-                )
+            $scope.users = $scope.allUsers.filter(function (item) {
+                var res = item._id !== _Authentication.getCurrentUser()._id;
+                if(displayType === 'all')
+                {
+                    return res && item.isActive;
+                }
+                else if(displayType === 'active')
+                {
+                    return res && item.isActive;
+                }
+                else if(displayType === 'inactive')
+                {
+                    return res && !item.isActive;
+                }
+                else
+                {
+                    return res && item.lastLoginDate;
+                }
+            });
         };
 
         (function () {
@@ -50,27 +43,10 @@
             _AjaxRequest.get('/api/users')
                 .then(
                     function successCallback(result) {
-                        $scope.items = result.data;
-                        // var displayType = 'other';
-                        // $scope.items = result.data.filter(function (item) {
-                        //     var res = item._id !== _Authentication.getCurrentUser()._id;
-                        //     if(displayType === 'all')
-                        //     {
-                        //         return res && item.isActive;
-                        //     }
-                        //     else if(displayType === 'active')
-                        //     {
-                        //         return res && item.isActive;
-                        //     }
-                        //     else if(displayType === 'inactive')
-                        //     {
-                        //         return res && !item.isActive;
-                        //     }
-                        //     else
-                        //     {
-                        //         return res && item.lastLoginDate !== nul;
-                        //     }
-                        // });
+                        $scope.allUsers = result.data;
+                        $scope.users = result.data.filter(function (user) {
+                            return user._id !== _Authentication.getCurrentUser()._id && user.isActive;
+                        });
                     },
                     function errorCallback(error) {
                         console.error(error);

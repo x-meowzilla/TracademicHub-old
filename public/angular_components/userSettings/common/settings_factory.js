@@ -237,8 +237,6 @@
                         )
                 }());
 
-                console.log($scope.currentUser);
-
                 // fill in edit profile form
                 $scope.editUserInfoOrigin = {
                     editFirstName: $scope.currentUser.name.firstName,

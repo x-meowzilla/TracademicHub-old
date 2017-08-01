@@ -31,7 +31,7 @@
 
         <!--table view-->
         <div class="row" ng-if="tableDisplay">
-            <div class="col-lg-12" page-Control gap="5" viewby="viewby" currentpage="$parent.currentpage" operations="operations" items="items" searchrecord="searchrecord">
+            <div class="col-lg-12" page-Control gap="5" viewby="viewby" currentpage="$parent.currentpage" operations="operations" items="users" searchrecord="searchrecord">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
@@ -52,7 +52,7 @@
                             </ul>
                         </td>
                         <tr>
-                            <th><input type="checkbox" ng-model="selectedAll.checked" ng-click="checkAll(pagedItems, currentpage)" data-ng-disabled="(items|filter:searchrecord).length === 0"/></th>
+                            <th><input type="checkbox" ng-model="selectedAll.checked" ng-click="checkAll(pagedItems, currentpage)" data-ng-disabled="(users|filter:searchrecord).length === 0"/></th>
                             <th sort-Records order="firstName", sort="sort">First Name</th>
                             <th sort-Records order="lastName", sort="sort">Last Name</th>
                             <th sort-Records order="preferredName", sort="sort">Preferred Name</th>
@@ -65,7 +65,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="item in (pagedItems = (items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby))">
+                        <tr ng-repeat="item in (pagedItems = (users | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby))">
                             <td><input type="checkbox" ng-model="item.selected" ng-click="checkRow(item.selected, pagedItems, currentpage)"/></td>
                             <td>{{item.name.firstName}}</td>
                             <td>{{item.name.lastName}}</td>
@@ -99,10 +99,10 @@
                             <span class="btn btn-info checkedAllSection" ng-click="givePoints(pagedItems)">Give Points</span>
                             <span><strong class="">{{checkedNumber}} record selected</strong></span>
                         </td>
-                        <td colspan="10" ng-if="(pagedItems.length == 0 || checkedNumber <= 1) && (items|filter:searchrecord).length != 0" class="text-center text-muted">
+                        <td colspan="10" ng-if="(pagedItems.length == 0 || checkedNumber <= 1) && (users|filter:searchrecord).length != 0" class="text-center text-muted">
                             Select Multiple Users and perform Bulk User Operations.
                         </td>
-                        <td colspan="10" ng-if="(items|filter:searchrecord).length == 0" class="text-center">
+                        <td colspan="10" ng-if="(users|filter:searchrecord).length == 0" class="text-center">
                             <strong>DATA NOT FOUND.</strong>
                         </td>
                         </tfoot>
@@ -113,10 +113,10 @@
 
         <!--card view-->
         <div class="row" ng-if="!tableDisplay">
-            <div class="col-lg-12" page-Control gap="5" viewby="viewby" currentpage="currentpage" operations="operations" items="items" searchrecord="searchrecord">
+            <div class="col-lg-12" page-Control gap="5" viewby="viewby" currentpage="currentpage" operations="operations" items="users" searchrecord="searchrecord">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="col-md-6 col-lg-4" ng-repeat="item in items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby">
+                        <div class="col-md-6 col-lg-4" ng-repeat="item in users | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby">
                             <div class="col-md-12 name-card">
                                 <div class="col-md-12">
                                     <div class="pull-left">
@@ -139,7 +139,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div ng-if="(items|filter:searchrecord).length == 0" class="text-center">
+                        <div ng-if="(users|filter:searchrecord).length == 0" class="text-center">
                             <h2>DATA NOT FOUND.</h2>
                         </div>
                     </div>
