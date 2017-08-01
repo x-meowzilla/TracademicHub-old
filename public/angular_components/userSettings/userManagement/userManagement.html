@@ -35,8 +35,24 @@
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
+                        <td colspan="10" id="userTypeController">
+                            <ul class="nav nav-pills">
+                                <li>
+                                    <a data-toggle="tab" data-ng-click="getUsers('all')">All Users</a>
+                                </li>
+                                <li class="active">
+                                    <a data-toggle="tab" data-ng-click="getUsers('active')">Active Users</a>
+                                </li>
+                                <li>
+                                    <a data-toggle="tab" data-ng-click="getUsers('inactive')">Inactive Users</a>
+                                </li>
+                                <li>
+                                    <a data-toggle="tab" data-ng-click="getUsers('checkedin')">Recently Checked-in Users</a>
+                                </li>
+                            </ul>
+                        </td>
                         <tr>
-                            <th><input type="checkbox" ng-model="selectedAll.checked" ng-click="checkAll(pagedItems, currentpage)" /></th>
+                            <th><input type="checkbox" ng-model="selectedAll.checked" ng-click="checkAll(pagedItems, currentpage)" data-ng-disabled="(items|filter:searchrecord).length === 0"/></th>
                             <th sort-Records order="firstName", sort="sort">First Name</th>
                             <th sort-Records order="lastName", sort="sort">Last Name</th>
                             <th sort-Records order="preferredName", sort="sort">Preferred Name</th>
@@ -83,7 +99,7 @@
                             <span class="btn btn-info checkedAllSection" ng-click="givePoints(pagedItems)">Give Points</span>
                             <span><strong class="">{{checkedNumber}} record selected</strong></span>
                         </td>
-                        <td colspan="10" ng-if="pagedItems.length == 0 || checkedNumber <= 1" class="text-center text-muted">
+                        <td colspan="10" ng-if="(pagedItems.length == 0 || checkedNumber <= 1) && (items|filter:searchrecord).length != 0" class="text-center text-muted">
                             Select Multiple Users and perform Bulk User Operations.
                         </td>
                         <td colspan="10" ng-if="(items|filter:searchrecord).length == 0" class="text-center">

@@ -15,20 +15,69 @@
 
 
         $scope.items = [];
-
-        (function () {
-            _AjaxRequest.get('/api/users?' + $.param({isActive: true}))
+        $scope.getUsers = function (displayType) {
+            _AjaxRequest.get('/api/users')
                 .then(
                     function successCallback(result) {
                         $scope.items = result.data.filter(function (item) {
-                            return item._id !== _Authentication.getCurrentUser()._id;
+                            var res = item._id !== _Authentication.getCurrentUser()._id;
+                            if(displayType === 'all')
+                            {
+                                return res && item.isActive;
+                            }
+                            else if(displayType === 'active')
+                            {
+                                return res && item.isActive;
+                            }
+                            else if(displayType === 'inactive')
+                            {
+                                return res && !item.isActive;
+                            }
+                            else
+                            {
+                                return res && item.lastLoginDate === nul;
+                            }
                         });
                     },
                     function errorCallback(error) {
                         console.error(error);
                     }
                 )
+        };
+
+        (function () {
+            // $scope.getUsers('active');
+            _AjaxRequest.get('/api/users')
+                .then(
+                    function successCallback(result) {
+                        $scope.items = result.data;
+                        // var displayType = 'other';
+                        // $scope.items = result.data.filter(function (item) {
+                        //     var res = item._id !== _Authentication.getCurrentUser()._id;
+                        //     if(displayType === 'all')
+                        //     {
+                        //         return res && item.isActive;
+                        //     }
+                        //     else if(displayType === 'active')
+                        //     {
+                        //         return res && item.isActive;
+                        //     }
+                        //     else if(displayType === 'inactive')
+                        //     {
+                        //         return res && !item.isActive;
+                        //     }
+                        //     else
+                        //     {
+                        //         return res && item.lastLoginDate !== nul;
+                        //     }
+                        // });
+                    },
+                    function errorCallback(error) {
+                        console.error(error);
+                    }
+                )
         }());
+
 
         $scope.sort = {
             sortingOrder : '',
@@ -151,8 +200,6 @@
                 $scope.utoridExist = false;
 
                 $scope.createAdmin = function () {
-                    console.log($scope.editUserInfo);
-                    var basicUserInfo = {utorid: $scope.editUserInfo.utorid};
                     _AjaxRequest.put('/api/local-register/', $scope.editUserInfo)
                         .then(
                             function successCallback(result) {
