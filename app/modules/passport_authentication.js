@@ -1,6 +1,6 @@
 var LocalStrategy = require('passport-local').Strategy;
 var SamlStrategy = require('passport-saml').Strategy;
-var passportConfig = require('../configurations/passport_config').development;
+var passportConfig = require('../configurations/passport_config');
 var fs = require('fs');
 
 var UserModel = require('../db_models/User');

@@ -11,7 +11,7 @@ var passport = require('passport');
 var Promise = require('bluebird');
 
 // config files
-var serverConfig = require('./configurations/server_config').development;
+var serverConfig = require('./configurations/server_config');
 var dbConfig = require('./configurations/db_config');
 var mw = require('./modules/middlewares');
 var passportAuthModule = require('./modules/passport_authentication');
@@ -20,11 +20,11 @@ var modelInitialization = require('./model_init');
 // API endpoint router files
 var shibbolethAuthAPI = require('./routes/shibboleth_api');
 var usersAPI = require('./routes/users_api');
+var coursesAPI = require('./routes/course_api');
 var privilegeAPI = require('./routes/privilege_api');
 var pointsAPI = require('./routes/point_api');
 var pointsCategoryAPI = require('./routes/point_category_api');
 var generalAPI = require('./routes/general_api');
-
 
 // ----- app start here -----
 var app = express();
@@ -54,9 +54,8 @@ app.use(expressValidator());
 app.use(favicon(path.join('public', 'favicon.ico')));
 
 // mongodb connection
-var mongooseOptions = {server: {socketOptions: {keepAlive: 100}}};
 mongoose.Promise = Promise;
-mongoose.connect(dbConfig.dbURL, mongooseOptions);
+mongoose.connect(dbConfig.dbURL, {useMongoClient: true, keepAlive: 100});
 mongoose.connection.on('open', function (error) {
     return error ? console.error(error) : console.log('Connected to mongodb.');
 });
@@ -66,8 +65,6 @@ mongoose.connection.on('disconnected', function (error) {
 mongoose.connection.on('error', function (error) {
     return console.error(error);
 });
-
-modelInitialization();
 
 // api routers - these routers should put after sanitation function
 app.use('/', express.static('public'));
@@ -85,6 +82,7 @@ app.use(function (req, res, next) {
 
 app.use('/api/', generalAPI);
 app.use('/api/users', usersAPI);
+app.use('/api/courses', coursesAPI);
 app.use('/api/privileges', privilegeAPI);
 app.use('/Shibboleth.sso', shibbolethAuthAPI);  // sign-in via Shibboleth Auth
 app.use('/api/points', pointsAPI);

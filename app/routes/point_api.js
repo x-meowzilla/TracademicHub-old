@@ -33,7 +33,7 @@ router.get('/', mw.checkAuthentication, function (req, res) {
         });
 });
 
-router.post('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, function (req, res) {
+router.post('/', mw.checkAuthentication, function (req, res) {
     "use strict";
     // req.body = {assigneeID, pointCategoryID, [pointValue]},
     UserModel.findById(req.body.assigneeID)
@@ -55,7 +55,7 @@ router.post('/', mw.checkAuthentication, mw.haveMinimumTAAccessPrivilege, functi
     }
 });
 
-router.delete('/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
+router.delete('/', mw.checkAuthentication, function (req, res) {
     "use strict";
     var deleteDoc = {};
     Object.keys(req.query).forEach(function (arg) {

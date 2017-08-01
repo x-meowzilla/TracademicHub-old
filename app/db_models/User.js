@@ -7,19 +7,22 @@ var userSchema = new Schema({
     utorid: {type: String, required: true, unique: true}, // required!!
     email: {type: String, required: true, unique: true},
     studentNumber: {type: Number, sparse: true, unique: true},
-    accessPrivilege: {type: Schema.Types.ObjectId, ref: 'AccessPrivilege', required: true},
-    createDate: {type: Date, default: Date.now},
+    name: {
+        firstName: {type: String, required: true},
+        lastName: {type: String, required: true},
+        preferredName: {type: String, default: ''}
+    },
+    courseEnrolled: [{
+        course: {type: Schema.Types.ObjectId, ref: 'Course', unique: true, required: true},
+        privilege: {type: Schema.Types.ObjectId, ref: 'AccessPrivilege', unique: true, required: true}
+    }],
+    createDate: {type: Date, default: Date.now, required: true},
     lastLoginDate: {type: Date, index: true, sparse: true},
     isActive: {type: Boolean, default: true, required: true},
     isLocalUser: {type: Boolean, default: false, required: true},
     password: {
         salt: {type: String, sparse: true, unique: true},
         hash: {type: String, sparse: true, unique: true}
-    },
-    name: {
-        firstName: {type: String, required: true},
-        lastName: {type: String, required: true},
-        preferredName: {type: String, default: ''}
     },
     biography: {type: String, default: ''},
     avatarPath: {type: String, default: null}
@@ -60,6 +63,14 @@ userSchema.methods.verifyPassword = function (password) {
     } else {
         return false;
     }
+};
+
+userSchema.methods.setLegalName = function (fName, lName, pName) {
+    "use strict";
+    var user = this;
+    user.name.firstName = fName;
+    user.name.lastName = lName;
+    user.name.preferredName = pName ? pName : '';
 };
 
 userSchema.methods.updateLastLoginDate = function () {
