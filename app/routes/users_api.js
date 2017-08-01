@@ -2,7 +2,7 @@ var router = require('express').Router();
 var Promise = require('bluebird');
 var multer = require('multer');
 var uploadMemory = multer({storage: multer.memoryStorage(), limits: {files: 1, fileSize: 32 * 1024 * 1024}}); // csv file 32MB file size limit
-var uploadLocal = multer({dest: 'app/user_uploads/', limits: {files: 1, fileSize: 512 * 1024}}); // avatar image 500kB file size limit
+var uploadLocal = multer({dest: 'app/user_uploads/', limits: {files: 1, fileSize: 512 * 1024}}); // avatar image 512kB file size limit
 var mw = require('../modules/middlewares');
 var util = require('../modules/utility');
 var UserModel = require('../db_models/User');
@@ -135,8 +135,6 @@ router.patch('/:userID/update/user-info', mw.checkAuthentication, function (req,
     var updateDoc = {};
     Object.keys(req.query).forEach(function (arg) {
         switch (arg) {
-            case 'firstName':
-            case 'lastName':
             case 'preferredName':
                 updateDoc['name.' + arg] = req.query[arg];
                 break;
@@ -164,7 +162,6 @@ router.patch('/:userID/update/user-access', mw.checkAuthentication, function (re
                 updateDoc['name.' + arg] = req.query[arg];
                 break;
             case 'email':
-            case 'studentNumber':
             case 'accessPrivilege':
             case 'isActive':
                 updateDoc[arg] = req.query[arg];
@@ -179,16 +176,5 @@ router.patch('/:userID/update/user-access', mw.checkAuthentication, function (re
             return res.status(500).send(error).end();
         });
 });
-
-// router.patch('/deactivate/', mw.checkAuthentication, mw.haveMinimumInstructorAccessPrivilege, function (req, res) {
-//     UserModel.deactivateUsers()
-//         .then(function (user) {
-//             return res.json(util.retrieveBasicUserData(user)).end();
-//         })
-//         .catch(function (error) {
-//             return res.status(500).end(error.errmsg);
-//         });
-// });
-
 
 module.exports = router;

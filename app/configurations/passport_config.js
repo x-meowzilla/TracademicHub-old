@@ -14,11 +14,11 @@ module.exports = {
 
         // Service Provider private key - used to decrypt SAML responses.
         decryptionPvk: fs.readFileSync('app/certificates/saml-decrypt.pem', 'utf8'),        // dev use
-        // decryptionPvk: fs.readFileSync('PATH-TO/saml-decrypt.pem', 'utf8'),
+        // decryptionPvk: fs.readFileSync('/etc/ssl/certs/saml-decrypt.pem', 'utf8'),
 
         // Identity Provider's public key - used to verify SAML responses. Omitting this will allow user spoofing!
         cert: fs.readFileSync('app/certificates/saml-verify.crt', 'utf8'),                  // dev use
-        // cert: fs.readFileSync('PATH-TO/saml-verify.crt', 'utf8'),
+        // cert: fs.readFileSync('/etc/ssl/certs/saml-verify.crt', 'utf8'),
 
         identifierFormat: null,
         disableRequestedAuthnContext: true,

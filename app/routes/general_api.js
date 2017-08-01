@@ -1,9 +1,8 @@
 var router = require('express').Router();
 var passport = require('passport');
-var serverConfig = require('../configurations/server_config').development;
+var serverConfig = require('../configurations/server_config');
 var util = require('../modules/utility');
 var UserModel = require('../db_models/User');
-// var PrivilegeModel = require('../db_models/AccessPrivilege');
 
 // general API URI: .../api/
 router.post('/local-login', _validateReqBodyUTORidAndPassword, function (req, res) {
@@ -46,7 +45,7 @@ router.put('/local-register', _validateReqBodyUTORidAndPassword, _validateReqBod
 router.get('/logout', function (req, res) {
     req.logout();
     req.session.destroy();
-    res.clearCookie(serverConfig.session.key, {path: '/'});
+    res.clearCookie(serverConfig.session.key);
     // res.redirect('/'); // TODO - delete? refresh page?
     return res.status(200).send('Logout successful. Please close the browser to complete the logout process.').end();
 });
