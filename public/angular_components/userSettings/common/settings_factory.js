@@ -178,13 +178,13 @@
     function userCardModal(_AjaxRequest) {
         return {
             restrict: 'EA',
-            scope: {},
+            scope: {
+                currentUser: '=user',
+                userCardId: '=pid'
+            },
             templateUrl:'angular_components/userSettings/common/userSettingsModals/userCardModal.html',
-            link: function ($scope) {
-                //delete!!!
-                $scope.currentUser = {"_id":"597bcf607eaaad767f14750f","utorid":"asdfasdfa","email":"asdfasdfa-test@tracademic.utsc.utoronto.ca","name":{"preferredName":"aaa","firstName":"asdf","lastName":"ad"},"accessPrivilege":{"_id":"597728b4431fa46ba1ca49f9","value":100,"description":"Admin"},"biography":"dd222","isActive":true};
-
-                $scope.avatarUrl = "../images/default-avatar.png";
+            link: function (scope) {
+                scope.avatarUrl = "../images/default-avatar.png";
                 // get user customized avatarUrl
                 (function () {
                     _AjaxRequest.get('/api/privileges/')
@@ -198,8 +198,8 @@
                         )
                 }());
 
-                $scope.getDisplayName = function () {
-                    var userData = $scope.currentUser;
+                scope.getDisplayName = function () {
+                    var userData = scope.currentUser;
                     if (userData.name.preferredName) {
                         return userData.name.preferredName;
                     } else if (userData.name.firstName && userData.name.lastName) {

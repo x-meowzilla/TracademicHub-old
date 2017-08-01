@@ -67,19 +67,21 @@
                         <tbody>
                         <tr ng-repeat="item in (pagedItems = ((users | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby)) | orderBy:sort.sortingOrder:sort.reverse)">
                             <td><input type="checkbox" ng-model="item.selected" ng-click="checkRow(item.selected, pagedItems, currentpage)"/></td>
-                            <td>{{item.name.firstName}}</td>
-                            <td>{{item.name.lastName}}</td>
-                            <td>{{item.name.preferredName}}</td>
-                            <td>{{item.email}}</td>
-                            <td>{{item.accessPrivilege.description}}</td>
-                            <td>{{item.lastLoginDate}}</td>
+                            <td data-toggle="modal" data-target="#{{item._id}}profile">{{item.name.firstName}}
+                                <user-card-modal user="item" pid="item._id"></user-card-modal>
+                            </td>
+                            <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.name.lastName}}</td>
+                            <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.name.preferredName}}</td>
+                            <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.email}}</td>
+                            <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.accessPrivilege.description}}</td>
+                            <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item._id}}</td>
                             <td class="text-center">
                                 <button class="btn btn-warning btn-xs" data-ng-click="givePoints([item])">
                                     <span class="glyphicon glyphicon-gift"></span>
                                 </button>
                             </td>
                             <td class="text-center">
-                                <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#{{item._id}}">
+                                <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit{{item._id}}">
                                     <span class="glyphicon glyphicon-pencil"></span>
                                 </button>
                                 <edit-Profile user="item" pid="item._id"></edit-Profile>
