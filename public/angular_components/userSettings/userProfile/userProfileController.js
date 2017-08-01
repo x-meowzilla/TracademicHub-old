@@ -22,19 +22,7 @@
             }
         };
 
-        $scope.avatarUrl = "../images/default-avatar.png";
-        // get user customized avatarUrl
-        (function () {
-            _AjaxRequest.get('/api/privileges/')
-                .then(
-                    function successCallback(result) {
-                        // $scope.avatarUrl = result.data;
-                    },
-                    function errorCallback(error) {
-                        console.error(error);
-                    }
-                )
-        }());
+        $scope.avatarUrl = $scope.currentUser.avatarPath? $scope.currentUser.avatarPath: "../images/default-avatar.png";
 
 
         // Morris data
@@ -87,6 +75,7 @@
             }],
             resize: true
         });
+
     }
 
 }());

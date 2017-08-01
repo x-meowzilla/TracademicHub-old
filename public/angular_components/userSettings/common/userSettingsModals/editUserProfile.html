@@ -44,14 +44,14 @@
                                     <input class="form-control" name="email" ng-model="editUserInfo.editEmail" type="email" ng-disabled="!isAuthenticated()" required>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label pull-left">Access Privilege:</label>
-                                <div class="col-lg-8">
-                                    <select name='privilege' ng-model="editUserInfo.editPrivilege"  class="form-control" ng-disabled="!isAuthenticated()" required>
-                                        <option ng-repeat="privilege in privileges" value={{privilege.description}}>{{privilege.description}}</option>
-                                    </select>
-                                </div>
-                            </div>
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-lg-3 control-label pull-left">Access Privilege:</label>-->
+                                <!--<div class="col-lg-8">-->
+                                    <!--<select name='privilege' ng-model="editUserInfo.editPrivilege"  class="form-control" ng-disabled="!isAuthenticated()" required>-->
+                                        <!--<option ng-repeat="privilege in privileges" value={{privilege.description}}>{{privilege.description}}</option>-->
+                                    <!--</select>-->
+                                <!--</div>-->
+                            <!--</div>-->
                             <div class="form-group">
                                 <label class="col-lg-3 control-label pull-left">Biography:</label>
                                 <div class="col-lg-8">

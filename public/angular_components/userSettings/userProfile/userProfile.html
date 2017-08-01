@@ -36,68 +36,110 @@
                             </div>
                             <div class="col-xs-12 col-sm-8">
                                 <ul class="list-group row user-info-list">
-                                    <li class="list-group-item col-xs-12">
-                                        <div class="col-xs-5 tital"><strong>First Name: </strong></div>
-                                        <div class="col-xs-7">{{currentUser.name.firstName}}</div>
+                                    <li class="list-group-item">
+                                        <div class="col-xs-12">
+                                            <div class="col-xs-5"><strong>First Name: </strong></div>
+                                            <div class="col-xs-7">{{currentUser.name.firstName}}</div>
+                                        </div>
                                     </li>
-                                    <li class="list-group-item col-xs-12">
-                                        <div class="col-xs-5 tital"><strong>Last Name: </strong></div>
-                                        <div class="col-xs-7">{{currentUser.name.lastName}}</div>
+                                    <li class="list-group-item">
+                                        <div class="col-xs-12">
+                                            <div class="col-xs-5"><strong>Last Name: </strong></div>
+                                            <div class="col-xs-7">{{currentUser.name.lastName}}</div>
+                                        </div>
                                     </li>
-                                    <li class="list-group-item col-xs-12">
-                                        <div class="col-xs-5 tital"><strong>Preferred Name: </strong></div>
-                                        <div class="col-xs-7">{{currentUser.name.preferredName}}</div>
+                                    <li class="list-group-item">
+                                        <div class="col-xs-12">
+                                            <div class="col-xs-5"><strong>Preferred Name: </strong></div>
+                                            <div class="col-xs-7">{{currentUser.name.preferredName}}</div>
+                                        </div>
                                     </li>
-                                    <li class="list-group-item col-xs-12">
-                                        <div class="col-xs-5 tital"><strong>Email: </strong></div>
-                                        <div class="col-xs-7">{{currentUser.email}}</div>
+                                    <li class="list-group-item">
+                                        <div class="col-xs-12">
+                                            <div class="col-xs-5"><strong>Email: </strong></div>
+                                            <div class="col-xs-7">{{currentUser.email}}</div>
+                                        </div>
                                     </li>
-                                    <li class="list-group-item col-xs-12">
-                                        <div class="col-xs-5 tital"><strong>Access Privilege: </strong></div>
-                                        <div class="col-xs-7">{{currentUser.accessPrivilege.description}}</div>
+                                    <li class="list-group-item">
+                                        <div class="col-xs-12">
+                                            <div class="col-xs-5"><strong>Last Login: </strong></div>
+                                            <div class="col-xs-7">{{currentUser.lastLoginDate}}</div>
+                                        </div>
                                     </li>
-                                    <li class="list-group-item col-xs-12">
-                                        <div class="col-xs-5 tital"><strong>Last Login: </strong></div>
-                                        <div class="col-xs-7">{{currentUser.lastLoginDate}}</div>
+                                    <li class="list-group-item">
+                                        <div class="col-xs-12">
+                                            <div class="col-xs-5"><strong>Access Privilege: </strong></div>
+                                            <div class="col-xs-7">
+                                                <div ng-if="currentUser.isLocalUser && currentUser.courseEnrolled.length==0">Super Admin</div>
+                                                <div ng-if="!currentUser.isLocalUser">
+                                                    <a href="javascript:;" ng-if="currentUser.courseEnrolled.length!=0" data-toggle="collapse" data-target="#accessPrivilegesTable">
+                                                        View More Access Privileges <i class="fa fa-fw fa-caret-down"></i>
+                                                    </a>
+                                                    <span ng-if="currentUser.courseEnrolled.length==0" class="text-muted"><strong>No Access Privilege Assigned</strong></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div id="accessPrivilegesTable" class="table-responsive collapse">
+                                                <table class="table table-bordered table-striped table-hover  text-center">
+                                                    <thead>
+                                                    <tr>
+                                                        <th class="text-center">Course</th>
+                                                        <th class="text-center">Privilege</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="ce in currentUser.courseEnrolled">{{user}}
+                                                        <td>{{ce.course}}</td>
+                                                        <td>{{ce.privilege}}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
                         </div>
 
-                        <div class="panel panel-danger">
-                            <div class="panel-heading">
-                                <h4> Biography </h4>
-                            </div>
-                            <div class="panel-body">
-                                <p>
-                                    {{currentUser.biography}}
-                                </p>
-                                <div ng-if="currentUser.biography.length===0" class="text-muted">This guy is too lazy and doesn't add a biography here...</div>
-                            </div>
+                        <!-- biography -->
+                        <div class="bs-callout bs-callout-danger">
+                            <h4> Biography </h4>
+                            <p>
+                                {{currentUser.biography}}
+                            </p>
+                            <div ng-if="currentUser.biography.length===0" class="text-muted">This guy is too lazy and doesn't add a biography here...</div>
                         </div>
 
                         <!-- states graphs -->
                         <div class="row">
-                            <div class="col-lg-5">
-                                <div class="bs-callout bs-callout-danger">
-                                    <h4>States Points Percentage</h4>
-                                    <div id="statesDonut"></div>
-                                    <div class="text-right">
-                                        <a href="/states">View Details <i class="fa fa-arrow-circle-right"></i></a>
+                            <div class="col-md-6">
+                                <div class="panel panel-danger infoBlock">
+                                    <div class="panel-heading">
+                                        <h4> Total States Points </h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="statesBar"></div>
+                                        <div class="text-right">
+                                            <a href="/states">View Details <i class="fa fa-arrow-circle-right"></i></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-lg-7">
-                                <div class="bs-callout bs-callout-danger">
-                                    <h4> Total States Points </h4>
-                                    <div id="statesBar"></div>
-                                    <div class="text-right">
-                                        <a href="/states">View Details <i class="fa fa-arrow-circle-right"></i></a>
+                            <div class="col-md-6">
+                                <div class="panel panel-danger infoBlock">
+                                    <div class="panel-heading">
+                                        <h4>States Points Percentage</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="statesDonut"></div>
+                                        <div class="text-right">
+                                            <a href="/states">View Details <i class="fa fa-arrow-circle-right"></i></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
 
                     </div>

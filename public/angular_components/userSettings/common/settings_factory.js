@@ -237,13 +237,14 @@
                         )
                 }());
 
+                console.log($scope.currentUser);
+
                 // fill in edit profile form
                 $scope.editUserInfoOrigin = {
                     editFirstName: $scope.currentUser.name.firstName,
                     editLastName: $scope.currentUser.name.lastName,
                     editPreferredName: $scope.currentUser.name.preferredName,
                     editEmail: $scope.currentUser.email,
-                    editPrivilege: $scope.currentUser.accessPrivilege.description,
                     editBiography: $scope.currentUser.biography,
                     inputimage: "../images/default-avatar.png"
                 };
@@ -295,11 +296,6 @@
                     {
                         updateMoreInfo["email"] = $scope.editUserInfo.editEmail;
                         $scope.currentUser["email"] = $scope.editUserInfo.editEmail;
-                    }
-                    if($scope.editUserProfileForm.privilege.$dirty)
-                    {
-                        updateMoreInfo["privilege"] = $scope.editUserInfo.editPrivilege;
-                        $scope.currentUser["privilege"] = $scope.editUserInfo.editPrivilege;
                     }
                     if(!angular.equals({}, updateMoreInfo))
                     {
