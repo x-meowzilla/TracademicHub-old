@@ -41,16 +41,26 @@ router.get('/', function (req, res) {
         });
 });
 
-router.post('/', mw.checkAuthentication, uploadMemory.single('csvfile'), function (req, res) {
+router.post('/', uploadMemory.single('csvfile'), function (req, res) {
     "use strict";
-    // read csv file content from buffer and split file header and content, then generate file header and its corresponding indices
-    var csv = processFileData(req.file.buffer.toString());
-    var header = generateFileHeader(csv.header);
-    // if the header is invalid, return status 400 and error message
-    if (!isFileHeaderProperlyFormatted(header))
-        return res.status(400).send('Student CSV file is not properly formatted.').end();
-    // if the header is valid, then generate user data object
-    var userDataArray = generateUserData(header, csv.content);
+
+    console.log('-------------------------');
+
+    console.log(req.file.buffer.toString());
+
+    res.end();
+
+
+    // // read csv file content from buffer and split file header and content, then generate file header and its corresponding indices
+    // var csv = processFileData(req.file.buffer.toString());
+    // var header = generateFileHeader(csv.header);
+    // // if the header is invalid, return status 400 and error message
+    // if (!isFileHeaderProperlyFormatted(header))
+    //     return res.status(400).send('Student CSV file is not properly formatted.').end();
+    // // if the header is valid, then generate user data object
+    // var userDataArray = generateUserData(header, csv.content);
+    //
+
     // PrivilegeModel.findAccessPrivilegeData({value: util.ACCESS_STUDENT, description: util.ACCESS_STUDENT_DESCRIPTION})
     //     .then(function (accessArray) { // map student access to each user data object
     //         return userDataArray.map(function (userData) {
@@ -87,42 +97,42 @@ router.post('/', mw.checkAuthentication, uploadMemory.single('csvfile'), functio
     //         return res.status(500).send(error.message).end();
     //     });
 
-    function processFileData(csvString) {
-        var contentArray = csvString.split('\n').map(function (line) {
-            return line.trim('\r').split(',');
-        });
-        var headerArray = contentArray.shift().map(function (header) {
-            return header.toLowerCase();
-        });
-        return {header: headerArray, content: contentArray};
-    }
-
-    function generateFileHeader(headerArray) {
-        // find the indices for each field, build user data object and push to array
-        var utoridIdx = headerArray.indexOf('UTORiD'.toLowerCase());
-        var emailIdx = headerArray.indexOf('Email'.toLowerCase());
-        var studentNumberIdx = Math.max(headerArray.indexOf('Student Number'.toLowerCase()), headerArray.indexOf('StudentNumber'.toLowerCase()));
-        var firstNameIdx = Math.max(headerArray.indexOf('First Name'.toLowerCase()), headerArray.indexOf('FirstName'.toLowerCase()));
-        var lastNameIdx = Math.max(headerArray.indexOf('Last Name'.toLowerCase()), headerArray.indexOf('LastName'.toLowerCase()));
-        return {utorid: utoridIdx, email: emailIdx, studentNumber: studentNumberIdx, firstName: firstNameIdx, lastName: lastNameIdx};
-    }
-
-    function isFileHeaderProperlyFormatted(header) {
-        return Object.keys(header).reduce(function (result, key) {
-            return result && (header[key] !== -1);
-        }, true);
-    }
-
-    function generateUserData(header, contentArray) {
-        return contentArray.map(function (content) {
-            return {
-                utorid: content[header.utorid],
-                email: content[header.email],
-                studentNumber: content[header.studentNumber],
-                name: {firstName: content[header.firstName], lastName: content[header.lastName]}
-            };
-        });
-    }
+    // function processFileData(csvString) {
+    //     var contentArray = csvString.split('\n').map(function (line) {
+    //         return line.trim('\r').split(',');
+    //     });
+    //     var headerArray = contentArray.shift().map(function (header) {
+    //         return header.toLowerCase();
+    //     });
+    //     return {header: headerArray, content: contentArray};
+    // }
+    //
+    // function generateFileHeader(headerArray) {
+    //     // find the indices for each field, build user data object and push to array
+    //     var utoridIdx = headerArray.indexOf('UTORiD'.toLowerCase());
+    //     var emailIdx = headerArray.indexOf('Email'.toLowerCase());
+    //     var studentNumberIdx = Math.max(headerArray.indexOf('Student Number'.toLowerCase()), headerArray.indexOf('StudentNumber'.toLowerCase()));
+    //     var firstNameIdx = Math.max(headerArray.indexOf('First Name'.toLowerCase()), headerArray.indexOf('FirstName'.toLowerCase()));
+    //     var lastNameIdx = Math.max(headerArray.indexOf('Last Name'.toLowerCase()), headerArray.indexOf('LastName'.toLowerCase()));
+    //     return {utorid: utoridIdx, email: emailIdx, studentNumber: studentNumberIdx, firstName: firstNameIdx, lastName: lastNameIdx};
+    // }
+    //
+    // function isFileHeaderProperlyFormatted(header) {
+    //     return Object.keys(header).reduce(function (result, key) {
+    //         return result && (header[key] !== -1);
+    //     }, true);
+    // }
+    //
+    // function generateUserData(header, contentArray) {
+    //     return contentArray.map(function (content) {
+    //         return {
+    //             utorid: content[header.utorid],
+    //             email: content[header.email],
+    //             studentNumber: content[header.studentNumber],
+    //             name: {firstName: content[header.firstName], lastName: content[header.lastName]}
+    //         };
+    //     });
+    // }
 
 });
 
