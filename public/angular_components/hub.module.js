@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('TracademicHub', ['ngRoute', 'ngAnimate', 'ui.bootstrap'])
+        .module('TracademicHub', ['ngRoute', 'ngAnimate'])
         .config(function ($routeProvider, $locationProvider) {
             $locationProvider.hashPrefix('');
             $locationProvider.html5Mode(true);
@@ -41,7 +41,7 @@
                 //     authenticate: true
                 // })
                 .when('/userManagement', {
-                    templateUrl: 'angular_components/userSettings/userManagement/userManagement2.html',
+                    templateUrl: 'angular_components/userSettings/userManagement/userManagement.html',
                     authenticate: true
                 })
                 .when('/pointManagement', {
