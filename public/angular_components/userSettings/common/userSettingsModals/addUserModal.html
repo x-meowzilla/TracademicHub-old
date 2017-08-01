@@ -28,7 +28,7 @@
                                     <div class="col-lg-8">
                                         <input class="form-control" type="text" name="utorid" ng-model="editUserInfo.utorid" ng-minlength="5" ng-maxlength="20" ng-pattern="/^[A-z0-9]*$/" required>
                                         <div class="text-danger" ng-show="createUserForm.utorid.$dirty && (createUserForm.utorid.$error.minlength || createUserForm.utorid.$error.maxlength || createUserForm.utorid.$error.pattern)">Utorid/Username must be between 5 and 20 characters, and contain letters &amp; numbers only.</div>
-                                        <div class="text-danger" ng-init="utoridExist=false" ng-show="utoridExist">Utorid/username already exists.</div>
+                                        <div class="text-danger" ng-show="utoridExist">Utorid/username already exists.</div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -42,7 +42,7 @@
                                     <label class="col-lg-3 control-label">*Confirm the Password:</label>
                                     <div class="col-lg-8">
                                         <input class="form-control" type="password" name="repassword" ng-model="editUserInfo.repassword" pwd-Check="editUserInfo.password" required>
-                                        <div class="text-danger" ng-show="createUserForm.repassword.$error.matchPassword && createUserForm.repassword.$dirty">Passwords do not match.</div>
+                                        <div class="text-danger" ng-show="createUserForm.repassword.$error.matchPassword && createUserForm.repassword.$dirty">Password does not match.</div>
                                     </div>
                                 </div>
                                 <div class="form-group">

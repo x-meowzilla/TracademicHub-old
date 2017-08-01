@@ -9,52 +9,52 @@
     userManagementController.$inject = ['$scope', '$location', '_Authentication', '_AjaxRequest', '_AssignPoints']; // dependency injection
 
     function userManagementController($scope, $location, _Authentication, _AjaxRequest, _AssignPoints) {
-
+        // users data settings
         $scope.currentUser = _Authentication.getCurrentUser();
-        $scope.defaultAvatar = "../images/default-avatar.png";
 
-
-        $scope.allUsers = [];
         $scope.users = [];
-        $scope.getUsers = function (displayType) {
-            $scope.users = $scope.allUsers.filter(function (item) {
-                var res = item._id !== _Authentication.getCurrentUser()._id;
-                if(displayType === 'all')
-                {
-                    return res && item.isActive;
-                }
-                else if(displayType === 'active')
-                {
-                    return res && item.isActive;
-                }
-                else if(displayType === 'inactive')
-                {
-                    return res && !item.isActive;
-                }
-                else
-                {
-                    return res && item.lastLoginDate;
-                }
-            });
-        };
-
-        (function () {
-            // $scope.getUsers('active');
+        var getUsers = function (displayType) {
             _AjaxRequest.get('/api/users')
                 .then(
                     function successCallback(result) {
-                        $scope.allUsers = result.data;
-                        $scope.users = result.data.filter(function (user) {
-                            return user._id !== _Authentication.getCurrentUser()._id && user.isActive;
+                        $scope.users = result.data.filter(function (item) {
+                            var res = item._id !== _Authentication.getCurrentUser()._id;
+                            if(displayType === 'all')
+                            {
+                                return res && item.isActive;
+                            }
+                            else if(displayType === 'active')
+                            {
+                                return res && item.isActive;
+                            }
+                            else if(displayType === 'inactive')
+                            {
+                                return res && !item.isActive;
+                            }
+                            else
+                            {
+                                return res && item.lastLoginDate;
+                            }
                         });
                     },
                     function errorCallback(error) {
                         console.error(error);
                     }
-                )
+                );
+        };
+        $scope.getUsers = function (displayType) {
+            getUsers(displayType);
+        };
+
+        (function () {
+            getUsers('active');
         }());
 
+        $scope.defaultAvatar = "../images/default-avatar.png";
 
+
+
+        // user tables settings
         $scope.sort = {
             sortingOrder : '',
             reverse : false
@@ -115,6 +115,10 @@
         }, true);
 
 
+
+        // user operations settings
+        $scope.utoridExist = false;
+
         // delete/deactive user
         $scope.deleteUser = function (user) {
             _AjaxRequest.patch('/api/users/' + user._id + '/update/user-access?' + $.param({isActive: false}))
@@ -154,7 +158,6 @@
                 )
         }());
 
-
         // give points to selected user(s)
         $scope.givePoints = function (users) {
             $location.path( "/pointManagement" );
@@ -167,13 +170,18 @@
     function addUserModal($location, _AjaxRequest) {
         return {
             restrict: 'EA',
-            scope: {},
+            scope: {
+                users: '='
+            },
             templateUrl:'angular_components/userSettings/common/userSettingsModals/addUserModal.html',
-            link: function ($scope) {
+            link: function ($scope, element) {
+                $scope.utoridExist = false;
+                $scope.$watch('editUserInfo.utorid', function(newValue, oldValue) {
+                    $scope.utoridExist = false;
+                }, true);
+
                 $scope.editUserInfoOrigin = {utorid: '', password: '', repassword: '', firstName: '', lastName: '', preferredName: '', email: '', accessPrivilege: ''};
                 $scope.editUserInfo = angular.copy($scope.editUserInfoOrigin);
-
-                $scope.utoridExist = false;
 
                 $scope.createAdmin = function () {
                     _AjaxRequest.put('/api/local-register/', $scope.editUserInfo)
@@ -181,9 +189,9 @@
                             function successCallback(result) {
                                 $scope.clearForm();
                                 angular.element("#addUserModal").modal('hide');
+                                $scope.users.push(result.data);
                             },
                             function errorCallback(error) {
-                                console.error(error);
                                 if(error.status === 409)
                                 {
                                     $scope.utoridExist = true;
@@ -196,9 +204,9 @@
                     _AjaxRequest.post('/api/users/', $scope.csvfile)
                         .then(
                             function successCallback(result) {
-                                $location.path( "/userManagement" );
                                 $scope.clearForm();
-                                // TODO: show save successfully banner
+                                angular.element("#addUserModal").modal('hide');
+                                $scope.users.push(result.data);
                             },
                             function errorCallback(error) {
                                 // TODO: show save failed banner
