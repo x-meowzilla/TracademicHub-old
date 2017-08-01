@@ -5,8 +5,8 @@
         .module('TracademicHub')
         .controller('navbarController', navbarController);
 
-    navbarController.$inject = ['$scope', '_Authentication', '_UTORidAuthentication', '_AjaxRequest']; // dependency injection
-    function navbarController($scope, _Authentication, _UTORidAuthentication, _AjaxRequest) {
+    navbarController.$inject = ['$scope', '$route', '_Authentication', '_UTORidAuthentication', '_AjaxRequest']; // dependency injection
+    function navbarController($scope, $route, _Authentication, _UTORidAuthentication, _AjaxRequest) {
 
         var isMasterAccessEnabled = false;
 
@@ -51,18 +51,9 @@
                 function successCallback(result) {
 
                     var userData = result.data;
-                    _Authentication.setCurrentUser(JSON.stringify(userData));
+                    _Authentication.setCurrentUser(userData);
 
-                    function getDisplayName(userData) {
-                        if (userData.name.preferredName) {
-                            return userData.name.preferredName;
-                        } else if (userData.name.firstName && userData.name.lastName) {
-                            return userData.name.firstName + ' ' + userData.name.lastName;
-                        } else {
-                            return userData.utorid;
-                        }
-                    }
-                    _Authentication.setDisplayName(getDisplayName(userData));
+                    _Authentication.setDisplayName(userData);
 
                     // TODO - show login successful banner
                 },
@@ -83,7 +74,7 @@
                     console.log(error);
                 }
             )
-        }
+        };
 
     }
 

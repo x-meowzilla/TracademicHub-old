@@ -3,24 +3,13 @@
 
     angular
         .module('TracademicHub')
-        .controller('leaderBoardRankController', leaderBoardRankController);
+        .controller('statesController', statesController)
 
-    leaderBoardRankController.$inject = ['$scope', '$location', '_AjaxRequest', '_ViewProfile']; // dependency injection
+    statesController.$inject = ['$scope', '_Authentication', '_AjaxRequest']; // dependency injection
 
-    function leaderBoardRankController($scope, $location, _AjaxRequest, _ViewProfile) {
-
-        (function () {
-            _AjaxRequest.get('/api/points/history')
-                .then(
-                    // change to get leader board rank endpoint, get userID
-                    function successCallback(result) {
-                        $scope.pointsHistoryData = result.data;
-                    },
-                    function errorCallback(error) {
-                        console.error(error);
-                    }
-                )
-        }());
+    function statesController($scope, _Authentication, _AjaxRequest) {
+        $scope.currentUser = _Authentication.getCurrentUser();
+        $scope.displayName = _Authentication.getDisplayName();
 
         $scope.items = [
             {"fullName":1,"preferredName":"name 1","category":"description 1","course":"field3 1","date":"field4 1"},
@@ -63,21 +52,91 @@
             {"fullName":9,"preferredName":"name 6","category":"description 1","course":"field3 6","date":"field4 6"}
         ];
 
+        (function () {
+            _AjaxRequest.get('/api/points/history')
+                .then(
+                    function successCallback(result) {
+                        $scope.pointsHistoryData = result.data;
+                    },
+                    function errorCallback(error) {
+                        console.error(error);
+                    }
+                )
+        }());
+
+
         $scope.sort = {
             sortingOrder : '',
             reverse : false
         };
-        $scope.viewby = '10';
+        $scope.viewby = '5';
         $scope.currentpage = 1;
-        $scope.operations = [10, 20, 30];
+        $scope.operations = [5, 10, 20];
         $scope.searchrecord = '';
-        
-        $scope.viewUserProfile = function (user) {
-            $location.path( "/profile" );
-            // pass userId of selected user.
-            _ViewProfile.setUser('123456');
 
-        };
-    }
+
+        // Morris Data
+        Morris.Area({
+            element: 'morris-area-chart',
+            data: [{
+                period: '2010 Q1',
+                teaching: 2666,
+                experience: null,
+                challenge: 2647
+            }, {
+                period: '2010 Q2',
+                teaching: 2778,
+                experience: 2294,
+                challenge: 2441
+            }, {
+                period: '2010 Q3',
+                teaching: 4912,
+                experience: 1969,
+                challenge: 2501
+            }, {
+                period: '2010 Q4',
+                teaching: 3767,
+                experience: 3597,
+                challenge: 5689
+            }, {
+                period: '2011 Q1',
+                teaching: 6810,
+                experience: 1914,
+                challenge: 2293
+            }, {
+                period: '2011 Q2',
+                teaching: 5670,
+                experience: 4293,
+                challenge: 1881
+            }, {
+                period: '2011 Q3',
+                teaching: 4820,
+                experience: 3795,
+                challenge: 1588
+            }, {
+                period: '2011 Q4',
+                teaching: 15073,
+                experience: 5967,
+                challenge: 5175
+            }, {
+                period: '2012 Q1',
+                teaching: 10687,
+                experience: 4460,
+                challenge: 2028
+            }, {
+                period: '2012 Q2',
+                teaching: 8432,
+                experience: 5713,
+                challenge: 1791
+            }],
+            xkey: 'period',
+            ykeys: ['teaching', 'experience', 'challenge'],
+            labels: ['teaching points', 'experience points', 'challenge points'],
+            pointSize: 2,
+            hideHover: 'auto',
+            resize: true
+        });
+
+    };
 
 }());

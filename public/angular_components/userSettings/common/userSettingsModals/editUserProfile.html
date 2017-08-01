@@ -1,0 +1,71 @@
+<div class="modal fade" id="{{editProfileId}}" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Profile</h4>
+            </div>
+            <div class="modal-body">
+                <form class="row" role="form" name="editUserProfileForm">
+                    <!-- left column -->
+                    <div class="col-lg-3">
+                        <div class="text-center">
+                            <img class="avatar-large img-circle" alt="avatar" data-ng-src="{{editUserInfo.inputimage}}">
+                            <h6>Upload a different photo...</h6>
+                            <input type="file" class="form-control" ng-model="editUserInfo.inputimage" accept="image/*" file-Changed formname="editUserProfileForm" filename="editUserInfo.inputimage">
+                        </div>
+                    </div>
+
+                    <!-- edit form column -->
+                    <div class="col-lg-9">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label pull-left">First name:</label>
+                                <div class="col-lg-8">
+                                    <input class="form-control" type="text" name="firstName" ng-model="editUserInfo.editFirstName" ng-disabled="!isAuthenticated()" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label pull-left">Last name:</label>
+                                <div class="col-lg-8">
+                                    <input class="form-control" type="text" name="lastName" ng-model="editUserInfo.editLastName" ng-disabled="!isAuthenticated()" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label pull-left">Preferred Name:</label>
+                                <div class="col-lg-8">
+                                    <input class="form-control" name="preferredName" ng-model="editUserInfo.editPreferredName" type="text" ng-pattern="/^[A-z]*$/">
+                                    <div class="text-danger pull-left" ng-show="editUserProfileForm.preferredName.$dirty && editUserProfileForm.preferredName.$error.pattern">Invalid preferred name</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label pull-left">Email:</label>
+                                <div class="col-lg-8">
+                                    <input class="form-control" name="email" ng-model="editUserInfo.editEmail" type="email" ng-disabled="!isAuthenticated()" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label pull-left">Access Privilege:</label>
+                                <div class="col-lg-8">
+                                    <select name='privilege' ng-model="editUserInfo.editPrivilege"  class="form-control" ng-disabled="!isAuthenticated()" required>
+                                        <option ng-repeat="privilege in privileges" value={{privilege.description}}>{{privilege.description}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label pull-left">Biography:</label>
+                                <div class="col-lg-8">
+                                    <textarea class="form-control" name="biography" ng-model="editUserInfo.editBiography" rows="5" cols="50"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-ng-disabled="editUserProfileForm.$invalid || editUserProfileForm.$pristine" data-toggle="modal" data-target="#{{editProfileId}}" data-ng-click="updateUserProfile()">Save changes</button>
+                <button type="reset" class="btn btn-default" data-dismiss="modal" data-ng-click="clearForm()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

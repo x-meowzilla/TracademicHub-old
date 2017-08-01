@@ -1,17 +1,17 @@
-<div class="userProfilewrapper" ng-controller="loginHistoryController" ng-class="{'toggled': toggled}">
+<div class="userSettingswrapper" ng-controller="userManagementHistoryController" ng-class="{'toggled': toggled}">
 
     <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-    <div ng-include="'angular_components/userProfile/settings_sidebar.html'"></div>
+    <div ng-include="'angular_components/userSettings/settings_sidebar.html'"></div>
     <!-- /.navbar-collapse -->
 
     <!--Page Views-->
-    <div class="userProfile-page-wrapper">
+    <div class="userSettingsContentwrapper">
 
         <!-- Page Heading -->
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    <span>Login History</span>
+                    <span>User Management History</span>
                 </h1>
             </div>
         </div>
@@ -23,11 +23,13 @@
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
                         <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Preferred Name</th>
-                            <th>Access Privilege</th>
-                            <th>Last Login Date</th>
+                            <th sort-Records order="firstName", sort="sort">First Name</th>
+                            <th sort-Records order="lastName", sort="sort">Last Name</th>
+                            <th sort-Records order="preferredName", sort="sort">Preferred Name</th>
+                            <th sort-Records order="email", sort="sort">Email</th>
+                            <th sort-Records order="accessPrivilege", sort="sort">Access Privilege</th>
+                            <th sort-Records order="operation", sort="sort">Operation Type</th>
+                            <th sort-Records order="date", sort="sort">Date</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -35,8 +37,10 @@
                             <td>{{item.name.firstName}}</td>
                             <td>{{item.name.lastName}}</td>
                             <td>{{item.name.preferredName}}</td>
+                            <td>{{item.email}}</td>
                             <td>{{item.accessPrivilege}}</td>
-                            <td>{{item.lastLoginDate}}</td>
+                            <td>{{item.operationType}}</td>
+                            <td>{{item.operationTime}}</td>
                         </tr>
                         </tbody>
 

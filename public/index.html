@@ -17,14 +17,12 @@
     <link href="css/forms.css" rel="stylesheet" type="text/css">
     <link href="css/navigation_bar.css" rel="stylesheet" type="text/css">
     <link href="css/homepage.css" rel="stylesheet" type="text/css">
-    <link href="css/userProfile.css" rel="stylesheet" type="text/css">
+    <link href="css/userSettingsCommon.css" rel="stylesheet" type="text/css">
+    <link href="css/userSettingsPages.css" rel="stylesheet" type="text/css">
     <link href="css/404.css" rel="stylesheet" type="text/css">
-    <!--<link href="css/dashboard.css" rel="stylesheet" type="text/css">-->
-    <!--<link href="css/admin.css" rel="stylesheet" type="text/css">-->
 </head>
 
 <body>
-<div ng-include="'angular_components/navigation_bar/navigationBar.html'"></div>
 <div class="margin-top-50 margin-bottom-10" ng-view></div>
 
 <!-- ==================== separator ==================== -->
@@ -40,23 +38,20 @@
 <!--angular module-->
 <script src="angular_components/hub.module.js" type="text/javascript"></script>
 <script src="angular_components/hub.factory.js" type="text/javascript"></script>
-<script src="angular_components/userProfile/settings_factory.js" type="text/javascript"></script>
+<script src="angular_components/userSettings/common/settings_factory.js" type="text/javascript"></script>
 <!--angular controller-->
 <script src="angular_components/navigation_bar/navigationBarController.js" type="text/javascript"></script>
 <script src="angular_components/homepage/homepageController.js" type="text/javascript"></script>
-<script src="angular_components/userProfile/settings_sidebar_controller.js" type="text/javascript"></script>
-<script src="angular_components/userProfile/editUserProfileController.js" type="text/javascript"></script>
-<script src="angular_components/userProfile/userProfileController.js" type="text/javascript"></script>
-<script src="angular_components/userProfile/statesController.js" type="text/javascript"></script>
-<script src="angular_components/userProfile/leaderBoardRankController.js" type="text/javascript"></script>
-<script src="angular_components/userProfile/manageProductsController.js" type="text/javascript"></script>
-<script src="angular_components/userProfile/pointsHistoryController.js" type="text/javascript"></script>
-<script src="angular_components/userProfile/loginHistoryController.js" type="text/javascript"></script>
-<script src="angular_components/userProfile/userManagementHistoryController.js" type="text/javascript"></script>
-<script src="angular_components/userProfile/userManagementController.js" type="text/javascript"></script>
-<script src="angular_components/userProfile/pointManagementController.js" type="text/javascript"></script>
-<script src="angular_components/userProfile/privilegeManagementController.js" type="text/javascript"></script>
-<!--<script src="javascript/controllers/dashboardController.js" type="text/javascript"></script>-->
+<script src="angular_components/userSettings/userProfile/userProfileController.js" type="text/javascript"></script>
+<script src="angular_components/userSettings/states/statesController.js" type="text/javascript"></script>
+<script src="angular_components/userSettings/leaderBoardRank/leaderBoardRankController.js" type="text/javascript"></script>
+<script src="angular_components/userSettings/manageProducts/manageProductsController.js" type="text/javascript"></script>
+<script src="angular_components/userSettings/pointsHistory/pointsHistoryController.js" type="text/javascript"></script>
+<!--<script src="angular_components/userSettings/loginHistory/loginHistoryController.js" type="text/javascript"></script>-->
+<!--<script src="angular_components/userSettings/userManagementHistory/userManagementHistoryController.js" type="text/javascript"></script>-->
+<script src="angular_components/userSettings/userManagement/userManagementController.js" type="text/javascript"></script>
+<script src="angular_components/userSettings/pointManagement/pointManagementController.js" type="text/javascript"></script>
+<script src="angular_components/userSettings/privilegeManagement/privilegeManagementController.js" type="text/javascript"></script>
 
 </body>
 </html>

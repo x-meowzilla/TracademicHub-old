@@ -13,61 +13,61 @@
                     authenticate: false
                 })
                 .when('/profile', {
-                    templateUrl: 'angular_components/userProfile/userProfile.html',
+                    templateUrl: 'angular_components/userSettings/userProfile/userProfile.html',
                     authenticate: true
                 })
                 .when('/leaderBoardRank', {
-                    templateUrl: 'angular_components/userProfile/leaderBoardRank.html',
+                    templateUrl: 'angular_components/userSettings/leaderBoardRank/leaderBoardRank.html',
                     authenticate: true
                 })
                 .when('/states', {
-                    templateUrl: 'angular_components/userProfile/states.html',
+                    templateUrl: 'angular_components/userSettings/states/states.html',
                     authenticate: true
                 })
                 .when('/manageProducts', {
-                    templateUrl: 'angular_components/userProfile/manageProducts.html',
+                    templateUrl: 'angular_components/userSettings/manageProducts/manageProducts.html',
                     authenticate: true
                 })
                 .when('/pointsHistory', {
-                    templateUrl: 'angular_components/userProfile/pointsHistory.html',
+                    templateUrl: 'angular_components/userSettings/pointsHistory/pointsHistory.html',
                     authenticate: true
                 })
-                .when('/loginHistory', {
-                    templateUrl: 'angular_components/userProfile/loginHistory.html',
-                    authenticate: true
-                })
-                .when('/userManagementHistory', {
-                    templateUrl: 'angular_components/userProfile/userManagementHistory.html',
-                    authenticate: true
-                })
+                // .when('/loginHistory', {
+                //     templateUrl: 'angular_components/userSettings/loginHistory/loginHistory.html',
+                //     authenticate: true
+                // })
+                // .when('/userManagementHistory', {
+                //     templateUrl: 'angular_components/userSettings/userManagementHistory/userManagementHistory.html',
+                //     authenticate: true
+                // })
                 .when('/userManagement', {
-                    templateUrl: 'angular_components/userProfile/userManagement.html',
+                    templateUrl: 'angular_components/userSettings/userManagement/userManagement2.html',
                     authenticate: true
                 })
                 .when('/pointManagement', {
-                    templateUrl: 'angular_components/userProfile/pointManagement.html',
+                    templateUrl: 'angular_components/userSettings/pointManagement/pointManagement.html',
                     authenticate: true
                 })
-                .when('/privilegeManagement', {
-                    templateUrl: 'angular_components/userProfile/privilegeManagement.html',
-                    authenticate: true
-                })
+                // .when('/privilegeManagement', {
+                //     templateUrl: 'angular_components/userSettings/privilegeManagement/privilegeManagement.html',
+                //     authenticate: true
+                // })
                 .otherwise({
                     templateUrl: 'angular_components/error_pages/404.html',
                     authenticate: false
                 });
         })
         .run(function($rootScope, $location, _Authentication){
-
             $rootScope.$on('$routeChangeStart', function (event, next) {
                 if (next.$$route.authenticate && !_Authentication.isAuthenticated()) {
-                    console.log('DENY');
-                    // event.preventDefault();
-                    // $location.path('/');
+                    event.preventDefault();
+                    $location.path('/');
                 }
-                else {
-                    console.log('ALLOW');
-                }
+            });
+
+            var path = function() { return $location.path();};
+            $rootScope.$watch(path, function(newVal, oldVal){
+                $rootScope.activetab = newVal;
             });
 
         });

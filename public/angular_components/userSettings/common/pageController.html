@@ -1,12 +1,13 @@
 <!--select number of displayed rows-->
 <div class="row gridHead">
     <div class="col-sm-3">
-        <div class="grid-option-setting">
+        <div class="grid-option">
             <strong>Show
                 <select ng-model="viewby" class="select-width" ng-change="setPage(1)">
                     <option ng-repeat="op in operations">{{op}}</option>
                 </select> entries
-            </strong></div>
+            </strong>
+        </div>
     </div>
     <!--search bar-->
     <div class="col-sm-5 pull-right">

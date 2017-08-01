@@ -14,17 +14,24 @@
             },
             
             setCurrentUser: function (user) {
-                window.localStorage.setItem('currentUser', user);
-                return user;
+                window.localStorage.setItem('currentUser', JSON.stringify(user));
             },
             
             getCurrentUser: function () {
                 return JSON.parse(window.localStorage.getItem('currentUser'));
             },
             
-            setDisplayName: function (name) {
-                window.localStorage.setItem('displayName', name);
-                return name;
+            setDisplayName: function (userData) {
+                var displayName = '';
+                if (userData.name.preferredName) {
+                    displayName = userData.name.preferredName;
+                } else if (userData.name.firstName && userData.name.lastName) {
+                    displayName = userData.name.firstName + ' ' + userData.name.lastName;
+                } else {
+                    displayName = userData.utorid;
+                }
+
+                window.localStorage.setItem('displayName', displayName);
             },
 
             getDisplayName: function () {
@@ -53,6 +60,9 @@
             },
             put: function (apiURL, reqBody, isJSON) {
                 return $http.put(apiURL, reqBody, {headers: isJSON ? {'Content-Type': 'application/json'} : {}});
+            },
+            patch: function (apiURL, reqBody, isJSON) {
+                return $http.patch(apiURL, reqBody, {headers: isJSON ? {'Content-Type': 'application/json'} : {}});
             },
             delete: function (apiURL) {
                 // TODO - method to be discussed
