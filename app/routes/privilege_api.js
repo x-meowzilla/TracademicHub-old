@@ -1,27 +1,30 @@
 var router = require('express').Router();
 var mw = require('../modules/middlewares');
-// var PrivilegeModel = require('../db_models/AccessPrivilege');
+var PrivilegeModel = require('../db_models/AccessPrivilege');
 
-// point URI: .../api/privilege/
+// access privilege URI: .../api/privileges/
 router.get('/', mw.checkAuthentication, function (req, res) {
     "use strict";
     var findDoc = {};
     Object.keys(req.query).forEach(function (arg) {
         switch (arg) {
             case '_id':
+            case 'name':
+            case 'course':
             case 'value':
-            case 'description':
                 findDoc[arg] = req.query[arg];
                 break;
         }
     });
-    // PrivilegeModel.findAccessPrivilegeData(findDoc)
-    //     .then(function (pointsArray) {
-    //         return res.json(pointsArray).end();
-    //     })
-    //     .catch(function (error) {
-    //         return res.status(500).send(error).end();
-    //     });
+
+    PrivilegeModel.findAccessPrivilegeData(findDoc)
+        .then(function (privilegeArray) {
+            return res.json(privilegeArray).end();
+        })
+        .catch(function (error) {
+            return res.status(500).send(error).end();
+        });
+
 });
 
 router.delete('/', mw.checkAuthentication, function (req, res) {
@@ -54,6 +57,5 @@ router.delete('/', mw.checkAuthentication, function (req, res) {
         //     });
     }
 });
-
 
 module.exports = router;

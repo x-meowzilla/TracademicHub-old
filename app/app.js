@@ -21,14 +21,10 @@ var modelInitialization = require('./model_init');
 var shibbolethAuthAPI = require('./routes/shibboleth_api');
 var usersAPI = require('./routes/users_api');
 var coursesAPI = require('./routes/course_api');
-// var privilegeAPI = require('./routes/privilege_api');
+var privilegeAPI = require('./routes/privilege_api');
 var pointsAPI = require('./routes/point_api');
 var pointsCategoryAPI = require('./routes/point_category_api');
 var generalAPI = require('./routes/general_api');
-
-
-var rolePrivilegesAPI = require('./routes/role-privilege_api');
-
 
 // ----- app start here -----
 var app = express();
@@ -87,9 +83,7 @@ app.use(function (req, res, next) {
 app.use('/api/', generalAPI);
 app.use('/api/users', usersAPI);
 app.use('/api/courses', coursesAPI);
-// app.use('/api/privileges', privilegeAPI);
-app.use('/api/privileges', rolePrivilegesAPI);
-// app.use('/api/privileges/duty/', );
+app.use('/api/privileges', privilegeAPI);
 app.use('/Shibboleth.sso', shibbolethAuthAPI);  // sign-in via Shibboleth Auth
 app.use('/api/points', pointsAPI);
 app.use('/api/points-category', pointsCategoryAPI);

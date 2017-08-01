@@ -1,10 +1,14 @@
 module.exports.ACCESS_STUDENT = 'Student';
+module.exports.ACCESS_STUDENT_VALUE = 10;
 
 module.exports.ACCESS_TA = 'Teaching Assistant';
+module.exports.ACCESS_TA_VALUE = 30;
 
 module.exports.ACCESS_INSTRUCTOR = 'Instructor';
+module.exports.ACCESS_INSTRUCTOR_VALUE = 50;
 
 module.exports.ACCESS_ADMIN = 'Admin';
+module.exports.ACCESS_ADMIN_VALUE = 100;
 
 module.exports.retrieveBasicUserData = function (user) {
     "use strict";
