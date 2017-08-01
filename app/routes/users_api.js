@@ -9,7 +9,7 @@ var UserModel = require('../db_models/User');
 // var PrivilegeModel = require('../db_models/AccessPrivilege');
 
 // users URI: .../api/users/
-router.get('/', mw.checkAuthentication, function (req, res) {
+router.get('/', function (req, res) {
     "use strict";
     var findDoc = {};
     Object.keys(req.query).forEach(function (arg) {
@@ -162,7 +162,6 @@ router.patch('/:userID/update/user-access', mw.checkAuthentication, function (re
                 updateDoc['name.' + arg] = req.query[arg];
                 break;
             case 'email':
-            case 'accessPrivilege':
             case 'isActive':
                 updateDoc[arg] = req.query[arg];
                 break;
