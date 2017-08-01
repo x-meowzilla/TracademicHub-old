@@ -32,7 +32,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="item in items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby"
+                        <tr ng-repeat="item in (items | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby) | orderBy:sort.sortingOrder:sort.reverse"
                             class="hand-cursor" data-toggle="modal" data-target="#userCardId">
                             <user-Card-Modal></user-Card-Modal>
                             <td>{{item.fullName}}</td>

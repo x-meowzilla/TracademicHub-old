@@ -53,9 +53,9 @@
                         </td>
                         <tr>
                             <th><input type="checkbox" ng-model="selectedAll.checked" ng-click="checkAll(pagedItems, currentpage)" data-ng-disabled="(users|filter:searchrecord).length === 0"/></th>
-                            <th sort-Records order="firstName", sort="sort">First Name</th>
-                            <th sort-Records order="lastName", sort="sort">Last Name</th>
-                            <th sort-Records order="preferredName", sort="sort">Preferred Name</th>
+                            <th sort-Records order="name.firstName", sort="sort">First Name</th>
+                            <th sort-Records order="name.lastName", sort="sort">Last Name</th>
+                            <th sort-Records order="name.preferredName", sort="sort">Preferred Name</th>
                             <th sort-Records order="email", sort="sort">Email</th>
                             <th sort-Records order="accessPrivilege", sort="sort">Access Privilege</th>
                             <th sort-Records order="lastLoginDate", sort="sort">Last Login Date</th>
@@ -65,7 +65,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="item in (pagedItems = (users | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby))">
+                        <tr ng-repeat="item in (pagedItems = ((users | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby)) | orderBy:sort.sortingOrder:sort.reverse)">
                             <td><input type="checkbox" ng-model="item.selected" ng-click="checkRow(item.selected, pagedItems, currentpage)"/></td>
                             <td>{{item.name.firstName}}</td>
                             <td>{{item.name.lastName}}</td>
@@ -116,7 +116,7 @@
             <div class="col-lg-12" page-Control gap="5" viewby="viewby" currentpage="currentpage" operations="operations" items="users" searchrecord="searchrecord">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="col-md-6 col-lg-4" ng-repeat="item in users | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby">
+                        <div class="col-md-6 col-lg-4" ng-repeat="item in (users | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby) | orderBy:sort.sortingOrder:sort.reverse">
                             <div class="col-md-12 name-card">
                                 <div class="col-md-12">
                                     <div class="pull-left">

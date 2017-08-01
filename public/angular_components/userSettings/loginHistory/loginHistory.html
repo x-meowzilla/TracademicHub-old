@@ -31,7 +31,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="item in items | orderBy:sort.sortingOrder:sort.reverse | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby">
+                        <tr ng-repeat="item in (items | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby) | orderBy:sort.sortingOrder:sort.reverse">
                             <td>{{item.name.firstName}}</td>
                             <td>{{item.name.lastName}}</td>
                             <td>{{item.name.preferredName}}</td>
