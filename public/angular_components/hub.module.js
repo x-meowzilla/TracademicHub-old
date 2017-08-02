@@ -44,6 +44,10 @@
                     templateUrl: 'angular_components/userSettings/userManagement/userManagement.html',
                     authenticate: true
                 })
+                .when('/courseManagement', {
+                    templateUrl: 'angular_components/userSettings/courseManagement/courseManagement.html',
+                    authenticate: true
+                })
                 .when('/pointManagement', {
                     templateUrl: 'angular_components/userSettings/pointManagement/pointManagement.html',
                     authenticate: true
