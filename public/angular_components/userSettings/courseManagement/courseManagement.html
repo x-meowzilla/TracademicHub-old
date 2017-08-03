@@ -17,42 +17,47 @@
             </div>
 
             <div class="col-lg-12">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h4> Total States Points </h4>
-                    </div>
-                    <div class="panel-body">
-                        <div class="col-lg-12" page-Control gap="5" viewby="viewby" currentpage="currentpage" operations="operations" items="users" searchrecord="searchrecord">
-                            <!--select type of courses to display-->
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="typeController">
-                                        <ul class="nav nav-pills">
-                                            <li>
-                                                <a data-toggle="tab" data-ng-click="getCourses('all')">All Courses</a>
-                                            </li>
-                                            <li class="active">
-                                                <a data-toggle="tab" data-ng-click="getCourses('active')">Active Courses</a>
-                                            </li>
-                                            <li>
-                                                <a data-toggle="tab" data-ng-click="getCourses('inactive')">Inactive Courses</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                <div class="col-lg-12" page-Control gap="5" viewby="viewby" currentpage="currentpage" operations="operations" items="courses" searchrecord="searchrecord">
+                    <!--select type of courses to display-->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="typeController">
+                                <ul class="nav nav-pills">
+                                    <li>
+                                        <a data-toggle="tab" data-ng-click="getCourses('all')">All Courses</a>
+                                    </li>
+                                    <li class="active">
+                                        <a data-toggle="tab" data-ng-click="getCourses('active')">Active Courses</a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" data-ng-click="getCourses('inactive')">Inactive Courses</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
 
-                                <!--course cards-->
-                                <div class="col-lg-12">
-                                    <div class="col-md-6 col-lg-4" ng-repeat="item in (courses | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby) | orderBy:sort.sortingOrder:sort.reverse">
-                                        <div class="col-xs-12">
-                                            abc
-                                        </div>
+                        <!--course cards-->
+                        <div class="col-lg-12">
+                            <!--<div class="col-md-6 col-lg-4" ng-repeat="item in (courses | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby) | orderBy:sort.sortingOrder:sort.reverse">-->
+                            <!--<div class="col-xs-12">-->
+                            <!--abc-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <!--<div ng-if="(courses|filter:searchrecord).length == 0" class="text-center">-->
+                            <!--<h2>DATA NOT FOUND.</h2>-->
+                            <!--</div>-->
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="panel panel-danger courseCard">
+                                    <div class="panel-heading">
+                                        <span><strong>abc</strong></span>
+                                        <span class="btn btn-xs pull-right glyphicon glyphicon-trash" ng-confirm-click="Are you sure to delete this point category?" confirmed-click="deletePointCategory(category)"></span>
                                     </div>
-                                    <div ng-if="(courses|filter:searchrecord).length == 0" class="text-center">
-                                        <h2>DATA NOT FOUND.</h2>
+                                    <div class="panel-body">
+                                        <div class="categoryDescription">des</div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
