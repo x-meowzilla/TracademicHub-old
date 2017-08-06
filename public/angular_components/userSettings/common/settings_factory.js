@@ -278,7 +278,7 @@
                     }
                     if($scope.editUserProfileForm.email.$dirty)
                     {
-                        updateMoreInfo["email"] = $scope.editUs;
+                        updateMoreInfo["email"] = $scope.editUserInfo.email;
                     }
                     if(!angular.equals({}, updateMoreInfo))
                     {
