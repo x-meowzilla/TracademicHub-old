@@ -46,7 +46,7 @@ router.get('/logout', function (req, res) {
     req.logout();
     req.session.destroy();
     res.clearCookie(serverConfig.session.key);
-    // res.redirect('/'); // TODO - delete? refresh page?
+    res.redirect('/'); // refresh pages after logout
     return res.status(200).send('Logout successful. Please close the browser to complete the logout process.').end();
 });
 

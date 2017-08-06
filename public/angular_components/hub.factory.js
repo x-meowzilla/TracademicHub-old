@@ -140,7 +140,7 @@
             link: function (scope) {
                 scope.$on(AUTH_EVENTS.notAuthenticated, function () {
                     _Authentication.logout();
-                    // $location.path('/');
+                    $location.path('/');
                 });
             }
         };

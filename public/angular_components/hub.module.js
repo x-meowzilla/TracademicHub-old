@@ -73,6 +73,7 @@
                 if (next.$$route.authenticate && !_Authentication.isAuthenticated()) {
                     event.preventDefault();
                     $location.path('/');
+                    $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
                 }
             });
 
