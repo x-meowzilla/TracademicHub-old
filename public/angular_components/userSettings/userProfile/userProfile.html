@@ -16,10 +16,10 @@
                         <span>{{getDisplayName()}}</span>
                         <small>
                             Profile Overview
-                            <i class="fa fa-fw fa-gear titl-side-btn" data-toggle="modal" data-target="#edit{{currentUser._id}}"></i>
+                            <i class="fa fa-fw fa-gear titl-side-btn" data-toggle="modal" data-target="#edit{{getCurrentUser()._id}}"></i>
                         </small>
                     </h1>
-                    <edit-Profile user="currentUser" pid="currentUser._id"></edit-Profile>
+                    <edit-Profile user="getCurrentUser()" pid="getCurrentUser()._id"></edit-Profile>
                 </div>
             </div>
 
@@ -39,43 +39,43 @@
                                     <li class="list-group-item">
                                         <div class="col-xs-12">
                                             <div class="col-xs-5"><strong>First Name: </strong></div>
-                                            <div class="col-xs-7">{{currentUser.name.firstName}}</div>
+                                            <div class="col-xs-7">{{getCurrentUser().name.firstName}}</div>
                                         </div>
                                     </li>
                                     <li class="list-group-item">
                                         <div class="col-xs-12">
                                             <div class="col-xs-5"><strong>Last Name: </strong></div>
-                                            <div class="col-xs-7">{{currentUser.name.lastName}}</div>
+                                            <div class="col-xs-7">{{getCurrentUser().name.lastName}}</div>
                                         </div>
                                     </li>
                                     <li class="list-group-item">
                                         <div class="col-xs-12">
                                             <div class="col-xs-5"><strong>Preferred Name: </strong></div>
-                                            <div class="col-xs-7">{{currentUser.name.preferredName}}</div>
+                                            <div class="col-xs-7">{{getCurrentUser().name.preferredName}}</div>
                                         </div>
                                     </li>
                                     <li class="list-group-item">
                                         <div class="col-xs-12">
                                             <div class="col-xs-5"><strong>Email: </strong></div>
-                                            <div class="col-xs-7">{{currentUser.email}}</div>
+                                            <div class="col-xs-7">{{getCurrentUser().email}}</div>
                                         </div>
                                     </li>
                                     <li class="list-group-item">
                                         <div class="col-xs-12">
                                             <div class="col-xs-5"><strong>Last Login: </strong></div>
-                                            <div class="col-xs-7">{{currentUser.lastLoginDate}}</div>
+                                            <div class="col-xs-7">{{getCurrentUser().lastLoginDate}}</div>
                                         </div>
                                     </li>
                                     <li class="list-group-item">
                                         <div class="col-xs-12">
                                             <div class="col-xs-5"><strong>Access Privilege: </strong></div>
                                             <div class="col-xs-7">
-                                                <div ng-if="currentUser.isLocalUser && currentUser.courseEnrolled.length==0">Super Admin</div>
-                                                <div ng-if="!currentUser.isLocalUser">
-                                                    <a href="javascript:;" ng-if="currentUser.courseEnrolled.length!=0" data-toggle="collapse" data-target="#accessPrivilegesTable">
+                                                <div ng-if="getCurrentUser().isLocalUser && getCurrentUser().courseEnrolled.length==0">Super Admin</div>
+                                                <div ng-if="!getCurrentUser().isLocalUser">
+                                                    <a href="javascript:;" ng-if="getCurrentUser().courseEnrolled.length!=0" data-toggle="collapse" data-target="#accessPrivilegesTable">
                                                         View More Access Privileges <i class="fa fa-fw fa-caret-down"></i>
                                                     </a>
-                                                    <span ng-if="currentUser.courseEnrolled.length==0" class="text-muted"><strong>No Access Privilege Assigned</strong></span>
+                                                    <span ng-if="getCurrentUser().courseEnrolled.length==0" class="text-muted"><strong>No Access Privilege Assigned</strong></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -89,7 +89,7 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <tr ng-repeat="ce in currentUser.courseEnrolled">
+                                                    <tr ng-repeat="ce in getCurrentUser().courseEnrolled">
                                                         <td>{{ce.course}}</td>
                                                         <td>{{ce.privilege}}</td>
                                                     </tr>
@@ -106,9 +106,9 @@
                         <div class="bs-callout bs-callout-danger">
                             <h4> Biography </h4>
                             <p>
-                                {{currentUser.biography}}
+                                {{getCurrentUser().biography}}
                             </p>
-                            <div ng-if="currentUser.biography.length===0" class="text-muted">This guy is too lazy and doesn't add a biography here...</div>
+                            <div ng-if="getCurrentUser().biography.length===0" class="text-muted">This guy is too lazy and doesn't add a biography here...</div>
                         </div>
 
                         <!-- states graphs -->

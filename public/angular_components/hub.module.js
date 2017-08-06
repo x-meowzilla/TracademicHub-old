@@ -69,7 +69,7 @@
             ]);
         })
         .run(function($rootScope, $location, _Authentication){
-            $rootScope.$on('$routeChangeStart', function (event, next) {
+            $rootScope.$on('$stateChangeStart', function (event, next) {
                 if (next.$$route.authenticate && !_Authentication.isAuthenticated()) {
                     event.preventDefault();
                     $location.path('/');

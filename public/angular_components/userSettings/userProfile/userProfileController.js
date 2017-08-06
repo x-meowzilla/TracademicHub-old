@@ -9,20 +9,15 @@
 
     function userProfileController($scope, _AjaxRequest, _Authentication) {
 
-        $scope.currentUser = _Authentication.getLoginUser();
-
-        $scope.getDisplayName = function () {
-            var userData = $scope.currentUser;
-            if (userData.name.preferredName) {
-                return userData.name.preferredName;
-            } else if (userData.name.firstName && userData.name.lastName) {
-                return userData.name.firstName + ' ' + userData.name.lastName;
-            } else {
-                return  userData.utorid;
-            }
+        $scope.getCurrentUser = function () {
+            return _Authentication.getLoginUser();
         };
 
-        $scope.avatarUrl = $scope.currentUser.avatarPath? $scope.currentUser.avatarPath: "../images/default-avatar.png";
+        $scope.getDisplayName = function (){
+            return _Authentication.getDisplayName();
+        };
+
+        $scope.avatarUrl = $scope.getCurrentUser().avatarPath? $scope.getCurrentUser().avatarPath: "../images/default-avatar.png";
 
 
         // Morris data

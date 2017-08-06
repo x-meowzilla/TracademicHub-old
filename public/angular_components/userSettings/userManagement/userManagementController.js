@@ -219,6 +219,7 @@
                     angular.element("input[type='file']").val(null);
                     $scope.editUserInfo = angular.copy($scope.editUserInfoOrigin);
                     $scope.addUserForm.$setPristine();
+                    $scope.addUserForm.$setUntouched();
                 };
             }
         };

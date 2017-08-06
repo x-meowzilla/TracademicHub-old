@@ -86,6 +86,10 @@
                 return JSON.parse(window.localStorage.getItem('loginUser'));
             },
 
+            setLoginUser: function (user) {
+                window.localStorage.setItem('loginUser', JSON.stringify(user));
+            },
+
             getDisplayName: function () {
                 var loginUser = JSON.parse(window.localStorage.getItem('loginUser'));
                 if(loginUser !== null)

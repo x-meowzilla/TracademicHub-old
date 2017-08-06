@@ -218,7 +218,7 @@
         return {
             restrict: 'EA',
             scope: {
-                currentUser: '=user',
+                getCurrentUser: '&user',
                 editProfileId: '=pid'
             },
             templateUrl:'angular_components/userSettings/common/userSettingsModals/editUserProfile.html',
@@ -237,36 +237,28 @@
                         )
                 }());
 
-                // fill in edit profile form
-                $scope.editUserInfoOrigin = {
-                    editFirstName: $scope.currentUser.name.firstName,
-                    editLastName: $scope.currentUser.name.lastName,
-                    editPreferredName: $scope.currentUser.name.preferredName,
-                    editEmail: $scope.currentUser.email,
-                    editBiography: $scope.currentUser.biography,
-                    inputimage: "../images/default-avatar.png"
-                };
-
-                $scope.editUserInfo = angular.copy($scope.editUserInfoOrigin);
+                $scope.editUserInfo = $scope.getCurrentUser();
+                $scope.editUserInfo.inputimage =
+                    $scope.getCurrentUser().avatarPath? $scope.getCurrentUser().avatarPath: "../images/default-avatar.png";
 
                 // update user information
                 $scope.updateUserProfile = function () {
                     var updateBasicInfo = {};
                     if($scope.editUserProfileForm.preferredName.$dirty)
                     {
-                        updateBasicInfo["preferredName"] = $scope.editUserInfo.editPreferredName;
-                        $scope.currentUser["name"]["preferredName"] = $scope.editUserInfo.editPreferredName;
+                        updateBasicInfo["preferredName"] = $scope.editUserInfo.name.preferredName;
                     }
                     if($scope.editUserProfileForm.biography.$dirty)
                     {
-                        updateBasicInfo["biography"] = $scope.editUserInfo.editBiography;
-                        $scope.currentUser["biography"] = $scope.editUserInfo.editBiography;
+                        updateBasicInfo["biography"] = $scope.editUserInfo.biography;
                     }
                     if(!angular.equals({}, updateBasicInfo))
                     {
-                        _AjaxRequest.patch('/api/users/' + $scope.currentUser._id + '/update/user-info?' + $.param(updateBasicInfo))
+                        _AjaxRequest.patch('/api/users/' + $scope.getCurrentUser()._id + '/update/user-info?' + $.param(updateBasicInfo))
                             .then(
                                 function successCallback(result) {
+                                    _Authentication.setLoginUser(result.data);
+                                    $scope.clearForm();
                                     // todo: profile updated banner
                                 },
                                 function errorCallback(error) {
@@ -278,24 +270,23 @@
                     var updateMoreInfo = {};
                     if($scope.editUserProfileForm.firstName.$dirty)
                     {
-                        updateMoreInfo["firstName"] = $scope.editUserInfo.editFirstName;
-                        $scope.currentUser["name"]["firstName"] = $scope.editUserInfo.editFirstName;
+                        updateMoreInfo["firstName"] = $scope.editUserInfo.name.firstName;
                     }
                     if($scope.editUserProfileForm.lastName.$dirty)
                     {
-                        updateMoreInfo["lastName"] = $scope.editUserInfo.editLastName;
-                        $scope.currentUser["name"]["lastName"] = $scope.editUserInfo.editLastName;
+                        updateMoreInfo["lastName"] = $scope.editUserInfo.name.lastName;
                     }
                     if($scope.editUserProfileForm.email.$dirty)
                     {
-                        updateMoreInfo["email"] = $scope.editUserInfo.editEmail;
-                        $scope.currentUser["email"] = $scope.editUserInfo.editEmail;
+                        updateMoreInfo["email"] = $scope.editUserInfo.;
                     }
                     if(!angular.equals({}, updateMoreInfo))
                     {
-                        _AjaxRequest.patch('/api/users/' + $scope.currentUser._id + '/update/user-access?' + $.param(updateMoreInfo))
+                        _AjaxRequest.patch('/api/users/' + $scope.getCurrentUser()._id + '/update/user-access?' + $.param(updateMoreInfo))
                             .then(
                                 function successCallback(result) {
+                                    _Authentication.setLoginUser(result.data);
+                                    $scope.clearForm();
                                     // todo: profile updated banner
                                 },
                                 function errorCallback(error) {
@@ -308,8 +299,9 @@
 
                 $scope.clearForm = function () {
                     angular.element("input[type='file']").val(null);
-                    $scope.editUserInfo = angular.copy($scope.editUserInfoOrigin);
+                    $scope.editUserInfo = $scope.getCurrentUser();
                     $scope.editUserProfileForm.$setPristine();
+                    $scope.editUserProfileForm.$setUntouched();
                 };
             }
         };

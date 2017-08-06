@@ -22,26 +22,26 @@
                             <div class="form-group">
                                 <label class="col-lg-3 control-label pull-left">First name:</label>
                                 <div class="col-lg-8">
-                                    <input class="form-control" type="text" name="firstName" ng-model="editUserInfo.editFirstName" ng-disabled="!isAuthenticated()" required>
+                                    <input class="form-control" type="text" name="firstName" ng-model="editUserInfo.name.firstName" ng-disabled="!isAuthenticated()" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-lg-3 control-label pull-left">Last name:</label>
                                 <div class="col-lg-8">
-                                    <input class="form-control" type="text" name="lastName" ng-model="editUserInfo.editLastName" ng-disabled="!isAuthenticated()" required>
+                                    <input class="form-control" type="text" name="lastName" ng-model="editUserInfo.name.lastName" ng-disabled="!isAuthenticated()" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-lg-3 control-label pull-left">Preferred Name:</label>
                                 <div class="col-lg-8">
-                                    <input class="form-control" name="preferredName" ng-model="editUserInfo.editPreferredName" type="text" ng-pattern="/^[A-z]*$/">
+                                    <input class="form-control" name="preferredName" ng-model="editUserInfo.name.preferredName" type="text" ng-pattern="/^[A-z]*$/">
                                     <div class="text-danger pull-left" ng-show="editUserProfileForm.preferredName.$dirty && editUserProfileForm.preferredName.$error.pattern">Invalid preferred name</div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-lg-3 control-label pull-left">Email:</label>
                                 <div class="col-lg-8">
-                                    <input class="form-control" name="email" ng-model="editUserInfo.editEmail" type="email" ng-disabled="!isAuthenticated()" required>
+                                    <input class="form-control" name="email" ng-model="editUserInfo.email" type="email" ng-disabled="!isAuthenticated()" required>
                                 </div>
                             </div>
                             <!--<div class="form-group">-->
@@ -55,7 +55,7 @@
                             <div class="form-group">
                                 <label class="col-lg-3 control-label pull-left">Biography:</label>
                                 <div class="col-lg-8">
-                                    <textarea class="form-control" name="biography" ng-model="editUserInfo.editBiography" rows="5" cols="50"></textarea>
+                                    <textarea class="form-control" name="biography" ng-model="editUserInfo.biography" rows="5" cols="50"></textarea>
                                 </div>
                             </div>
                         </div>
