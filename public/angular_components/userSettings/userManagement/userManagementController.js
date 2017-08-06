@@ -6,11 +6,11 @@
         .controller('userManagementController', userManagementController)
         .directive('addUserModal', addUserModal);
 
-    userManagementController.$inject = ['$scope', '$location', '_Authentication', '_AjaxRequest', '_AssignPoints']; // dependency injection
+    userManagementController.$inject = ['$scope', '$location', '_Authentication', '_AjaxRequest', '_AssignPoints', 'AUTH_EVENTS']; // dependency injection
 
-    function userManagementController($scope, $location, _Authentication, _AjaxRequest, _AssignPoints) {
+    function userManagementController($scope, $location, _Authentication, _AjaxRequest, _AssignPoints, AUTH_EVENTS) {
         // users data settings
-        $scope.currentUser = _Authentication.getCurrentUser();
+        $scope.currentUser = _Authentication.getLoginUser();
 
         $scope.users = [];
         var getUsers = function (displayType) {
@@ -18,7 +18,7 @@
                 .then(
                     function successCallback(result) {
                         $scope.users = result.data.filter(function (item) {
-                            var res = item._id !== _Authentication.getCurrentUser()._id;
+                            var res = item._id !== _Authentication.getLoginUser()._id;
                             if(displayType === 'all')
                             {
                                 return res && item.isActive;
@@ -146,17 +146,17 @@
 
         // edit privileges of (mutiple) users
         $scope.privileges = [];
-        (function () {
-            _AjaxRequest.get('/api/privileges/')
-                .then(
-                    function successCallback(result) {
-                        $scope.privileges = result.data;
-                    },
-                    function errorCallback(error) {
-                        console.error(error);
-                    }
-                )
-        }());
+        // (function () {
+        //     _AjaxRequest.get('/api/privileges/')
+        //         .then(
+        //             function successCallback(result) {
+        //                 $scope.privileges = result.data;
+        //             },
+        //             function errorCallback(error) {
+        //                 console.error(error);
+        //             }
+        //         )
+        // }());
 
         // give points to selected user(s)
         $scope.givePoints = function (users) {

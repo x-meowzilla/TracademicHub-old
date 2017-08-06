@@ -9,7 +9,7 @@
 
     function userProfileController($scope, _AjaxRequest, _Authentication) {
 
-        $scope.currentUser = _Authentication.getCurrentUser();
+        $scope.currentUser = _Authentication.getLoginUser();
 
         $scope.getDisplayName = function () {
             var userData = $scope.currentUser;

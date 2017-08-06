@@ -8,7 +8,7 @@
     statesController.$inject = ['$scope', '_Authentication', '_AjaxRequest']; // dependency injection
 
     function statesController($scope, _Authentication, _AjaxRequest) {
-        $scope.currentUser = _Authentication.getCurrentUser();
+        $scope.currentUser = _Authentication.getLoginUser();
         $scope.displayName = _Authentication.getDisplayName();
 
         $scope.items = [

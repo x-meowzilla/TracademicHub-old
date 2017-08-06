@@ -3,7 +3,7 @@
 
     angular
         .module('TracademicHub', ['ngRoute', 'ngAnimate'])
-        .config(function ($routeProvider, $locationProvider) {
+        .config(function ($routeProvider, $locationProvider, $httpProvider) {
             $locationProvider.hashPrefix('');
             $locationProvider.html5Mode(true);
 
@@ -60,6 +60,13 @@
                     templateUrl: 'angular_components/error_pages/404.html',
                     authenticate: false
                 });
+
+            $httpProvider.interceptors.push([
+                '$injector',
+                function ($injector) {
+                    return $injector.get('_AuthInterceptor');
+                }
+            ]);
         })
         .run(function($rootScope, $location, _Authentication){
             $rootScope.$on('$routeChangeStart', function (event, next) {

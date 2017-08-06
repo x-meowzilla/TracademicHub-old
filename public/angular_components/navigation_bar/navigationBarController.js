@@ -5,8 +5,8 @@
         .module('TracademicHub')
         .controller('navbarController', navbarController);
 
-    navbarController.$inject = ['$scope', '$route', '_Authentication', '_UTORidAuthentication', '_AjaxRequest']; // dependency injection
-    function navbarController($scope, $route, _Authentication, _UTORidAuthentication, _AjaxRequest) {
+    navbarController.$inject = ['$scope', '_Authentication', '_UTORidAuthentication']; // dependency injection
+    function navbarController($scope, _Authentication, _UTORidAuthentication) {
 
         var isMasterAccessEnabled = false;
 
@@ -43,37 +43,16 @@
         };
 
         $scope.masterLogin = function () {
-            var formData = {
+            var loginData = {
                 utorid: $scope.masterUsername,
                 password: $scope.masterPassword
             };
-            _AjaxRequest.post('/api/local-login', formData, true).then(
-                function successCallback(result) {
 
-                    var userData = result.data;
-                    _Authentication.setCurrentUser(userData);
-
-                    _Authentication.setDisplayName(userData);
-
-                    // TODO - show login successful banner
-                },
-                function errorCallback(error) {
-                    console.log(error.data);
-                    // TODO - show login failed banner
-                }
-            )
+            _Authentication.login(loginData);
         };
 
         $scope.logout = function () {
-            _AjaxRequest.get('/api/logout').then(
-                function successCallback(result) {
-                    window.localStorage.clear();
-                    console.log(result);
-                },
-                function errorCallback(error) {
-                    console.log(error);
-                }
-            )
+            _Authentication.logout();
         };
 
     }
