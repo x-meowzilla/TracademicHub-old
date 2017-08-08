@@ -12,10 +12,10 @@ var userSchema = new Schema({
         lastName: {type: String, required: true},
         preferredName: {type: String, default: ''}
     },
-    courseEnrolled: [{
-        course: {type: Schema.Types.ObjectId, ref: 'Course', unique: true, required: true},
-        privilege: {type: Schema.Types.ObjectId, ref: 'AccessPrivilege', unique: true, required: true}
-    }],
+    courseEnrolled: [new Schema({
+        course: {type: Schema.Types.ObjectId, ref: 'Course', required: true},
+        privilege: {type: Schema.Types.ObjectId, ref: 'AccessPrivilege', required: true}
+    }, {_id: false})],
     createDate: {type: Date, default: Date.now, required: true},
     lastLoginDate: {type: Date, index: true, sparse: true},
     isActive: {type: Boolean, default: true, required: true},
@@ -33,13 +33,17 @@ var userSchema = new Schema({
 userSchema.statics.findUserData = function (findDoc) {
     "use strict";
     var user = this.model('User');
-    return user.find(findDoc).populate('accessPrivilege');
+    return user.find(findDoc)
+        .populate('courseEnrolled.course', ['_id', 'name', 'startDate', 'endDate', 'academicTerm', 'isActive'])
+        .populate('courseEnrolled.privilege', ['_id', 'name', 'value']);
 };
 
 userSchema.statics.updateUserData = function (userID, updateDoc) {
     "use strict";
     var user = this.model('User');
-    return user.findByIdAndUpdate(userID, {$set: updateDoc}, {new: true}).populate('accessPrivilege');
+    return user.findByIdAndUpdate(userID, {$set: updateDoc}, {new: true})
+        .populate('courseEnrolled.course', ['_id', 'name', 'startDate', 'endDate', 'academicTerm', 'isActive'])
+        .populate('courseEnrolled.privilege', ['_id', 'name', 'value']);
 };
 
 // method for local user
