@@ -72,7 +72,7 @@
         $scope.$watch('selectedCourseDonut', function(newValue, oldValue) {
             if(newValue !== oldValue)
             {
-                $scope.bardata = angular.isUndefined(newValue) ?
+                $scope.donutdata = angular.isUndefined(newValue) ?
                     [] :
                     [{
                         label: "Experience Points",
