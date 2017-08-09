@@ -71,6 +71,21 @@
         $scope.operations = [10, 20, 30];
         $scope.searchrecord = '';
 
+        $scope.getColspan = function () {
+            if($scope.displayType === 'all')
+            {
+                return 6;
+            }
+            else if($scope.displayType === 'inactive')
+            {
+                return 7;
+            }
+            else
+            {
+                return 9;
+            }
+        };
+
         // check mutiple rows in table view
         $scope.checkedItems = [];
         $scope.checkedPages = [];
@@ -189,7 +204,7 @@
             _AjaxRequest.patch('/api/users/' + user._id + '/update/user-access?' + $.param({isActive: false}))
                 .then(
                     function successCallback(result) {
-                        $scope.items = $scope.items.filter(function (item) {
+                        $scope.users = $scope.users.filter(function (item) {
                             return item._id !== result.data._id;
                         });
                     },
@@ -205,6 +220,31 @@
                 if(user._id !== $scope.currentUser._id)
                 {
                     $scope.deleteUser(user);
+                }
+            });
+        };
+
+        // active users
+        $scope.activeUser = function (user) {
+            _AjaxRequest.patch('/api/users/' + user._id + '/update/user-access?' + $.param({isActive: true}))
+                .then(
+                    function successCallback(result) {
+                        $scope.users = $scope.users.filter(function (item) {
+                            return item._id !== result.data._id;
+                        });
+                    },
+                    function errorCallback(error) {
+                        console.error(error);
+                    }
+                )
+        };
+
+        // active all selected user
+        $scope.activeSelectedUsers = function (users) {
+            angular.forEach(users, function (user) {
+                if(user._id !== $scope.currentUser._id)
+                {
+                    $scope.activeUser(user);
                 }
             });
         };
