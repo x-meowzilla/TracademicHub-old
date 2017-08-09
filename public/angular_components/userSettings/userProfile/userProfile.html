@@ -119,9 +119,27 @@
                                         <h4> Total States Points </h4>
                                     </div>
                                     <div class="panel-body">
-                                        <div id="statesBar"></div>
-                                        <div class="text-right">
-                                            <a href="/states">View Details <i class="fa fa-arrow-circle-right"></i></a>
+                                        <div class="row">
+                                            <div class="form-group col-xs-12">
+                                                <label class="col-xs-3 control-label pull-left">Course:</label>
+                                                <div class="col-xs-8">
+                                                    <select ng-model="selectedCourseBar" ng-options="course as course.description for course in courses" class="form-control" required>
+                                                        <option value="">Please select a course...</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div ng-if="bardata.length === 0" class="col-xs-12 text-center">
+                                                <strong>No Points Earned.</strong>
+                                            </div>
+
+                                            <div class="col-xs-12">
+                                                <bar-Chart ng-if="bardata.length !== 0" bardata="bardata" xkey="xkey" ykeys="ykeys" labels="labels"></bar-Chart>
+                                            </div>
+
+                                            <div ng-if="bardata.length !== 0" class="text-right col-xs-12">
+                                                <a href="/states">View Details <i class="fa fa-arrow-circle-right"></i></a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -133,9 +151,27 @@
                                         <h4>States Points Percentage</h4>
                                     </div>
                                     <div class="panel-body">
-                                        <div id="statesDonut"></div>
-                                        <div class="text-right">
-                                            <a href="/states">View Details <i class="fa fa-arrow-circle-right"></i></a>
+                                        <div class="row">
+                                            <div class="form-group col-xs-12">
+                                                <label class="col-xs-3 control-label pull-left">Course:</label>
+                                                <div class="col-xs-8">
+                                                    <select ng-model="selectedCourseDonut" ng-options="course as course.description for course in courses" class="form-control" required>
+                                                        <option value="">Please select a course...</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div ng-if="donutdata.length === 0" class="col-xs-12 text-center">
+                                                <strong>No Points Earned.</strong>
+                                            </div>
+
+                                            <div class="col-xs-12">
+                                                <donut-Chart ng-if="donutdata.length !== 0" donutdata="donutdata"></donut-Chart>
+                                            </div>
+
+                                            <div ng-if="donutdata.length !== 0" class="text-right col-xs-12">
+                                                <a href="/states">View Details <i class="fa fa-arrow-circle-right"></i></a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

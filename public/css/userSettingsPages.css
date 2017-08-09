@@ -3,6 +3,10 @@
     overflow-x: scroll;
 }
 
+.infoBlock{
+    min-height: 460px;
+}
+
 /*user management page*/
 .name-card{
     border-radius: 2px;

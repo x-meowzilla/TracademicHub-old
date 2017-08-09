@@ -156,7 +156,7 @@
             angular.forEach($scope.pagedItems, function (item) {
                 item.selected = false;
             });
-        }
+        };
 
         $scope.selectedAll = {checked: true};
         $scope.$watch('currentpage', function(newValue, oldValue) {
@@ -164,10 +164,6 @@
         }, true);
 
         $scope.$watch('pagedItems', function(newValue, oldValue) {
-            console.log(newValue);
-            console.log(oldValue);
-            console.log('---');
-
             if(!angular.isUndefined(newValue) && !angular.isUndefined(oldValue))
             {
                 var changed = false;
@@ -249,8 +245,8 @@
 
     }
 
-    addUserModal.$inject = ['$location', '_AjaxRequest'];
-    function addUserModal($location, _AjaxRequest) {
+    addUserModal.$inject = ['_AjaxRequest'];
+    function addUserModal(_AjaxRequest) {
         return {
             restrict: 'EA',
             scope: {
@@ -284,6 +280,7 @@
                 };
 
                 $scope.importCSVFile = function () {
+                    console.log($scope.csvfile);
                     _AjaxRequest.post('/api/users/', $scope.csvfile)
                         .then(
                             function successCallback(result) {
