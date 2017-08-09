@@ -13,7 +13,7 @@
         $scope.currentUser = _Authentication.getLoginUser();
 
         $scope.users = [];
-        $scope.displayType = 'all';
+        $scope.displayType = 'active';
         var getUsers = function () {
             _AjaxRequest.get('/api/users')
                 .then(
@@ -22,7 +22,7 @@
                             var res = item._id !== _Authentication.getLoginUser()._id && !item.isLocalUser;
                             if($scope.displayType === 'all')
                             {
-                                return res && item.isActive;
+                                return item._id !== _Authentication.getLoginUser()._id;
                             }
                             else if($scope.displayType === 'active')
                             {

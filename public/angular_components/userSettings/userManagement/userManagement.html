@@ -22,9 +22,9 @@
         <div class="well well-sm" ng-init="tableDisplay = true">
             <strong>Display</strong>
             <div class="btn-group">
-                <span id="list" class="btn btn-default btn-sm" ng-click="tableDisplay = true" ng-class="{active: tableDisplay}" >
+                <span id="list" class="btn btn-default btn-sm" ng-click="tableDisplay = true; getUsers('active')" ng-class="{active: tableDisplay}" >
                     <span class="glyphicon glyphicon-th-list"></span> List</span>
-                <span id="grid" class="btn btn-default btn-sm" ng-click="tableDisplay = false" ng-class="{active: !tableDisplay}">
+                <span id="grid" class="btn btn-default btn-sm" ng-click="tableDisplay = false; getUsers('active')" ng-class="{active: !tableDisplay}">
                     <span class="glyphicon glyphicon-th"></span> Grid</span>
             </div>
         </div>
@@ -55,7 +55,7 @@
                             </ul>
                         </td>
                         <tr>
-                            <th><input ng-disabled="displayType === 'admins'" type="checkbox" ng-model="selectedAll.checked" ng-click="checkAll(currentpage)" data-ng-disabled="(users|filter:searchrecord).length === 0"/></th>
+                            <th><input ng-disabled="['all', 'inactive', 'admins'].indexOf(displayType) > -1" type="checkbox" ng-model="selectedAll.checked" ng-click="checkAll(currentpage)" data-ng-disabled="(users|filter:searchrecord).length === 0"/></th>
                             <th sort-Records order="name.firstName", sort="sort">First Name</th>
                             <th sort-Records order="name.lastName", sort="sort">Last Name</th>
                             <th sort-Records order="name.preferredName", sort="sort">Preferred Name</th>
@@ -68,7 +68,7 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="item in getPagedItems(((users | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby)) | orderBy:sort.sortingOrder:sort.reverse)">
-                            <td><input ng-disabled="displayType === 'admins'" type="checkbox" ng-model="item.selected" ng-click="checkRow(item, currentpage)"/></td>
+                            <td><input ng-disabled="['all', 'inactive', 'admins'].indexOf(displayType) > -1" type="checkbox" ng-model="item.selected" ng-click="checkRow(item, currentpage)"/></td>
                             <td data-toggle="modal" data-target="#{{item._id}}profile">{{item.name.firstName}}
                                 <user-card-modal user="item" pid="item._id"></user-card-modal>
                             </td>
@@ -77,18 +77,21 @@
                             <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.email}}</td>
                             <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.lastLoginDate}}</td>
                             <td class="text-center">
-                                <button ng-disabled="displayType === 'admins'" class="btn btn-warning btn-xs" data-ng-click="givePoints([item])">
+                                <!--give points button-->
+                                <button ng-disabled="item.isLocalUser || !item.isActive" class="btn btn-warning btn-xs" data-ng-click="givePoints([item])">
                                     <span class="glyphicon glyphicon-gift"></span>
                                 </button>
                             </td>
                             <td class="text-center">
-                                <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit{{item._id}}">
+                                <!--edit user profile button-->
+                                <button ng-disabled="item.isLocalUser || !item.isActive" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit{{item._id}}">
                                     <span class="glyphicon glyphicon-pencil"></span>
                                 </button>
                                 <edit-Profile user="item" pid="item._id"></edit-Profile>
                             </td>
                             <td class="text-center">
-                                <button ng-disabled="displayType === 'admins'" class="btn btn-danger btn-xs" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteUser(item)">
+                                <!--delete user button-->
+                                <button ng-disabled="item.isLocalUser || !item.isActive" class="btn btn-danger btn-xs" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteUser(item)">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </button>
                             </td>
@@ -103,7 +106,8 @@
                             <span><strong class="">{{checkedItems.length}} record selected</strong></span>
                         </td>
                         <td colspan="9" ng-if="(pagedItems.length == 0 || checkedItems.length <= 1) && (users|filter:searchrecord).length != 0" class="text-center text-muted">
-                            Select Multiple Users and perform Bulk User Operations.
+                            <div>Click row to view user profile.</div>
+                            <div ng-if="['active', 'checkedin'].indexOf(displayType) > -1">Select Multiple Users and perform Bulk User Operations.</div>
                         </td>
                         <td colspan="9" ng-if="(users|filter:searchrecord).length == 0" class="text-center">
                             <strong>DATA NOT FOUND.</strong>
@@ -146,9 +150,13 @@
                                     <div class="row">
                                         <div class="row">
                                             <div class="col-xs-3">
-                                                <button class="btn btn-info btn-xs btn-circle" data-toggle="modal" data-target="#edit{{item._id}}" ><span class="glyphicon glyphicon-pencil"></span></button>
+                                                <!--edit user profile button-->
+                                                <button ng-disabled="item.isLocalUser || !item.isActive" class="btn btn-info btn-xs btn-circle" data-toggle="modal" data-target="#edit{{item._id}}" ><span class="glyphicon glyphicon-pencil"></span></button>
                                                 <edit-Profile user="item" pid="item._id"></edit-Profile>
-                                                <button class="btn btn-danger btn-xs btn-circle" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteUser(item)" ><span class="glyphicon glyphicon-trash"></span></button>
+                                                <!--delete the user button-->
+                                                <button ng-disabled="item.isLocalUser || !item.isActive" class="btn btn-danger btn-xs btn-circle" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteUser(item)" ><span class="glyphicon glyphicon-trash"></span></button>
+                                                <!--give point button-->
+                                                <button ng-disabled="item.isLocalUser || !item.isActive" class="btn btn-warning btn-xs btn-circle" data-ng-click="givePoints([item])" ><span class="glyphicon glyphicon-gift"></span></button>
                                             </div>
                                             <div class="col-xs-9">
                                                 <img class="img-circle img-responsive avatar-small" data-ng-src="{{defaultAvatar}}">

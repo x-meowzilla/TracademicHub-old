@@ -61,6 +61,36 @@
                     }, {
                         category: 'LeaderBoard Rank',
                         points: 70
+                    }, {
+                        category: 'LeaderBoard Rank',
+                        points: 70
+                    }, {
+                        category: 'LeaderBoard Rank',
+                        points: 70
+                    }, {
+                        category: 'LeaderBoard Rank',
+                        points: 70
+                    }, {
+                        category: 'LeaderBoard Rank',
+                        points: 70
+                    }, {
+                        category: 'LeaderBoard Rank',
+                        points: 70
+                    }, {
+                        category: 'LeaderBoard Rank',
+                        points: 70
+                    }, {
+                        category: 'LeaderBoard Rank',
+                        points: 70
+                    }, {
+                        category: 'LeaderBoard Rank',
+                        points: 70
+                    }, {
+                        category: 'LeaderBoard Rank',
+                        points: 70
+                    }, {
+                        category: 'LeaderBoard Rank',
+                        points: 70
                     }];
             }
         }, true);
@@ -86,6 +116,36 @@
                     }, {
                         label: "Total Points",
                         value: 30
+                    }, {
+                        label: "LeaderBoard Ranks",
+                        value: 5
+                    }, {
+                        label: "LeaderBoard Ranks",
+                        value: 5
+                    }, {
+                        label: "LeaderBoard Ranks",
+                        value: 5
+                    }, {
+                        label: "LeaderBoard Ranks",
+                        value: 5
+                    }, {
+                        label: "LeaderBoard Ranks",
+                        value: 5
+                    }, {
+                        label: "LeaderBoard Ranks",
+                        value: 5
+                    }, {
+                        label: "LeaderBoard Ranks",
+                        value: 5
+                    }, {
+                        label: "LeaderBoard Ranks",
+                        value: 5
+                    }, {
+                        label: "LeaderBoard Ranks",
+                        value: 5
+                    }, {
+                        label: "LeaderBoard Ranks",
+                        value: 5
                     }, {
                         label: "LeaderBoard Ranks",
                         value: 5

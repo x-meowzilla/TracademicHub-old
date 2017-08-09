@@ -65,7 +65,10 @@
                                             </table>
                                         </div>
 
-                                        <span ng-if="currentUser.courseEnrolled.length===0" class="text-muted"><strong>No Access Privilege Assigned</strong></span>
+                                        <span ng-if="currentUser.courseEnrolled.length===0" class="text-muted">
+                                            <strong ng-if="!currentUser.isLocalUser">No Access Privilege Assigned</strong>
+                                            <strong ng-if="currentUser.isLocalUser">Super Admin</strong>
+                                        </span>
                                     </div>
                                 </div>
                             </li>
