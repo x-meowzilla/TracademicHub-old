@@ -95,7 +95,7 @@
                         </tbody>
 
                         <tfoot>
-                        <td colspan="6" ng-if="pagedItems.length != 0 && checkedNumber > 1">
+                        <td colspan="10" ng-if="pagedItems.length != 0 && checkedNumber > 1">
                             <span class="btn btn-danger checkedAllSection" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteSelectedUsers(pagedItems)">Delete Selected Users</span>
                             <span class="btn btn-primary checkedAllSection" data-title="ModifyPrivilege" data-toggle="modal" data-target="#modifyPrivilegeModal">Modify Access Privilege</span>
                             <span class="btn btn-info checkedAllSection" ng-click="givePoints(pagedItems)">Give Points</span>
@@ -140,27 +140,22 @@
                             <div class="col-xs-12 name-card">
                                 <div class="col-xs-6">
                                     <div class="row">
-                                        <div class="col-xs-12">
+                                        <div class="row">
+                                            <div class="col-xs-3">
                                                 <button class="btn btn-info btn-xs btn-circle" data-toggle="modal" data-target="#edit{{item._id}}" ><span class="glyphicon glyphicon-pencil"></span></button>
                                                 <edit-Profile user="item" pid="item._id"></edit-Profile>
                                                 <button class="btn btn-danger btn-xs btn-circle" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteUser(item)" ><span class="glyphicon glyphicon-trash"></span></button>
+                                            </div>
+                                            <div class="col-xs-9">
+                                                <img class="img-circle img-responsive avatar-small" data-ng-src="{{defaultAvatar}}">
+                                            </div>
                                         </div>
-                                        <div class="col-xs-12">
-                                            <img class="img-circle img-responsive center-block avatar-small" data-ng-src="{{defaultAvatar}}">
-                                        </div>
+
                                         <div class="col-xs-12">
                                             <div class="text-center">
-                                                <strong>
-                                                    <span ng-if="item.courseEnrolled.length==0">Access Privilege: </span>
-                                                    <a href="javascript:;" ng-if="item.courseEnrolled.length!=0" data-toggle="collapse" data-target="#ap{{item._id}}">
-                                                        Access Privileges <i class="fa fa-fw fa-caret-down"></i></a>
-                                                </strong>
+                                                <strong>Access Privilege: </strong>
                                             </div>
-                                            <div ng-if="item.courseEnrolled.length==0" class="text-center">
-                                                <div ng-if="item.isLocalUser">Super Admin</div>
-                                                <div ng-if="!item.isLocalUser" class="text-muted crap-word">No Access Privilege Assigned</div>
-                                            </div>
-                                            <div id="ap{{item._id}}" class="table-responsive collapse">
+                                            <div ng-if="item.courseEnrolled.length!==0" class="table-responsive">
                                                 <table class="table table-bordered table-striped table-hover  text-center">
                                                     <thead>
                                                     <tr>
@@ -170,12 +165,14 @@
                                                     </thead>
                                                     <tbody>
                                                     <tr ng-repeat="ce in item.courseEnrolled">
-                                                        <td>{{ce.course}}</td>
-                                                        <td>{{ce.privilege}}</td>
+                                                        <td>{{ce.course.name}}</td>
+                                                        <td>{{ce.privilege.name}}</td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
+
+                                            <span ng-if="item.courseEnrolled.length===0" class="text-muted"><strong>No Access Privilege Assigned</strong></span>
                                         </div>
                                     </div>
                                 </div>
@@ -232,16 +229,16 @@
                                     <div class="form-group">
                                         <label class="col-lg-3 control-label pull-left">Course:</label>
                                         <div class="col-lg-8">
-                                            <select name='privilege' class="form-control" required>
-                                                <option ng-repeat="privilege in privileges" value={{privilege.description}}>{{privilege.description}}</option>
+                                            <select ng-model="selectedCourse" ng-options="course as course.description for course in courses" class="form-control" required>
+                                                <option value="">Please select a course...</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-lg-3 control-label pull-left">Access Privilege:</label>
                                         <div class="col-lg-8">
-                                            <select name='privilege' class="form-control" required>
-                                                <option ng-repeat="privilege in privileges" value={{privilege.description}}>{{privilege.description}}</option>
+                                            <select ng-model="selectedPrivilege" ng-options="privilege as privilege.name for privilege in selectedCourse.userPrivileges" class="form-control" required>
+                                                <option value="">Please select a privilege...</option>
                                             </select>
                                         </div>
                                     </div>
@@ -250,7 +247,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modifyPrivilegeModal">Assign</button>
+                        <button type="submit" data-ng-disabled="multiUsersPrivilege.$invalid" class="btn btn-primary" data-toggle="modal" data-target="#modifyPrivilegeModal" data-ng-click="assignPrivilege()">Assign</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>

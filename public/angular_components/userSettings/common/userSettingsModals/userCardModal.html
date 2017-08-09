@@ -14,29 +14,60 @@
                     </div>
                     <div class="col-xs-12 col-sm-8">
                         <ul class="list-group row user-info-list">
-                            <li class="list-group-item col-xs-12">
-                                <div class="col-xs-5 tital"><strong>First Name: </strong></div>
-                                <div class="col-xs-7">{{currentUser.name.firstName}}</div>
+                            <li class="list-group-item">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-5"><strong>First Name: </strong></div>
+                                    <div class="col-xs-7">{{currentUser.name.firstName}}</div>
+                                </div>
                             </li>
-                            <li class="list-group-item col-xs-12">
-                                <div class="col-xs-5 tital"><strong>Last Name: </strong></div>
-                                <div class="col-xs-7">{{currentUser.name.lastName}}</div>
+                            <li class="list-group-item">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-5"><strong>Last Name: </strong></div>
+                                    <div class="col-xs-7">{{currentUser.name.lastName}}</div>
+                                </div>
                             </li>
-                            <li class="list-group-item col-xs-12">
-                                <div class="col-xs-5 tital"><strong>Preferred Name: </strong></div>
-                                <div class="col-xs-7">{{currentUser.name.preferredName}}</div>
+                            <li class="list-group-item">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-5"><strong>Preferred Name: </strong></div>
+                                    <div class="col-xs-7">{{currentUser.name.preferredName}}</div>
+                                </div>
                             </li>
-                            <li class="list-group-item col-xs-12">
-                                <div class="col-xs-5 tital"><strong>Email: </strong></div>
-                                <div class="col-xs-7">{{currentUser.email}}</div>
+                            <li class="list-group-item">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-5"><strong>Email: </strong></div>
+                                    <div class="col-xs-7">{{currentUser.email}}</div>
+                                </div>
                             </li>
-                            <li class="list-group-item col-xs-12">
-                                <div class="col-xs-5 tital"><strong>Access Privilege: </strong></div>
-                                <div class="col-xs-7">{{currentUser.accessPrivilege.description}}</div>
+                            <li class="list-group-item">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-5"><strong>Last Login: </strong></div>
+                                    <div class="col-xs-7">{{currentUser.lastLoginDate}}</div>
+                                </div>
                             </li>
-                            <li class="list-group-item col-xs-12">
-                                <div class="col-xs-5 tital"><strong>Last Login: </strong></div>
-                                <div class="col-xs-7">{{currentUser.lastLoginDate}}</div>
+                            <li class="list-group-item">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-5"><strong>Access Privilege: </strong></div>
+                                    <div class="col-xs-7">
+                                        <div ng-if="currentUser.courseEnrolled.length!==0" class="table-responsive">
+                                            <table class="table table-bordered table-striped table-hover  text-center">
+                                                <thead>
+                                                <tr>
+                                                    <th class="text-center">Course</th>
+                                                    <th class="text-center">Privilege</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="ce in currentUser.courseEnrolled">
+                                                    <td>{{ce.course.name}}</td>
+                                                    <td>{{ce.privilege.name}}</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <span ng-if="currentUser.courseEnrolled.length===0" class="text-muted"><strong>No Access Privilege Assigned</strong></span>
+                                    </div>
+                                </div>
                             </li>
                         </ul>
                     </div>

@@ -224,12 +224,12 @@
             templateUrl:'angular_components/userSettings/common/userSettingsModals/editUserProfile.html',
             link: function ($scope) {
                 // edit profile form
-                $scope.privileges = [];
+                $scope.courses = [];
                 (function () {
-                    _AjaxRequest.get('/api/privileges/')
+                    _AjaxRequest.get('/api/courses/')
                         .then(
                             function successCallback(result) {
-                                $scope.privileges = result.data;
+                                $scope.courses = result.data;
                             },
                             function errorCallback(error) {
                                 console.error(error);

@@ -145,18 +145,22 @@
         };
 
         // edit privileges of (mutiple) users
-        $scope.privileges = [];
-        // (function () {
-        //     _AjaxRequest.get('/api/privileges/')
-        //         .then(
-        //             function successCallback(result) {
-        //                 $scope.privileges = result.data;
-        //             },
-        //             function errorCallback(error) {
-        //                 console.error(error);
-        //             }
-        //         )
-        // }());
+        $scope.courses = [];
+        (function () {
+            _AjaxRequest.get('/api/courses/')
+                .then(
+                    function successCallback(result) {
+                        $scope.courses = result.data;
+                    },
+                    function errorCallback(error) {
+                        console.error(error);
+                    }
+                )
+        }());
+        
+        $scope.assignPrivilege = function () {
+            
+        };
 
         // give points to selected user(s)
         $scope.givePoints = function (users) {

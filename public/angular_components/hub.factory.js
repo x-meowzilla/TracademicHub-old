@@ -40,8 +40,8 @@
         };
     }
 
-    authentication.$inject = ['$rootScope', '_AjaxRequest', 'AUTH_EVENTS'];
-    function authentication($rootScope, _AjaxRequest, AUTH_EVENTS) {
+    authentication.$inject = ['$rootScope', '$location', '_AjaxRequest', 'AUTH_EVENTS'];
+    function authentication($rootScope, $location, _AjaxRequest, AUTH_EVENTS) {
         return {
             login: function (loginData) {
                 _AjaxRequest.post('/api/local-login', loginData, true)
@@ -62,6 +62,7 @@
             logout: function () {
                 _AjaxRequest.get('/api/logout').then(
                     function successCallback(result) {
+                        $location.path('/');
                         window.localStorage.clear();
                         $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
                         // TODO - show logout successful banner
@@ -133,14 +134,13 @@
     };
 
 
-    loginDialog.$inject = ['_Authentication', 'AUTH_EVENTS', '$location'];
-    function loginDialog(_Authentication, AUTH_EVENTS, $location) {
+    loginDialog.$inject = ['_Authentication', 'AUTH_EVENTS'];
+    function loginDialog(_Authentication, AUTH_EVENTS) {
         return {
             restrict: 'EA',
             link: function (scope) {
                 scope.$on(AUTH_EVENTS.notAuthenticated, function () {
                     _Authentication.logout();
-                    $location.path('/');
                 });
             }
         };
