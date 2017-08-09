@@ -66,7 +66,7 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="item in (pagedItems = ((users | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby)) | orderBy:sort.sortingOrder:sort.reverse)">
-                            <td><input type="checkbox" ng-model="item.selected" ng-click="checkRow(item.selected, pagedItems, currentpage)"/></td>
+                            <td><input type="checkbox" ng-model="item.selected" ng-click="checkRow(item, pagedItems, currentpage)"/></td>
                             <td data-toggle="modal" data-target="#{{item._id}}profile">{{item.name.firstName}}
                                 <user-card-modal user="item" pid="item._id"></user-card-modal>
                             </td>
@@ -95,13 +95,13 @@
                         </tbody>
 
                         <tfoot>
-                        <td colspan="10" ng-if="pagedItems.length != 0 && checkedNumber > 1">
+                        <td colspan="10" ng-if="pagedItems.length != 0 && checkedItems.length > 1">
                             <span class="btn btn-danger checkedAllSection" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteSelectedUsers(pagedItems)">Delete Selected Users</span>
                             <span class="btn btn-primary checkedAllSection" data-title="ModifyPrivilege" data-toggle="modal" data-target="#modifyPrivilegeModal">Modify Access Privilege</span>
-                            <span class="btn btn-info checkedAllSection" ng-click="givePoints(pagedItems)">Give Points</span>
-                            <span><strong class="">{{checkedNumber}} record selected</strong></span>
+                            <span class="btn btn-info checkedAllSection" ng-click="givePoints(checkedItems)">Give Points</span>
+                            <span><strong class="">{{checkedItems.length}} record selected</strong></span>
                         </td>
-                        <td colspan="10" ng-if="(pagedItems.length == 0 || checkedNumber <= 1) && (users|filter:searchrecord).length != 0" class="text-center text-muted">
+                        <td colspan="10" ng-if="(pagedItems.length == 0 || checkedItems.length <= 1) && (users|filter:searchrecord).length != 0" class="text-center text-muted">
                             Select Multiple Users and perform Bulk User Operations.
                         </td>
                         <td colspan="10" ng-if="(users|filter:searchrecord).length == 0" class="text-center">

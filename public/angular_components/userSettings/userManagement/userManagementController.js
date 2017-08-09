@@ -65,7 +65,7 @@
         $scope.searchrecord = '';
 
         // check mutiple rows in table view
-        $scope.checkedNumber = 0;
+        $scope.checkedItems = [];
         $scope.checkedPages = [];
 
         $scope.checkAll = function (pagedItems, currentpage) {
@@ -84,19 +84,36 @@
 
             angular.forEach(pagedItems, function (item) {
                 var checked = $scope.checkedPages.indexOf(currentpage) !== -1;
-                if(checked != item.selected)
+                var index = $scope.checkedItems.indexOf(item);
+                if(checked && index < 0)
                 {
-                    // selected from true to false: -1, selected from false to true: +1
-                    $scope.checkedNumber = $scope.checkedNumber + (!item.selected ? 1 : -1);
+                    // add item if selected and not in the array
+                    $scope.checkedItems.push(item);
                 }
+                else if(!checked && index > -1)
+                {
+                    // delete item if not selected and in the array
+                    $scope.checkedItems.splice(index, 1);
+                }
+
                 item.selected = checked;
             });
         };
 
-        $scope.checkRow = function (selectState, pagedItems, currentpage) {
-            $scope.checkedNumber = $scope.checkedNumber + (selectState ? 1 : -1);
+        $scope.checkRow = function (item, pagedItems, currentpage) {
+            var index = $scope.checkedItems.indexOf(item);
+            if(item.selected && index < 0)
+            {
+                // add item if selected and not in the array
+                $scope.checkedItems.push(item);
+            }
+            else if(!item.selected && index > -1)
+            {
+                // delete item if not selected and in the array
+                $scope.checkedItems.splice(index, 1);
+            }
 
-            if($scope.checkedNumber === pagedItems.length)
+            if($scope.checkedItems.length === pagedItems.length)
             {
                 $scope.selectedAll.checked = true;
                 $scope.checkedPages.push(currentpage);
@@ -159,7 +176,17 @@
         }());
         
         $scope.assignPrivilege = function () {
-            
+            _AjaxRequest.patch('/api/users/' + $scope.getCurrentUser()._id + '/update/user-access?' + $.param(updateMoreInfo))
+                .then(
+                    function successCallback(result) {
+                        _Authentication.setLoginUser(result.data);
+                        $scope.clearForm();
+                        // todo: profile updated banner
+                    },
+                    function errorCallback(error) {
+                        console.error(error);
+                    }
+                );
         };
 
         // give points to selected user(s)
