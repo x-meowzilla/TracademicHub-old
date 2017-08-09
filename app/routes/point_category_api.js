@@ -9,7 +9,7 @@ router.get('/', mw.checkAuthentication, function (req, res) {
     Object.keys(req.query).forEach(function (arg) {
         switch (arg) {
             case '_id':
-            case 'description':
+            case 'name':
                 findDoc[arg] = req.query[arg];
                 break;
         }
@@ -25,16 +25,17 @@ router.get('/', mw.checkAuthentication, function (req, res) {
 
 router.put('/', mw.checkAuthentication, function (req, res) {
     "use strict";
-    PointCategoryModel.findPointCategoryData({description: req.body.description})
+    PointCategoryModel.findPointCategoryData({name: req.body.name})
         .then(function (categoryArray) {
-            return (categoryArray.length !== 0) ? res.status(409).send('Failed to create point category. \'' + categoryArray[0].description + '\' category exists.').end() : createPointCategory(req.body.description);
+            return (categoryArray.length !== 0) ?
+                res.status(409).send('Failed to create point category. \'' + categoryArray[0].name + '\' category exists.').end() : createPointCategory(req.body);
         })
         .catch(function (error) {
             res.status(500).send(error).end();
         });
 
-    function createPointCategory(description) {
-        new PointCategoryModel({description: description}).save()
+    function createPointCategory(categoryData) {
+        new PointCategoryModel(categoryData).save()
             .then(function (category) {
                 res.json(category).end();
             })
@@ -50,7 +51,7 @@ router.delete('/', mw.checkAuthentication, function (req, res) {
     Object.keys(req.query).forEach(function (arg) {
         switch (arg) {
             case '_id':
-            case 'description':
+            case 'name':
                 deleteDoc[arg] = req.query[arg];
                 break;
         }
