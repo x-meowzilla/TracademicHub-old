@@ -28,12 +28,12 @@
                         <div class="col-md-4 col-sm-6 col-xs-12">
                             <div class="panel panelBorder categoryPanel">
                                 <div class="panel-heading">
-                                    <h2 class="panel-title pull-left">{{category._id}}</h2>
+                                    <h2 class="panel-title pull-left">{{category.name}}</h2>
                                     <button class="btn btn-danger btn-xs pull-right" ng-confirm-click="Are you sure to delete this point category?" confirmed-click="deletePointCategory(category)">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </button>
                                 </div>
-                                S<div class="panel-body">
+                                <div class="panel-body">
                                 <div class="categoryDescription">{{category.description}}</div>
                                 <hr>
                                 <div class="input-group">
@@ -74,7 +74,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" ng-disabled="addCategoryForm.categoryName.$invalid || addCategoryForm.categoryDescription.$invalid || getAssignedPoints().length === 0"
+                            <button type="submit" class="btn btn-primary" ng-disabled="addCategoryForm.$invalid"
                                     data-toggle="modal" data-target="#addCategoryForm" ng-click="addPointCategory(categoryName, categoryDescription)" data-dismiss="modal">Add</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>

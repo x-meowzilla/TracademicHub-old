@@ -29,7 +29,7 @@
 
         //add new point category
         $scope.addPointCategory = function (name, description) {
-            _AjaxRequest.put('/api/points-category', {description: description})
+            _AjaxRequest.put('/api/points-category', {name: name, description: description})
                 .then(
                     function successCallback(result) {
                         getAllCategories();
