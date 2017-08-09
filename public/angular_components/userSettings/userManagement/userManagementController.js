@@ -13,27 +13,32 @@
         $scope.currentUser = _Authentication.getLoginUser();
 
         $scope.users = [];
-        var getUsers = function (displayType) {
+        $scope.displayType = 'all';
+        var getUsers = function () {
             _AjaxRequest.get('/api/users')
                 .then(
                     function successCallback(result) {
                         $scope.users = result.data.filter(function (item) {
-                            var res = item._id !== _Authentication.getLoginUser()._id;
-                            if(displayType === 'all')
+                            var res = item._id !== _Authentication.getLoginUser()._id && !item.isLocalUser;
+                            if($scope.displayType === 'all')
                             {
                                 return res && item.isActive;
                             }
-                            else if(displayType === 'active')
+                            else if($scope.displayType === 'active')
                             {
                                 return res && item.isActive;
                             }
-                            else if(displayType === 'inactive')
+                            else if($scope.displayType === 'inactive')
                             {
                                 return res && !item.isActive;
                             }
-                            else
+                            else if($scope.displayType === 'checkedin')
                             {
                                 return res && item.lastLoginDate;
+                            }
+                            else
+                            {
+                                return item._id !== _Authentication.getLoginUser()._id && item.isLocalUser;
                             }
                         });
                     },
@@ -43,11 +48,13 @@
                 );
         };
         $scope.getUsers = function (displayType) {
-            getUsers(displayType);
+            $scope.displayType = displayType;
+            getUsers();
+            clearSelected();
         };
 
         (function () {
-            getUsers('active');
+            getUsers();
         }());
 
         $scope.defaultAvatar = "../images/default-avatar.png";
@@ -68,7 +75,22 @@
         $scope.checkedItems = [];
         $scope.checkedPages = [];
 
-        $scope.checkAll = function (pagedItems, currentpage) {
+        $scope.getPagedItems = function (filteredData) {
+            $scope.pagedItems = filteredData;
+            return filteredData;
+        };
+        
+        var checkListHasItem = function (items, itemID) {
+            for (var i = 0; i < items.length; i ++){
+                if(items[i]._id === itemID)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        };
+
+        $scope.checkAll = function (currentpage) {
             var idx = $scope.checkedPages.indexOf(currentpage);
 
             if(idx === -1)
@@ -82,9 +104,10 @@
                 $scope.checkedPages.splice(idx, 1);
             }
 
-            angular.forEach(pagedItems, function (item) {
+            angular.forEach($scope.pagedItems, function (item) {
                 var checked = $scope.checkedPages.indexOf(currentpage) !== -1;
-                var index = $scope.checkedItems.indexOf(item);
+                var index = checkListHasItem($scope.checkedItems, item._id);
+
                 if(checked && index < 0)
                 {
                     // add item if selected and not in the array
@@ -100,8 +123,8 @@
             });
         };
 
-        $scope.checkRow = function (item, pagedItems, currentpage) {
-            var index = $scope.checkedItems.indexOf(item);
+        $scope.checkRow = function (item, currentpage) {
+            var index = checkListHasItem($scope.checkedItems, item._id);
             if(item.selected && index < 0)
             {
                 // add item if selected and not in the array
@@ -113,7 +136,7 @@
                 $scope.checkedItems.splice(index, 1);
             }
 
-            if($scope.checkedItems.length === pagedItems.length)
+            if($scope.checkedItems.length === $scope.pagedItems.length)
             {
                 $scope.selectedAll.checked = true;
                 $scope.checkedPages.push(currentpage);
@@ -125,10 +148,39 @@
                 $scope.checkedPages.splice(idx, 1);
             }
         };
+        
+        var clearSelected = function () {
+            $scope.checkedPages = [];
+            $scope.checkedItems = [];
+            $scope.selectedAll.checked = false;
+            angular.forEach($scope.pagedItems, function (item) {
+                item.selected = false;
+            });
+        }
 
         $scope.selectedAll = {checked: true};
         $scope.$watch('currentpage', function(newValue, oldValue) {
             $scope.selectedAll.checked=$scope.checkedPages.indexOf(newValue) !== -1;
+        }, true);
+
+        $scope.$watch('pagedItems', function(newValue, oldValue) {
+            console.log(newValue);
+            console.log(oldValue);
+            console.log('---');
+
+            if(!angular.isUndefined(newValue) && !angular.isUndefined(oldValue))
+            {
+                var changed = false;
+                angular.forEach(oldValue, function (item) {
+                    changed = checkListHasItem(newValue, item._id) < -1;
+                });
+
+                if(changed || newValue.length !== oldValue.length)
+                {
+                    clearSelected();
+                }
+            }
+
         }, true);
 
 

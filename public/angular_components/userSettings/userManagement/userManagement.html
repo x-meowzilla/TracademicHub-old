@@ -35,7 +35,7 @@
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
-                        <td colspan="10" class="typeController">
+                        <td colspan="9" class="typeController">
                             <ul class="nav nav-pills">
                                 <li>
                                     <a data-toggle="tab" data-ng-click="getUsers('all')">All Users</a>
@@ -49,15 +49,17 @@
                                 <li>
                                     <a data-toggle="tab" data-ng-click="getUsers('checkedin')">Recently Checked-in Users</a>
                                 </li>
+                                <li>
+                                    <a data-toggle="tab" data-ng-click="getUsers('admins')">Admins</a>
+                                </li>
                             </ul>
                         </td>
                         <tr>
-                            <th><input type="checkbox" ng-model="selectedAll.checked" ng-click="checkAll(pagedItems, currentpage)" data-ng-disabled="(users|filter:searchrecord).length === 0"/></th>
+                            <th><input ng-disabled="displayType === 'admins'" type="checkbox" ng-model="selectedAll.checked" ng-click="checkAll(currentpage)" data-ng-disabled="(users|filter:searchrecord).length === 0"/></th>
                             <th sort-Records order="name.firstName", sort="sort">First Name</th>
                             <th sort-Records order="name.lastName", sort="sort">Last Name</th>
                             <th sort-Records order="name.preferredName", sort="sort">Preferred Name</th>
                             <th sort-Records order="email", sort="sort">Email</th>
-                            <th sort-Records order="accessPrivilege", sort="sort">Access Privilege</th>
                             <th sort-Records order="lastLoginDate", sort="sort">Last Login Date</th>
                             <th>Give Points</th>
                             <th>Edit</th>
@@ -65,18 +67,17 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="item in (pagedItems = ((users | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby)) | orderBy:sort.sortingOrder:sort.reverse)">
-                            <td><input type="checkbox" ng-model="item.selected" ng-click="checkRow(item, pagedItems, currentpage)"/></td>
+                        <tr ng-repeat="item in getPagedItems(((users | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby)) | orderBy:sort.sortingOrder:sort.reverse)">
+                            <td><input ng-disabled="displayType === 'admins'" type="checkbox" ng-model="item.selected" ng-click="checkRow(item, currentpage)"/></td>
                             <td data-toggle="modal" data-target="#{{item._id}}profile">{{item.name.firstName}}
                                 <user-card-modal user="item" pid="item._id"></user-card-modal>
                             </td>
                             <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.name.lastName}}</td>
                             <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.name.preferredName}}</td>
                             <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.email}}</td>
-                            <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.accessPrivilege.description}}</td>
-                            <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item._id}}</td>
+                            <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.lastLoginDate}}</td>
                             <td class="text-center">
-                                <button class="btn btn-warning btn-xs" data-ng-click="givePoints([item])">
+                                <button ng-disabled="displayType === 'admins'" class="btn btn-warning btn-xs" data-ng-click="givePoints([item])">
                                     <span class="glyphicon glyphicon-gift"></span>
                                 </button>
                             </td>
@@ -87,7 +88,7 @@
                                 <edit-Profile user="item" pid="item._id"></edit-Profile>
                             </td>
                             <td class="text-center">
-                                <button class="btn btn-danger btn-xs" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteUser(item)">
+                                <button ng-disabled="displayType === 'admins'" class="btn btn-danger btn-xs" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteUser(item)">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </button>
                             </td>
@@ -95,16 +96,16 @@
                         </tbody>
 
                         <tfoot>
-                        <td colspan="10" ng-if="pagedItems.length != 0 && checkedItems.length > 1">
+                        <td colspan="9" ng-if="pagedItems.length != 0 && checkedItems.length > 1">
                             <span class="btn btn-danger checkedAllSection" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteSelectedUsers(pagedItems)">Delete Selected Users</span>
                             <span class="btn btn-primary checkedAllSection" data-title="ModifyPrivilege" data-toggle="modal" data-target="#modifyPrivilegeModal">Modify Access Privilege</span>
                             <span class="btn btn-info checkedAllSection" ng-click="givePoints(checkedItems)">Give Points</span>
                             <span><strong class="">{{checkedItems.length}} record selected</strong></span>
                         </td>
-                        <td colspan="10" ng-if="(pagedItems.length == 0 || checkedItems.length <= 1) && (users|filter:searchrecord).length != 0" class="text-center text-muted">
+                        <td colspan="9" ng-if="(pagedItems.length == 0 || checkedItems.length <= 1) && (users|filter:searchrecord).length != 0" class="text-center text-muted">
                             Select Multiple Users and perform Bulk User Operations.
                         </td>
-                        <td colspan="10" ng-if="(users|filter:searchrecord).length == 0" class="text-center">
+                        <td colspan="9" ng-if="(users|filter:searchrecord).length == 0" class="text-center">
                             <strong>DATA NOT FOUND.</strong>
                         </td>
                         </tfoot>
@@ -131,6 +132,9 @@
                                 </li>
                                 <li>
                                     <a data-toggle="tab" data-ng-click="getUsers('checkedin')">Recently Checked-in Users</a>
+                                </li>
+                                <li>
+                                    <a data-toggle="tab" data-ng-click="getUsers('admins')">Admins</a>
                                 </li>
                             </ul>
                         </div>

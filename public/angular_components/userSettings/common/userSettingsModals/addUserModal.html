@@ -82,7 +82,7 @@
 
             </div>
             <div class="modal-footer">
-                <button ng-if="!displayCSV" class="btn btn-primary" data-ng-disabled="(addUserForm.createUserForm.$invalid || addUserForm.createUserForm.$pristine)" data-ng-click="createAdmin()"> Create</button>
+                <button ng-if="!displayCSV" class="btn btn-primary" data-ng-disabled="(addUserForm.createUserForm.$invalid || addUserForm.createUserForm.$pristine || utoridExist)" data-ng-click="createAdmin()"> Create</button>
                 <button ng-if="displayCSV" type="submit" class="btn btn-primary" data-ng-disabled="addUserForm.importCSVForm.$pristine" data-toggle="modal" data-target="#addUserModal" data-ng-click="importCSVFile()"> Import</button>
                 <button type="reset" class="btn btn-default" data-toggle="modal" data-target="#addUserModal" data-ng-click="clearForm()">Cancel</button>
             </div>
