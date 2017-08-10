@@ -28,23 +28,25 @@ module.exports.sanitizeReqBodyHandler = function (req, res, next) {
             case 'pointCategoryID':
             case 'pointValue':
             // point category
+            case 'name':
             case 'description':
+            // course
+            case 'course':
                 break;
         }
     });
-    req.asyncValidationErrors()
-        .then(
-            function onSuccess() {
-                next();
-            },
-            function onError(errorArray) {
+    req.getValidationResult()
+        .then(function (result) {
+            if (result.isEmpty()) {
+                return next()
+            } else {
                 var msgArray = [];
-                errorArray.forEach(function (error) {
+                result.array().forEach(function (error) {
                     msgArray.push(error.msg);
                 });
                 return res.status(400).json(msgArray.join(" & ")).end();
             }
-        );
+        });
 };
 
 module.exports.sanitizeURIParamsHandler = function (req, res, next) {
@@ -59,15 +61,18 @@ module.exports.sanitizeURIParamsHandler = function (req, res, next) {
                 break;
         }
     });
-    req.asyncValidationErrors()
-        .then(
-            function onSuccess() {
-                next();
-            },
-            function onError(errorArray) {
-                return res.status(400).json(errorArray[0].msg).end();
+    req.getValidationResult()
+        .then(function (result) {
+            if (result.isEmpty()) {
+                return next()
+            } else {
+                var msgArray = [];
+                result.array().forEach(function (error) {
+                    msgArray.push(error.msg);
+                });
+                return res.status(400).json(msgArray.join(" & ")).end();
             }
-        );
+        });
 };
 
 module.exports.sanitizeQueryStringHandler = function (req, res, next) {
@@ -101,24 +106,27 @@ module.exports.sanitizeQueryStringHandler = function (req, res, next) {
                 break;
         }
     });
-    req.asyncValidationErrors()
-        .then(
-            function onSuccess() {
-                next();
-            },
-            function onError(errorArray) {
-                return res.status(400).json(errorArray[0].msg).end();
+    req.getValidationResult()
+        .then(function (result) {
+            if (result.isEmpty()) {
+                return next()
+            } else {
+                var msgArray = [];
+                result.array().forEach(function (error) {
+                    msgArray.push(error.msg);
+                });
+                return res.status(400).json(msgArray.join(" & ")).end();
             }
-        );
+        });
 };
 
 module.exports.checkAuthentication = function (req, res, next) {
     "use strict";
 
     if (!req.isAuthenticated())
-        return res.status(401).send('Please login before performing this action.').end('Unauthorized');
+        return res.status(401).send('Please login before performing this action.').end();
     else if (!req.user.isActive)
-        return res.status(403).send('Permission denied. Your account is inactive. Please contact instructor to re-active your account.').end('Forbidden');
+        return res.status(403).send('Permission denied. Your account is inactive. Please contact instructor to re-active your account.').end();
     else
         return next();
 };

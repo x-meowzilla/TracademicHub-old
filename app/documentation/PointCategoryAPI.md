@@ -9,12 +9,13 @@ Point Category API Documentation
             + User must login and this account must be activated.
         + **Query String Options:**
             + _id: (string) unique point category ID
-            + description: (string) unique point category description
+            + name: (string) unique point category name
     + **Response:** 200
         + Content-Type: ```application/json```
         + Body: ```array of object```
             + _id: (string) unique point category ID
-            + name: (string) unique point category description
+            + name: (string) unique point category name
+            + description: (string) category description
     + **Response:** 401
         + Body:
             + errmsg: 'Please login before performing this action.'
@@ -30,12 +31,14 @@ Point Category API Documentation
             + User must have minimum INSTRUCTOR access privilege.
         + Content-Type: ```application/json```
         + Body:
-            + description: (string) unique point category description
+            + name: (string)  unique point category name
+            + description: (string) category description
     + **Response:** 200
         + Content-Type: ```application/json```
         + Body:
             + _id: (string) unique point category ID
-            + description: (string) unique point category description
+            + name: (string) unique point category name
+            + description: (string) category description
     + **Response:** 401
         + Body:
             + errmsg: 'Please login before performing this action.'
@@ -58,7 +61,7 @@ Point Category API Documentation
             + User must have minimum INSTRUCTOR access privilege.
         + **Query String Options:**
             + _id: (string) unique point category ID
-            + description: (string) unique point category description
+            + name: (string) unique point category name
     + **Response:** 200
         + Body: 'Delete succeeded. # records deleted.'
     + **Response:** 200

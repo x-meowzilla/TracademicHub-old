@@ -3,13 +3,14 @@ var Schema = mongoose.Schema;
 
 var categorySchema = new Schema({
 
-    description: {type: String, unique: true, required: true}
+    name: {type: String, unique: true, required: true},
+    description: {type: String}
 
 }, {collection: 'reference-PointCategory'});
 
 categorySchema.statics.findPointCategoryData = function (findDoc) {
     var category = this.model('PointCategory');
-    if (findDoc.description) findDoc.description = {'$regex': '^' + findDoc.description + '$', '$options': 'i'}; // case insensitive
+    if (findDoc.name) findDoc.name = {'$regex': '^' + findDoc.name + '$', '$options': 'i'}; // case insensitive
     return category.find(findDoc);
 };
 
