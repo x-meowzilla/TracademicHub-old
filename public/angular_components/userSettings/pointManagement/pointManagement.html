@@ -95,15 +95,24 @@
                             <!--input student number-->
                             <td colspan="6" class="row">
                                 <div class="col-xs-12">
-                                    <form class="col-xs-6" name="inputStudentNum">
-                                        <div class="input-group">
-                                            <span class="input-group-addon">Student Number</span>
-                                            <input type="text" title="Enter the student number of the assignee." class="form-control" name="studentNumber" ng-model="studentNum" required>
+                                    <div class="col-xs-9">
+                                        <form class="col-xs-7" name="inputStudentNum">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">Student Number</span>
+                                                <input type="text" title="Enter the student number of the assignee." class="form-control" name="studentNumber" ng-model="studentNum" required>
+                                            </div>
+                                        </form>
+                                        <div class="text-center col-xs-3">
+                                            <a class="btn btn-success" data-target="#inputStudentNum" ng-disabled="inputStudentNum.studentNumber.$invalid || categories.length === 0" ng-click="addAssignee(studentNum)"> Add Assignee </a>
                                         </div>
-                                    </form>
-                                    <div class="text-center col-xs-3">
-                                        <a class="btn btn-success customBtn" data-target="#inputStudentNum" ng-disabled="inputStudentNum.studentNumber.$invalid || categories.length === 0" ng-click="addAssignee(studentNum)"> Add Assignee </a>
                                     </div>
+
+                                    <div class="col-xs-3">
+                                        <div class="text-center pull-right">
+                                            <a class="btn btn-danger" ng-if="users.length!==0" ng-click="clearSelectedUser()"> Clear All Users </a>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div class="text-danger col-xs-12" ng-show="addAssigneeFailed">User does not exist or user is inactive message.</div>
                                 <div class="text-danger col-xs-12" ng-show="assigneeExist">User is already in the table.</div>
@@ -121,11 +130,14 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="user in users">
-                                <td>{{user.name.firstName}}</td>
-                                <td>{{user.name.lastName}}</td>
-                                <td>{{user.name.preferredName}}</td>
-                                <td>{{user.email}}</td>
-                                <td>{{user.studentNumber}}</td>
+                                <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">
+                                    {{user.name.firstName}}
+                                    <user-card-modal user="user" pid="user._id"></user-card-modal>
+                                </td>
+                                <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.name.lastName}}</td>
+                                <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.name.preferredName}}</td>
+                                <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.email}}</td>
+                                <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.studentNumber}}</td>
                                 <td class="text-center">
                                     <button class="btn btn-danger btn-xs" data-title="Clear" ng-click="removeAssignee(user)" ><span class="glyphicon glyphicon-trash"></span></button>
                                 </td>
@@ -133,9 +145,20 @@
                             </tbody>
                             <tfoot>
                             <td colspan="6" ng-if="users.length!==0" class="text-center">
-                                <button class="btn btn-danger" ng-click="clearSelectedUser()">Clear All</button>
-                                <button class="btn btn-info">Give Points</button>
-                                <strong class="">{{users.length}} users selected</strong>
+                                <div class="form-group col-xs-7">
+                                    <label class="col-xs-2 control-label"><h5>Course:</h5></label>
+                                    <div class="col-xs-8">
+                                        <select ng-model="selectedCourse" ng-options="course as course.description for course in courses" class="form-control" required>
+                                            <option value="">Please select a course...</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2">
+                                    <button class="btn btn-info customBtn" data-ng-disabled="getAssignedPoints().length === 0 || !selectedCourse" data-ng-click="assignPoints(selectedCourse)">Give Points</button>
+                                </div>
+                                <div class="col-xs-3">
+                                    <h5>{{users.length}} users selected</h5>
+                                </div>
                             </td>
                             <td colspan="6" ng-if="users.length===0" class="text-center">
                                 <strong> NO USER CHOSEN. </strong>

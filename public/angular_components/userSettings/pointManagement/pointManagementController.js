@@ -22,9 +22,20 @@
         };
 
         $scope.categories = [];
+        $scope.courses = [];
 
         (function () {
             getAllCategories();
+
+            _AjaxRequest.get('/api/courses/')
+                .then(
+                    function successCallback(result) {
+                        $scope.courses = result.data;
+                    },
+                    function errorCallback(error) {
+                        console.error(error);
+                    }
+                )
         }());
 
         //add new point category
@@ -89,9 +100,6 @@
             if(studentNum)
             {
                 angular.forEach($scope.users, function (user) {
-                    console.log(user.studentNumber);
-                    console.log(studentNum);
-                    console.log($scope.assigneeExist);
                     if(user.studentNumber.toString() === studentNum.toString() && !$scope.assigneeExist)
                     {
                         $scope.assigneeExist = true;
@@ -125,28 +133,30 @@
             }
         };
         
-        $scope.assignPoints = function () {
-            if(studentNum)
+        $scope.assignPoints = function (selectedCourse) {
+            if(selectedCourse)
             {
-                angular.forEach($scope.getAssignedPoints(), function (category) {
-                    _AjaxRequest.get('/api/users?' + $.param({isActive: true, studentNumber: studentNum}))
-                        .then(
-                            function successCallback(user) {
-                                _AjaxRequest.post('/api/points',
-                                    {assigneeID: user._id, pointValue: category.point, pointCategoryID: category._id})
-                                    .then(
-                                        function successCallback(result) {
-                                            getAllCategories();
-                                        },
-                                        function errorCallback(error) {
-                                            console.error(error);
-                                        }
-                                    );
-                            },
-                            function errorCallback(error) {
-                                console.error(error);
-                            }
-                        );
+                angular.forEach($scope.users, function (user) {
+                    angular.forEach($scope.getAssignedPoints(), function (category) {
+                        _AjaxRequest.get('/api/users?' + $.param({isActive: true, studentNumber: user.studentNumber}))
+                            .then(
+                                function successCallback(user) {
+                                    _AjaxRequest.post('/api/points',
+                                        {assigneeID: user._id, pointValue: category.point, pointCategoryID: category._id})
+                                        .then(
+                                            function successCallback(result) {
+                                                getAllCategories();
+                                            },
+                                            function errorCallback(error) {
+                                                console.error(error);
+                                            }
+                                        );
+                                },
+                                function errorCallback(error) {
+                                    console.error(error);
+                                }
+                            );
+                    });
                 });
             }
         }
