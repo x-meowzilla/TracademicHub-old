@@ -25,10 +25,18 @@ User API Documentation
                 + lastName: (string)
                 + preferredName: (string) [_Optional_]
             + studentNumber: (string) U of T unique student number [_Optional_]
-            + accessPrivilege: (object)
-                + _id: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
-                + value: (number) access privilege value
-                + description: (string) access privilege description
+            + courseEnrolled: (array of object)
+                + course: (object)
+                    + _id: (string) course ID
+                    + name: (string) course name
+                    + startDate: (Date) starting date in UTC format
+                    + endDate: (Date) ending date in UTC format
+                    + academicTerm: (string)
+                    + isActive: (boolean)
+                + privilege: (object)
+                    + _id: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+                    + name: (string) name of this access privilege
+                    + value: (number) access privilege value
             + biography: (string) [_Optional_]
             + isActive: (boolean) Return True if this account is active, false otherwise.
             + lastLoginDate: (Date) last login date in UTC format [_Optional_]
@@ -57,10 +65,18 @@ User API Documentation
                 + lastName: (string)
                 + preferredName: (string) [_Optional_]
             + studentNumber: (string) U of T unique student number [_Optional_]
-            + accessPrivilege: (object)
-                + _id: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
-                + value: (number) access privilege value
-                + description: (string) access privilege description
+            + courseEnrolled: (array of object)
+                + course: (object)
+                    + _id: (string) course ID
+                    + name: (string) course name
+                    + startDate: (Date) starting date in UTC format
+                    + endDate: (Date) ending date in UTC format
+                    + academicTerm: (string)
+                    + isActive: (boolean)
+                + privilege: (object)
+                    + _id: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+                    + name: (string) name of this access privilege
+                    + value: (number) access privilege value
             + biography: (string) [_Optional_]
             + isActive: (boolean) Return True if this account is active, false otherwise.
             + lastLoginDate: (Date) last login date in UTC format [_Optional_]
@@ -82,7 +98,8 @@ User API Documentation
     + **Request:** ```POST /api/users/```
         + Body: ```form-data```
             + csvfile: (file) student csv file. **Maximum file size: 32MB!**
-                + Note: This file should have the following required headers: **UTORiD**, **First Name**, **Last Name**, **Student Number**, **Email** 
+                + Note: This file should have the following required headers: **UTORiD**, **First Name**, **Last Name**, **Student Number**, **Email**
+            + course: (string) unique course ID 
     + **Response:** 200
         + Body: 'Imported from student CSV file. Total # records found: # new student records saved successfully. # existing student records remain unchanged.'
     + **Response:** 400
@@ -110,7 +127,7 @@ User API Documentation
             + utorid: (string)
             + email: (string)
             + studentNumber: (number)
-            + accessPrivilege: (string) access privilege ID
+            + courseEnrolled: (string) unique courseID
             + isActive: (boolean)
             + firstName: (string)
             + lastName: (string)
@@ -126,10 +143,18 @@ User API Documentation
                 + lastName: (string)
                 + preferredName: (string) [_Optional_]
             + studentNumber: (string) U of T unique student number [_Optional_]
-            + accessPrivilege: (object)
-                + _id: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
-                + value: (number) access privilege value
-                + description: (string) access privilege description
+            + courseEnrolled: (array of object)
+                + course: (object)
+                    + _id: (string) course ID
+                    + name: (string) course name
+                    + startDate: (Date) starting date in UTC format
+                    + endDate: (Date) ending date in UTC format
+                    + academicTerm: (string)
+                    + isActive: (boolean)
+                + privilege: (object)
+                    + _id: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+                    + name: (string) name of this access privilege
+                    + value: (number) access privilege value
             + biography: (string) [_Optional_]
             + isActive: (boolean) Return True if this account is active, false otherwise.
             + lastLoginDate: (Date) last login date in UTC format [_Optional_]
@@ -150,8 +175,6 @@ User API Documentation
         + **Pre-requisite:**
             + User must login and this account must be activated.
         + **Query String Options:**
-            + firstName: (string)
-            + lastName: (string)
             + preferredName: (string)
             + biography: (string)
     + **Response:** 200
@@ -165,10 +188,18 @@ User API Documentation
                 + lastName: (string)
                 + preferredName: (string) [_Optional_]
             + studentNumber: (string) U of T unique student number [_Optional_]
-            + accessPrivilege: (object)
-                + _id: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
-                + value: (number) access privilege value
-                + description: (string) access privilege description
+            + courseEnrolled: (array of object)
+                + course: (object)
+                    + _id: (string) course ID
+                    + name: (string) course name
+                    + startDate: (Date) starting date in UTC format
+                    + endDate: (Date) ending date in UTC format
+                    + academicTerm: (string)
+                    + isActive: (boolean)
+                + privilege: (object)
+                    + _id: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+                    + name: (string) name of this access privilege
+                    + value: (number) access privilege value
             + biography: (string) [_Optional_]
             + isActive: (boolean) Return True if this account is active, false otherwise.
             + lastLoginDate: (Date) last login date in UTC format [_Optional_]
@@ -204,10 +235,18 @@ User API Documentation
                 + lastName: (string)
                 + preferredName: (string) [_Optional_]
             + studentNumber: (string) U of T unique student number [_Optional_]
-            + accessPrivilege: (object)
-                + _id: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
-                + value: (number) access privilege value
-                + description: (string) access privilege description
+            + courseEnrolled: (array of object)
+                + course: (object)
+                    + _id: (string) course ID
+                    + name: (string) course name
+                    + startDate: (Date) starting date in UTC format
+                    + endDate: (Date) ending date in UTC format
+                    + academicTerm: (string)
+                    + isActive: (boolean)
+                + privilege: (object)
+                    + _id: (string) unique access privilege ID (ID refer to AccessPrivilege collection)
+                    + name: (string) name of this access privilege
+                    + value: (number) access privilege value
             + biography: (string) [_Optional_]
             + isActive: (boolean) Return True if this account is active, false otherwise.
             + lastLoginDate: (Date) last login date in UTC format [_Optional_]
