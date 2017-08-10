@@ -41,6 +41,14 @@
             getCourses('active');
         }());
 
+        $scope.getUserPrivilegesList = function (userPrivileges) {
+            var result = "| ";
+            angular.forEach(userPrivileges, function (privilege) {
+                result = result + privilege.name + " | ";
+            });
+            return result;
+        };
+
 
 
         // page controller settings

@@ -64,11 +64,32 @@
                             <div class="col-sm-6 col-xs-12" ng-repeat="course in courses">
                                 <div class="panel panel-danger courseCard">
                                     <div class="panel-heading">
-                                        <span><strong>abc</strong></span>
+                                        <span><strong>{{course.name}}</strong></span>
                                         <span class="btn btn-xs pull-right glyphicon glyphicon-trash" ng-confirm-click="Are you sure to delete this point category?" confirmed-click="deletePointCategory(category)"></span>
                                     </div>
                                     <div class="panel-body">
-                                        <div class="categoryDescription">des</div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <label><strong>Start Date: </strong></label>
+                                                <div class="crap-word">{{course.startDate}}</div>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <label><strong>End Date: </strong></label>
+                                                <div class="crap-word">{{course.endDate}}</div>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <label><strong>Description: </strong></label>
+                                                <div class="crap-word">{{course.description}}</div>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <label><strong>Academic Term: </strong></label>
+                                                <div class="crap-word">{{course.academicTerm}}</div>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <label><strong>Access Privileges: </strong></label>
+                                                <div class="crap-word">{{getUserPrivilegesList(course.userPrivileges)}}</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
