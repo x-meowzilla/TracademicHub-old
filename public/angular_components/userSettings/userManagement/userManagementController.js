@@ -75,9 +75,13 @@
             {
                 return 6;
             }
+            else if($scope.displayType === 'active')
+            {
+                return 10;
+            }
             else if($scope.displayType === 'inactive')
             {
-                return 7;
+                return 8;
             }
             else
             {

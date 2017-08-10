@@ -62,6 +62,7 @@
                             <th sort-Records order="name.lastName", sort="sort">Last Name</th>
                             <th sort-Records order="name.preferredName", sort="sort">Preferred Name</th>
                             <th sort-Records order="email", sort="sort">Email</th>
+                            <th ng-if="displayType === 'active' || displayType === 'inactive'" sort-Records order="studentNumber", sort="sort">Student Number</th>
                             <th sort-Records order="lastLoginDate", sort="sort">Last Login Date</th>
                             <th ng-if="displayType === 'all'" sort-Records order="isActive", sort="sort">Is Active</th>
                             <th ng-if="['active', 'checkedin', 'admins'].indexOf(displayType) > -1">Give Points</th>
@@ -75,12 +76,13 @@
                             <td ng-if="displayType !== 'all'">
                                 <input type="checkbox" ng-model="item.selected" ng-click="checkRow(item, currentpage)"/>
                             </td>
-                            <td data-toggle="modal" data-target="#{{item._id}}profile">{{item.name.firstName}}
+                            <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.name.firstName}}
                                 <user-card-modal user="item" pid="item._id"></user-card-modal>
                             </td>
                             <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.name.lastName}}</td>
                             <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.name.preferredName}}</td>
                             <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.email}}</td>
+                            <td ng-if="displayType === 'active' || displayType === 'inactive'" data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.studentNumber}}</td>
                             <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.lastLoginDate}}</td>
                             <td ng-if="displayType === 'all'" data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">
                                 <span ng-if="item.isActive" class="glyphicon glyphicon-ok"></span>
@@ -128,7 +130,7 @@
                         </td>
                         <td colspan="{{getColspan()}}" ng-if="(pagedItems.length == 0 || checkedItems.length <= 1) && (users|filter:searchrecord).length != 0" class="text-center text-muted">
                             <div>Click row to view user profile.</div>
-                            <div ng-if="['active', 'checkedin'].indexOf(displayType) > -1">Select Multiple Users and perform Bulk User Operations.</div>
+                            <div ng-if="displayType !== 'all'">Select Multiple Users and perform Bulk User Operations.</div>
                         </td>
                         <td colspan="{{getColspan()}}" ng-if="(users|filter:searchrecord).length == 0" class="text-center">
                             <strong>DATA NOT FOUND.</strong>
