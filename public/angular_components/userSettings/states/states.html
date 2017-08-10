@@ -64,7 +64,24 @@
                             <h4 class="panel-title"><i class="fa fa-bar-chart-o"></i> Total Points Received Timeline Chart </h4>
                         </div>
                         <div class="panel-body">
-                            <div id="morris-area-chart"></div>
+                            <div class="row">
+                                <div class="form-group col-xs-12">
+                                    <label class="col-xs-1 control-label"><h5>Course:</h5></label>
+                                    <div class="col-xs-5">
+                                        <select ng-model="selectedCourseArea" ng-options="course as course.description for course in courses" class="form-control" required>
+                                            <option value="">Please select a course...</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div ng-if="areadata.length === 0" class="col-xs-12 text-center">
+                                    <strong>No Points Earned.</strong>
+                                </div>
+
+                                <div class="col-xs-12">
+                                    <area-Chart ng-if="areadata.length !== 0" areadata="areadata" xkey="xkey" ykeys="ykeys" labels="labels"></area-Chart>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
