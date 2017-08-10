@@ -93,7 +93,7 @@
                         <table class="table table-bordered table-striped table-hover">
                             <thead>
                             <!--input student number-->
-                            <td colspan="5" class="row">
+                            <td colspan="6" class="row">
                                 <div class="col-xs-12">
                                     <form class="col-xs-6" name="inputStudentNum">
                                         <div class="input-group">
@@ -105,6 +105,8 @@
                                         <a class="btn btn-success customBtn" data-target="#inputStudentNum" ng-disabled="inputStudentNum.studentNumber.$invalid || categories.length === 0" ng-click="addAssignee(studentNum)"> Add Assignee </a>
                                     </div>
                                 </div>
+                                <div class="text-danger col-xs-12" ng-show="addAssigneeFailed">User does not exist or user is inactive message.</div>
+                                <div class="text-danger col-xs-12" ng-show="assigneeExist">User is already in the table.</div>
                             </td>
                             </thead>
                             <thead>
@@ -113,6 +115,7 @@
                                 <th>Assignee Last Name</th>
                                 <th>Assignee Preferred Name</th>
                                 <th>Email</th>
+                                <th>Student Number</th>
                                 <th>Clear</th>
                             </tr>
                             </thead>
@@ -122,18 +125,19 @@
                                 <td>{{user.name.lastName}}</td>
                                 <td>{{user.name.preferredName}}</td>
                                 <td>{{user.email}}</td>
+                                <td>{{user.studentNumber}}</td>
                                 <td class="text-center">
                                     <button class="btn btn-danger btn-xs" data-title="Clear" ng-click="removeAssignee(user)" ><span class="glyphicon glyphicon-trash"></span></button>
                                 </td>
                             </tr>
                             </tbody>
                             <tfoot>
-                            <td colspan="5" ng-if="users.length!==0" class="text-center">
+                            <td colspan="6" ng-if="users.length!==0" class="text-center">
                                 <button class="btn btn-danger" ng-click="clearSelectedUser()">Clear All</button>
                                 <button class="btn btn-info">Give Points</button>
                                 <strong class="">{{users.length}} users selected</strong>
                             </td>
-                            <td colspan="5" ng-if="users.length===0" class="text-center">
+                            <td colspan="6" ng-if="users.length===0" class="text-center">
                                 <strong> NO USER CHOSEN. </strong>
                             </td>
                             </tfoot>

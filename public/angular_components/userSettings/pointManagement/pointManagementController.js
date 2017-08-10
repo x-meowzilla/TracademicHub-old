@@ -79,29 +79,49 @@
         };
 
 
+        $scope.addAssigneeFailed = false;
+        $scope.assigneeExist = false;
+        $scope.$watch('studentNum', function(newValue, oldValue) {
+            $scope.addAssigneeFailed = false;
+            $scope.assigneeExist = false;
+        }, true);
         $scope.addAssignee = function (studentNum) {
             if(studentNum)
             {
-                _AjaxRequest.get('/api/users?' + $.param({isActive: true, studentNumber: studentNum}))
-                    .then(
-                        function successCallback(result) {
-                            if(result.data.length === 1)
-                            {
-                                $scope.users.push(result.data[0]);
+                angular.forEach($scope.users, function (user) {
+                    console.log(user.studentNumber);
+                    console.log(studentNum);
+                    console.log($scope.assigneeExist);
+                    if(user.studentNumber.toString() === studentNum.toString() && !$scope.assigneeExist)
+                    {
+                        $scope.assigneeExist = true;
+                    }
+                });
+
+                if(!$scope.assigneeExist)
+                {
+                    _AjaxRequest.get('/api/users?' + $.param({isActive: true, studentNumber: studentNum}))
+                        .then(
+                            function successCallback(result) {
+                                if(result.data.length === 1)
+                                {
+                                    $scope.users.push(result.data[0]);
+                                }
+                                else if(result.data.length === 0)
+                                {
+                                    // TODO: pop up user does not exist or user is inactive message.
+                                    $scope.addAssigneeFailed = true;
+                                }
+                                else
+                                {
+                                    console.error('One student number should only refer to one student.');
+                                }
+                            },
+                            function errorCallback(error) {
+                                console.error(error);
                             }
-                            else if(result.data.length === 0)
-                            {
-                                // TODO: pop up user does not exist or user is inactive message.
-                            }
-                            else
-                            {
-                                console.error('One student number should only refer to one student.');
-                            }
-                        },
-                        function errorCallback(error) {
-                            console.error(error);
-                        }
-                    );
+                        );
+                }
             }
         };
         
