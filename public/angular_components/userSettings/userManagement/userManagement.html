@@ -76,9 +76,7 @@
                             <td ng-if="displayType !== 'all'">
                                 <input type="checkbox" ng-model="item.selected" ng-click="checkRow(item, currentpage)"/>
                             </td>
-                            <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.name.firstName}}
-                                <user-card-modal user="item" pid="item._id"></user-card-modal>
-                            </td>
+                            <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.name.firstName}}</td>
                             <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.name.lastName}}</td>
                             <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.name.preferredName}}</td>
                             <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.email}}</td>
@@ -100,6 +98,7 @@
                                     <span class="glyphicon glyphicon-pencil"></span>
                                 </button>
                                 <edit-Profile user="item" pid="item._id"></edit-Profile>
+                                <user-card-modal user="item" pid="item._id"></user-card-modal>
                             </td>
                             <!--delete user button-->
                             <td ng-if="['active', 'checkedin', 'admins'].indexOf(displayType) > -1" class="text-center">
