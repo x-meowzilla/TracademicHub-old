@@ -130,16 +130,14 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="user in users">
-                                <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">
-                                    {{user.name.firstName}}
-                                    <user-card-modal user="user" pid="user._id"></user-card-modal>
-                                </td>
+                                <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.name.firstName}}</td>
                                 <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.name.lastName}}</td>
                                 <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.name.preferredName}}</td>
                                 <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.email}}</td>
                                 <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.studentNumber}}</td>
                                 <td class="text-center">
                                     <button class="btn btn-danger btn-xs" data-title="Clear" ng-click="removeAssignee(user)" ><span class="glyphicon glyphicon-trash"></span></button>
+                                    <user-card-modal user="user" pid="user._id"></user-card-modal>
                                 </td>
                             </tr>
                             </tbody>
