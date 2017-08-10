@@ -86,7 +86,7 @@ router.patch('/:courseID/update', function (req, res) {
             case 'name':
             case 'description':
             case 'academicTerm':
-            case 'accessPrivileges':  // TODO?
+            // case 'userPrivileges':  // TODO?
             case 'isActive':
                 updateDoc[arg] = req.query[arg];
                 break;

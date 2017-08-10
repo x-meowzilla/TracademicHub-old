@@ -35,7 +35,7 @@ router.get('/', mw.checkAuthentication, function (req, res) {
 
 router.post('/', mw.checkAuthentication, function (req, res) {
     "use strict";
-    // req.body = {assigneeID, pointCategoryID, [pointValue]},
+    // req.body = {assigneeID, pointCategoryID, [pointValue]},  // TODO - courseID
     UserModel.findById(req.body.assigneeID)
         .then(function (assignee) {
             return assignee ? grantPoint(req.user._id, assignee._id, req.body.pointValue, req.body.pointCategoryID) : res.status(404).send('Target assignee id: "' + req.params.assigneeID + '" does not exist.').end();

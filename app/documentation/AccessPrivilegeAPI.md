@@ -16,8 +16,15 @@ Access Privilege API Documentation
         + Content-Type: ```application/json```
         + Body: ```array of object```
             + _id: (string) unique access privilege ID
+            + name: (string) privilege name
+            + course: (object)
+                + _id: (string) course ID
+                + name: (string) course name
+                + startDate: (Date) starting date in UTC format
+                + endDate: (Date) ending date in UTC format
+                + academicTerm: (string)
+                + isActive: (boolean)
             + value: (number) unique access privilege value
-            + description: (string) unique point category description
     + **Response:** 401
         + Body:
             + errmsg: 'Please login before performing this action.'
@@ -28,7 +35,7 @@ Access Privilege API Documentation
         + Body:
             + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-activate your account.'
 
-+ **DELETE**
++ **DELETE (Temporarily Disabled)**
     + **Description:** Delete access privilege based on given query string condition.
     + **Request:** ```DELETE /api/privileges/```
         + By default, if no query string is given, then error raised.
@@ -38,7 +45,7 @@ Access Privilege API Documentation
         + **Query String Options:**
             + _id: (string) unique access privilege ID
             + value: (number) unique access privilege value
-            + description: (string) unique point category description
+            + name: (string) access privilege name
     + **Response:** 200
         + Body: 'Delete succeeded. # records deleted.'
     + **Response:** 200

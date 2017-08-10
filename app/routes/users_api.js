@@ -131,6 +131,7 @@ router.post('/', uploadMemory.single('csvfile'), function (req, res) {
                 prev[val] = values[i];
                 return prev;
             }, {});
+            d.isLocalUser = false;
             // merge name fields into one property
             d.name = {firstName: d.firstName, lastName: d.lastName};
             delete d.firstName;

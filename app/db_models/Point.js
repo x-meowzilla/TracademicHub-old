@@ -7,6 +7,7 @@ var pointSchema = new Schema({
     assignee: {type: Schema.Types.ObjectId, ref: 'User', required: true},
     grantDate: {type: Date, index: true, default: Date.now, required: true},
     value: {type: Number, default: 1, required: true},
+    // course: {type: Schema.Types.ObjectId, ref: 'Course', required: true},
     category: {type: Schema.Types.ObjectId, ref: 'PointCategory', required: true}
 
 }, {collection: 'collection-Points'});
@@ -14,7 +15,11 @@ var pointSchema = new Schema({
 pointSchema.statics.findPointData = function (findDoc) {
     "use strict";
     var point = this.model('Point');
-    return point.find(findDoc).populate('assigner').populate('assignee').populate('category');
+    return point.find(findDoc)
+        .populate('assigner', ['_id', 'name'])
+        .populate('assignee', ['_id', 'name'])
+        // .populate('course', ['_id', 'name', 'startDate', 'endDate', 'academicTerm', 'isActive'])
+        .populate('category');
 };
 
 pointSchema.statics.deletePointData = function (deleteDoc) {

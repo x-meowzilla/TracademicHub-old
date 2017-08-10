@@ -18,11 +18,24 @@ Point API Documentation
         + Content-Type: ```application/json```
         + Body: ```array of object```
             + _id: (string) unique point ID
-            + assignerID: (string)
-            + assigneeID: (string)
+            + assigner: (object)
+                + _id: (string) assigner ID
+                + name: (object)
+                    + firstName: (string)
+                    + lastName: (string)
+                    + preferredName: (string)
+            + assignee: (object)
+                + _id: (string) assignee ID
+                + name: (object)
+                    + firstName: (string)
+                    + lastName: (string)
+                    + preferredName: (string)
             + grantDate: (Date) 
             + value: (string) point value
-            + categoryID: (string) unique point category ID (ID refer to PointCollection collection)
+            + category: (object)
+                + _id: (string) unique point category ID (ID refer to PointCategory collection)
+                + name: (string) name of the category
+                + description: (string) [_Optional_]
     + **Response:** 401
         + Body:
             + errmsg: 'Please login before performing this action.'
@@ -40,16 +53,29 @@ Point API Documentation
         + Body:
             + assigneeID: (string) unique user ID
             + pointValue: (number) the value of this point [_Optional_]
-            + pointCategoryID: (boolean) point category ID (ID refer to PointCollection collection)
+            + pointCategoryID: (boolean) point category ID (ID refer to PointCategory collection)
     + **Response:** 200
         + Content-Type: ```application/json```
-        + Body:
+        + Body
             + _id: (string) unique point ID
-            + assignerID: (string)
-            + assigneeID: (string)
+            + assigner: (object)
+                + _id: (string) assigner ID
+                + name: (object)
+                    + firstName: (string)
+                    + lastName: (string)
+                    + preferredName: (string)
+            + assignee: (object)
+                + _id: (string) assignee ID
+                + name: (object)
+                    + firstName: (string)
+                    + lastName: (string)
+                    + preferredName: (string)
             + grantDate: (Date) 
             + value: (string) point value
-            + categoryID: (string) unique point category ID (ID refer to PointCollection collection)
+            + category: (object)
+                + _id: (string) unique point category ID (ID refer to PointCategory collection)
+                + name: (string) name of the category
+                + description: (string) [_Optional_]
     + **Response:** 401
         + Body:
             + errmsg: 'Please login before performing this action.'
@@ -77,7 +103,7 @@ Point API Documentation
     + **Response:** 200
         + Body: 'Delete succeeded. # records deleted.'
     + **Response:** 200
-        + Body: 'Attention: No record has been deleted.'
+        + Body: 'No record has been deleted.'
     + **Response:** 400
         + Body:
             + errmsg: 'Failed to delete. Delete option not found.'
