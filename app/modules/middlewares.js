@@ -124,9 +124,9 @@ module.exports.checkAuthentication = function (req, res, next) {
     "use strict";
 
     if (!req.isAuthenticated())
-        return res.status(401).send('Please login before performing this action.').end('Unauthorized');
+        return res.status(401).send('Please login before performing this action.').end();
     else if (!req.user.isActive)
-        return res.status(403).send('Permission denied. Your account is inactive. Please contact instructor to re-active your account.').end('Forbidden');
+        return res.status(403).send('Permission denied. Your account is inactive. Please contact instructor to re-active your account.').end();
     else
         return next();
 };
