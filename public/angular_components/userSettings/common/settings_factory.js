@@ -297,6 +297,14 @@
 
                 };
 
+                // check validation of input access privilege field
+                $scope.$watchGroup(['selectedCourse', 'selectedPrivilege'], function(newValues, oldValues, scope) {
+                    if(angular.isUndefined(newValues[1]) || newValues[1] === null)
+                    {
+                        $scope.editUserProfileForm.course.$setPristine();
+                    }
+                });
+
                 $scope.clearForm = function () {
                     angular.element("input[type='file']").val(null);
                     $scope.editUserInfo = $scope.getCurrentUser();

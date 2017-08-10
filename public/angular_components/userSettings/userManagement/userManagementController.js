@@ -3,8 +3,7 @@
 
     angular
         .module('TracademicHub')
-        .controller('userManagementController', userManagementController)
-        .directive('addUserModal', addUserModal);
+        .controller('userManagementController', userManagementController);
 
     userManagementController.$inject = ['$scope', '$location', '_Authentication', '_AjaxRequest', '_AssignPoints', 'AUTH_EVENTS']; // dependency injection
 
@@ -283,66 +282,55 @@
             _AssignPoints.setAssignees(users);
         };
 
-    }
 
-    addUserModal.$inject = ['_AjaxRequest'];
-    function addUserModal(_AjaxRequest) {
-        return {
-            restrict: 'EA',
-            scope: {
-                users: '='
-            },
-            templateUrl:'angular_components/userSettings/common/userSettingsModals/addUserModal.html',
-            link: function ($scope, element) {
-                $scope.utoridExist = false;
-                $scope.$watch('editUserInfo.utorid', function(newValue, oldValue) {
-                    $scope.utoridExist = false;
-                }, true);
 
-                $scope.editUserInfoOrigin = {utorid: '', password: '', repassword: '', firstName: '', lastName: '', preferredName: '', email: '', accessPrivilege: ''};
-                $scope.editUserInfo = angular.copy($scope.editUserInfoOrigin);
+        // add users
+        $scope.utoridExist = false;
+        $scope.$watch('editUserInfo.utorid', function(newValue, oldValue) {
+            $scope.utoridExist = false;
+        }, true);
 
-                $scope.createAdmin = function () {
-                    _AjaxRequest.put('/api/local-register/', $scope.editUserInfo)
-                        .then(
-                            function successCallback(result) {
-                                $scope.clearForm();
-                                angular.element("#addUserModal").modal('hide');
-                                $scope.users.push(result.data);
-                            },
-                            function errorCallback(error) {
-                                if(error.status === 409)
-                                {
-                                    $scope.utoridExist = true;
-                                }
-                            }
-                        );
-                };
+        $scope.editUserInfoOrigin = {utorid: '', password: '', repassword: '', firstName: '', lastName: '', preferredName: '', email: '', accessPrivilege: ''};
+        $scope.editUserInfo = angular.copy($scope.editUserInfoOrigin);
 
-                $scope.importCSVFile = function () {
-                    console.log($scope.csvfile);
-                    _AjaxRequest.post('/api/users/', $scope.csvfile)
-                        .then(
-                            function successCallback(result) {
-                                $scope.clearForm();
-                                angular.element("#addUserModal").modal('hide');
-                                $scope.users.push(result.data);
-                            },
-                            function errorCallback(error) {
-                                // TODO: show save failed banner
-                                console.error(error);
-                            }
-                        );
-                };
-
-                $scope.clearForm = function () {
-                    angular.element("input[type='file']").val(null);
-                    $scope.editUserInfo = angular.copy($scope.editUserInfoOrigin);
-                    $scope.addUserForm.$setPristine();
-                    $scope.addUserForm.$setUntouched();
-                };
-            }
+        $scope.createAdmin = function () {
+            _AjaxRequest.put('/api/local-register/', $scope.editUserInfo)
+                .then(
+                    function successCallback(result) {
+                        $scope.clearForm();
+                        angular.element("#addUserModal").modal('hide');
+                        getUsers();
+                    },
+                    function errorCallback(error) {
+                        if(error.status === 409)
+                        {
+                            $scope.utoridExist = true;
+                        }
+                    }
+                );
         };
+
+        $scope.importCSVFile = function () {
+            console.log($scope.csvfile);
+            _AjaxRequest.post('/api/users/', $scope.csvfile)
+                .then(
+                    function successCallback(result) {
+                        $scope.clearForm();
+                        angular.element("#addUserModal").modal('hide');
+                        getUsers()
+                    },
+                    function errorCallback(error) {
+                        // TODO: show save failed banner
+                        console.error(error);
+                    }
+                );
+        };
+
+        $scope.clearForm = function () {
+            angular.element("input[type='file']").val(null);
+            $scope.editUserInfo = angular.copy($scope.editUserInfoOrigin);
+        };
+
     }
 
 }());

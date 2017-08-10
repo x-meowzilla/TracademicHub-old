@@ -15,8 +15,8 @@
                     <i class="fa fa-fw fa-plus-circle titl-side-btn" data-toggle="modal" data-target="#addUserModal"></i>
                 </h1>
             </div>
-            <add-User-Modal users="users"></add-User-Modal>
         </div>
+        <div ng-include="'angular_components/userSettings/common/userSettingsModals/addUserModal.html'"></div>
 
         <!--switch views control buttons-->
         <div class="well well-sm" ng-init="tableDisplay = true">
@@ -117,13 +117,13 @@
                         <tfoot>
                         <td colspan="{{getColspan()}}" ng-if="pagedItems.length != 0 && checkedItems.length > 1">
                             <!--delete mutiple users button-->
-                            <span ng-if="displayType !== 'inactive'" class="btn btn-danger checkedAllSection" ng-confirm-click="Are you sure to delete selected user?" confirmed-click="deleteSelectedUsers(checkedItems)">Delete Selected Users</span>
+                            <span ng-if="displayType !== 'inactive'" ng-disabled="displayType === 'admins'" class="btn btn-danger checkedAllSection" ng-confirm-click="Are you sure to delete selected user?" confirmed-click="deleteSelectedUsers(checkedItems)">Delete Selected Users</span>
                             <!--modify mutiple user access privileges button-->
-                            <span ng-if="displayType !== 'inactive'" class="btn btn-primary checkedAllSection" data-title="ModifyPrivilege" data-toggle="modal" data-target="#modifyPrivilegeModal">Modify Access Privilege</span>
+                            <span ng-if="displayType !== 'inactive'" ng-disabled="displayType === 'admins'" class="btn btn-primary checkedAllSection" data-title="ModifyPrivilege" data-toggle="modal" data-target="#modifyPrivilegeModal">Modify Access Privilege</span>
                             <!--give points to mutiple users button-->
-                            <span ng-if="displayType !== 'inactive'" class="btn btn-info checkedAllSection" ng-click="givePoints(checkedItems)">Give Points</span>
+                            <span ng-if="displayType !== 'inactive'" ng-disabled="displayType === 'admins'" class="btn btn-info checkedAllSection" ng-click="givePoints(checkedItems)">Give Points</span>
                             <!--active mutiple users button-->
-                            <span ng-if="displayType === 'inactive'" class="btn btn-success checkedAllSection" ng-confirm-click="Are you sure to active selected user?" confirmed-click="activeSelectedUsers(checkedItems)">Active Selected Users</span>
+                            <span ng-if="displayType === 'inactive'" ng-disabled="displayType === 'admins'" class="btn btn-success checkedAllSection" ng-confirm-click="Are you sure to active selected user?" confirmed-click="activeSelectedUsers(checkedItems)">Active Selected Users</span>
                             <span><strong class="">{{checkedItems.length}} record selected</strong></span>
                         </td>
                         <td colspan="{{getColspan()}}" ng-if="(pagedItems.length == 0 || checkedItems.length <= 1) && (users|filter:searchrecord).length != 0" class="text-center text-muted">
