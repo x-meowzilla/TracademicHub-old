@@ -66,7 +66,7 @@
 
         $scope.users = _AssignPoints.getAssignees();
 
-        $scope.clearSelectedUser = function () {
+        $scope.clearAllAssignees = function () {
             _AssignPoints.setAssignees([]);
             $scope.users = [];
         };
@@ -75,6 +75,7 @@
             $scope.users = $scope.users.filter(function (item) {
                 return item._id !== assignee._id;
             });
+            _AssignPoints.setAssignees($scope.users);
         };
 
         $scope.getAssignedPoints = function () {
@@ -96,11 +97,13 @@
             $scope.addAssigneeFailed = false;
             $scope.assigneeExist = false;
         }, true);
+
         $scope.addAssignee = function (studentNum) {
             if(studentNum)
             {
+                $scope.assigneeExist = false;
                 angular.forEach($scope.users, function (user) {
-                    if(user.studentNumber.toString() === studentNum.toString() && !$scope.assigneeExist)
+                    if(user.studentNumber.toString() === studentNum.toString())
                     {
                         $scope.assigneeExist = true;
                     }
