@@ -22,58 +22,62 @@
         <div class="well well-sm" ng-init="tableDisplay = true">
             <strong>Display</strong>
             <div class="btn-group">
-                <span id="list" class="btn btn-default btn-sm" ng-click="tableDisplay = true; getUsers('active')" ng-class="{active: tableDisplay}" >
+                <span id="list" class="btn btn-default btn-sm" ng-click="tableDisplay = true; displayUser.displayType = 'active'" ng-class="{active: tableDisplay}" >
                     <span class="glyphicon glyphicon-th-list"></span> List</span>
-                <span id="grid" class="btn btn-default btn-sm" ng-click="tableDisplay = false; getUsers('active')" ng-class="{active: !tableDisplay}">
+                <span id="grid" class="btn btn-default btn-sm" ng-click="tableDisplay = false; displayUser.displayType = 'active'" ng-class="{active: !tableDisplay}">
                     <span class="glyphicon glyphicon-th"></span> Grid</span>
             </div>
         </div>
 
         <!--table view-->
         <div class="row" ng-if="tableDisplay">
-            <div class="col-lg-12" page-Control gap="5" viewby="viewby" currentpage="$parent.currentpage" operations="operations" items="users" searchrecord="searchrecord">
+            <!-- display user type controller -->
+            <div id="displayUserController" class="col-xs-12">
+                <div class="col-xs-4">
+                    <label>User Type: </label>
+                    <select id="userTypeSelection" ng-model="displayUser.displayType" class="form-control" >
+                        <option ng-repeat="displayType in displayTypes">{{displayType}}</option>
+                    </select>
+                </div>
+                <div ng-if="displayUser.displayType === 'active'" class="col-xs-4">
+                    <label>Course: </label>
+                    <select id="courseSelection" ng-model="displayUser.displayCourse" ng-options="course as course.description for course in courses" class="form-control" required>
+                        <option value="">Please select a course...</option>
+                    </select>
+                </div>
+                <div ng-if="displayUser.displayType === 'active' && displayUser.displayCourse.userPrivileges.length > 0" class="col-xs-4">
+                    <label>User Privilege: </label>
+                    <select ng-model="displayUser.displayPrivilege" ng-options="privilege as privilege.name for privilege in displayUser.displayCourse.userPrivileges" class="form-control" required>
+                        <option value="">Please select a user privilege...</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="col-xs-12" page-Control gap="5" viewby="viewby" currentpage="$parent.currentpage" operations="operations" items="users" searchrecord="searchrecord">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
-                        <td colspan="{{getColspan()}}" class="typeController">
-                            <ul class="nav nav-pills">
-                                <li>
-                                    <a data-toggle="tab" data-ng-click="getUsers('all')">All Users</a>
-                                </li>
-                                <li class="active">
-                                    <a data-toggle="tab" data-ng-click="getUsers('active')">Active Users</a>
-                                </li>
-                                <li>
-                                    <a data-toggle="tab" data-ng-click="getUsers('inactive')">Inactive Users</a>
-                                </li>
-                                <li>
-                                    <a data-toggle="tab" data-ng-click="getUsers('checkedin')">Recently Checked-in Users</a>
-                                </li>
-                                <li>
-                                    <a data-toggle="tab" data-ng-click="getUsers('admins')">Admins</a>
-                                </li>
-                            </ul>
-                        </td>
                         <tr>
-                            <th ng-if="displayType !== 'all'">
+                            <th ng-if="displayUser.displayType !== 'all'">
                                 <input type="checkbox" ng-model="selectedAll.checked" ng-click="checkAll(currentpage)" data-ng-disabled="(users|filter:searchrecord).length === 0"/>
                             </th>
                             <th sort-Records order="name.firstName", sort="sort">First Name</th>
                             <th sort-Records order="name.lastName", sort="sort">Last Name</th>
                             <th sort-Records order="name.preferredName", sort="sort">Preferred Name</th>
                             <th sort-Records order="email", sort="sort">Email</th>
-                            <th ng-if="displayType === 'active' || displayType === 'inactive'" sort-Records order="studentNumber", sort="sort">Student Number</th>
+                            <th ng-if="['active', 'inactive'].indexOf(displayUser.displayType) > -1" sort-Records order="studentNumber", sort="sort">Student Number</th>
                             <th sort-Records order="lastLoginDate", sort="sort">Last Login Date</th>
-                            <th ng-if="displayType === 'all'" sort-Records order="isActive", sort="sort">Is Active</th>
-                            <th ng-if="['active', 'checkedin', 'admins'].indexOf(displayType) > -1">Give Points</th>
-                            <th ng-if="['active', 'checkedin', 'admins'].indexOf(displayType) > -1">Edit</th>
-                            <th ng-if="['active', 'checkedin', 'admins'].indexOf(displayType) > -1">Delete</th>
-                            <th ng-if="displayType === 'inactive'">Active User</th>
+                            <th ng-if="displayUser.displayType === 'all'" sort-Records order="isActive", sort="sort">Is Active</th>
+                            <th ng-if="['active', 'checkedin'].indexOf(displayUser.displayType) > -1">Give Points</th>
+                            <th ng-if="['active', 'checkedin'].indexOf(displayUser.displayType) > -1">Edit</th>
+                            <th ng-if="['active', 'checkedin'].indexOf(displayUser.displayType) > -1">Delete</th>
+                            <th ng-if="displayUser.displayType === 'inactive'">Active User</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="item in getPagedItems(((users | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby)) | orderBy:sort.sortingOrder:sort.reverse)">
-                            <td ng-if="displayType !== 'all'">
+                            <td ng-if="displayUser.displayType !== 'all'">
                                 <input type="checkbox" ng-model="item.selected" ng-click="checkRow(item, currentpage)"/>
                                 <user-card-modal user="item" pid="item._id"></user-card-modal>
                             </td>
@@ -81,9 +85,9 @@
                             <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.name.lastName}}</td>
                             <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.name.preferredName}}</td>
                             <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.email}}</td>
-                            <td ng-if="displayType === 'active' || displayType === 'inactive'" data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.studentNumber}}</td>
+                            <td ng-if="['active', 'inactive'].indexOf(displayUser.displayType) > -1" data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.studentNumber}}</td>
                             <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.lastLoginDate}}</td>
-                            <td ng-if="displayType === 'all'">
+                            <td ng-if="displayUser.displayType === 'all'">
                                 <div data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">
                                     <span ng-if="item.isActive" class="glyphicon glyphicon-ok"></span>
                                     <span ng-if="!item.isActive" class="glyphicon glyphicon-remove"></span>
@@ -91,26 +95,26 @@
                                 <user-card-modal user="item" pid="item._id"></user-card-modal>
                             </td>
                             <!--give points button-->
-                            <td ng-if="['active', 'checkedin', 'admins'].indexOf(displayType) > -1" class="text-center">
+                            <td ng-if="['active', 'checkedin', 'admins'].indexOf(displayUser.displayType) > -1" class="text-center">
                                 <button ng-disabled="item.isLocalUser" class="btn btn-warning btn-xs" data-ng-click="givePoints([item])">
                                     <span class="glyphicon glyphicon-gift"></span>
                                 </button>
                             </td>
                             <!--edit user profile button-->
-                            <td ng-if="['active', 'checkedin', 'admins'].indexOf(displayType) > -1" class="text-center">
+                            <td ng-if="['active', 'checkedin', 'admins'].indexOf(displayUser.displayType) > -1" class="text-center">
                                 <button ng-disabled="item.isLocalUser" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit{{item._id}}">
                                     <span class="glyphicon glyphicon-pencil"></span>
                                 </button>
                                 <edit-Profile user="item" pid="item._id"></edit-Profile>
                             </td>
                             <!--delete user button-->
-                            <td ng-if="['active', 'checkedin', 'admins'].indexOf(displayType) > -1" class="text-center">
+                            <td ng-if="['active', 'checkedin', 'admins'].indexOf(displayUser.displayType) > -1" class="text-center">
                                 <button ng-disabled="item.isLocalUser" class="btn btn-danger btn-xs" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteUser(item)">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </button>
                             </td>
                             <!--active user button-->
-                            <td ng-if="displayType === 'inactive'" class="text-center">
+                            <td ng-if="displayUser.displayType === 'inactive'" class="text-center">
                                 <button ng-disabled="item.isLocalUser" class="btn btn-success btn-xs" ng-confirm-click="Are you sure to active this user?" confirmed-click="activeUser(item)">
                                     <span class="glyphicon glyphicon-flag"></span>
                                 </button>
@@ -121,18 +125,18 @@
                         <tfoot>
                         <td colspan="{{getColspan()}}" ng-if="pagedItems.length != 0 && checkedItems.length > 1">
                             <!--delete mutiple users button-->
-                            <span ng-if="displayType !== 'inactive'" ng-disabled="displayType === 'admins'" class="btn btn-danger checkedAllSection" ng-confirm-click="Are you sure to delete selected user?" confirmed-click="deleteSelectedUsers(checkedItems)">Delete Selected Users</span>
+                            <span ng-if="displayUser.displayType !== 'inactive'" ng-disabled="displayUser.displayType === 'admins'" class="btn btn-danger checkedAllSection" ng-confirm-click="Are you sure to delete selected user?" confirmed-click="deleteSelectedUsers(checkedItems)">Delete Selected Users</span>
                             <!--modify mutiple user access privileges button-->
-                            <span ng-if="displayType !== 'inactive'" ng-disabled="displayType === 'admins'" class="btn btn-primary checkedAllSection" data-title="ModifyPrivilege" data-toggle="modal" data-target="#modifyPrivilegeModal">Modify Access Privilege</span>
+                            <span ng-if="displayUser.displayType !== 'inactive'" ng-disabled="displayUser.displayType === 'admins'" class="btn btn-primary checkedAllSection" data-title="ModifyPrivilege" data-toggle="modal" data-target="#modifyPrivilegeModal">Modify Access Privilege</span>
                             <!--give points to mutiple users button-->
-                            <span ng-if="displayType !== 'inactive'" ng-disabled="displayType === 'admins'" class="btn btn-info checkedAllSection" ng-click="givePoints(checkedItems)">Give Points</span>
+                            <span ng-if="displayUser.displayType !== 'inactive'" ng-disabled="displayUser.displayType === 'admins'" class="btn btn-info checkedAllSection" ng-click="givePoints(checkedItems)">Give Points</span>
                             <!--active mutiple users button-->
-                            <span ng-if="displayType === 'inactive'" ng-disabled="displayType === 'admins'" class="btn btn-success checkedAllSection" ng-confirm-click="Are you sure to active selected user?" confirmed-click="activeSelectedUsers(checkedItems)">Active Selected Users</span>
+                            <span ng-if="displayUser.displayType === 'inactive'" ng-disabled="displayUser.displayType === 'admins'" class="btn btn-success checkedAllSection" ng-confirm-click="Are you sure to active selected user?" confirmed-click="activeSelectedUsers(checkedItems)">Active Selected Users</span>
                             <span><strong class="">{{checkedItems.length}} record selected</strong></span>
                         </td>
                         <td colspan="{{getColspan()}}" ng-if="(pagedItems.length == 0 || checkedItems.length <= 1) && (users|filter:searchrecord).length != 0" class="text-center text-muted">
                             <div>Click row to view user profile.</div>
-                            <div ng-if="displayType !== 'all'">Select Multiple Users and perform Bulk User Operations.</div>
+                            <div ng-if="displayUser.displayType !== 'all'">Select Multiple Users and perform Bulk User Operations.</div>
                         </td>
                         <td colspan="{{getColspan()}}" ng-if="(users|filter:searchrecord).length == 0" class="text-center">
                             <strong>DATA NOT FOUND.</strong>

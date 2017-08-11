@@ -39,26 +39,24 @@
     margin-right: 20px;
 }
 
-.typeController {
-    border: 1px solid #cccccc;
+#displayUserController {
+    width: 70%;
+    border: 1px solid #204d74;
     padding-left: 7px;
-    padding-bottom: 7px;
-    padding-top: 7px;
+    padding-bottom: 15px;
+    padding-top: 10px;
     border-radius: 30px;
     margin-top: 7px;
-    margin-bottom: 7px;
+    margin-bottom: 10px;
+    margin-left: 15px;
 }
 
-.typeController>ul>li {
-    margin-right: 10px;
-    cursor: pointer;
-    cursor: hand;
-    text-decoration: underline;
+#userTypeSelection{
+    border: 1px solid #204d74;
 }
 
-.typeController>ul>li>a {
-    border-radius: 50px;
-    font-size: 15px;
+#courseSelection{
+    border: 1px solid #28a4c9;
 }
 
 
@@ -255,4 +253,26 @@
 .courseCard>div>span{
     color: #5e5e5e;
     font-size: medium;
+}
+
+.typeController {
+    border: 1px solid #cccccc;
+    padding-left: 7px;
+    padding-bottom: 7px;
+    padding-top: 7px;
+    border-radius: 30px;
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+
+.typeController>ul>li {
+    margin-right: 10px;
+    cursor: pointer;
+    cursor: hand;
+    text-decoration: underline;
+}
+
+.typeController>ul>li>a {
+    border-radius: 50px;
+    font-size: 15px;
 }

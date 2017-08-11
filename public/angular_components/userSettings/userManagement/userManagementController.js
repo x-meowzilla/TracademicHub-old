@@ -10,35 +10,36 @@
     function userManagementController($scope, $location, _Authentication, _AjaxRequest, _AssignPoints, AUTH_EVENTS) {
         // users data settings
         $scope.currentUser = _Authentication.getLoginUser();
+        $scope.defaultAvatar = "../images/default-avatar.png";
 
         $scope.users = [];
-        $scope.displayType = 'active';
+        $scope.displayTypes = ['all', 'active', 'inactive', 'checkedin'];
+        $scope.displayUser = {displayType: $scope.displayTypes[1], displayCourse: {}, displayPrivilege: {}};
+
         var getUsers = function () {
-            _AjaxRequest.get('/api/users')
+            var userParam = {};
+
+            if($scope.displayUser.displayType === 'active')
+            {
+                userParam['isActive'] = true;
+            }
+            else if($scope.displayUser.displayType === 'inactive')
+            {
+                userParam['isActive'] = false;
+            }
+
+            _AjaxRequest.get('/api/users?' + $.param(userParam))
                 .then(
                     function successCallback(result) {
                         $scope.users = result.data.filter(function (item) {
-                            var res = item._id !== _Authentication.getLoginUser()._id && !item.isLocalUser;
-                            if($scope.displayType === 'all')
-                            {
-                                return item._id !== _Authentication.getLoginUser()._id;
-                            }
-                            else if($scope.displayType === 'active')
-                            {
-                                return res && item.isActive;
-                            }
-                            else if($scope.displayType === 'inactive')
-                            {
-                                return res && !item.isActive;
-                            }
-                            else if($scope.displayType === 'checkedin')
+                            var res = item._id !== $scope.currentUser._id && !item.isLocalUser;
+
+                            if($scope.displayUser.displayType === 'checkedin')
                             {
                                 return res && item.lastLoginDate;
                             }
-                            else
-                            {
-                                return item._id !== _Authentication.getLoginUser()._id && item.isLocalUser;
-                            }
+
+                            return res;
                         });
                     },
                     function errorCallback(error) {
@@ -46,17 +47,15 @@
                     }
                 );
         };
-        $scope.getUsers = function (displayType) {
-            $scope.displayType = displayType;
+
+        $scope.$watch('displayUser', function(newValue, oldValue) {
             getUsers();
             clearSelected();
-        };
+        }, true);
 
         (function () {
             getUsers();
         }());
-
-        $scope.defaultAvatar = "../images/default-avatar.png";
 
 
 
@@ -71,15 +70,15 @@
         $scope.searchrecord = '';
 
         $scope.getColspan = function () {
-            if($scope.displayType === 'all')
+            if($scope.displayUser.displayType === 'all')
             {
                 return 6;
             }
-            else if($scope.displayType === 'active')
+            else if($scope.displayUser.displayType === 'active')
             {
                 return 10;
             }
-            else if($scope.displayType === 'inactive')
+            else if($scope.displayUser.displayType === 'inactive')
             {
                 return 8;
             }
