@@ -23,18 +23,53 @@
 
         $scope.courses = [];
         (function () {
-            _AjaxRequest.get('/api/courses/')
+            $scope.courses = $scope.getCurrentUser().courseEnrolled.course;
+        }());
+
+        // Morris data
+        var getDataList = function (chartType) {
+            var data = [];
+
+            _AjaxRequest.get('/api/points-category/')
                 .then(
                     function successCallback(result) {
-                        $scope.courses = result.data;
+                        angular.forEach(result.data, function (category) {
+                            var value = 0;
+                            _AjaxRequest.get('/api/points?' + $.param({assignerID: $scope.getCurrentUser()._id, categoryID: category._id}))
+                                .then(
+                                    function successCallback(points) {
+                                        angular.forEach(points.data, function (point) {
+                                            value = value + point.value;
+                                        });
+                                    },
+                                    function errorCallback(error) {
+                                        console.error(error);
+                                    }
+                                );
+                            if(value !== 0)
+                            {
+                                if(chartType === 'donut')
+                                {
+                                    data['label'] = category.name;
+                                    data['value'] = value;
+                                }
+                                else if(chartType === 'bar')
+                                {
+                                    data['category'] = category.name;
+                                    data['points'] = value;
+                                }
+
+                            }
+                        });
                     },
                     function errorCallback(error) {
                         console.error(error);
                     }
-                )
-        }());
+                );
 
-        // Morris data
+            return data;
+        };
+
         // Bar Chart
         $scope.bardata = [];
         $scope.xkey = "category";
@@ -45,53 +80,7 @@
             if(newValue !== oldValue)
             {
                 $scope.bardata = angular.isUndefined(newValue) ?
-                    [] :
-                    [{
-                        category: 'Experience Points',
-                        points: 3
-                    }, {
-                        category: 'Teaching Points',
-                        points: 100
-                    }, {
-                        category: 'Challenge Points',
-                        points: 20
-                    }, {
-                        category: 'Total Points',
-                        points: 1
-                    }, {
-                        category: 'LeaderBoard Rank',
-                        points: 70
-                    }, {
-                        category: 'LeaderBoard Rank',
-                        points: 70
-                    }, {
-                        category: 'LeaderBoard Rank',
-                        points: 70
-                    }, {
-                        category: 'LeaderBoard Rank',
-                        points: 70
-                    }, {
-                        category: 'LeaderBoard Rank',
-                        points: 70
-                    }, {
-                        category: 'LeaderBoard Rank',
-                        points: 70
-                    }, {
-                        category: 'LeaderBoard Rank',
-                        points: 70
-                    }, {
-                        category: 'LeaderBoard Rank',
-                        points: 70
-                    }, {
-                        category: 'LeaderBoard Rank',
-                        points: 70
-                    }, {
-                        category: 'LeaderBoard Rank',
-                        points: 70
-                    }, {
-                        category: 'LeaderBoard Rank',
-                        points: 70
-                    }];
+                    [] : getDataList();
             }
         }, true);
 
@@ -103,53 +92,7 @@
             if(newValue !== oldValue)
             {
                 $scope.donutdata = angular.isUndefined(newValue) ?
-                    [] :
-                    [{
-                        label: "Experience Points",
-                        value: 24
-                    }, {
-                        label: "Teaching Points",
-                        value: 43
-                    }, {
-                        label: "Challenge Points",
-                        value: 25
-                    }, {
-                        label: "Total Points",
-                        value: 30
-                    }, {
-                        label: "LeaderBoard Ranks",
-                        value: 5
-                    }, {
-                        label: "LeaderBoard Ranks",
-                        value: 5
-                    }, {
-                        label: "LeaderBoard Ranks",
-                        value: 5
-                    }, {
-                        label: "LeaderBoard Ranks",
-                        value: 5
-                    }, {
-                        label: "LeaderBoard Ranks",
-                        value: 5
-                    }, {
-                        label: "LeaderBoard Ranks",
-                        value: 5
-                    }, {
-                        label: "LeaderBoard Ranks",
-                        value: 5
-                    }, {
-                        label: "LeaderBoard Ranks",
-                        value: 5
-                    }, {
-                        label: "LeaderBoard Ranks",
-                        value: 5
-                    }, {
-                        label: "LeaderBoard Ranks",
-                        value: 5
-                    }, {
-                        label: "LeaderBoard Ranks",
-                        value: 5
-                    }];
+                    [] : getDataList();
             }
         }, true);
 
