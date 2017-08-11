@@ -165,7 +165,7 @@
                 $scope.checkedPages.splice(idx, 1);
             }
         };
-        
+
         var clearSelected = function () {
             $scope.checkedPages = [];
             $scope.checkedItems = [];
@@ -215,7 +215,7 @@
                     }
                 )
         };
-        
+
         // delete all selected user
         $scope.deleteSelectedUsers = function (users) {
             angular.forEach(users, function (user) {
@@ -264,7 +264,7 @@
                     }
                 )
         }());
-        
+
         $scope.assignPrivilege = function () {
             _AjaxRequest.patch('/api/users/' + $scope.getCurrentUser()._id + '/update/user-access?' + $.param(updateMoreInfo))
                 .then(
@@ -313,11 +313,14 @@
                 );
         };
 
+        $scope.importFile = {};
         $scope.importCSVFile = function () {
-            console.log($scope.csvfile);
-            _AjaxRequest.post('/api/users/', $scope.csvfile)
+            console.log($scope.importFile.csvfile);
+
+            _AjaxRequest.postFormData($scope.importFile.csvfile, '/api/users/')
                 .then(
                     function successCallback(result) {
+                        console.log(result.data);
                         $scope.clearForm();
                         angular.element("#addUserModal").modal('hide');
                         getUsers()

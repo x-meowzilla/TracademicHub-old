@@ -142,15 +142,15 @@
             },
             link: function(scope, element) {
                 element.bind("change", function(changeEvent) {
-                    var imageFile = changeEvent.target.files[0];
+                    scope.filename = changeEvent.target.files[0];
                     var reader = new FileReader();
                     reader.onload = function(loadEvent) {
                         scope.$apply(function() {
-                            scope.filename = loadEvent.target.result;
+                            // scope.filename = loadEvent.target.result;
                             scope.formname.$pristine = false;
                         });
                     }
-                    reader.readAsDataURL(imageFile);
+                    reader.readAsDataURL(scope.filename);
                 });
             }
         }
