@@ -10,9 +10,6 @@
     function courseManagementController($scope, _AjaxRequest) {
         $scope.courses = [];
         $scope.editCourses = [];
-        $scope.copyCourses = function () {
-            $scope.editCourses = angular.copy($scope.courses);
-        };
 
         $scope.displayType = 'active';
         var getCourses = function () {
@@ -33,7 +30,7 @@
                                 return item;
                             }
                         });
-                        $scope.copyCourses();
+                        $scope.editCourses = angular.copy($scope.courses);
                     },
                     function errorCallback(error) {
                         console.error(error);
@@ -71,6 +68,9 @@
 
 
 
+        $scope.displayDateString = function (date) {
+            return date.toDateString();
+        };
         $scope.startDatePicker = {
             minDate: new Date(),
             show: false
@@ -83,9 +83,6 @@
             $scope.endDatePicker.minDate = newValue;
             $scope.eachCourse.endDate = newValue;
         }, true);
-        $scope.displayDateString = function (date) {
-            return date.toDateString();
-        };
 
         $scope.userPrivileges = [];
         (function () {
@@ -108,30 +105,92 @@
             description: '',
             userPrivileges: $scope.userPrivileges
         };
+        $scope.editUserInfoOrign = angular.copy($scope.eachCourse);
         $scope.createCourse = function () {
-            // req.body = {startDate, endDate, name, description, academicTerm (Fall, Winter, Summer, etc), userPrivileges}
-
-            // _AjaxRequest.put('/api/local-register/', $scope.editUserInfo)
-            //     .then(
-            //         function successCallback(result) {
-            //             $scope.clearForm();
-            //             angular.element("#addUserModal").modal('hide');
-            //             getUsers();
-            //         },
-            //         function errorCallback(error) {
-            //             if(error.status === 409)
-            //             {
-            //                 $scope.utoridExist = true;
-            //             }
-            //         }
-            //     );
+            _AjaxRequest.put('/api/courses', $scope.eachCourse, true)
+                .then(
+                    function successCallback(result) {
+                        $scope.clearAddCourseForm();
+                        angular.element("#addCourseModal").modal('hide');
+                        getCourses();
+                    },
+                    function errorCallback(error) {
+                        if(error.status === 409)
+                        {
+                            $scope.utoridExist = true;
+                        }
+                    }
+                );
+        };
+        $scope.clearAddCourseForm = function () {
+            $scope.eachCourse = angular.copy($scope.editUserInfoOrign);
+            $scope.eachCourseForm.$setPristine();
+            $scope.eachCourseForm.$setUntouched();
         };
 
 
 
+        $scope.startDatePickerTwo = {
+            minDate: new Date(),
+            show: false
+        };
+        $scope.endDatePickerTwo = {
+            minDate: new Date(),
+            show: false
+        };
+        $scope.$watch('editCourses.startDate', function(newValue, oldValue) {
+            $scope.endDatePickerTwo.minDate = newValue;
+            $scope.editCourses.endDate = newValue;
+        }, true);
         $scope.updateCourseInfo = function (course) {
-            
-        }
+            if($scope.editCourseForm.$dirty)
+            {
+                var updatedCourse = {};
+                updatedCourse["startDate"] = $scope.editCourses.startDate;
+                updatedCourse["endDate"] = $scope.editCourses.endDate;
+
+                if($scope.editCourseForm.description.$dirty)
+                {
+                    updatedCourse["description"] = $scope.editCourses.description;
+                }
+                else if($scope.editCourseForm.academicTerm.$dirty)
+                {
+                    updatedCourse["academicTerm"] = $scope.editCourses.academicTerm;
+                }
+
+                _AjaxRequest.patch('/api/courses/' + course._id + '/update?' + $.param(updatedCourse))
+                    .then(
+                        function successCallback(result) {
+                            getCourses();
+                            // todo: profile updated banner
+                        },
+                        function errorCallback(error) {
+                            console.error(error);
+                        }
+                    );
+            }
+        };
+        $scope.clearEditCourseForm = function () {
+            $scope.editCourses = angular.copy($scope.courses);
+            $scope.editCourseForm.$setPristine();
+            $scope.editCourseForm.$setUntouched();
+        };
+
+
+        // delete/deactive course
+        $scope.deleteCourse = function (course) {
+            _AjaxRequest.patch('/api/courses/' + course._id + '/update?' + $.param({isActive: false}))
+                .then(
+                    function successCallback(result) {
+                        $scope.courses = $scope.courses.filter(function (item) {
+                            return item._id !== result.data._id;
+                        });
+                    },
+                    function errorCallback(error) {
+                        console.error(error);
+                    }
+                )
+        };
     }
 
 }());

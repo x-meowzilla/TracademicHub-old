@@ -59,13 +59,15 @@
                                     <div class="form-group">
                                         <label class="col-lg-3 control-label">Course Name:</label>
                                         <div class="col-lg-8">
-                                            <input class="form-control" name="name" ng-minlength="3" ng-maxlength="20" ng-model="eachCourse.name" required>
+                                            <input class="form-control" name="name" ng-minlength="3" ng-maxlength="20" ng-pattern="/^[A-z0-9]*$/"  ng-model="eachCourse.name" required>
+                                            <div class="text-danger" ng-show="eachCourseForm.name.$dirty && (eachCourseForm.name.$error.minlength || eachCourseForm.name.$error.maxlength || eachCourseForm.name.$error.pattern)">Course name must be between 3 to 10 characters, and contains strings and numbers only.</div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-lg-3 control-label">Academic Term:</label>
                                         <div class="col-lg-8">
-                                            <input class="form-control" name="academicTerm" ng-minlength="3" ng-maxlength="20" ng-model="eachCourse.academicTerm" required>
+                                            <input class="form-control" name="academicTerm" ng-minlength="3" ng-maxlength="20" ng-pattern="/^[A-z]*$/" ng-model="eachCourse.academicTerm" required>
+                                            <div class="text-danger" ng-show="eachCourseForm.academicTerm.$dirty && (eachCourseForm.academicTerm.$error.minlength || eachCourseForm.academicTerm.$error.maxlength || eachCourseForm.academicTerm.$error.pattern)">Academic term must be between 3 to 10 characters, and contains strings only.</div>
                                         </div>
                                     </div>
                                     <!--<div class="form-group">-->
@@ -87,7 +89,7 @@
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-primary" data-ng-disabled="(eachCourseForm.$invalid || eachCourseForm.$pristine)" data-ng-click="createCourse()"> Create</button>
-                            <button type="reset" class="btn btn-default" data-toggle="modal" data-target="#addCourseModal" data-ng-click="clearForm()">Cancel</button>
+                            <button type="reset" class="btn btn-default" data-toggle="modal" data-target="#addCourseModal" data-ng-click="clearAddCourseForm()">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -121,16 +123,16 @@
                                     <div class="panel-heading">
                                         <span><strong>{{course.name}}</strong></span>
                                         <!--delete course button-->
-                                        <span ng-show="!editCourse && displayType !== 'inactive'" class="btn btn-xs pull-right glyphicon glyphicon-trash" ng-confirm-click="Are you sure to delete this course?" confirmed-click="deletePointCategory(category)"></span>
+                                        <span ng-show="!editCourse && displayType !== 'inactive'" class="btn btn-xs pull-right glyphicon glyphicon-trash" ng-confirm-click="Are you sure to delete this course?" confirmed-click="deleteCourse(course)"></span>
                                         <span ng-show="!editCourse && displayType !== 'inactive'" class="pull-right"> | </span>
                                         <!--edit course button-->
-                                        <span ng-show="!editCourse && displayType !== 'inactive'" class="btn btn-xs pull-right glyphicon glyphicon-pencil" data-ng-click="editCourse = true; updateCourseInfo(course)"></span>
+                                        <span ng-show="!editCourse && displayType !== 'inactive'" data-ng-disabled="editCourseForm.$invalid" class="btn btn-xs pull-right glyphicon glyphicon-pencil" data-ng-click="editCourse = true; updateCourseInfo(course)"></span>
                                         <!--cancel changes button-->
-                                        <button ng-show="editCourse && displayType !== 'inactive'" class="btn btn-danger btn-xs btn-circle pull-right" data-ng-click="editCourse = false; copyCourses()">
+                                        <button ng-show="editCourse && displayType !== 'inactive'" class="btn btn-danger btn-xs btn-circle pull-right" data-ng-click="editCourse = false; clearEditCourseForm()">
                                             <span class="glyphicon glyphicon-remove"></span>
                                         </button>
                                         <!--save changes button-->
-                                        <button ng-show="editCourse && displayType !== 'inactive'" data-ng-disabled="editCourseForm.$invalid || editCourseForm.$pristine" class="btn btn-success btn-xs btn-circle pull-right" data-ng-click="editCourse = false">
+                                        <button ng-show="editCourse && displayType !== 'inactive'" data-ng-disabled="editCourseForm.$invalid" class="btn btn-success btn-xs btn-circle pull-right" data-ng-click="editCourse = false">
                                             <span class="glyphicon glyphicon-ok"></span>
                                         </button>
                                     </div>
@@ -139,14 +141,14 @@
                                             <div class="col-xs-12">
                                                 <label><strong>Start Date: </strong></label>
                                                 <div ng-if="!editCourse" class="crap-word">{{course.startDate.slice(0, 10)}}</div>
-                                                <button ng-if="editCourse" class="form-control text-left" type="button" ng-click="startDatePicker.show = !startDatePicker.show">{{editCourses[$index].startDateObj ? displayDateString(editCourses[$index].startDateObj) : editCourses[$index].startDate.slice(0, 10)}}</button>
-                                                <div type="text" uib-datepicker-popup ng-model="editCourses[$index].startDateObj" is-open="startDatePicker.show" datepicker-options="startDatePicker" close-text="Close" />
+                                                <button ng-if="editCourse" class="form-control text-left" type="button" ng-click="startDatePickerTwo.show = !startDatePickerTwo.show">{{editCourses[$index].startDateObj ? displayDateString(editCourses[$index].startDateObj) : editCourses[$index].startDate.slice(0, 10)}}</button>
+                                                <div type="text" uib-datepicker-popup ng-model="editCourses[$index].startDateObj" is-open="startDatePickerTwo.show" datepicker-options="startDatePickerTwo" close-text="Close" />
                                             </div>
                                             <div class="col-xs-12">
                                                 <label><strong>End Date: </strong></label>
                                                 <div ng-if="!editCourse" class="crap-word">{{course.endDate.slice(0, 10)}}</div>
-                                                <button ng-if="editCourse" class="form-control text-left" type="button" ng-click="endDatePicker.show = !endDatePicker.show">{{editCourses[$index].endDateObj ? displayDateString(editCourses[$index].endDateObj) : editCourses[$index].endDate.slice(0, 10)}}</button>
-                                                <div type="text" uib-datepicker-popup ng-model="editCourses[$index].endDateObj" is-open="endDatePicker.show" datepicker-options="endDatePicker" close-text="Close" />
+                                                <button ng-if="editCourse" class="form-control text-left" type="button" ng-click="endDatePickerTwo.show = !endDatePickerTwo.show">{{editCourses[$index].endDateObj ? displayDateString(editCourses[$index].endDateObj) : editCourses[$index].endDate.slice(0, 10)}}</button>
+                                                <div type="text" uib-datepicker-popup ng-model="editCourses[$index].endDateObj" is-open="endDatePickerTwo.show" datepicker-options="endDatePickerTwo" close-text="Close" />
                                             </div>
                                             <div class="col-xs-12">
                                                 <label><strong>Description: </strong></label>
@@ -156,7 +158,8 @@
                                             <div class="col-xs-12">
                                                 <label><strong>Academic Term: </strong></label>
                                                 <div ng-if="!editCourse" class="crap-word">{{course.academicTerm}}</div>
-                                                <input ng-if="editCourse" class="form-control" name="academicTerm" ng-minlength="3" ng-maxlength="20" ng-model="editCourses[$index].academicTerm" required>
+                                                <input ng-if="editCourse" class="form-control" name="academicTerm" ng-minlength="3" ng-maxlength="10" ng-pattern="/^[A-z]*$/" ng-model="editCourses[$index].academicTerm" required>
+                                                <div class="text-danger" ng-show="editCourse && editCourseForm.academicTerm.$dirty && (editCourseForm.academicTerm.$error.minlength || editCourseForm.academicTerm.$error.maxlength || editCourseForm.academicTerm.$error.pattern)">Academic term must be between 3 to 10 characters, and contains strings only.</div>
                                             </div>
                                             <div class="col-xs-12">
                                                 <label><strong>Access Privileges: </strong></label>
