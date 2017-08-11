@@ -13,26 +13,81 @@
             <div class="col-lg-12">
                 <h1 class="page-header">
                     <span>Course Management</span>
-                    <i class="fa fa-fw fa-plus-circle titl-side-btn" data-toggle="modal" data-target="#addUserModal"></i>
+                    <i class="fa fa-fw fa-plus-circle titl-side-btn" data-toggle="modal" data-target="#addCourseModal"></i>
                 </h1>
             </div>
 
             <!-- add course modal -->
-            <div class="modal fade" id="addUserModal" role="dialog">
+            <div class="modal fade" id="addCourseModal" role="dialog">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-toggle="modal" data-target="#addUserModal">&times;</button>
-                            <h4 class="modal-title">Add Coursen </h4>
+                            <button type="button" class="close" data-toggle="modal" data-target="#addCourseModal">&times;</button>
+                            <h4 class="modal-title">Add Course</h4>
                         </div>
                         <div class="modal-body">
-                            <form name="addUserForm">
+                            <form name="eachCourseForm">
+                                <fieldset class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-lg-3 control-label">Start Date:</label>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="showDatePicker.show = !showDatePicker.show">
+                                                        <i class="glyphicon glyphicon-calendar"></i>
+                                                    </button>
+                                                </span>
+                                                <button class="form-control text-left" type="button" ng-click="showDatePicker.show = !showDatePicker.show">{{displayDateString(eachCourse.startDate)}}</button>
+                                                <div type="text" uib-datepicker-popup ng-model="eachCourse.startDate" is-open="showDatePicker.show" datepicker-options="showDatePicker" close-text="Close" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-3 control-label">End Date:</label>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="endDatePicker.show = !endDatePicker.show">
+                                                        <i class="glyphicon glyphicon-calendar"></i>
+                                                    </button>
+                                                </span>
+                                                <button class="form-control text-left" type="button" ng-click="endDatePicker.show = !endDatePicker.show">{{displayDateString(eachCourse.endDate)}}</button>
+                                                <div type="text" uib-datepicker-popup ng-model="eachCourse.endDate" is-open="endDatePicker.show" datepicker-options="endDatePicker" close-text="Close" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-3 control-label">Course Name:</label>
+                                        <div class="col-lg-8">
+                                            <input class="form-control" name="name" ng-minlength="3" ng-maxlength="20" ng-model="eachCourse.name" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-3 control-label">Academic Term:</label>
+                                        <div class="col-lg-8">
+                                            <input class="form-control" name="academicTerm" ng-minlength="3" ng-maxlength="20" ng-model="eachCourse.academicTerm" required>
+                                        </div>
+                                    </div>
+                                    <!--<div class="form-group">-->
+                                        <!--<label class="col-lg-3 control-label">User Privilege:</label>-->
+                                        <!--<div class="col-lg-8">-->
+                                            <!--<select name="course" ng-model="eachCourse.userPrivileges" ng-options="userPrivilege as userPrivilege for userPrivilege in userPrivileges" class="form-control">-->
+                                                <!--<option value="">Please select a User Privilege...</option>-->
+                                            <!--</select>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <div class="form-group">
+                                        <label class="col-lg-3 control-label">Description:</label>
+                                        <div class="col-lg-8">
+                                            <textarea class="form-control" name="description" ng-model="eachCourse.description" rows="5" cols="50" required></textarea>
+                                        </div>
+                                    </div>
+                                </fieldset>
                             </form>
-
                         </div>
                         <div class="modal-footer">
-                            <button class="btn btn-primary" data-ng-disabled="(addUserForm.createUserForm.$invalid || addUserForm.createUserForm.$pristine)" data-ng-click="createAdmin()"> Create</button>
-                            <button type="reset" class="btn btn-default" data-toggle="modal" data-target="#addUserModal" data-ng-click="clearForm()">Cancel</button>
+                            <button class="btn btn-primary" data-ng-disabled="(eachCourseForm.$invalid || eachCourseForm.$pristine)" data-ng-click="createCourse()"> Create</button>
+                            <button type="reset" class="btn btn-default" data-toggle="modal" data-target="#addCourseModal" data-ng-click="clearForm()">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -65,31 +120,49 @@
                                 <div class="panel panel-danger courseCard">
                                     <div class="panel-heading">
                                         <span><strong>{{course.name}}</strong></span>
-                                        <span class="btn btn-xs pull-right glyphicon glyphicon-trash" ng-confirm-click="Are you sure to delete this point category?" confirmed-click="deletePointCategory(category)"></span>
+                                        <!--delete course button-->
+                                        <span ng-show="!editCourse" class="btn btn-xs pull-right glyphicon glyphicon-trash" ng-confirm-click="Are you sure to delete this course?" confirmed-click="deletePointCategory(category)"></span>
+                                        <span ng-show="!editCourse" class="pull-right"> | </span>
+                                        <!--edit course button-->
+                                        <span ng-show="!editCourse" class="btn btn-xs pull-right glyphicon glyphicon-pencil" data-ng-click="editCourse = true; updateCourseInfo(course)"></span>
+                                        <!--cancel changes button-->
+                                        <button ng-show="editCourse" class="btn btn-danger btn-xs btn-circle pull-right" data-ng-click="editCourse = false">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                        <!--save changes button-->
+                                        <button ng-show="editCourse" data-ng-disabled="editCourseForm.$invalid || editCourseForm.$pristine" class="btn btn-success btn-xs btn-circle pull-right" data-ng-click="editCourse = false">
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                        </button>
                                     </div>
                                     <div class="panel-body">
-                                        <div class="row">
+                                        <form class="row" name="editCourseForm">
                                             <div class="col-xs-12">
                                                 <label><strong>Start Date: </strong></label>
-                                                <div class="crap-word">{{course.startDate}}</div>
+                                                <div ng-if="!editCourse" class="crap-word">{{course.startDate.slice(0, 10)}}</div>
+                                                <button ng-if="editCourse" class="form-control text-left" type="button" ng-click="showDatePicker.show = !showDatePicker.show">{{displayDateString(eachCourse.startDate)}}</button>
+                                                <div type="text" uib-datepicker-popup ng-model="eachCourse.startDate" is-open="showDatePicker.show" datepicker-options="showDatePicker" close-text="Close" />
                                             </div>
                                             <div class="col-xs-12">
                                                 <label><strong>End Date: </strong></label>
-                                                <div class="crap-word">{{course.endDate}}</div>
+                                                <div ng-if="!editCourse" class="crap-word">{{course.endDate.slice(0, 10)}}</div>
+                                                <button ng-if="editCourse" class="form-control text-left" type="button" ng-click="showDatePicker.show = !showDatePicker.show">{{displayDateString(eachCourse.startDate)}}</button>
+                                                <div type="text" uib-datepicker-popup ng-model="eachCourse.startDate" is-open="showDatePicker.show" datepicker-options="showDatePicker" close-text="Close" />
                                             </div>
                                             <div class="col-xs-12">
                                                 <label><strong>Description: </strong></label>
-                                                <div class="crap-word">{{course.description}}</div>
+                                                <div ng-if="!editCourse" class="crap-word">{{course.description}}</div>
+                                                <textarea ng-if="editCourse" class="form-control" name="description" ng-model="eachCourse.description" rows="2" cols="50" required></textarea>
                                             </div>
                                             <div class="col-xs-12">
                                                 <label><strong>Academic Term: </strong></label>
-                                                <div class="crap-word">{{course.academicTerm}}</div>
+                                                <div ng-if="!editCourse" class="crap-word">{{course.academicTerm}}</div>
+                                                <input ng-if="editCourse" class="form-control" name="academicTerm" ng-minlength="3" ng-maxlength="20" ng-model="eachCourse.academicTerm" required>
                                             </div>
                                             <div class="col-xs-12">
                                                 <label><strong>Access Privileges: </strong></label>
                                                 <div class="crap-word">{{getUserPrivilegesList(course.userPrivileges)}}</div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

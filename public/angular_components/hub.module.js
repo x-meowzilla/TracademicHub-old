@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('TracademicHub', ['ngRoute', 'ngAnimate', 'angular-page-loader'])
+        .module('TracademicHub', ['ngRoute', 'ngAnimate', 'ui.bootstrap', 'angular-page-loader'])
         .config(function ($routeProvider, $locationProvider, $httpProvider) {
             $httpProvider.defaults.withCredentials = true;
 

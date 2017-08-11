@@ -61,6 +61,70 @@
         $scope.operations = [10, 20, 30];
         $scope.searchrecord = '';
 
+
+
+        $scope.showDatePicker = {
+            minDate: new Date(),
+            show: false
+        };
+        $scope.endDatePicker = {
+            minDate: new Date(),
+            show: false
+        };
+        $scope.$watch('eachCourse.startDate', function(newValue, oldValue) {
+            $scope.endDatePicker.minDate = newValue;
+            $scope.eachCourse.endDate = newValue;
+        }, true);
+        $scope.displayDateString = function (date) {
+            return date.toDateString();
+        };
+
+        $scope.userPrivileges = [];
+        (function () {
+            _AjaxRequest.get('/api/privileges/')
+                .then(
+                    function successCallback(result) {
+                        $scope.userPrivileges = result.data;
+                    },
+                    function errorCallback(error) {
+                        console.error(error);
+                    }
+                )
+        }());
+
+        $scope.eachCourse = {
+            startDate: new Date(),
+            endDate: new Date(),
+            name: '',
+            academicTerm: '',
+            description: '',
+            userPrivileges: $scope.userPrivileges
+        };
+        $scope.createCourse = function () {
+            // req.body = {startDate, endDate, name, description, academicTerm (Fall, Winter, Summer, etc), userPrivileges}
+
+            _AjaxRequest.put('/api/local-register/', $scope.editUserInfo)
+                .then(
+                    function successCallback(result) {
+                        $scope.clearForm();
+                        angular.element("#addUserModal").modal('hide');
+                        getUsers();
+                    },
+                    function errorCallback(error) {
+                        if(error.status === 409)
+                        {
+                            $scope.utoridExist = true;
+                        }
+                    }
+                );
+        };
+
+
+
+        $scope.editCourse = false;
+        $scope.updateCourseInfo = function (course) {
+            
+        }
     }
 
 }());
