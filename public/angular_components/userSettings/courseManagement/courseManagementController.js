@@ -9,16 +9,22 @@
 
     function courseManagementController($scope, _AjaxRequest) {
         $scope.courses = [];
-        var getCourses = function (displayType) {
+        $scope.editCourses = [];
+        $scope.copyCourses = function () {
+            $scope.editCourses = angular.copy($scope.courses);
+        };
+
+        $scope.displayType = 'active';
+        var getCourses = function () {
             _AjaxRequest.get('/api/courses')
                 .then(
                     function successCallback(result) {
                         $scope.courses = result.data.filter(function (item) {
-                            if(displayType === 'active')
+                            if($scope.displayType === 'active')
                             {
                                 return item.isActive;
                             }
-                            else if(displayType === 'inactive')
+                            else if($scope.displayType === 'inactive')
                             {
                                 return !item.isActive;
                             }
@@ -27,6 +33,7 @@
                                 return item;
                             }
                         });
+                        $scope.copyCourses();
                     },
                     function errorCallback(error) {
                         console.error(error);
@@ -34,11 +41,12 @@
                 );
         };
         $scope.getCourses = function (displayType) {
-            getCourses(displayType);
+            $scope.displayType = displayType;
+            getCourses();
         };
 
         (function () {
-            getCourses('active');
+            getCourses();
         }());
 
         $scope.getUserPrivilegesList = function (userPrivileges) {
@@ -63,7 +71,7 @@
 
 
 
-        $scope.showDatePicker = {
+        $scope.startDatePicker = {
             minDate: new Date(),
             show: false
         };
@@ -103,25 +111,24 @@
         $scope.createCourse = function () {
             // req.body = {startDate, endDate, name, description, academicTerm (Fall, Winter, Summer, etc), userPrivileges}
 
-            _AjaxRequest.put('/api/local-register/', $scope.editUserInfo)
-                .then(
-                    function successCallback(result) {
-                        $scope.clearForm();
-                        angular.element("#addUserModal").modal('hide');
-                        getUsers();
-                    },
-                    function errorCallback(error) {
-                        if(error.status === 409)
-                        {
-                            $scope.utoridExist = true;
-                        }
-                    }
-                );
+            // _AjaxRequest.put('/api/local-register/', $scope.editUserInfo)
+            //     .then(
+            //         function successCallback(result) {
+            //             $scope.clearForm();
+            //             angular.element("#addUserModal").modal('hide');
+            //             getUsers();
+            //         },
+            //         function errorCallback(error) {
+            //             if(error.status === 409)
+            //             {
+            //                 $scope.utoridExist = true;
+            //             }
+            //         }
+            //     );
         };
 
 
 
-        $scope.editCourse = false;
         $scope.updateCourseInfo = function (course) {
             
         }
