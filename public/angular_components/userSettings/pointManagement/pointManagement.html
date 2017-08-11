@@ -99,7 +99,7 @@
                                         <form class="col-xs-7" name="inputStudentNum">
                                             <div class="input-group">
                                                 <span class="input-group-addon">Student Number</span>
-                                                <input type="text" title="Enter the student number of the assignee." class="form-control" name="studentNumber" ng-model="studentNum" required>
+                                                <input type="text" title="Enter the student number of the assignee." class="form-control" name="studentNumber" ng-model="studentNum" ng-pattern="/^[0-9]*$/" required>
                                             </div>
                                         </form>
                                         <div class="text-center col-xs-3">
@@ -116,6 +116,7 @@
                                 </div>
                                 <div class="text-danger col-xs-12" ng-show="addAssigneeFailed">User does not exist or user is inactive message.</div>
                                 <div class="text-danger col-xs-12" ng-show="assigneeExist">User is already in the table.</div>
+                                <div class="text-danger col-xs-12" ng-show="inputStudentNum.studentNumber.$error.pattern">Invalid Student Number.</div>
                             </td>
                             </thead>
                             <thead>

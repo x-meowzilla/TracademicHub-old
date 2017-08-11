@@ -141,19 +141,12 @@
             {
                 angular.forEach($scope.users, function (user) {
                     angular.forEach($scope.getAssignedPoints(), function (category) {
-                        _AjaxRequest.get('/api/users?' + $.param({isActive: true, studentNumber: user.studentNumber}))
+                        console.log(category);
+                        _AjaxRequest.post('/api/points',
+                            {assigneeID: user._id, pointValue: category.point, pointCategoryID: category._id}, true)
                             .then(
-                                function successCallback(user) {
-                                    _AjaxRequest.post('/api/points',
-                                        {assigneeID: user._id, pointValue: category.point, pointCategoryID: category._id})
-                                        .then(
-                                            function successCallback(result) {
-                                                getAllCategories();
-                                            },
-                                            function errorCallback(error) {
-                                                console.error(error);
-                                            }
-                                        );
+                                function successCallback(result) {
+                                    // todo: assign point successfully banner
                                 },
                                 function errorCallback(error) {
                                     console.error(error);
