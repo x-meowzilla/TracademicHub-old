@@ -37,8 +37,8 @@
                                                         <i class="glyphicon glyphicon-calendar"></i>
                                                     </button>
                                                 </span>
-                                                <button class="form-control text-left" type="button" ng-click="startDatePicker.show = !startDatePicker.show">{{eachCourse.startDate | date:'yyyy-MM-dd'}}</button>
-                                                <div type="text" uib-datepicker-popup ng-model="eachCourse.startDate" is-open="startDatePicker.show" datepicker-options="startDatePicker" close-text="Close" />
+                                                <button class="form-control text-left" type="button" ng-click="startDatePicker.show = !startDatePicker.show">{{coursePeriod.startDate | date:'yyyy-MM-dd'}}</button>
+                                                <div type="text" uib-datepicker-popup ng-model="coursePeriod.startDate" is-open="startDatePicker.show" datepicker-options="startDatePicker" close-text="Close" ng-required="true"/>
                                             </div>
                                         </div>
                                     </div>
@@ -51,8 +51,8 @@
                                                         <i class="glyphicon glyphicon-calendar"></i>
                                                     </button>
                                                 </span>
-                                                <button class="form-control text-left" type="button" ng-click="endDatePicker.show = !endDatePicker.show">{{eachCourse.endDate | date:'yyyy-MM-dd'}}</button>
-                                                <div type="text" uib-datepicker-popup ng-model="eachCourse.endDate" is-open="endDatePicker.show" datepicker-options="endDatePicker" close-text="Close" />
+                                                <button class="form-control text-left" type="button" ng-click="endDatePicker.show = !endDatePicker.show">{{coursePeriod.endDate | date:'yyyy-MM-dd'}}</button>
+                                                <div type="text" uib-datepicker-popup ng-model="coursePeriod.endDate" is-open="endDatePicker.show" datepicker-options="endDatePicker" close-text="Close" ng-required="true"/>
                                             </div>
                                         </div>
                                     </div>
@@ -81,7 +81,7 @@
                                     <div class="form-group">
                                         <label class="col-lg-3 control-label">Description:</label>
                                         <div class="col-lg-8">
-                                            <textarea class="form-control" name="description" ng-model="eachCourse.description" rows="5" cols="50" required></textarea>
+                                            <textarea class="form-control" name="description" ng-model="eachCourse.description" rows="5" cols="50" placeholder="Describe the course here..." required></textarea>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -166,7 +166,7 @@
                                                 <div class="text-danger" ng-show="editCourse && editCourseForm.academicTerm.$dirty && (editCourseForm.academicTerm.$error.minlength || editCourseForm.academicTerm.$error.maxlength || editCourseForm.academicTerm.$error.pattern)">Academic term must be between 3 to 10 characters, and contains strings only.</div>
                                             </div>
                                             <div class="col-xs-12">
-                                                <label><strong>Access Privileges: </strong></label>
+                                                <label ng-if="!editCourse"><strong>Access Privileges: </strong></label>
                                                 <div ng-if="!editCourse" class="crap-word">{{getUserPrivilegesList(course.userPrivileges)}}</div>
                                             </div>
                                         </form>

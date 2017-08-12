@@ -5,9 +5,9 @@
         .module('TracademicHub')
         .controller('courseManagementController', courseManagementController);
 
-    courseManagementController.$inject = ['$scope', '_AjaxRequest']; // dependency injection
+    courseManagementController.$inject = ['$scope', '$filter', '_AjaxRequest']; // dependency injection
 
-    function courseManagementController($scope, _AjaxRequest) {
+    function courseManagementController($scope, $filter, _AjaxRequest) {
         $scope.courses = [];
         $scope.editCourses = [];
 
@@ -77,9 +77,9 @@
             minDate: new Date(),
             show: false
         };
-        $scope.$watch('eachCourse.startDate', function(newValue, oldValue) {
+        $scope.$watch('coursePeriod.startDate', function(newValue, oldValue) {
             $scope.endDatePicker.minDate = newValue;
-            $scope.eachCourse.endDate = newValue;
+            $scope.coursePeriod.endDate = newValue;
         }, true);
 
         $scope.userPrivileges = [];
@@ -95,18 +95,23 @@
                 )
         }());
 
-        $scope.eachCourse = {
+        $scope.coursePeriod = {
             startDate: new Date(),
-            endDate: new Date(),
+            endDate: new Date()
+        };
+        $scope.eachCourse = {
+            startDate: '',
+            endDate: '',
             name: '',
             academicTerm: '',
-            description: '',
-            userPrivileges: $scope.userPrivileges
+            description: ''
+            // userPrivileges: [] TODO: when server add custom user privileges feature
         };
         $scope.editUserInfoOrign = angular.copy($scope.eachCourse);
         $scope.createCourse = function () {
-            console.log($scope.eachCourse);
-            console.log($scope.userPrivileges);
+            // $scope.eachCourse.userPrivileges = $scope.userPrivileges; TODO: when server add custom user privileges feature
+            $scope.eachCourse.startDate = $filter('date')($scope.coursePeriod.startDate, 'yyyy-MM-dd');
+            $scope.eachCourse.endDate = $filter('date')($scope.coursePeriod.endDate, 'yyyy-MM-dd');
             _AjaxRequest.put('/api/courses', $scope.eachCourse)
                 .then(
                     function successCallback(result) {
