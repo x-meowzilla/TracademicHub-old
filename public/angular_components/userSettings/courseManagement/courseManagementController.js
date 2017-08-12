@@ -27,6 +27,8 @@
                 .then(
                     function successCallback(result) {
                         $scope.courses = result.data;
+                        $scope.editCourses = angular.copy($scope.courses);
+                        $scope.activeCourses = angular.copy($scope.courses);
                     },
                     function errorCallback(error) {
                         console.error(error);
@@ -35,8 +37,6 @@
         };
         $scope.getCourses = function (displayType) {
             $scope.displayType = displayType;
-            $scope.clearEnableCourseForm();
-            $scope.clearEditCourseForm();
             getCourses();
         };
 
@@ -153,19 +153,19 @@
         };
 
         // edit course form
-        $scope.form = {};
+        $scope.editCourseCard = {};
         $scope.updateCourseInfo = function (course, updateCourse) {
-            if($scope.form.editCourseForm.$dirty)
+            if($scope.editCourseCard.editCourseForm.$dirty)
             {
                 var updatedCourse = {};
                 updatedCourse["startDate"] = updateCourse.startDateObj;
                 updatedCourse["endDate"] = updateCourse.endDateObj;
 
-                if($scope.form.editCourseForm.description.$dirty)
+                if($scope.editCourseCard.editCourseForm.description.$dirty)
                 {
                     updatedCourse["description"] = updateCourse.description;
                 }
-                else if($scope.form.editCourseForm.academicTerm.$dirty)
+                else if($scope.editCourseCard.editCourseForm.academicTerm.$dirty)
                 {
                     updatedCourse["academicTerm"] = updateCourse.academicTerm;
                 }
@@ -184,8 +184,8 @@
         };
         $scope.clearEditCourseForm = function () {
             $scope.editCourses = angular.copy($scope.courses);
-            $scope.form.editCourseForm.$setPristine();
-            $scope.form.editCourseForm.$setUntouched();
+            $scope.editCourseCard.editCourseForm.$setPristine();
+            $scope.editCourseCard.editCourseForm.$setUntouched();
         };
 
 
@@ -206,8 +206,9 @@
 
 
         // active course
+        $scope.activeCourseCard ={};
         $scope.activeCourse = function (course, updateCourse) {
-            if($scope.form.editCourseForm.$dirty)
+            if($scope.activeCourseCard.editCourseForm.$dirty)
             {
                 // reset start date and end data before active course.
                 var updatedDate = {};
@@ -238,8 +239,8 @@
 
         $scope.clearEnableCourseForm = function () {
             $scope.activeCourses = angular.copy($scope.courses);
-            $scope.form.editCourseForm.$setPristine();
-            $scope.form.editCourseForm.$setUntouched();
+            $scope.activeCourseCard.editCourseForm.$setPristine();
+            $scope.activeCourseCard.editCourseForm.$setUntouched();
         };
     }
 
