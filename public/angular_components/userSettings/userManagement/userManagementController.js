@@ -286,7 +286,7 @@
             if($scope.currentUser.isLocalUser)
             {
                 // local admin can get view all courses
-                _AjaxRequest.get('/api/courses/')
+                _AjaxRequest.get('/api/courses?' + $.param({isActive: true}))
                     .then(
                         function successCallback(result) {
                             $scope.courses = result.data;
@@ -304,7 +304,7 @@
                     var courseId = item.course._id;
                     if(courseIds.indexOf(courseId) < 0)
                     {
-                        _AjaxRequest.get('/api/courses?' + $.param({_id: courseId}))
+                        _AjaxRequest.get('/api/courses?' + $.param({_id: courseId, isActive: true}))
                             .then(
                                 function successCallback(result) {
                                     $scope.courses.push(result.data[0]);

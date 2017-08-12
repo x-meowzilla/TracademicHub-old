@@ -14,25 +14,19 @@
 
         $scope.displayType = 'active';
         var getCourses = function () {
-            _AjaxRequest.get('/api/courses')
+            var courseParam = {};
+            if($scope.displayType === 'active')
+            {
+                courseParam['isActive'] = true;
+            }
+            else if($scope.displayType === 'inactive')
+            {
+                courseParam['isActive'] = false;
+            }
+            _AjaxRequest.get('/api/courses?' + $.param(courseParam))
                 .then(
                     function successCallback(result) {
-                        $scope.courses = result.data.filter(function (item) {
-                            if($scope.displayType === 'active')
-                            {
-                                return item.isActive;
-                            }
-                            else if($scope.displayType === 'inactive')
-                            {
-                                return !item.isActive;
-                            }
-                            else
-                            {
-                                return item;
-                            }
-                        });
-                        $scope.editCourses = angular.copy($scope.courses);
-                        $scope.activeCourses = angular.copy($scope.courses);
+                        $scope.courses = result.data;
                     },
                     function errorCallback(error) {
                         console.error(error);
@@ -41,6 +35,8 @@
         };
         $scope.getCourses = function (displayType) {
             $scope.displayType = displayType;
+            $scope.clearEnableCourseForm();
+            $scope.clearEditCourseForm();
             getCourses();
         };
 
@@ -80,8 +76,11 @@
             show: false
         };
         $scope.$watch('coursePeriod.startDate', function(newValue, oldValue) {
-            $scope.endDatePicker.minDate = newValue;
-            $scope.coursePeriod.endDate = newValue;
+            if(newValue > $scope.coursePeriod.endDate)
+            {
+                $scope.endDatePicker.minDate = newValue;
+                $scope.coursePeriod.endDate = newValue;
+            }
         }, true);
 
         $scope.userPrivileges = [];

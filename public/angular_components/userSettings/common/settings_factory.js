@@ -233,15 +233,40 @@
                 // edit profile form
                 $scope.courses = [];
                 (function () {
-                    _AjaxRequest.get('/api/courses/')
-                        .then(
-                            function successCallback(result) {
-                                $scope.courses = result.data;
-                            },
-                            function errorCallback(error) {
-                                console.error(error);
+                    if($scope.getCurrentUser().isLocalUser)
+                    {
+                        // local admin can get view all courses
+                        _AjaxRequest.get('/api/courses?' + $.param({isActive: true}))
+                            .then(
+                                function successCallback(result) {
+                                    $scope.courses = result.data;
+                                },
+                                function errorCallback(error) {
+                                    console.error(error);
+                                }
+                            )
+                    }
+                    else
+                    {
+                        // get the courses that current user has access to.
+                        var courseIds = [];
+                        angular.forEach($scope.getCurrentUser().courseEnrolled, function (item) {
+                            var courseId = item.course._id;
+                            if(courseIds.indexOf(courseId) < 0)
+                            {
+                                _AjaxRequest.get('/api/courses?' + $.param({_id: courseId, isActive: true}))
+                                    .then(
+                                        function successCallback(result) {
+                                            $scope.courses.push(result.data[0]);
+                                            courseIds.push(result.data[0]._id);
+                                        },
+                                        function errorCallback(error) {
+                                            console.error(error);
+                                        }
+                                    );
                             }
-                        )
+                        });
+                    }
                 }());
 
                 $scope.editUserInfo = $scope.getCurrentUser();

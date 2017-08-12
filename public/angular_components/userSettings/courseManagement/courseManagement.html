@@ -103,9 +103,6 @@
                         <div class="col-lg-12">
                             <div class="typeController">
                                 <ul class="nav nav-pills">
-                                    <li>
-                                        <a data-toggle="tab" data-ng-click="getCourses('all');">All Courses</a>
-                                    </li>
                                     <li class="active">
                                         <a data-toggle="tab" data-ng-click="getCourses('active');">Active Courses</a>
                                     </li>
@@ -141,7 +138,7 @@
                                         <!--active course button-->
                                         <span ng-show="!activeCourses[$index].enableCourse && displayType === 'inactive'" class="btn btn-xs pull-right glyphicon glyphicon-flag" data-ng-click="activeCourses[$index].enableCourse = true"></span>
                                         <!--cancel changes button-->
-                                        <button ng-show="activeCourses[$index].enableCourse && displayType === 'inactive'" class="btn btn-danger btn-xs btn-circle pull-right" data-ng-click="activeCourses[$index].enableCourse = false; clearEditCourseForm()">
+                                        <button ng-show="activeCourses[$index].enableCourse && displayType === 'inactive'" class="btn btn-danger btn-xs btn-circle pull-right" data-ng-click="activeCourses[$index].enableCourse = false; clearEnableCourseForm()">
                                             <span class="glyphicon glyphicon-remove"></span>
                                         </button>
                                         <!--save changes button-->
