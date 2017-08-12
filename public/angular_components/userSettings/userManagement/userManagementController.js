@@ -288,18 +288,19 @@
                 )
         }());
 
-        $scope.assignPrivilege = function () {
-            _AjaxRequest.patch('/api/users/' + $scope.getCurrentUser()._id + '/update/user-access?' + $.param(updateMoreInfo))
-                .then(
-                    function successCallback(result) {
-                        _Authentication.setLoginUser(result.data);
-                        $scope.clearForm();
-                        // todo: profile updated banner
-                    },
-                    function errorCallback(error) {
-                        console.error(error);
-                    }
-                );
+        $scope.assignPrivilege = function (users, privilege) {
+            angular.forEach(users, function (user) {
+                _AjaxRequest.patch('/api/users/' + user._id + '/update/user-access?' + $.param({accessPrivilege: privilege._id}))
+                    .then(
+                        function successCallback(result) {
+                            // todo: profile updated banner
+                        },
+                        function errorCallback(error) {
+                            console.error(error);
+                        }
+                    );
+            });
+            getUsers();
         };
 
         // give points to selected user(s)

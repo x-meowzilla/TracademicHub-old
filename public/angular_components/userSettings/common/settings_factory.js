@@ -187,17 +187,17 @@
             link: function (scope) {
                 scope.avatarUrl = "../images/default-avatar.png";
                 // get user customized avatarUrl
-                (function () {
-                    _AjaxRequest.get('/api/privileges/')
-                        .then(
-                            function successCallback(result) {
-                                // $scope.avatarUrl = result.data;
-                            },
-                            function errorCallback(error) {
-                                console.error(error);
-                            }
-                        )
-                }());
+                // (function () {
+                //     _AjaxRequest.get('/api/users/')
+                //         .then(
+                //             function successCallback(result) {
+                //                 // $scope.avatarUrl = result.data;
+                //             },
+                //             function errorCallback(error) {
+                //                 console.error(error);
+                //             }
+                //         )
+                // }());
 
                 scope.getDisplayName = function () {
                     var userData = scope.currentUser;
@@ -258,7 +258,10 @@
                         _AjaxRequest.patch('/api/users/' + $scope.getCurrentUser()._id + '/update/user-info?' + $.param(updateBasicInfo))
                             .then(
                                 function successCallback(result) {
-                                    _Authentication.setLoginUser(result.data);
+                                    if($scope.getCurrentUser()._id === _Authentication.getLoginUser()._id)
+                                    {
+                                        _Authentication.setLoginUser(result.data);
+                                    }
                                     $scope.clearForm();
                                     // todo: profile updated banner
                                 },
@@ -281,12 +284,22 @@
                     {
                         updateMoreInfo["email"] = $scope.editUserInfo.email;
                     }
+                    var privilege = $scope.editUserInfo.selectedPrivilege;
+                    if(!angular.isUndefined(privilege) && privilege !== null)
+                    {
+                        updateMoreInfo["accessPrivilege"] = privilege._id;
+                    }
                     if(!angular.equals({}, updateMoreInfo))
                     {
+                        console.log(updateMoreInfo);
                         _AjaxRequest.patch('/api/users/' + $scope.getCurrentUser()._id + '/update/user-access?' + $.param(updateMoreInfo))
                             .then(
                                 function successCallback(result) {
-                                    _Authentication.setLoginUser(result.data);
+                                    console.log(result.data);
+                                    if($scope.getCurrentUser()._id === _Authentication.getLoginUser()._id)
+                                    {
+                                        _Authentication.setLoginUser(result.data);
+                                    }
                                     $scope.clearForm();
                                     // todo: profile updated banner
                                 },

@@ -101,7 +101,7 @@
                             </td>
                             <!--edit user profile button-->
                             <td ng-if="['active', 'checkedin', 'admins'].indexOf(displayUser.displayType) > -1" class="text-center">
-                                <button ng-disabled="item.isLocalUser" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit{{item._id}}">
+                                <button ng-disabled="item.isLocalUser" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit{{item._id}}" >
                                     <span class="glyphicon glyphicon-pencil"></span>
                                 </button>
                                 <edit-Profile user="item" pid="item._id"></edit-Profile>
@@ -287,7 +287,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" data-ng-disabled="multiUsersPrivilege.$invalid" class="btn btn-primary" data-toggle="modal" data-target="#modifyPrivilegeModal" data-ng-click="assignPrivilege()">Assign</button>
+                        <button type="submit" data-ng-disabled="multiUsersPrivilege.$invalid" class="btn btn-primary" data-toggle="modal" data-target="#modifyPrivilegeModal" data-ng-click="assignPrivilege(checkedItems, selectedPrivilege)">Assign</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
