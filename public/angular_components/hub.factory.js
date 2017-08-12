@@ -27,10 +27,8 @@
             post: function (apiURL, reqBody, isJSON) {
                 return $http.post(apiURL, reqBody, {headers: isJSON ? {'Content-Type': 'application/json'} : {}});
             },
-            postFormData: function (file, apiURL) {
-                var fd = new FormData();
-                fd.append('file', file);
-                return $http.post(apiURL, fd, {transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+            postFormData: function (apiURL, reqBody) {
+                return $http.post(apiURL, reqBody, {transformRequest: angular.identity, headers: {'Content-Type': undefined}});
             },
             put: function (apiURL, reqBody, isJSON) {
                 return $http.put(apiURL, reqBody, {headers: isJSON ? {'Content-Type': 'application/json'} : {}});

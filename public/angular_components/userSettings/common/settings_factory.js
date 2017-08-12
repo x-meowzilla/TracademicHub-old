@@ -137,20 +137,21 @@
         return {
             restrict: 'A',
             scope: {
+                file: '=',
                 formname: '=',
                 filename: '='
             },
             link: function(scope, element) {
                 element.bind("change", function(changeEvent) {
-                    scope.filename = changeEvent.target.files[0];
+                    scope.file = changeEvent.target.files[0];
                     var reader = new FileReader();
                     reader.onload = function(loadEvent) {
                         scope.$apply(function() {
-                            // scope.filename = loadEvent.target.result;
+                            scope.filename = loadEvent.target.result;
                             scope.formname.$pristine = false;
                         });
                     }
-                    reader.readAsDataURL(scope.filename);
+                    reader.readAsDataURL(scope.file);
                 });
             }
         }

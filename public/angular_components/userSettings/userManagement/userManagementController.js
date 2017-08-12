@@ -313,11 +313,28 @@
                 );
         };
 
+
+
         $scope.importFile = {};
+        $scope.enableImportBtn = false;
+        $scope.$watchCollection('importFile', function(newNames, oldNames) {
+            var csvfile = newNames.csvfile;
+            var course = newNames.course;
+            if(!angular.isUndefined(csvfile) && csvfile !== null && !angular.isUndefined(course) && course)
+            {
+                $scope.enableImportBtn = true;
+            }
+            else
+            {
+                $scope.enableImportBtn = false;
+            }
+        });
         $scope.importCSVFile = function () {
             console.log($scope.importFile.csvfile);
-
-            _AjaxRequest.postFormData($scope.importFile.csvfile, '/api/users/')
+            var fd = new FormData();
+            fd.append('csvfile', $scope.importFile.csvfile);
+            fd.append('course', $scope.importFile.course._id);
+            _AjaxRequest.postFormData('/api/users/', fd)
                 .then(
                     function successCallback(result) {
                         console.log(result.data);
@@ -334,7 +351,8 @@
 
         $scope.clearForm = function () {
             angular.element("input[type='file']").val(null);
-            $scope.editUserInfo = angular.copy($scope.editUserInfoOrigin);
+            $scope.importFile.course = '';
+            $scope.enableImportBtn = false;
         };
 
     }

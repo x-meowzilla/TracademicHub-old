@@ -184,7 +184,7 @@
 
                 $scope.$watch('areadata', function(newValue, oldValue) {
                     displayArea();
-                }, true);
+                });
 
             }
         }
