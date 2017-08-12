@@ -23,7 +23,17 @@
 
         $scope.courses = [];
         (function () {
-            $scope.courses = $scope.getCurrentUser().courseEnrolled.course;
+            angular.forEach($scope.getCurrentUser().courseEnrolled, function (item) {
+                _AjaxRequest.get('/api/courses?' + $.param({_id: item.course}))
+                    .then(
+                        function successCallback(result) {
+                            $scope.courses.push(result.data[0].name);
+                        },
+                        function errorCallback(error) {
+                            console.error(error);
+                        }
+                    );
+            });
         }());
 
         // Morris data

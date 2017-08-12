@@ -22,19 +22,44 @@
                 .then(
                     function successCallback(result) {
                         $scope.users = result.data.filter(function (item) {
+                            // filter by user type
                             var res = item._id !== $scope.currentUser._id && !item.isLocalUser;
 
                             if($scope.displayUser.displayType === 'active')
                             {
-                                return res && item.isActive;
+                                res = res && item.isActive;
                             }
                             else if($scope.displayUser.displayType === 'inactive')
                             {
-                                return res && !item.isActive;
+                                res = res && !item.isActive;
                             }
                             else if($scope.displayUser.displayType === 'checkedin')
                             {
-                                return res && item.lastLoginDate;
+                                res = res && item.lastLoginDate;
+                            }
+
+                            // filter by course
+                            if(!angular.isUndefined($scope.displayUser.displayCourse)
+                                && !angular.equals({}, $scope.displayUser.displayCourse))
+                            {
+                                var courseList = [];
+                                angular.forEach(item.courseEnrolled, function (ce) {
+                                    courseList.push(ce.course._id);
+                                });
+
+                                res = res && courseList.indexOf($scope.displayUser.displayCourse._id) > -1;
+                            }
+
+                            // filter by user privilege
+                            if(!angular.isUndefined($scope.displayUser.displayPrivilege)
+                                && !angular.equals({}, $scope.displayUser.displayPrivilege))
+                            {
+                                var pList = [];
+                                angular.forEach(item.courseEnrolled, function (ce) {
+                                    pList.push(ce.privilege._id);
+                                });
+
+                                res = res && pList.indexOf($scope.displayUser.displayPrivilege._id) > -1;
                             }
 
                             return res;
