@@ -70,14 +70,6 @@
 
 
 
-        $scope.displayForm = {editCourse: false, enableCourse: false}
-        $scope.changeDisplayType = function () {
-            $scope.displayForm.editCourse=false;
-            $scope.displayForm.enableCourse=false;
-        };
-
-
-
         // add course modal
         $scope.startDatePicker = {
             minDate: new Date(),
