@@ -17,30 +17,30 @@
         $scope.displayUser = {displayType: $scope.displayTypes[1], displayCourse: {}, displayPrivilege: {}};
 
         var getUsers = function () {
-            var userParam = {};
-
-            if($scope.displayUser.displayType === 'active')
-            {
-                userParam['isActive'] = true;
-            }
-            else if($scope.displayUser.displayType === 'inactive')
-            {
-                userParam['isActive'] = false;
-            }
-
-            _AjaxRequest.get('/api/users?' + $.param(userParam))
+            // isActive query not working now, upload csv data cannot save this field to db, need to be fixed in the future.
+            _AjaxRequest.get('/api/users')
                 .then(
                     function successCallback(result) {
                         $scope.users = result.data.filter(function (item) {
                             var res = item._id !== $scope.currentUser._id && !item.isLocalUser;
 
-                            if($scope.displayUser.displayType === 'checkedin')
+                            if($scope.displayUser.displayType === 'active')
+                            {
+                                return res && item.isActive;
+                            }
+                            else if($scope.displayUser.displayType === 'inactive')
+                            {
+                                return res && !item.isActive;
+                            }
+                            else if($scope.displayUser.displayType === 'checkedin')
                             {
                                 return res && item.lastLoginDate;
                             }
 
                             return res;
                         });
+
+                        console.log($scope.users);
                     },
                     function errorCallback(error) {
                         console.error(error);
@@ -330,7 +330,6 @@
             }
         });
         $scope.importCSVFile = function () {
-            console.log($scope.importFile.csvfile);
             var fd = new FormData();
             fd.append('csvfile', $scope.importFile.csvfile);
             fd.append('course', $scope.importFile.course._id);
