@@ -30,17 +30,44 @@
         $scope.courses = [];
 
         (function () {
+            // get categories
             getAllCategories();
 
-            _AjaxRequest.get('/api/courses/')
-                .then(
-                    function successCallback(result) {
-                        $scope.courses = result.data;
-                    },
-                    function errorCallback(error) {
-                        console.error(error);
+            // get courses
+            if(_Authentication.getLoginUser().isLocalUser)
+            {
+                // local admin can get view all courses
+                _AjaxRequest.get('/api/courses/')
+                    .then(
+                        function successCallback(result) {
+                            $scope.courses = result.data;
+                        },
+                        function errorCallback(error) {
+                            console.error(error);
+                        }
+                    )
+            }
+            else
+            {
+                // get the courses that current user has access to.
+                var courseIds = [];
+                angular.forEach($scope.currentUser.courseEnrolled, function (item) {
+                    var courseId = item.course._id;
+                    if(courseIds.indexOf(courseId) < 0)
+                    {
+                        _AjaxRequest.get('/api/courses?' + $.param({_id: courseId}))
+                            .then(
+                                function successCallback(result) {
+                                    $scope.courses.push(result.data[0]);
+                                    courseIds.push(result.data[0]._id);
+                                },
+                                function errorCallback(error) {
+                                    console.error(error);
+                                }
+                            );
                     }
-                )
+                });
+            };
         }());
 
         //add new point category
