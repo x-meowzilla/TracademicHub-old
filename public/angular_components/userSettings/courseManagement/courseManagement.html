@@ -37,7 +37,7 @@
                                                         <i class="glyphicon glyphicon-calendar"></i>
                                                     </button>
                                                 </span>
-                                                <button class="form-control text-left" type="button" ng-click="startDatePicker.show = !startDatePicker.show">{{displayDateString(eachCourse.startDate)}}</button>
+                                                <button class="form-control text-left" type="button" ng-click="startDatePicker.show = !startDatePicker.show">{{eachCourse.startDate | date:'yyyy-MM-dd'}}</button>
                                                 <div type="text" uib-datepicker-popup ng-model="eachCourse.startDate" is-open="startDatePicker.show" datepicker-options="startDatePicker" close-text="Close" />
                                             </div>
                                         </div>
@@ -51,7 +51,7 @@
                                                         <i class="glyphicon glyphicon-calendar"></i>
                                                     </button>
                                                 </span>
-                                                <button class="form-control text-left" type="button" ng-click="endDatePicker.show = !endDatePicker.show">{{displayDateString(eachCourse.endDate)}}</button>
+                                                <button class="form-control text-left" type="button" ng-click="endDatePicker.show = !endDatePicker.show">{{eachCourse.endDate | date:'yyyy-MM-dd'}}</button>
                                                 <div type="text" uib-datepicker-popup ng-model="eachCourse.endDate" is-open="endDatePicker.show" datepicker-options="endDatePicker" close-text="Close" />
                                             </div>
                                         </div>
@@ -123,31 +123,31 @@
                                     <div class="panel-heading">
                                         <span><strong>{{course.name}}</strong></span>
                                         <!--delete course button-->
-                                        <span ng-show="!editCourse && displayType !== 'inactive'" class="btn btn-xs pull-right glyphicon glyphicon-trash" ng-confirm-click="Are you sure to delete this course?" confirmed-click="deleteCourse(course)"></span>
-                                        <span ng-show="!editCourse && displayType !== 'inactive'" class="pull-right"> | </span>
+                                        <span ng-show="!editCourse && displayType === 'active'" class="btn btn-xs pull-right glyphicon glyphicon-trash" ng-confirm-click="Are you sure to delete this course?" confirmed-click="deleteCourse(course)"></span>
+                                        <span ng-show="!editCourse && displayType === 'active'" class="pull-right"> | </span>
                                         <!--edit course button-->
-                                        <span ng-show="!editCourse && displayType !== 'inactive'" data-ng-disabled="editCourseForm.$invalid" class="btn btn-xs pull-right glyphicon glyphicon-pencil" data-ng-click="editCourse = true; updateCourseInfo(course)"></span>
+                                        <span ng-show="!editCourse && displayType === 'active'" class="btn btn-xs pull-right glyphicon glyphicon-pencil" data-ng-click="editCourse = true"></span>
                                         <!--cancel changes button-->
-                                        <button ng-show="editCourse && displayType !== 'inactive'" class="btn btn-danger btn-xs btn-circle pull-right" data-ng-click="editCourse = false; clearEditCourseForm()">
+                                        <button ng-show="editCourse && displayType === 'active'" class="btn btn-danger btn-xs btn-circle pull-right" data-ng-click="editCourse = false; clearEditCourseForm()">
                                             <span class="glyphicon glyphicon-remove"></span>
                                         </button>
                                         <!--save changes button-->
-                                        <button ng-show="editCourse && displayType !== 'inactive'" data-ng-disabled="editCourseForm.$invalid" class="btn btn-success btn-xs btn-circle pull-right" data-ng-click="editCourse = false">
+                                        <button ng-show="editCourse && displayType === 'active'" data-ng-disabled="form.editCourseForm.$invalid" class="btn btn-success btn-xs btn-circle pull-right" data-ng-click="editCourse = false; updateCourseInfo(course)">
                                             <span class="glyphicon glyphicon-ok"></span>
                                         </button>
                                     </div>
                                     <div class="panel-body">
-                                        <form class="row" name="editCourseForm">
+                                        <form class="row" name="form.editCourseForm">
                                             <div class="col-xs-12">
                                                 <label><strong>Start Date: </strong></label>
                                                 <div ng-if="!editCourse" class="crap-word">{{course.startDate.slice(0, 10)}}</div>
-                                                <button ng-if="editCourse" class="form-control text-left" type="button" ng-click="startDatePickerTwo.show = !startDatePickerTwo.show">{{editCourses[$index].startDateObj ? displayDateString(editCourses[$index].startDateObj) : editCourses[$index].startDate.slice(0, 10)}}</button>
+                                                <button ng-if="editCourse" class="form-control text-left" type="button" ng-click="startDatePickerTwo.show = !startDatePickerTwo.show">{{editCourses[$index].startDateObj ? (editCourses[$index].startDateObj | date:'yyyy-MM-dd') : editCourses[$index].startDate.slice(0, 10)}}</button>
                                                 <div type="text" uib-datepicker-popup ng-model="editCourses[$index].startDateObj" is-open="startDatePickerTwo.show" datepicker-options="startDatePickerTwo" close-text="Close" />
                                             </div>
                                             <div class="col-xs-12">
                                                 <label><strong>End Date: </strong></label>
                                                 <div ng-if="!editCourse" class="crap-word">{{course.endDate.slice(0, 10)}}</div>
-                                                <button ng-if="editCourse" class="form-control text-left" type="button" ng-click="endDatePickerTwo.show = !endDatePickerTwo.show">{{editCourses[$index].endDateObj ? displayDateString(editCourses[$index].endDateObj) : editCourses[$index].endDate.slice(0, 10)}}</button>
+                                                <button ng-if="editCourse" class="form-control text-left" type="button" ng-click="endDatePickerTwo.show = !endDatePickerTwo.show">{{editCourses[$index].endDateObj ? (editCourses[$index].endDateObj | date:'yyyy-MM-dd') : editCourses[$index].endDate.slice(0, 10)}}</button>
                                                 <div type="text" uib-datepicker-popup ng-model="editCourses[$index].endDateObj" is-open="endDatePickerTwo.show" datepicker-options="endDatePickerTwo" close-text="Close" />
                                             </div>
                                             <div class="col-xs-12">

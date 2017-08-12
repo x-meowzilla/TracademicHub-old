@@ -31,6 +31,7 @@ router.get('/', function (req, res) {
 router.put('/', function (req, res) {
     "use strict";
     // req.body = {startDate, endDate, name, description, academicTerm (Fall, Winter, Summer, etc), userPrivileges}
+    console.log(req.body);
     req.body.startDate += 'T00:00:00.000';
     req.body.endDate += 'T23:59:59.999';
     CourseModel.findCourseData({startDate: req.body.startDate, endDate: req.body.endDate, name: req.body.name})

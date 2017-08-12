@@ -68,9 +68,7 @@
 
 
 
-        $scope.displayDateString = function (date) {
-            return date.toDateString();
-        };
+        // add course modal
         $scope.startDatePicker = {
             minDate: new Date(),
             show: false
@@ -107,7 +105,9 @@
         };
         $scope.editUserInfoOrign = angular.copy($scope.eachCourse);
         $scope.createCourse = function () {
-            _AjaxRequest.put('/api/courses', $scope.eachCourse, true)
+            console.log($scope.eachCourse);
+            console.log($scope.userPrivileges);
+            _AjaxRequest.put('/api/courses', $scope.eachCourse)
                 .then(
                     function successCallback(result) {
                         $scope.clearAddCourseForm();
@@ -119,6 +119,7 @@
                         {
                             $scope.utoridExist = true;
                         }
+                        console.error(error);
                     }
                 );
         };
@@ -130,6 +131,8 @@
 
 
 
+        // edit course form
+        $scope.form = {};
         $scope.startDatePickerTwo = {
             minDate: new Date(),
             show: false
@@ -143,17 +146,17 @@
             $scope.editCourses.endDate = newValue;
         }, true);
         $scope.updateCourseInfo = function (course) {
-            if($scope.editCourseForm.$dirty)
+            if($scope.form.editCourseForm.$dirty)
             {
                 var updatedCourse = {};
                 updatedCourse["startDate"] = $scope.editCourses.startDate;
                 updatedCourse["endDate"] = $scope.editCourses.endDate;
 
-                if($scope.editCourseForm.description.$dirty)
+                if($scope.form.editCourseForm.description.$dirty)
                 {
                     updatedCourse["description"] = $scope.editCourses.description;
                 }
-                else if($scope.editCourseForm.academicTerm.$dirty)
+                else if($scope.form.editCourseForm.academicTerm.$dirty)
                 {
                     updatedCourse["academicTerm"] = $scope.editCourses.academicTerm;
                 }
@@ -172,8 +175,8 @@
         };
         $scope.clearEditCourseForm = function () {
             $scope.editCourses = angular.copy($scope.courses);
-            $scope.editCourseForm.$setPristine();
-            $scope.editCourseForm.$setUntouched();
+            $scope.form.editCourseForm.$setPristine();
+            $scope.form.editCourseForm.$setUntouched();
         };
 
 

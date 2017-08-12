@@ -39,8 +39,6 @@
 
                             return res;
                         });
-
-                        console.log($scope.users);
                     },
                     function errorCallback(error) {
                         console.error(error);
