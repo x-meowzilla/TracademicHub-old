@@ -133,34 +133,37 @@
 
         // edit course form
         $scope.form = {};
-        $scope.startDatePickerTwo = {
-            minDate: new Date(),
-            show: false
+        $scope.setStartDatePicker = function (editCourse) {
+            editCourse.startDatePicker = {};
+            editCourse.startDatePicker.show=false;
+            editCourse.startDatePicker.minDate=new Date()
         };
-        $scope.endDatePickerTwo = {
-            minDate: new Date(),
-            show: false
+        $scope.setEndDatePicker = function (editCourse) {
+            editCourse.endDatePicker = {};
+            editCourse.endDatePicker.show=false;
+            editCourse.endDatePicker.minDate=new Date()
         };
-        $scope.$watch('editCourses.startDate', function(newValue, oldValue) {
-            $scope.endDatePickerTwo.minDate = newValue;
-            $scope.editCourses.endDate = newValue;
-        }, true);
-        $scope.updateCourseInfo = function (course) {
+        $scope.resetEndDate = function (editCourse) {
+            editCourse.endDatePicker.minDate = editCourse.startDateObj;
+            editCourse.endDateObj = editCourse.startDateObj;
+        };
+        $scope.updateCourseInfo = function (course, updateCourse) {
             if($scope.form.editCourseForm.$dirty)
             {
                 var updatedCourse = {};
-                updatedCourse["startDate"] = $scope.editCourses.startDate;
-                updatedCourse["endDate"] = $scope.editCourses.endDate;
+                updatedCourse["startDate"] = updateCourse.startDateObj;
+                updatedCourse["endDate"] = updateCourse.endDateObj;
 
                 if($scope.form.editCourseForm.description.$dirty)
                 {
-                    updatedCourse["description"] = $scope.editCourses.description;
+                    updatedCourse["description"] = updateCourse.description;
                 }
                 else if($scope.form.editCourseForm.academicTerm.$dirty)
                 {
-                    updatedCourse["academicTerm"] = $scope.editCourses.academicTerm;
+                    updatedCourse["academicTerm"] = updateCourse.academicTerm;
                 }
 
+                console.log(updatedCourse);
                 _AjaxRequest.patch('/api/courses/' + course._id + '/update?' + $.param(updatedCourse))
                     .then(
                         function successCallback(result) {
