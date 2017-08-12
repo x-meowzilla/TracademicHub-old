@@ -214,8 +214,8 @@
         };
     }
 
-    editProfile.$inject = ['_AjaxRequest', '_Authentication']; // dependency injection
-    function editProfile(_AjaxRequest, _Authentication) {
+    editProfile.$inject = ['_AjaxRequest', '_Authentication', 'PRIVILEGE']; // dependency injection
+    function editProfile(_AjaxRequest, _Authentication, PRIVILEGE) {
         return {
             restrict: 'EA',
             scope: {
@@ -224,6 +224,12 @@
             },
             templateUrl:'angular_components/userSettings/common/userSettingsModals/editUserProfile.html',
             link: function ($scope) {
+                $scope.authorizedPrivilege = PRIVILEGE;
+                $scope.isAuthorized = function (value) {
+                    // todo: hard-coded for now, need to udpate when server side access privilege checking apis finished.
+                    return _Authentication.isAuthorized(value);
+                };
+
                 // edit profile form
                 $scope.courses = [];
                 (function () {

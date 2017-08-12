@@ -12,7 +12,7 @@
             <div class="col-lg-12">
                 <h1 class="page-header">
                     <span>Users Management</span>
-                    <i class="fa fa-fw fa-plus-circle titl-side-btn" data-toggle="modal" data-target="#addUserModal"></i>
+                    <span ng-if="isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE)" class="fa fa-fw fa-plus-circle titl-side-btn hand-cursor" data-toggle="modal" data-target="#addUserModal"></span>
                 </h1>
             </div>
         </div>
@@ -108,13 +108,13 @@
                             </td>
                             <!--delete user button-->
                             <td ng-if="['active', 'checkedin'].indexOf(displayUser.displayType) > -1" class="text-center">
-                                <button ng-disabled="item.isLocalUser" class="btn btn-danger btn-xs" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteUser(item)">
+                                <button ng-disabled="!isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE) || item.isLocalUser" class="btn btn-danger btn-xs" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteUser(item)">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </button>
                             </td>
                             <!--active user button-->
                             <td ng-if="displayUser.displayType === 'inactive'" class="text-center">
-                                <button ng-disabled="item.isLocalUser" class="btn btn-success btn-xs" ng-confirm-click="Are you sure to active this user?" confirmed-click="activeUser(item)">
+                                <button ng-disabled="!isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE) || item.isLocalUser" class="btn btn-success btn-xs" ng-confirm-click="Are you sure to active this user?" confirmed-click="activeUser(item)">
                                     <span class="glyphicon glyphicon-flag"></span>
                                 </button>
                             </td>
@@ -124,18 +124,19 @@
                         <tfoot>
                         <td colspan="{{getColspan()}}" ng-if="pagedItems.length != 0 && checkedItems.length > 1">
                             <!--delete mutiple users button-->
-                            <span ng-if="['active', 'checkedin'].indexOf(displayUser.displayType) > -1" class="btn btn-danger checkedAllSection" ng-confirm-click="Are you sure to delete selected user?" confirmed-click="deleteSelectedUsers(checkedItems)">Delete Selected Users</span>
+                            <span ng-if="isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE) && ['active', 'checkedin'].indexOf(displayUser.displayType) > -1" class="btn btn-danger checkedAllSection" ng-confirm-click="Are you sure to delete selected user?" confirmed-click="deleteSelectedUsers(checkedItems)">Delete Selected Users</span>
                             <!--modify mutiple user access privileges button-->
-                            <span ng-if="['active', 'checkedin'].indexOf(displayUser.displayType) > -1" class="btn btn-primary checkedAllSection" data-title="ModifyPrivilege" data-toggle="modal" data-target="#modifyPrivilegeModal">Modify Access Privilege</span>
+                            <span ng-if="isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE) && ['active', 'checkedin'].indexOf(displayUser.displayType) > -1" class="btn btn-primary checkedAllSection" data-title="ModifyPrivilege" data-toggle="modal" data-target="#modifyPrivilegeModal">Modify Access Privilege</span>
                             <!--give points to mutiple users button-->
-                            <span ng-if="['active', 'checkedin'].indexOf(displayUser.displayType) > -1" class="btn btn-info checkedAllSection" ng-click="givePoints(checkedItems)">Give Points</span>
+                            <span ng-if="['active', 'checkedin'].indexOf(displayUser.displayType) > -1 && displayUser.displayCourse.userPrivileges.length > 0" class="btn btn-info checkedAllSection" ng-click="givePoints(checkedItems)">Give Points</span>
                             <!--active mutiple users button-->
-                            <span ng-if="displayUser.displayType === 'inactive'" class="btn btn-success checkedAllSection" ng-confirm-click="Are you sure to active selected user?" confirmed-click="activeSelectedUsers(checkedItems)">Active Selected Users</span>
+                            <span ng-if="displayUser.displayType === 'inactive'" data-ng-disabled="!isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE)" class="btn btn-success checkedAllSection" ng-confirm-click="Are you sure to active selected user?" confirmed-click="activeSelectedUsers(checkedItems)">Active Selected Users</span>
                             <span><strong class="">{{checkedItems.length}} record selected</strong></span>
                         </td>
                         <td colspan="{{getColspan()}}" ng-if="(pagedItems.length == 0 || checkedItems.length <= 1) && (users|filter:searchrecord).length != 0" class="text-center text-muted">
                             <div>Click row to view user profile.</div>
                             <div ng-if="displayUser.displayType !== 'all'">Select Multiple Users and perform Bulk User Operations.</div>
+                            <div ng-if="displayUser.displayType === 'active'">Enable Give Points to mutiple users button after selecting a course.</div>
                         </td>
                         <td colspan="{{getColspan()}}" ng-if="(users|filter:searchrecord).length == 0" class="text-center">
                             <strong>DATA NOT FOUND.</strong>
@@ -180,14 +181,14 @@
                                         <div class="row">
                                             <div class="col-xs-3">
                                                 <!--edit user profile button-->
-                                                <button ng-if="['active', 'checkedin'].indexOf(displayUser.displayType) > -1" class="btn btn-info btn-xs btn-circle" data-toggle="modal" data-target="#edit{{item._id}}" ><span class="glyphicon glyphicon-pencil"></span></button>
+                                                <button ng-if="isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE) && ['active', 'checkedin'].indexOf(displayUser.displayType) > -1" class="btn btn-info btn-xs btn-circle" data-toggle="modal" data-target="#edit{{item._id}}" ><span class="glyphicon glyphicon-pencil"></span></button>
                                                 <edit-Profile user="item" pid="item._id"></edit-Profile>
                                                 <!--delete the user button-->
-                                                <button ng-if="['active', 'checkedin'].indexOf(displayUser.displayType) > -1" class="btn btn-danger btn-xs btn-circle" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteUser(item)" ><span class="glyphicon glyphicon-trash"></span></button>
+                                                <button ng-if="isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE) && ['active', 'checkedin'].indexOf(displayUser.displayType) > -1" class="btn btn-danger btn-xs btn-circle" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteUser(item)" ><span class="glyphicon glyphicon-trash"></span></button>
                                                 <!--give point button-->
                                                 <button ng-if="['active', 'checkedin'].indexOf(displayUser.displayType) > -1" class="btn btn-warning btn-xs btn-circle" data-ng-click="givePoints([item])" ><span class="glyphicon glyphicon-gift"></span></button>
                                                 <!--activev user button-->
-                                                <button ng-if="displayUser.displayType === 'inactive'" class="btn btn-success btn-xs btn-circle" ng-confirm-click="Are you sure to active this user?" confirmed-click="activeUser(item)" ><span class="glyphicon glyphicon-flag"></span></button>
+                                                <button ng-if="isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE) && displayUser.displayType === 'inactive'" class="btn btn-success btn-xs btn-circle" ng-confirm-click="Are you sure to active this user?" confirmed-click="activeUser(item)" ><span class="glyphicon glyphicon-flag"></span></button>
                                             </div>
                                             <div class="col-xs-9">
                                                 <img class="img-circle img-responsive avatar-small" data-ng-src="{{defaultAvatar}}">

@@ -3,7 +3,7 @@
 
     angular
         .module('TracademicHub', ['ngRoute', 'ngAnimate', 'ui.bootstrap', 'angular-page-loader'])
-        .config(function ($routeProvider, $locationProvider, $httpProvider) {
+        .config(function ($routeProvider, $locationProvider, $httpProvider, PRIVILEGE) {
             $httpProvider.defaults.withCredentials = true;
 
             $locationProvider.hashPrefix('');
@@ -13,32 +13,32 @@
                 .when('/', {
                     templateUrl: 'angular_components/homepage/homepage.html',
                     authenticate: false,
-                    privilegeValue: 0
+                    privilegeValue: PRIVILEGE.ACCESS_STUDENT_VALUE
                 })
                 .when('/profile', {
                     templateUrl: 'angular_components/userSettings/userProfile/userProfile.html',
                     authenticate: true,
-                    privilegeValue: 10
+                    privilegeValue: PRIVILEGE.ACCESS_STUDENT_VALUE
                 })
                 .when('/leaderBoardRank', {
                     templateUrl: 'angular_components/userSettings/leaderBoardRank/leaderBoardRank.html',
                     authenticate: true,
-                    privilegeValue: 10
+                    privilegeValue: PRIVILEGE.ACCESS_STUDENT_VALUE
                 })
                 .when('/states', {
                     templateUrl: 'angular_components/userSettings/states/states.html',
                     authenticate: true,
-                    privilegeValue: 10
+                    privilegeValue: PRIVILEGE.ACCESS_STUDENT_VALUE
                 })
                 .when('/manageProducts', {
                     templateUrl: 'angular_components/userSettings/manageProducts/manageProducts.html',
                     authenticate: true,
-                    privilegeValue: 50
+                    privilegeValue: PRIVILEGE.ACCESS_INSTRUCTOR_VALUE
                 })
                 .when('/pointsHistory', {
                     templateUrl: 'angular_components/userSettings/pointsHistory/pointsHistory.html',
                     authenticate: true,
-                    privilegeValue: 50
+                    privilegeValue: PRIVILEGE.ACCESS_INSTRUCTOR_VALUE
                 })
                 // .when('/loginHistory', {
                 //     templateUrl: 'angular_components/userSettings/loginHistory/loginHistory.html',
@@ -51,17 +51,17 @@
                 .when('/userManagement', {
                     templateUrl: 'angular_components/userSettings/userManagement/userManagement.html',
                     authenticate: true,
-                    privilegeValue: 30
+                    privilegeValue: PRIVILEGE.ACCESS_TA_VALUE
                 })
                 .when('/courseManagement', {
                     templateUrl: 'angular_components/userSettings/courseManagement/courseManagement.html',
                     authenticate: true,
-                    privilegeValue: 100
+                    privilegeValue: PRIVILEGE.ACCESS_ADMIN_VALUE
                 })
                 .when('/pointManagement', {
                     templateUrl: 'angular_components/userSettings/pointManagement/pointManagement.html',
                     authenticate: true,
-                    privilegeValue: 30
+                    privilegeValue: PRIVILEGE.ACCESS_TA_VALUE
                 })
                 // .when('/privilegeManagement', {
                 //     templateUrl: 'angular_components/userSettings/privilegeManagement/privilegeManagement.html',

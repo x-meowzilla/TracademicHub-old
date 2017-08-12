@@ -8,18 +8,18 @@
             <div class="modal-body">
                 <form name="addUserForm">
                     <!-- tab controller -->
-                    <ul class="nav nav-tabs hand-cursor" ng-init="displayCSV = false">
-                        <li class="active"><a class="fa fa-user" data-toggle="tab" data-ng-click="displayCSV = false">
-                            <strong> Create Local Admin</strong></a>
-                        </li>
-                        <li><a class="fa fa-address-book" data-toggle="tab" data-ng-click="displayCSV = true">
+                    <ul class="nav nav-tabs hand-cursor" ng-init="displayCSV = true">
+                        <li class="active"><a class="fa fa-address-book" data-toggle="tab" data-ng-click="displayCSV = true">
                             <strong> Import CSV</strong></a>
+                        </li>
+                        <li><a class="fa fa-user" data-toggle="tab" data-ng-click="displayCSV = false">
+                            <strong> Create Local Admin</strong></a>
                         </li>
                     </ul>
 
                     <div class="tab-content">
                         <!-- add local user -->
-                        <ng-form ng-if="!displayCSV" name="createUserForm">
+                        <ng-form ng-if="isAuthorized(authorizedPrivilege.ACCESS_ADMIN_VALUE) && !displayCSV" name="createUserForm">
                             <h3>Create Local Admin</h3>
                             <h5 class="text-muted">Fields with "*" are required fields.</h5>
                             <fieldset class="form-horizontal">
@@ -68,6 +68,7 @@
                                 </div>
                             </fieldset>
                         </ng-form>
+                        <div ng-if="!isAuthorized(authorizedPrivilege.ACCESS_ADMIN_VALUE) && !displayCSV"><h5>Please contract any local admin to add a new local admin.</h5></div>
                         <!-- add users by importing csv file -->
                         <ng-form ng-if="displayCSV" name="importCSVForm">
                             <div class="row">
@@ -97,7 +98,7 @@
 
             </div>
             <div class="modal-footer">
-                <button ng-if="!displayCSV" class="btn btn-primary" data-ng-disabled="(addUserForm.createUserForm.$invalid || addUserForm.createUserForm.$pristine || utoridExist)" data-ng-click="createAdmin()"> Create</button>
+                <button ng-if="!displayCSV" class="btn btn-primary" data-ng-disabled="!isAuthorized(authorizedPrivilege.ACCESS_ADMIN_VALUE) || (addUserForm.createUserForm.$invalid || addUserForm.createUserForm.$pristine || utoridExist)" data-ng-click="createAdmin()"> Create</button>
                 <button ng-if="displayCSV" type="submit" class="btn btn-primary" data-ng-disabled="!enableImportBtn" data-ng-click="importCSVFile()"> Import</button>
                 <button type="reset" class="btn btn-default" data-toggle="modal" data-target="#addUserModal" data-ng-click="clearForm()">Cancel</button>
             </div>

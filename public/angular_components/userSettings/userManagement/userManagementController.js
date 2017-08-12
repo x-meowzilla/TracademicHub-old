@@ -8,10 +8,10 @@
     userManagementController.$inject = ['$scope', '$location', '_Authentication', 'PRIVILEGE', '_AjaxRequest', '_AssignPoints']; // dependency injection
 
     function userManagementController($scope, $location, _Authentication, PRIVILEGE, _AjaxRequest, _AssignPoints) {
-        $scope.isAuthorized = function (idx) {
-            console.log(PRIVILEGE[idx].value);
+        $scope.authorizedPrivilege = PRIVILEGE;
+        $scope.isAuthorized = function (value) {
             // todo: hard-coded for now, need to udpate when server side access privilege checking apis finished.
-            return _Authentication.isAuthorized(PRIVILEGE[idx].value);
+            return _Authentication.isAuthorized(value);
         };
 
         // users data settings

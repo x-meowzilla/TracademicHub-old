@@ -5,9 +5,14 @@
         .module('TracademicHub')
         .controller('pointManagementController', pointManagementController);
 
-    pointManagementController.$inject = ['$scope', '$timeout', '_AjaxRequest', '_AssignPoints']; // dependency injection
+    pointManagementController.$inject = ['$scope', '_AjaxRequest', '_Authentication', 'PRIVILEGE', '_AssignPoints']; // dependency injection
 
-    function pointManagementController($scope, $timeout, _AjaxRequest, _AssignPoints) {
+    function pointManagementController($scope, _AjaxRequest, _Authentication, PRIVILEGE, _AssignPoints) {
+        $scope.authorizedPrivilege = PRIVILEGE;
+        $scope.isAuthorized = function (value) {
+            // todo: hard-coded for now, need to udpate when server side access privilege checking apis finished.
+            return _Authentication.isAuthorized(value);
+        };
 
         var getAllCategories = function () {
             _AjaxRequest.get('/api/points-category/')
