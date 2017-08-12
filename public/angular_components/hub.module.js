@@ -12,27 +12,33 @@
             $routeProvider
                 .when('/', {
                     templateUrl: 'angular_components/homepage/homepage.html',
-                    authenticate: false
+                    authenticate: false,
+                    privilegeValue: 0
                 })
                 .when('/profile', {
                     templateUrl: 'angular_components/userSettings/userProfile/userProfile.html',
-                    authenticate: true
+                    authenticate: true,
+                    privilegeValue: 10
                 })
                 .when('/leaderBoardRank', {
                     templateUrl: 'angular_components/userSettings/leaderBoardRank/leaderBoardRank.html',
-                    authenticate: true
+                    authenticate: true,
+                    privilegeValue: 10
                 })
                 .when('/states', {
                     templateUrl: 'angular_components/userSettings/states/states.html',
-                    authenticate: true
+                    authenticate: true,
+                    privilegeValue: 10
                 })
                 .when('/manageProducts', {
                     templateUrl: 'angular_components/userSettings/manageProducts/manageProducts.html',
-                    authenticate: true
+                    authenticate: true,
+                    privilegeValue: 50
                 })
                 .when('/pointsHistory', {
                     templateUrl: 'angular_components/userSettings/pointsHistory/pointsHistory.html',
-                    authenticate: true
+                    authenticate: true,
+                    privilegeValue: 50
                 })
                 // .when('/loginHistory', {
                 //     templateUrl: 'angular_components/userSettings/loginHistory/loginHistory.html',
@@ -44,15 +50,18 @@
                 // })
                 .when('/userManagement', {
                     templateUrl: 'angular_components/userSettings/userManagement/userManagement.html',
-                    authenticate: true
+                    authenticate: true,
+                    privilegeValue: 30
                 })
                 .when('/courseManagement', {
                     templateUrl: 'angular_components/userSettings/courseManagement/courseManagement.html',
-                    authenticate: true
+                    authenticate: true,
+                    privilegeValue: 100
                 })
                 .when('/pointManagement', {
                     templateUrl: 'angular_components/userSettings/pointManagement/pointManagement.html',
-                    authenticate: true
+                    authenticate: true,
+                    privilegeValue: 30
                 })
                 // .when('/privilegeManagement', {
                 //     templateUrl: 'angular_components/userSettings/privilegeManagement/privilegeManagement.html',
@@ -60,7 +69,8 @@
                 // })
                 .otherwise({
                     templateUrl: 'angular_components/error_pages/404.html',
-                    authenticate: false
+                    authenticate: false,
+                    privilegeValue: 0
                 });
 
             $httpProvider.interceptors.push([
@@ -70,12 +80,21 @@
                 }
             ]);
         })
-        .run(function($rootScope, $location, _Authentication){
+        .run(function($rootScope, $location, _Authentication, AUTH_EVENTS){
             $rootScope.$on('$routeChangeStart', function (event, next) {
                 if (next.$$route.authenticate && !_Authentication.isAuthenticated()) {
                     event.preventDefault();
                     $location.path('/');
                     $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+                }
+                else if(next.$$route.authenticate && _Authentication.isAuthenticated())
+                {
+                    if(!_Authentication.isAuthorized(next.$$route.privilegeValue))
+                    {
+                        event.preventDefault();
+                        $location.path('/');
+                        $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+                    }
                 }
             });
 

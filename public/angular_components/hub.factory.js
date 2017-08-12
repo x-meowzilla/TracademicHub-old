@@ -11,12 +11,16 @@
             notAuthenticated: 'auth-not-authenticated',
             notAuthorized: 'auth-not-authorized'
         })
-        .constant('PRIVILEGE', [
-            {name: 'Student', value: 10},
-            {name: 'Teaching Assistant', value: 30},
-            {name: 'Instructor', value: 50},
-            {name: 'Admin', value: 100}
-        ])
+        .constant('PRIVILEGE', {
+            ACCESS_STUDENT: 'Student',
+            ACCESS_STUDENT_VALUE: 10,
+            ACCESS_TA: 'Teaching Assistant',
+            ACCESS_TA_VALUE: 30,
+            ACCESS_INSTRUCTOR: 'Instructor',
+            ACCESS_INSTRUCTOR_VALUE: 50,
+            ACCESS_ADMIN: 'Admin',
+            ACCESS_ADMIN_VALUE: 100
+        })
         .factory('_AjaxRequest', ajaxRequest)
         .factory('_Authentication', authentication)
         .factory('_UTORidAuthentication', utoridAuthentication)
@@ -98,11 +102,26 @@
                 else {
                     var res = false;
                     angular.forEach(this.getLoginUser().courseEnrolled, function (ce) {
-                        angular.forEach(PRIVILEGE, function (p) {
-                            res = res || p.name === ce.course.name && p.value >= privilegeValue;
-                        });
+                        var value = 0;
+                        if(ce.privilege.name === PRIVILEGE.ACCESS_STUDENT)
+                        {
+                            value = PRIVILEGE.ACCESS_STUDENT_VALUE;
+                        }
+                        else if(ce.privilege.name === PRIVILEGE.ACCESS_TA)
+                        {
+                            value = PRIVILEGE.ACCESS_TA_VALUE;
+                        }
+                        else if(ce.privilege.name === PRIVILEGE.ACCESS_INSTRUCTOR)
+                        {
+                            value = PRIVILEGE.ACCESS_INSTRUCTOR_VALUE;
+                        }
+                        else if(ce.privilege.name === PRIVILEGE.ACCESS_ADMIN)
+                        {
+                            value = PRIVILEGE.ACCESS_ADMIN_VALUE;
+                        }
+
+                        return res || value >= privilegeValue;
                     });
-                    return res;
                 }
             },
 
