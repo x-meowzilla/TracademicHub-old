@@ -143,16 +143,17 @@
                             </tbody>
                             <tfoot>
                             <td colspan="6" ng-if="users.length!==0" class="text-center">
-                                <div class="form-group col-xs-7">
-                                    <label class="col-xs-2 control-label"><h5>Course:</h5></label>
-                                    <div class="col-xs-8">
-                                        <select ng-model="selectedCourse" ng-options="course as course.name for course in courses" class="form-control" required>
-                                            <option value="">Please select a course...</option>
-                                        </select>
-                                    </div>
-                                </div>
+                                <!--<div class="form-group col-xs-7">-->
+                                    <!--<label class="col-xs-2 control-label"><h5>Course:</h5></label>-->
+                                    <!--<div class="col-xs-8">-->
+                                        <!--<select ng-model="selectedCourse" ng-options="course as course.name for course in courses" class="form-control" required>-->
+                                            <!--<option value="">Please select a course...</option>-->
+                                        <!--</select>-->
+                                    <!--</div>-->
+                                <!--</div>-->
                                 <div class="col-xs-2">
-                                    <button class="btn btn-info customBtn" data-ng-disabled="getAssignedPoints().length === 0 || !selectedCourse" data-ng-click="assignPoints(selectedCourse)">Give Points</button>
+                                    <!--<button class="btn btn-info customBtn" data-ng-disabled="getAssignedPoints().length === 0 || !selectedCourse" data-ng-click="assignPoints(selectedCourse)">Give Points</button>-->
+                                    <button class="btn btn-info customBtn center-block" data-ng-disabled="getAssignedPoints().length === 0" data-ng-click="assignPoints()">Give Points</button>
                                 </div>
                                 <div class="col-xs-3">
                                     <h5>{{users.length}} users selected</h5>

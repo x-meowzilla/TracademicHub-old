@@ -171,25 +171,28 @@
             }
         };
         
-        $scope.assignPoints = function (selectedCourse) {
-            if(selectedCourse)
-            {
-                angular.forEach($scope.users, function (user) {
-                    angular.forEach($scope.getAssignedPoints(), function (category) {
-                        console.log(category);
-                        _AjaxRequest.post('/api/points',
-                            {assigneeID: user._id, pointValue: category.point, pointCategoryID: category._id}, true)
-                            .then(
-                                function successCallback(result) {
-                                    // todo: assign point successfully banner
-                                },
-                                function errorCallback(error) {
-                                    console.error(error);
-                                }
-                            );
-                    });
+        $scope.assignPoints = function () {
+            angular.forEach($scope.users, function (user) {
+                angular.forEach($scope.getAssignedPoints(), function (category) {
+
+                    var postPointData = {
+                        assigneeID: user._id,
+                        pointValue: category.point,
+                        pointCategoryID: category._id
+                    };
+
+                    _AjaxRequest.post('/api/points', postPointData, true)
+                        .then(
+                            function successCallback(result) {
+                                // todo: assign point successfully banner
+                                console.log(result.data);
+                            },
+                            function errorCallback(error) {
+                                console.error(error);
+                            }
+                        );
                 });
-            }
+            });
         }
 
     }
