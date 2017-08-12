@@ -28,6 +28,30 @@
                             if($scope.displayUser.displayType === 'active')
                             {
                                 res = res && item.isActive;
+
+                                // filter by course
+                                if(!angular.isUndefined($scope.displayUser.displayCourse)
+                                    && !angular.equals({}, $scope.displayUser.displayCourse))
+                                {
+                                    var courseList = [];
+                                    angular.forEach(item.courseEnrolled, function (ce) {
+                                        courseList.push(ce.course._id);
+                                    });
+
+                                    res = res && courseList.indexOf($scope.displayUser.displayCourse._id) > -1;
+                                }
+
+                                // filter by user privilege
+                                if(!angular.isUndefined($scope.displayUser.displayPrivilege)
+                                    && !angular.equals({}, $scope.displayUser.displayPrivilege))
+                                {
+                                    var pList = [];
+                                    angular.forEach(item.courseEnrolled, function (ce) {
+                                        pList.push(ce.privilege._id);
+                                    });
+
+                                    res = res && pList.indexOf($scope.displayUser.displayPrivilege._id) > -1;
+                                }
                             }
                             else if($scope.displayUser.displayType === 'inactive')
                             {
@@ -36,30 +60,6 @@
                             else if($scope.displayUser.displayType === 'checkedin')
                             {
                                 res = res && item.lastLoginDate;
-                            }
-
-                            // filter by course
-                            if(!angular.isUndefined($scope.displayUser.displayCourse)
-                                && !angular.equals({}, $scope.displayUser.displayCourse))
-                            {
-                                var courseList = [];
-                                angular.forEach(item.courseEnrolled, function (ce) {
-                                    courseList.push(ce.course._id);
-                                });
-
-                                res = res && courseList.indexOf($scope.displayUser.displayCourse._id) > -1;
-                            }
-
-                            // filter by user privilege
-                            if(!angular.isUndefined($scope.displayUser.displayPrivilege)
-                                && !angular.equals({}, $scope.displayUser.displayPrivilege))
-                            {
-                                var pList = [];
-                                angular.forEach(item.courseEnrolled, function (ce) {
-                                    pList.push(ce.privilege._id);
-                                });
-
-                                res = res && pList.indexOf($scope.displayUser.displayPrivilege._id) > -1;
                             }
 
                             return res;
@@ -299,8 +299,10 @@
                             console.error(error);
                         }
                     );
+
+                getUsers();
+                clearSelected();
             });
-            getUsers();
         };
 
         // give points to selected user(s)
@@ -341,6 +343,7 @@
 
         $scope.importFile = {};
         $scope.enableImportBtn = false;
+        $scope.createUserForm = {};
         $scope.$watchCollection('importFile', function(newNames, oldNames) {
             var csvfile = newNames.csvfile;
             var course = newNames.course;
@@ -360,14 +363,18 @@
             _AjaxRequest.postFormData('/api/users/', fd)
                 .then(
                     function successCallback(result) {
-                        console.log(result.data);
                         $scope.clearForm();
+                        $scope.createUserForm.invalidCSVFormat = false;
                         angular.element("#addUserModal").modal('hide');
-                        getUsers()
+                        getUsers();
                     },
                     function errorCallback(error) {
                         // TODO: show save failed banner
                         console.error(error);
+                        if(error.status === 400)
+                        {
+                            $scope.createUserForm.invalidCSVFormat = true;
+                        }
                     }
                 );
         };

@@ -80,6 +80,7 @@
                                     <div class="form-group col-xs-12">
                                         <input type="file" class="form-control" accept=".csv" file-Changed formname="importCSVForm" file="importFile.csvfile" filename="importFile.csvfilename">
                                     </div>
+                                    <div class="text-danger col-xs-12" ng-show="createUserForm.invalidCSVFormat">Student CSV file is not properly formatted.</div>
                                     <div class="form-group">
                                         <label class="control-label col-xs-2"><h5>Course:</h5></label>
                                         <div class="col-xs-10">
@@ -97,7 +98,7 @@
             </div>
             <div class="modal-footer">
                 <button ng-if="!displayCSV" class="btn btn-primary" data-ng-disabled="(addUserForm.createUserForm.$invalid || addUserForm.createUserForm.$pristine || utoridExist)" data-ng-click="createAdmin()"> Create</button>
-                <button ng-if="displayCSV" type="submit" class="btn btn-primary" data-ng-disabled="!enableImportBtn" data-toggle="modal" data-target="#addUserModal" data-ng-click="importCSVFile()"> Import</button>
+                <button ng-if="displayCSV" type="submit" class="btn btn-primary" data-ng-disabled="!enableImportBtn" data-ng-click="importCSVFile()"> Import</button>
                 <button type="reset" class="btn btn-default" data-toggle="modal" data-target="#addUserModal" data-ng-click="clearForm()">Cancel</button>
             </div>
         </div>
