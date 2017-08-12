@@ -5,9 +5,15 @@
         .module('TracademicHub')
         .controller('userManagementController', userManagementController);
 
-    userManagementController.$inject = ['$scope', '$location', '_Authentication', '_AjaxRequest', '_AssignPoints', 'AUTH_EVENTS']; // dependency injection
+    userManagementController.$inject = ['$scope', '$location', '_Authentication', 'PRIVILEGE', '_AjaxRequest', '_AssignPoints']; // dependency injection
 
-    function userManagementController($scope, $location, _Authentication, _AjaxRequest, _AssignPoints, AUTH_EVENTS) {
+    function userManagementController($scope, $location, _Authentication, PRIVILEGE, _AjaxRequest, _AssignPoints) {
+        $scope.isAuthorized = function (idx) {
+            console.log(PRIVILEGE[idx].value);
+            // todo: hard-coded for now, need to udpate when server side access privilege checking apis finished.
+            return _Authentication.isAuthorized(PRIVILEGE[idx].value);
+        };
+
         // users data settings
         $scope.currentUser = _Authentication.getLoginUser();
         $scope.defaultAvatar = "../images/default-avatar.png";

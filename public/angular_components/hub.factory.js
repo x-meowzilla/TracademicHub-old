@@ -11,6 +11,12 @@
             notAuthenticated: 'auth-not-authenticated',
             notAuthorized: 'auth-not-authorized'
         })
+        .constant('PRIVILEGE', [
+            {name: 'Student', value: 10},
+            {name: 'Teaching Assistant', value: 30},
+            {name: 'Instructor', value: 50},
+            {name: 'Admin', value: 100}
+        ])
         .factory('_AjaxRequest', ajaxRequest)
         .factory('_Authentication', authentication)
         .factory('_UTORidAuthentication', utoridAuthentication)
@@ -43,8 +49,8 @@
         };
     }
 
-    authentication.$inject = ['$rootScope', '$location', '_AjaxRequest', 'AUTH_EVENTS'];
-    function authentication($rootScope, $location, _AjaxRequest, AUTH_EVENTS) {
+    authentication.$inject = ['$rootScope', '$location', '_AjaxRequest', 'AUTH_EVENTS', 'PRIVILEGE'];
+    function authentication($rootScope, $location, _AjaxRequest, AUTH_EVENTS, PRIVILEGE) {
         return {
             login: function (loginData) {
                 _AjaxRequest.post('/api/local-login', loginData, true)
@@ -82,8 +88,22 @@
                 return window.localStorage.getItem('loginUser') !== null;
             },
 
-            isAuthorized: function () {
-                console.log('authorized');
+            isAuthorized: function (privilegeValue) {
+                // todo: hard-coded for now, need to udpate when server side access privilege checking apis finished.
+                if(this.getLoginUser().isLocalUser)
+                {
+                    // local admin has the maximum privilege
+                    return true;
+                }
+                else {
+                    var res = false;
+                    angular.forEach(this.getLoginUser().courseEnrolled, function (ce) {
+                        angular.forEach(PRIVILEGE, function (p) {
+                            res = res || p.name === ce.course.name && p.value >= privilegeValue;
+                        });
+                    });
+                    return res;
+                }
             },
 
             getLoginUser: function () {

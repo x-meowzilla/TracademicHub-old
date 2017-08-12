@@ -1,21 +1,21 @@
 <div ng-include="'angular_components/navigation_bar/navigationBar.html'"></div>
 <login-dialog></login-dialog>
 
-<div class="sidebar">
+<div class="sidebar" ng-controller="sideBarController" >
     <ul class="nav side-nav">
-        <li>
+        <li ng-if="isAuthorized(0)">
             <a href="/profile" ng-class="{'activeTab': (activetab == '/profile')}"><i class="fa fa-fw fa-dashboard"></i> Profile</a>
         </li>
-        <li>
+        <li ng-if="isAuthorized(0)">
             <a href="/states" ng-class="{'activeTab': (activetab == '/states')}"><i class="fa fa-fw fa-bar-chart-o"></i> States Details</a>
         </li>
-        <li>
+        <li ng-if="isAuthorized(0)">
             <a href="/leaderBoardRank" ng-class="{'activeTab': activetab == '/leaderBoardRank'}"><i class="fa fa-fw fa-table"></i> LeaderBoard Rank</a>
         </li>
-        <li>
+        <li ng-if="isAuthorized(2)">
             <a href="/manageProducts" ng-class="{'activeTab': activetab == '/manageProducts'}"><i class="fa fa-fw fa-book"></i> Manage Products</a>
         </li>
-        <li>
+        <li ng-if="isAuthorized(2)">
             <a href="/pointsHistory" ng-class="{'activeTab': activetab == '/pointsHistory'}"><i class="fa fa-fw fa-history"></i>Points History</a>
         </li>
         <!--<li>-->
@@ -35,13 +35,13 @@
         <li>
             <a href="javascript:;" data-toggle="collapse" data-target="#management" ng-class="{'activeTab': activetab.indexOf('Management')>-1}"><i class="fa fa-fw fa-wrench"></i> Management <i class="fa fa-fw fa-caret-down"></i></a>
             <ul id="management" class="collapse">
-                <li>
+                <li ng-if="isAuthorized(1)">
                     <a href="/userManagement" ng-class="{'activeTab': activetab == '/userManagement'}">User Management</a>
                 </li>
-                <li>
+                <li ng-if="isAuthorized(3)">
                     <a href="/courseManagement" ng-class="{'activeTab': activetab == '/courseManagement'}">Course Management</a>
                 </li>
-                <li>
+                <li ng-if="isAuthorized(1)">
                     <a href="/pointManagement" ng-class="{'activeTab': activetab == '/pointManagement'}">Point Management</a>
                 </li>
                 <!--<li>-->

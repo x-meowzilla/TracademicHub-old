@@ -23,16 +23,22 @@
 
         $scope.courses = [];
         (function () {
+            var courseIds = [];
             angular.forEach($scope.getCurrentUser().courseEnrolled, function (item) {
-                _AjaxRequest.get('/api/courses?' + $.param({_id: item.course}))
-                    .then(
-                        function successCallback(result) {
-                            $scope.courses.push(result.data[0].name);
-                        },
-                        function errorCallback(error) {
-                            console.error(error);
-                        }
-                    );
+                var courseId = item.course._id;
+                if(courseIds.indexOf(courseId) < 0)
+                {
+                    _AjaxRequest.get('/api/courses?' + $.param({_id: courseId}))
+                        .then(
+                            function successCallback(result) {
+                                $scope.courses.push(result.data[0]);
+                                courseIds.push(result.data[0]._id);
+                            },
+                            function errorCallback(error) {
+                                console.error(error);
+                            }
+                        );
+                }
             });
         }());
 
