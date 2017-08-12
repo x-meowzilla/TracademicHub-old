@@ -31,9 +31,9 @@ var app = express();
 
 var sessionData = {
     cookie: {
-        secure: true,
+        secure: false,
         httpOnly: true,
-        expires: serverConfig.session.timeout
+        expires: serverConfig.session.duration
     },
     store: new MongoStore({url: dbConfig.dbURL, ttl: 2 * 60 * 60}),
     resave: false,

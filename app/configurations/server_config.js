@@ -11,7 +11,8 @@ module.exports = {
     session: {
         key: 'tracademichub.sess', // what the name that the session cookie is stored as
         secret: 'mwx2NOvSeJ4MJEyGfs5d', // DO NOT LEAK
-        timeout: new Date(Date.now() + 2 * 60 * 60 * 1000) // 2 hours timeout
+        duration: 2 * 60 * 60 * 1000 // 2 hours timeout
+        // timeout: new Date(Date.now() + 1 * 3 * 60 * 1000) // 2 hours timeout
     }
 
 };
