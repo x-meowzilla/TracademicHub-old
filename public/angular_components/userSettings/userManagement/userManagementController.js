@@ -68,6 +68,7 @@
                                 res = res && item.lastLoginDate;
                             }
 
+                            clearSelected();
                             return res;
                         });
                     },
