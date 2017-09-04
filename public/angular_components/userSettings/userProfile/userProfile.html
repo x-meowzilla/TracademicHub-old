@@ -16,10 +16,9 @@
                         <span>{{getDisplayName()}}</span>
                         <small>
                             Profile Overview
-                            <i class="fa fa-fw fa-gear titl-side-btn" data-toggle="modal" data-target="#edit{{getCurrentUser()._id}}"></i>
+                            <i class="fa fa-fw fa-gear titl-side-btn" ng-click="openEditProfileModal()" ></i>
                         </small>
                     </h1>
-                    <edit-Profile user="getCurrentUser()" pid="getCurrentUser()._id"></edit-Profile>
                 </div>
             </div>
 

@@ -78,20 +78,18 @@
                         <tr ng-repeat="item in getPagedItems(((users | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby)) | orderBy:sort.sortingOrder:sort.reverse)">
                             <td ng-if="displayUser.displayType !== 'all'">
                                 <input type="checkbox" ng-model="item.selected" ng-click="checkRow(item, currentpage)"/>
-                                <user-card-modal user="item" pid="item._id"></user-card-modal>
                             </td>
-                            <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.name.firstName}}</td>
-                            <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.name.lastName}}</td>
-                            <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.name.preferredName}}</td>
-                            <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.email}}</td>
-                            <td ng-if="['active', 'inactive'].indexOf(displayUser.displayType) > -1" data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.studentNumber}}</td>
-                            <td data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">{{item.lastLoginDate}}</td>
+                            <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{item.name.firstName}}</td>
+                            <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{item.name.lastName}}</td>
+                            <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{item.name.preferredName}}</td>
+                            <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{item.email}}</td>
+                            <td ng-if="['active', 'inactive'].indexOf(displayUser.displayType) > -1" data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{item.studentNumber}}</td>
+                            <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{item.lastLoginDate}}</td>
                             <td ng-if="displayUser.displayType === 'all'">
-                                <div data-toggle="modal" data-target="#{{item._id}}profile" class="hand-cursor">
+                                <div data-ng-click="openUserProfileModal(item)" class="hand-cursor">
                                     <span ng-if="item.isActive" class="glyphicon glyphicon-ok"></span>
                                     <span ng-if="!item.isActive" class="glyphicon glyphicon-remove"></span>
                                 </div>
-                                <user-card-modal user="item" pid="item._id"></user-card-modal>
                             </td>
                             <!--give points button-->
                             <td ng-if="['active', 'checkedin'].indexOf(displayUser.displayType) > -1" class="text-center">
@@ -101,10 +99,9 @@
                             </td>
                             <!--edit user profile button-->
                             <td ng-if="['active', 'checkedin'].indexOf(displayUser.displayType) > -1" class="text-center">
-                                <button ng-disabled="item.isLocalUser" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit{{item._id}}" >
+                                <button ng-disabled="item.isLocalUser" class="btn btn-primary btn-xs" ng-click="openEditProfileModal(item)" >
                                     <span class="glyphicon glyphicon-pencil"></span>
                                 </button>
-                                <edit-Profile user="item" pid="item._id"></edit-Profile>
                             </td>
                             <!--delete user button-->
                             <td ng-if="['active', 'checkedin'].indexOf(displayUser.displayType) > -1" class="text-center">
@@ -181,8 +178,9 @@
                                         <div class="row">
                                             <div class="col-xs-3">
                                                 <!--edit user profile button-->
-                                                <button ng-if="isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE) && ['active', 'checkedin'].indexOf(displayUser.displayType) > -1" class="btn btn-info btn-xs btn-circle" data-toggle="modal" data-target="#edit{{item._id}}" ><span class="glyphicon glyphicon-pencil"></span></button>
-                                                <edit-Profile user="item" pid="item._id"></edit-Profile>
+                                                <button ng-if="isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE) && ['active', 'checkedin'].indexOf(displayUser.displayType) > -1" class="btn btn-info btn-xs btn-circle" ng-click="openEditProfileModal(item)" >
+                                                    <span class="glyphicon glyphicon-pencil"></span>
+                                                </button>
                                                 <!--delete the user button-->
                                                 <button ng-if="isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE) && ['active', 'checkedin'].indexOf(displayUser.displayType) > -1" class="btn btn-danger btn-xs btn-circle" ng-confirm-click="Are you sure to delete this user?" confirmed-click="deleteUser(item)" ><span class="glyphicon glyphicon-trash"></span></button>
                                                 <!--give point button-->

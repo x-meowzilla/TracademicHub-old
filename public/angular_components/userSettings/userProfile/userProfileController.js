@@ -7,10 +7,9 @@
         .directive('barChart', barChart)
         .directive('donutChart', donutChart);
 
-    userProfileController.$inject = ['$scope', '_AjaxRequest', '_Authentication']; // dependency injection
+    userProfileController.$inject = ['$scope', '$uibModal', '_AjaxRequest', '_Authentication']; // dependency injection
 
-    function userProfileController($scope, _AjaxRequest, _Authentication) {
-
+    function userProfileController($scope, $uibModal, _AjaxRequest, _Authentication) {
         $scope.getCurrentUser = function () {
             return _Authentication.getLoginUser();
         };
@@ -41,6 +40,19 @@
                 }
             });
         }());
+
+        // open edit profile modal
+        $scope.openEditProfileModal = function() {
+            var modalInstance = $uibModal.open({
+                templateUrl : 'angular_components/userSettings/common/userSettingsModals/editUserProfile/editUserProfile.html',
+                controller : 'editUserProfileController',
+                resolve : {
+                    getCurrentUser : function() {
+                        return $scope.getCurrentUser();
+                    }
+                }
+            })
+        };
 
         // Morris data
         var getDataList = function (chartType) {

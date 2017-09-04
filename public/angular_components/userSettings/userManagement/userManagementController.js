@@ -5,9 +5,9 @@
         .module('TracademicHub')
         .controller('userManagementController', userManagementController);
 
-    userManagementController.$inject = ['$scope', '$location', '_Authentication', 'PRIVILEGE', '_AjaxRequest', '_AssignPoints']; // dependency injection
+    userManagementController.$inject = ['$scope', '$location', '$uibModal', '_Authentication', 'PRIVILEGE', '_AjaxRequest', '_AssignPoints']; // dependency injection
 
-    function userManagementController($scope, $location, _Authentication, PRIVILEGE, _AjaxRequest, _AssignPoints) {
+    function userManagementController($scope, $location, $uibModal, _Authentication, PRIVILEGE, _AjaxRequest, _AssignPoints) {
         $scope.authorizedPrivilege = PRIVILEGE;
         $scope.isAuthorized = function (value) {
             // todo: hard-coded for now, need to udpate when server side access privilege checking apis finished.
@@ -229,7 +229,30 @@
 
 
         // user operations settings
-        $scope.utoridExist = false;
+        // modal operation
+        $scope.openEditProfileModal = function(currentUser) {
+            var modalInstance = $uibModal.open({
+                templateUrl : 'angular_components/userSettings/common/userSettingsModals/editUserProfile/editUserProfile.html',
+                controller : 'editUserProfileController',
+                resolve : {
+                    getCurrentUser : function() {
+                        return currentUser;
+                    }
+                }
+            })
+        };
+
+        $scope.openUserProfileModal = function(currentUser) {
+            var modalInstance = $uibModal.open({
+                templateUrl : 'angular_components/userSettings/common/userSettingsModals/userCard/userCardModal.html',
+                controller : 'userCardController',
+                resolve : {
+                    currentUser : function() {
+                        return currentUser;
+                    }
+                }
+            })
+        };
 
         // delete/deactive user
         $scope.deleteUser = function (user) {
