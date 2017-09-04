@@ -130,14 +130,13 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="user in users">
-                                <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.name.firstName}}</td>
-                                <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.name.lastName}}</td>
-                                <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.name.preferredName}}</td>
-                                <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.email}}</td>
-                                <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.studentNumber}}</td>
+                                <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{user.name.firstName}}</td>
+                                <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{user.name.lastName}}</td>
+                                <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{user.name.preferredName}}</td>
+                                <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{user.email}}</td>
+                                <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{user.studentNumber}}</td>
                                 <td class="text-center">
                                     <button class="btn btn-danger btn-xs" data-title="Clear" ng-click="removeAssignee(user)" ><span class="glyphicon glyphicon-trash"></span></button>
-                                    <user-card-modal user="user" pid="user._id"></user-card-modal>
                                 </td>
                             </tr>
                             </tbody>
@@ -152,7 +151,6 @@
                                     <!--</div>-->
                                 <!--</div>-->
                                 <div class="col-xs-2">
-                                    <!--<button class="btn btn-info customBtn" data-ng-disabled="getAssignedPoints().length === 0 || !selectedCourse" data-ng-click="assignPoints(selectedCourse)">Give Points</button>-->
                                     <button class="btn btn-info customBtn center-block" data-ng-disabled="getAssignedPoints().length === 0" data-ng-click="assignPoints()">Give Points</button>
                                 </div>
                                 <div class="col-xs-3">

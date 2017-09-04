@@ -33,8 +33,7 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="item in (items | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby) | orderBy:sort.sortingOrder:sort.reverse"
-                            class="hand-cursor" data-toggle="modal" data-target="#{{item.fullName}}">
-                            <user-Card-Modal user="item" pid="item.fullName"></user-Card-Modal>
+                            class="hand-cursor" data-ng-click="openUserProfileModal(item)">
                             <td>{{item.fullName}}</td>
                             <td>{{item.fullName}}</td>
                             <td>{{item.preferredName}}</td>

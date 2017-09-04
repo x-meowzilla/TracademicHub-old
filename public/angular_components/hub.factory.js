@@ -9,7 +9,8 @@
             logoutSuccess: 'auth-logout-success',
             logoutFailed: 'auth-logout-failed',
             notAuthenticated: 'auth-not-authenticated',
-            notAuthorized: 'auth-not-authorized'
+            notAuthorized: 'auth-not-authorized',
+            serverError: 'server-error'
         })
         .constant('PRIVILEGE', {
             ACCESS_STUDENT: 'Student',
@@ -168,7 +169,8 @@
             responseError: function (response) {
                 $rootScope.$broadcast({
                     401: AUTH_EVENTS.notAuthenticated,
-                    403: AUTH_EVENTS.notAuthorized
+                    403: AUTH_EVENTS.notAuthorized,
+                    500: AUTH_EVENTS.serverError
                 }[response.status], response);
                 return $q.reject(response);
             }

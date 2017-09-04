@@ -1,0 +1,95 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-ng-click="closeForm()">&times;</button>
+        <h4 class="modal-title">View {{getDisplayName()}}'s Profile</h4>
+    </div>
+    <div class="modal-body">
+        <div class="panel-body">
+            <div class="col-xs-12">
+                <div>
+                    <img class="img-circle img-responsive avatar-large center-block" alt="avatar" data-ng-src="{{avatarUrl}}">
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <ul class="list-group row user-info-list">
+                    <li class="list-group-item">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5"><strong>First Name: </strong></div>
+                            <div class="col-xs-7">{{getCurrentUser().name.firstName}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5"><strong>Last Name: </strong></div>
+                            <div class="col-xs-7">{{getCurrentUser().name.lastName}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5"><strong>Preferred Name: </strong></div>
+                            <div class="col-xs-7">{{getCurrentUser().name.preferredName}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5"><strong>Student Number: </strong></div>
+                            <div class="col-xs-7">{{getCurrentUser().studentNumber}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5"><strong>Email: </strong></div>
+                            <div class="col-xs-7">{{getCurrentUser().email}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5"><strong>Last Login: </strong></div>
+                            <div class="col-xs-7">{{getCurrentUser().lastLoginDate}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5"><strong>Access Privilege: </strong></div>
+                            <div class="col-xs-7">
+                                <div ng-if="getCurrentUser().courseEnrolled.length!==0" class="table-responsive">
+                                    <table class="table table-bordered table-striped table-hover  text-center">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center">Course</th>
+                                            <th class="text-center">Privilege</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="ce in getCurrentUser().courseEnrolled">
+                                            <td>{{ce.course.name}}</td>
+                                            <td>{{ce.privilege.name}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <span ng-if="getCurrentUser().courseEnrolled.length===0" class="text-muted">
+                                            <strong ng-if="!getCurrentUser().isLocalUser">No Access Privilege Assigned</strong>
+                                            <strong ng-if="getCurrentUser().isLocalUser">Super Admin</strong>
+                                        </span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h4> Biography </h4>
+            </div>
+            <div class="panel-body">
+                <p>
+                    {{getCurrentUser().biography}}
+                </p>
+                <div ng-if="getCurrentUser().biography.length===0" class="text-muted">This guy is too lazy and doesn't add a biography here...</div>
+            </div>
+        </div>
+    </div>
+</div>

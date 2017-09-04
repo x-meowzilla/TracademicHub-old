@@ -1,0 +1,79 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-ng-click="closeForm()">&times;</button>
+        <h4 class="modal-title">Edit Profile</h4>
+    </div>
+    <div class="modal-body">
+        <form class="row" role="form" name="editUserProfileForm">
+            <!-- left column -->
+            <div class="col-lg-3">
+                <div class="text-center">
+                    <img class="avatar-large img-circle" alt="avatar" data-ng-src="{{editUserInfo.inputimage}}">
+                    <h6>Upload a different photo...</h6>
+                    <input type="file" class="form-control" ng-model="editUserInfo.inputimage" accept="image/*" file-Changed formname="editUserProfileForm" filename="editUserInfo.inputimage" file="editUserInfo.imageFile">
+                </div>
+            </div>
+
+            <!-- edit form column -->
+            <div class="col-lg-9">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label pull-left">First name:</label>
+                        <div class="col-lg-8">
+                            <input class="form-control" type="text" name="firstName" ng-model="editUserInfo.name.firstName" ng-disabled="!isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE)" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label pull-left">Last name:</label>
+                        <div class="col-lg-8">
+                            <input class="form-control" type="text" name="lastName" ng-model="editUserInfo.name.lastName" ng-disabled="!isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE)" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label pull-left">Preferred Name:</label>
+                        <div class="col-lg-8">
+                            <input class="form-control" name="preferredName" ng-model="editUserInfo.name.preferredName" type="text" ng-pattern="/^[A-z]*$/">
+                            <div class="text-danger pull-left" ng-show="editUserProfileForm.preferredName.$dirty && editUserProfileForm.preferredName.$error.pattern">Invalid preferred name</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label pull-left">Email:</label>
+                        <div class="col-lg-8">
+                            <input class="form-control" name="email" ng-model="editUserInfo.email" type="email" ng-disabled="!isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE)" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label pull-left">Biography:</label>
+                        <div class="col-lg-8">
+                            <textarea class="form-control" name="biography" ng-model="editUserInfo.biography" rows="5" cols="50"></textarea>
+                        </div>
+                    </div>
+                    <div ng-if="isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE)">
+                        <hr>
+                        <label class="col-lg-12">Access privilege:</label>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label pull-left">Course:</label>
+                            <div class="col-lg-8">
+                                <select name="course" ng-model="editUserInfo.selectedCourse" ng-options="course as course.name for course in courses" class="form-control">
+                                    <option value="">Please select a course...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label pull-left">Access Privilege:</label>
+                            <div class="col-lg-8">
+                                <select name="privilege" ng-model="editUserInfo.selectedPrivilege" ng-options="privilege as privilege.name for privilege in editUserInfo.selectedCourse.userPrivileges" class="form-control">
+                                    <option value="">Please select a privilege...</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" data-ng-disabled="editUserProfileForm.$invalid || editUserProfileForm.$pristine" data-ng-click="updateUserProfile()">Save changes</button>
+        <button type="reset" class="btn btn-default" data-ng-click="clearForm()">Cancel</button>
+    </div>
+</div>

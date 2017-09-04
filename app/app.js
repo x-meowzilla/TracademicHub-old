@@ -31,7 +31,7 @@ var app = express();
 
 var sessionData = {
     cookie: {
-        secure: false,
+        secure: true,
         httpOnly: true,
         expires: serverConfig.session.duration
     },
