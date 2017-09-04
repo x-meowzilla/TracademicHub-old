@@ -38,6 +38,7 @@
         $scope.courses = [];
 
         (function () {
+            // get point history
             _AjaxRequest.get('/api/points/history')
                 .then(
                     function successCallback(result) {
@@ -48,15 +49,44 @@
                     }
                 );
 
-            _AjaxRequest.get('/api/courses/')
-                .then(
-                    function successCallback(result) {
-                        $scope.courses = result.data;
-                    },
-                    function errorCallback(error) {
-                        console.error(error);
+            // get courses
+            if($scope.currentUser.isLocalUser)
+            {
+                // local admin can get view all courses
+                _AjaxRequest.get('/api/courses?' + $.param({isActive: true}))
+                    .then(
+                        function successCallback(result) {
+                            $scope.courses = result.data;
+                        },
+                        function errorCallback(error) {
+                            console.error(error);
+                        }
+                    )
+            }
+            else
+            {
+                // get the courses that current user has access to.
+                var courseIds = [];
+                angular.forEach($scope.currentUser.courseEnrolled, function (item) {
+                    var courseId = item.course._id;
+                    if(courseIds.indexOf(courseId) < 0)
+                    {
+                        _AjaxRequest.get('/api/courses?' + $.param({_id: courseId, isActive: true}))
+                            .then(
+                                function successCallback(result) {
+                                    if(result.data.length > 0)
+                                    {
+                                        $scope.courses.push(result.data[0]);
+                                        courseIds.push(result.data[0]._id);
+                                    }
+                                },
+                                function errorCallback(error) {
+                                    console.error(error);
+                                }
+                            );
                     }
-                )
+                });
+            }
         }());
 
 
@@ -71,6 +101,70 @@
         $scope.searchrecord = '';
 
 
+
+        $scope.startDatePicker = {
+            show: false
+        };
+        $scope.endDatePicker = {
+            show: false
+        };
+        $scope.timePeriod = {
+            startDate: new Date(),
+            endDate: new Date()
+        };
+        $scope.$watch('timePeriod.startDate', function(newValue, oldValue) {
+            if(newValue > $scope.timePeriod.endDate)
+            {
+                $scope.endDatePicker.minDate = newValue;
+                $scope.timePeriod.endDate = newValue;
+            }
+        }, true);
+
+
+
+        // Morris data
+        var getDataList = function () {
+            var data = [];
+
+            _AjaxRequest.get('/api/points-category/')
+                .then(
+                    function successCallback(result) {
+                        angular.forEach(result.data, function (category) {
+                            var value = 0;
+                            _AjaxRequest.get('/api/points?' + $.param({assignerID: $scope.getCurrentUser()._id, categoryID: category._id}))
+                                .then(
+                                    function successCallback(points) {
+                                        angular.forEach(points.data, function (point) {
+                                            value = value + point.value;
+                                        });
+                                    },
+                                    function errorCallback(error) {
+                                        console.error(error);
+                                    }
+                                );
+                            if(value !== 0)
+                            {
+                                if(chartType === 'donut')
+                                {
+                                    data['label'] = category.name;
+                                    data['value'] = value;
+                                }
+                                else if(chartType === 'bar')
+                                {
+                                    data['period'] = category.name;
+                                    data['points'] = value;
+                                }
+
+                            }
+                        });
+                    },
+                    function errorCallback(error) {
+                        console.error(error);
+                    }
+                );
+
+            return data;
+        };
 
         // Area Chart
         $scope.areadata = [];
@@ -184,7 +278,7 @@
 
                 $scope.$watch('areadata', function(newValue, oldValue) {
                     displayArea();
-                }, true);
+                });
 
             }
         }

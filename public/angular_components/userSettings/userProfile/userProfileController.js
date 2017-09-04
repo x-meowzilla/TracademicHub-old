@@ -7,10 +7,9 @@
         .directive('barChart', barChart)
         .directive('donutChart', donutChart);
 
-    userProfileController.$inject = ['$scope', '_AjaxRequest', '_Authentication']; // dependency injection
+    userProfileController.$inject = ['$scope', '$uibModal', '_AjaxRequest', '_Authentication']; // dependency injection
 
-    function userProfileController($scope, _AjaxRequest, _Authentication) {
-
+    function userProfileController($scope, $uibModal, _AjaxRequest, _Authentication) {
         $scope.getCurrentUser = function () {
             return _Authentication.getLoginUser();
         };
@@ -23,8 +22,37 @@
 
         $scope.courses = [];
         (function () {
-            $scope.courses = $scope.getCurrentUser().courseEnrolled.course;
+            var courseIds = [];
+            angular.forEach($scope.getCurrentUser().courseEnrolled, function (item) {
+                var courseId = item.course._id;
+                if(courseIds.indexOf(courseId) < 0)
+                {
+                    _AjaxRequest.get('/api/courses?' + $.param({_id: courseId, isActive: true}))
+                        .then(
+                            function successCallback(result) {
+                                $scope.courses.push(result.data[0]);
+                                courseIds.push(result.data[0]._id);
+                            },
+                            function errorCallback(error) {
+                                console.error(error);
+                            }
+                        );
+                }
+            });
         }());
+
+        // open edit profile modal
+        $scope.openEditProfileModal = function() {
+            var modalInstance = $uibModal.open({
+                templateUrl : 'angular_components/userSettings/common/userSettingsModals/editUserProfile/editUserProfile.html',
+                controller : 'editUserProfileController',
+                resolve : {
+                    getCurrentUser : function() {
+                        return $scope.getCurrentUser();
+                    }
+                }
+            })
+        };
 
         // Morris data
         var getDataList = function (chartType) {

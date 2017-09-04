@@ -5,9 +5,15 @@
         .module('TracademicHub')
         .controller('userManagementController', userManagementController);
 
-    userManagementController.$inject = ['$scope', '$location', '_Authentication', '_AjaxRequest', '_AssignPoints', 'AUTH_EVENTS']; // dependency injection
+    userManagementController.$inject = ['$scope', '$location', '$uibModal', '_Authentication', 'PRIVILEGE', '_AjaxRequest', '_AssignPoints']; // dependency injection
 
-    function userManagementController($scope, $location, _Authentication, _AjaxRequest, _AssignPoints, AUTH_EVENTS) {
+    function userManagementController($scope, $location, $uibModal, _Authentication, PRIVILEGE, _AjaxRequest, _AssignPoints) {
+        $scope.authorizedPrivilege = PRIVILEGE;
+        $scope.isAuthorized = function (value) {
+            // todo: hard-coded for now, need to udpate when server side access privilege checking apis finished.
+            return _Authentication.isAuthorized(value);
+        };
+
         // users data settings
         $scope.currentUser = _Authentication.getLoginUser();
         $scope.defaultAvatar = "../images/default-avatar.png";
@@ -17,28 +23,52 @@
         $scope.displayUser = {displayType: $scope.displayTypes[1], displayCourse: {}, displayPrivilege: {}};
 
         var getUsers = function () {
-            var userParam = {};
-
-            if($scope.displayUser.displayType === 'active')
-            {
-                userParam['isActive'] = true;
-            }
-            else if($scope.displayUser.displayType === 'inactive')
-            {
-                userParam['isActive'] = false;
-            }
-
-            _AjaxRequest.get('/api/users?' + $.param(userParam))
+            // isActive query not working now, upload csv data cannot save this field to db, need to be fixed in the future.
+            _AjaxRequest.get('/api/users')
                 .then(
                     function successCallback(result) {
                         $scope.users = result.data.filter(function (item) {
+                            // filter by user type
                             var res = item._id !== $scope.currentUser._id && !item.isLocalUser;
 
-                            if($scope.displayUser.displayType === 'checkedin')
+                            if($scope.displayUser.displayType === 'active')
                             {
-                                return res && item.lastLoginDate;
+                                res = res && item.isActive;
+
+                                // filter by course
+                                if(!angular.isUndefined($scope.displayUser.displayCourse)
+                                    && !angular.equals({}, $scope.displayUser.displayCourse))
+                                {
+                                    var courseList = [];
+                                    angular.forEach(item.courseEnrolled, function (ce) {
+                                        courseList.push(ce.course._id);
+                                    });
+
+                                    res = res && courseList.indexOf($scope.displayUser.displayCourse._id) > -1;
+                                }
+
+                                // filter by user privilege
+                                if(!angular.isUndefined($scope.displayUser.displayPrivilege)
+                                    && !angular.equals({}, $scope.displayUser.displayPrivilege))
+                                {
+                                    var pList = [];
+                                    angular.forEach(item.courseEnrolled, function (ce) {
+                                        pList.push(ce.privilege._id);
+                                    });
+
+                                    res = res && pList.indexOf($scope.displayUser.displayPrivilege._id) > -1;
+                                }
+                            }
+                            else if($scope.displayUser.displayType === 'inactive')
+                            {
+                                res = res && !item.isActive;
+                            }
+                            else if($scope.displayUser.displayType === 'checkedin')
+                            {
+                                res = res && item.lastLoginDate;
                             }
 
+                            clearSelected();
                             return res;
                         });
                     },
@@ -199,7 +229,30 @@
 
 
         // user operations settings
-        $scope.utoridExist = false;
+        // modal operation
+        $scope.openEditProfileModal = function(currentUser) {
+            var modalInstance = $uibModal.open({
+                templateUrl : 'angular_components/userSettings/common/userSettingsModals/editUserProfile/editUserProfile.html',
+                controller : 'editUserProfileController',
+                resolve : {
+                    getCurrentUser : function() {
+                        return currentUser;
+                    }
+                }
+            })
+        };
+
+        $scope.openUserProfileModal = function(currentUser) {
+            var modalInstance = $uibModal.open({
+                templateUrl : 'angular_components/userSettings/common/userSettingsModals/userCard/userCardModal.html',
+                controller : 'userCardController',
+                resolve : {
+                    currentUser : function() {
+                        return currentUser;
+                    }
+                }
+            })
+        };
 
         // delete/deactive user
         $scope.deleteUser = function (user) {
@@ -254,29 +307,61 @@
         // edit privileges of (mutiple) users
         $scope.courses = [];
         (function () {
-            _AjaxRequest.get('/api/courses/')
-                .then(
-                    function successCallback(result) {
-                        $scope.courses = result.data;
-                    },
-                    function errorCallback(error) {
-                        console.error(error);
+            if($scope.currentUser.isLocalUser)
+            {
+                // local admin can get view all courses
+                _AjaxRequest.get('/api/courses?' + $.param({isActive: true}))
+                    .then(
+                        function successCallback(result) {
+                            $scope.courses = result.data;
+                        },
+                        function errorCallback(error) {
+                            console.error(error);
+                        }
+                    )
+            }
+            else
+            {
+                // get the courses that current user has access to.
+                var courseIds = [];
+                angular.forEach($scope.currentUser.courseEnrolled, function (item) {
+                    var courseId = item.course._id;
+                    if(courseIds.indexOf(courseId) < 0)
+                    {
+                        _AjaxRequest.get('/api/courses?' + $.param({_id: courseId, isActive: true}))
+                            .then(
+                                function successCallback(result) {
+                                    if(result.data.length > 0)
+                                    {
+                                        $scope.courses.push(result.data[0]);
+                                        courseIds.push(result.data[0]._id);
+                                    }
+                                },
+                                function errorCallback(error) {
+                                    console.error(error);
+                                }
+                            );
                     }
-                )
+                });
+            }
+
         }());
 
-        $scope.assignPrivilege = function () {
-            _AjaxRequest.patch('/api/users/' + $scope.getCurrentUser()._id + '/update/user-access?' + $.param(updateMoreInfo))
-                .then(
-                    function successCallback(result) {
-                        _Authentication.setLoginUser(result.data);
-                        $scope.clearForm();
-                        // todo: profile updated banner
-                    },
-                    function errorCallback(error) {
-                        console.error(error);
-                    }
-                );
+        $scope.assignPrivilege = function (users, privilege) {
+            angular.forEach(users, function (user) {
+                _AjaxRequest.patch('/api/users/' + user._id + '/update/user-access?' + $.param({accessPrivilege: privilege._id}))
+                    .then(
+                        function successCallback(result) {
+                            // todo: profile updated banner
+                        },
+                        function errorCallback(error) {
+                            console.error(error);
+                        }
+                    );
+
+                getUsers();
+                clearSelected();
+            });
         };
 
         // give points to selected user(s)
@@ -313,28 +398,50 @@
                 );
         };
 
-        $scope.importFile = {};
-        $scope.importCSVFile = function () {
-            console.log($scope.importFile.csvfile);
 
-            _AjaxRequest.postFormData($scope.importFile.csvfile, '/api/users/')
+
+        $scope.importFile = {};
+        $scope.enableImportBtn = false;
+        $scope.createUserForm = {};
+        $scope.$watchCollection('importFile', function(newNames, oldNames) {
+            var csvfile = newNames.csvfile;
+            var course = newNames.course;
+            if(!angular.isUndefined(csvfile) && csvfile !== null && !angular.isUndefined(course) && course)
+            {
+                $scope.enableImportBtn = true;
+            }
+            else
+            {
+                $scope.enableImportBtn = false;
+            }
+        });
+        $scope.importCSVFile = function () {
+            var fd = new FormData();
+            fd.append('csvfile', $scope.importFile.csvfile);
+            fd.append('course', $scope.importFile.course._id);
+            _AjaxRequest.postFormData('/api/users/', fd)
                 .then(
                     function successCallback(result) {
-                        console.log(result.data);
                         $scope.clearForm();
+                        $scope.createUserForm.invalidCSVFormat = false;
                         angular.element("#addUserModal").modal('hide');
-                        getUsers()
+                        getUsers();
                     },
                     function errorCallback(error) {
                         // TODO: show save failed banner
                         console.error(error);
+                        if(error.status === 400)
+                        {
+                            $scope.createUserForm.invalidCSVFormat = true;
+                        }
                     }
                 );
         };
 
         $scope.clearForm = function () {
             angular.element("input[type='file']").val(null);
-            $scope.editUserInfo = angular.copy($scope.editUserInfoOrigin);
+            $scope.importFile.course = '';
+            $scope.enableImportBtn = false;
         };
 
     }

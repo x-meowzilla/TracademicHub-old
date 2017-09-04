@@ -31,7 +31,7 @@
                                 <th sort-Records order="fullName", sort="sort">Assigner Full Name</th>
                                 <th sort-Records order="preferredName", sort="sort">Assigner Preferred Name</th>
                                 <th sort-Records order="category", sort="sort">Category</th>
-                                <th sort-Records order="course", sort="sort">Course</th>
+                                <th sort-Records order="value", sort="sort">Value</th>
                                 <th sort-Records order="date", sort="sort">Date</th>
                             </tr>
                             </thead>
@@ -68,9 +68,39 @@
                                 <div class="form-group col-xs-12">
                                     <label class="col-xs-1 control-label"><h5>Course:</h5></label>
                                     <div class="col-xs-5">
-                                        <select ng-model="selectedCourseArea" ng-options="course as course.description for course in courses" class="form-control" required>
+                                        <select ng-model="selectedCourseArea" ng-options="course as course.name for course in courses" class="form-control" required>
                                             <option value="">Please select a course...</option>
                                         </select>
+                                    </div>
+                                </div>
+
+                                <!--select time period-->
+                                <div ng-if="areadata.length !== 0" class="form-group col-xs-12 col-md-6">
+                                    <label class="col-lg-3 control-label">Start Date:</label>
+                                    <div class="col-lg-8">
+                                        <div class="input-group">
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="startDatePicker.show = !startDatePicker.show">
+                                                        <i class="glyphicon glyphicon-calendar"></i>
+                                                    </button>
+                                                </span>
+                                            <button class="form-control text-left" type="button" ng-click="startDatePicker.show = !startDatePicker.show">{{timePeriod.startDate | date:'yyyy-MM-dd'}}</button>
+                                            <div type="text" uib-datepicker-popup ng-model="timePeriod.startDate" is-open="startDatePicker.show" datepicker-options="startDatePicker" close-text="Close" ng-required="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="areadata.length !== 0" class="form-group col-xs-12 col-md-6">
+                                    <label class="col-lg-3 control-label">End Date:</label>
+                                    <div class="col-lg-8">
+                                        <div class="input-group">
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="endDatePicker.show = !endDatePicker.show">
+                                                        <i class="glyphicon glyphicon-calendar"></i>
+                                                    </button>
+                                                </span>
+                                            <button class="form-control text-left" type="button" ng-click="endDatePicker.show = !endDatePicker.show">{{timePeriod.endDate | date:'yyyy-MM-dd'}}</button>
+                                            <div type="text" uib-datepicker-popup ng-model="timePeriod.endDate" is-open="endDatePicker.show" datepicker-options="endDatePicker" close-text="Close" ng-required="true"/>
+                                        </div>
                                     </div>
                                 </div>
 

@@ -5,32 +5,30 @@
         .module('TracademicHub')
         .controller('courseManagementController', courseManagementController);
 
-    courseManagementController.$inject = ['$scope', '_AjaxRequest']; // dependency injection
+    courseManagementController.$inject = ['$scope', '$filter', '_AjaxRequest']; // dependency injection
 
-    function courseManagementController($scope, _AjaxRequest) {
+    function courseManagementController($scope, $filter, _AjaxRequest) {
         $scope.courses = [];
         $scope.editCourses = [];
+        $scope.activeCourses = [];
 
         $scope.displayType = 'active';
         var getCourses = function () {
-            _AjaxRequest.get('/api/courses')
+            var courseParam = {};
+            if($scope.displayType === 'active')
+            {
+                courseParam['isActive'] = true;
+            }
+            else if($scope.displayType === 'inactive')
+            {
+                courseParam['isActive'] = false;
+            }
+            _AjaxRequest.get('/api/courses?' + $.param(courseParam))
                 .then(
                     function successCallback(result) {
-                        $scope.courses = result.data.filter(function (item) {
-                            if($scope.displayType === 'active')
-                            {
-                                return item.isActive;
-                            }
-                            else if($scope.displayType === 'inactive')
-                            {
-                                return !item.isActive;
-                            }
-                            else
-                            {
-                                return item;
-                            }
-                        });
+                        $scope.courses = result.data;
                         $scope.editCourses = angular.copy($scope.courses);
+                        $scope.activeCourses = angular.copy($scope.courses);
                     },
                     function errorCallback(error) {
                         console.error(error);
@@ -68,9 +66,7 @@
 
 
 
-        $scope.displayDateString = function (date) {
-            return date.toDateString();
-        };
+        // add course modal
         $scope.startDatePicker = {
             minDate: new Date(),
             show: false
@@ -79,9 +75,12 @@
             minDate: new Date(),
             show: false
         };
-        $scope.$watch('eachCourse.startDate', function(newValue, oldValue) {
-            $scope.endDatePicker.minDate = newValue;
-            $scope.eachCourse.endDate = newValue;
+        $scope.$watch('coursePeriod.startDate', function(newValue, oldValue) {
+            if(newValue > $scope.coursePeriod.endDate)
+            {
+                $scope.endDatePicker.minDate = newValue;
+                $scope.coursePeriod.endDate = newValue;
+            }
         }, true);
 
         $scope.userPrivileges = [];
@@ -97,17 +96,24 @@
                 )
         }());
 
-        $scope.eachCourse = {
+        $scope.coursePeriod = {
             startDate: new Date(),
-            endDate: new Date(),
+            endDate: new Date()
+        };
+        $scope.eachCourse = {
+            startDate: '',
+            endDate: '',
             name: '',
             academicTerm: '',
-            description: '',
-            userPrivileges: $scope.userPrivileges
+            description: ''
+            // userPrivileges: [] TODO: when server add custom user privileges feature
         };
         $scope.editUserInfoOrign = angular.copy($scope.eachCourse);
         $scope.createCourse = function () {
-            _AjaxRequest.put('/api/courses', $scope.eachCourse, true)
+            // $scope.eachCourse.userPrivileges = $scope.userPrivileges; TODO: when server add custom user privileges feature
+            $scope.eachCourse.startDate = $filter('date')($scope.coursePeriod.startDate, 'yyyy-MM-dd');
+            $scope.eachCourse.endDate = $filter('date')($scope.coursePeriod.endDate, 'yyyy-MM-dd');
+            _AjaxRequest.put('/api/courses', $scope.eachCourse)
                 .then(
                     function successCallback(result) {
                         $scope.clearAddCourseForm();
@@ -119,6 +125,7 @@
                         {
                             $scope.utoridExist = true;
                         }
+                        console.error(error);
                     }
                 );
         };
@@ -130,32 +137,37 @@
 
 
 
-        $scope.startDatePickerTwo = {
-            minDate: new Date(),
-            show: false
+        $scope.setStartDatePicker = function (course) {
+            course.startDatePicker = {};
+            course.startDatePicker.show=false;
+            course.startDatePicker.minDate=new Date()
         };
-        $scope.endDatePickerTwo = {
-            minDate: new Date(),
-            show: false
+        $scope.setEndDatePicker = function (course) {
+            course.endDatePicker = {};
+            course.endDatePicker.show=false;
+            course.endDatePicker.minDate=new Date()
         };
-        $scope.$watch('editCourses.startDate', function(newValue, oldValue) {
-            $scope.endDatePickerTwo.minDate = newValue;
-            $scope.editCourses.endDate = newValue;
-        }, true);
-        $scope.updateCourseInfo = function (course) {
-            if($scope.editCourseForm.$dirty)
+        $scope.resetEndDate = function (course) {
+            course.endDatePicker.minDate = course.startDateObj;
+            course.endDateObj = course.startDateObj;
+        };
+
+        // edit course form
+        $scope.editCourseCard = {};
+        $scope.updateCourseInfo = function (course, updateCourse) {
+            if($scope.editCourseCard.editCourseForm.$dirty)
             {
                 var updatedCourse = {};
-                updatedCourse["startDate"] = $scope.editCourses.startDate;
-                updatedCourse["endDate"] = $scope.editCourses.endDate;
+                updatedCourse["startDate"] = updateCourse.startDateObj;
+                updatedCourse["endDate"] = updateCourse.endDateObj;
 
-                if($scope.editCourseForm.description.$dirty)
+                if($scope.editCourseCard.editCourseForm.description.$dirty)
                 {
-                    updatedCourse["description"] = $scope.editCourses.description;
+                    updatedCourse["description"] = updateCourse.description;
                 }
-                else if($scope.editCourseForm.academicTerm.$dirty)
+                else if($scope.editCourseCard.editCourseForm.academicTerm.$dirty)
                 {
-                    updatedCourse["academicTerm"] = $scope.editCourses.academicTerm;
+                    updatedCourse["academicTerm"] = updateCourse.academicTerm;
                 }
 
                 _AjaxRequest.patch('/api/courses/' + course._id + '/update?' + $.param(updatedCourse))
@@ -172,9 +184,10 @@
         };
         $scope.clearEditCourseForm = function () {
             $scope.editCourses = angular.copy($scope.courses);
-            $scope.editCourseForm.$setPristine();
-            $scope.editCourseForm.$setUntouched();
+            $scope.editCourseCard.editCourseForm.$setPristine();
+            $scope.editCourseCard.editCourseForm.$setUntouched();
         };
+
 
 
         // delete/deactive course
@@ -182,14 +195,52 @@
             _AjaxRequest.patch('/api/courses/' + course._id + '/update?' + $.param({isActive: false}))
                 .then(
                     function successCallback(result) {
-                        $scope.courses = $scope.courses.filter(function (item) {
-                            return item._id !== result.data._id;
-                        });
+                        getCourses();
                     },
                     function errorCallback(error) {
                         console.error(error);
                     }
                 )
+        };
+
+
+
+        // active course
+        $scope.activeCourseCard ={};
+        $scope.activeCourse = function (course, updateCourse) {
+            if($scope.activeCourseCard.editCourseForm.$dirty)
+            {
+                // reset start date and end data before active course.
+                var updatedDate = {};
+                updatedDate["startDate"] = updateCourse.startDateObj;
+                updatedDate["endDate"] = updateCourse.endDateObj;
+
+                _AjaxRequest.patch('/api/courses/' + course._id + '/update?' + $.param(updatedDate))
+                    .then(
+                        function successCallback(result) {
+                            // active course
+                            _AjaxRequest.patch('/api/courses/' + course._id + '/update?' + $.param({isActive: true}))
+                                .then(
+                                    function successCallback(result) {
+                                        getCourses();
+                                    },
+                                    function errorCallback(error) {
+                                        console.error(error);
+                                    }
+                                )
+                            // todo: profile updated banner
+                        },
+                        function errorCallback(error) {
+                            console.error(error);
+                        }
+                    );
+            }
+        };
+
+        $scope.clearEnableCourseForm = function () {
+            $scope.activeCourses = angular.copy($scope.courses);
+            $scope.activeCourseCard.editCourseForm.$setPristine();
+            $scope.activeCourseCard.editCourseForm.$setUntouched();
         };
     }
 

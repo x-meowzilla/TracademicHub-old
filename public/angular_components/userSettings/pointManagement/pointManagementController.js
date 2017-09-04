@@ -5,9 +5,14 @@
         .module('TracademicHub')
         .controller('pointManagementController', pointManagementController);
 
-    pointManagementController.$inject = ['$scope', '$timeout', '_AjaxRequest', '_AssignPoints']; // dependency injection
+    pointManagementController.$inject = ['$scope', '$uibModal', '_AjaxRequest', '_Authentication', 'PRIVILEGE', '_AssignPoints']; // dependency injection
 
-    function pointManagementController($scope, $timeout, _AjaxRequest, _AssignPoints) {
+    function pointManagementController($scope, $uibModal, _AjaxRequest, _Authentication, PRIVILEGE, _AssignPoints) {
+        $scope.authorizedPrivilege = PRIVILEGE;
+        $scope.isAuthorized = function (value) {
+            // todo: hard-coded for now, need to udpate when server side access privilege checking apis finished.
+            return _Authentication.isAuthorized(value);
+        };
 
         var getAllCategories = function () {
             _AjaxRequest.get('/api/points-category/')
@@ -25,17 +30,47 @@
         $scope.courses = [];
 
         (function () {
+            // get categories
             getAllCategories();
 
-            _AjaxRequest.get('/api/courses/')
-                .then(
-                    function successCallback(result) {
-                        $scope.courses = result.data;
-                    },
-                    function errorCallback(error) {
-                        console.error(error);
+            // get courses
+            if(_Authentication.getLoginUser().isLocalUser)
+            {
+                // local admin can get view all courses
+                _AjaxRequest.get('/api/courses?' + $.param({isActive: true}))
+                    .then(
+                        function successCallback(result) {
+                            $scope.courses = result.data;
+                        },
+                        function errorCallback(error) {
+                            console.error(error);
+                        }
+                    )
+            }
+            else
+            {
+                // get the courses that current user has access to.
+                var courseIds = [];
+                angular.forEach($scope.currentUser.courseEnrolled, function (item) {
+                    var courseId = item.course._id;
+                    if(courseIds.indexOf(courseId) < 0)
+                    {
+                        _AjaxRequest.get('/api/courses?' + $.param({_id: courseId, isActive: true}))
+                            .then(
+                                function successCallback(result) {
+                                    if(result.data.length > 0)
+                                    {
+                                        $scope.courses.push(result.data[0]);
+                                        courseIds.push(result.data[0]._id);
+                                    }
+                                },
+                                function errorCallback(error) {
+                                    console.error(error);
+                                }
+                            );
                     }
-                )
+                });
+            };
         }());
 
         //add new point category
@@ -136,26 +171,44 @@
             }
         };
         
-        $scope.assignPoints = function (selectedCourse) {
-            if(selectedCourse)
-            {
-                angular.forEach($scope.users, function (user) {
-                    angular.forEach($scope.getAssignedPoints(), function (category) {
-                        console.log(category);
-                        _AjaxRequest.post('/api/points',
-                            {assigneeID: user._id, pointValue: category.point, pointCategoryID: category._id}, true)
-                            .then(
-                                function successCallback(result) {
-                                    // todo: assign point successfully banner
-                                },
-                                function errorCallback(error) {
-                                    console.error(error);
-                                }
-                            );
-                    });
+        $scope.assignPoints = function () {
+            angular.forEach($scope.users, function (user) {
+                angular.forEach($scope.getAssignedPoints(), function (category) {
+
+                    var postPointData = {
+                        assigneeID: user._id,
+                        pointValue: category.point,
+                        pointCategoryID: category._id
+                    };
+
+                    _AjaxRequest.post('/api/points', postPointData, true)
+                        .then(
+                            function successCallback(result) {
+                                // todo: assign point successfully banner
+                                console.log(result.data);
+                            },
+                            function errorCallback(error) {
+                                console.error(error);
+                            }
+                        );
                 });
-            }
-        }
+            });
+        };
+
+
+
+        // user card modal
+        $scope.openUserProfileModal = function(currentUser) {
+            var modalInstance = $uibModal.open({
+                templateUrl : 'angular_components/userSettings/common/userSettingsModals/userCard/userCardModal.html',
+                controller : 'userCardController',
+                resolve : {
+                    currentUser : function() {
+                        return currentUser;
+                    }
+                }
+            })
+        };
 
     }
 

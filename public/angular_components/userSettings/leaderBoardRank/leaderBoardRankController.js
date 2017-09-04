@@ -5,9 +5,9 @@
         .module('TracademicHub')
         .controller('leaderBoardRankController', leaderBoardRankController);
 
-    leaderBoardRankController.$inject = ['$scope', '_AjaxRequest']; // dependency injection
+    leaderBoardRankController.$inject = ['$scope', '$uibModal', '_AjaxRequest']; // dependency injection
 
-    function leaderBoardRankController($scope, _AjaxRequest) {
+    function leaderBoardRankController($scope, $uibModal, _AjaxRequest) {
 
         (function () {
             _AjaxRequest.get('/api/points/history')
@@ -50,6 +50,20 @@
         $scope.operations = [10, 20, 30];
         $scope.searchrecord = '';
 
+
+
+        // user card modal
+        $scope.openUserProfileModal = function(currentUser) {
+            var modalInstance = $uibModal.open({
+                templateUrl : 'angular_components/userSettings/common/userSettingsModals/userCard/userCardModal.html',
+                controller : 'userCardController',
+                resolve : {
+                    currentUser : function() {
+                        return currentUser;
+                    }
+                }
+            })
+        };
     }
 
 }());

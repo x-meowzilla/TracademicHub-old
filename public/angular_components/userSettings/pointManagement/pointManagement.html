@@ -20,7 +20,7 @@
             <div class="col-lg-12">
                 <div class="bs-callout bs-callout-danger">
                     <h4> Point Category
-                        <i class="fa fa-plus-circle titl-side-btn" data-title="AddPointCategory" data-toggle="modal" data-target="#addPointCategoryModal"></i>
+                        <i ng-if="isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE)" class="fa fa-plus-circle titl-side-btn" data-title="AddPointCategory" data-toggle="modal" data-target="#addPointCategoryModal"></i>
                     </h4>
                     <h5 class="text-center" ng-if="categories.length === 0">No Points Category Found.</h5>
 
@@ -29,7 +29,7 @@
                             <div class="panel panelBorder categoryPanel">
                                 <div class="panel-heading">
                                     <h2 class="panel-title pull-left">{{category.name}}</h2>
-                                    <button class="btn btn-danger btn-xs pull-right" ng-confirm-click="Are you sure to delete this point category?" confirmed-click="deletePointCategory(category)">
+                                    <button ng-if="isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE)" class="btn btn-danger btn-xs pull-right" ng-confirm-click="Are you sure to delete this point category?" confirmed-click="deletePointCategory(category)">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </button>
                                 </div>
@@ -83,7 +83,6 @@
                 </div>
             </div>
 
-
             <!--select user section-->
             <div class="col-lg-12">
                 <div class="bs-callout bs-callout-danger">
@@ -131,29 +130,28 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="user in users">
-                                <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.name.firstName}}</td>
-                                <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.name.lastName}}</td>
-                                <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.name.preferredName}}</td>
-                                <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.email}}</td>
-                                <td data-toggle="modal" data-target="#{{user._id}}profile" class="hand-cursor">{{user.studentNumber}}</td>
+                                <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{user.name.firstName}}</td>
+                                <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{user.name.lastName}}</td>
+                                <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{user.name.preferredName}}</td>
+                                <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{user.email}}</td>
+                                <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{user.studentNumber}}</td>
                                 <td class="text-center">
                                     <button class="btn btn-danger btn-xs" data-title="Clear" ng-click="removeAssignee(user)" ><span class="glyphicon glyphicon-trash"></span></button>
-                                    <user-card-modal user="user" pid="user._id"></user-card-modal>
                                 </td>
                             </tr>
                             </tbody>
                             <tfoot>
                             <td colspan="6" ng-if="users.length!==0" class="text-center">
-                                <div class="form-group col-xs-7">
-                                    <label class="col-xs-2 control-label"><h5>Course:</h5></label>
-                                    <div class="col-xs-8">
-                                        <select ng-model="selectedCourse" ng-options="course as course.description for course in courses" class="form-control" required>
-                                            <option value="">Please select a course...</option>
-                                        </select>
-                                    </div>
-                                </div>
+                                <!--<div class="form-group col-xs-7">-->
+                                    <!--<label class="col-xs-2 control-label"><h5>Course:</h5></label>-->
+                                    <!--<div class="col-xs-8">-->
+                                        <!--<select ng-model="selectedCourse" ng-options="course as course.name for course in courses" class="form-control" required>-->
+                                            <!--<option value="">Please select a course...</option>-->
+                                        <!--</select>-->
+                                    <!--</div>-->
+                                <!--</div>-->
                                 <div class="col-xs-2">
-                                    <button class="btn btn-info customBtn" data-ng-disabled="getAssignedPoints().length === 0 || !selectedCourse" data-ng-click="assignPoints(selectedCourse)">Give Points</button>
+                                    <button class="btn btn-info customBtn center-block" data-ng-disabled="getAssignedPoints().length === 0" data-ng-click="assignPoints()">Give Points</button>
                                 </div>
                                 <div class="col-xs-3">
                                     <h5>{{users.length}} users selected</h5>

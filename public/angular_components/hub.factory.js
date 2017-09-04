@@ -9,7 +9,18 @@
             logoutSuccess: 'auth-logout-success',
             logoutFailed: 'auth-logout-failed',
             notAuthenticated: 'auth-not-authenticated',
-            notAuthorized: 'auth-not-authorized'
+            notAuthorized: 'auth-not-authorized',
+            serverError: 'server-error'
+        })
+        .constant('PRIVILEGE', {
+            ACCESS_STUDENT: 'Student',
+            ACCESS_STUDENT_VALUE: 10,
+            ACCESS_TA: 'Teaching Assistant',
+            ACCESS_TA_VALUE: 30,
+            ACCESS_INSTRUCTOR: 'Instructor',
+            ACCESS_INSTRUCTOR_VALUE: 50,
+            ACCESS_ADMIN: 'Admin',
+            ACCESS_ADMIN_VALUE: 100
         })
         .factory('_AjaxRequest', ajaxRequest)
         .factory('_Authentication', authentication)
@@ -27,10 +38,8 @@
             post: function (apiURL, reqBody, isJSON) {
                 return $http.post(apiURL, reqBody, {headers: isJSON ? {'Content-Type': 'application/json'} : {}});
             },
-            postFormData: function (file, apiURL) {
-                var fd = new FormData();
-                fd.append('file', file);
-                return $http.post(apiURL, fd, {transformRequest: angular.identity, headers: {'Content-Type': undefined}});
+            postFormData: function (apiURL, reqBody) {
+                return $http.post(apiURL, reqBody, {transformRequest: angular.identity, headers: {'Content-Type': undefined}});
             },
             put: function (apiURL, reqBody, isJSON) {
                 return $http.put(apiURL, reqBody, {headers: isJSON ? {'Content-Type': 'application/json'} : {}});
@@ -45,8 +54,8 @@
         };
     }
 
-    authentication.$inject = ['$rootScope', '$location', '_AjaxRequest', 'AUTH_EVENTS'];
-    function authentication($rootScope, $location, _AjaxRequest, AUTH_EVENTS) {
+    authentication.$inject = ['$rootScope', '$location', '_AjaxRequest', 'AUTH_EVENTS', 'PRIVILEGE'];
+    function authentication($rootScope, $location, _AjaxRequest, AUTH_EVENTS, PRIVILEGE) {
         return {
             login: function (loginData) {
                 _AjaxRequest.post('/api/local-login', loginData, true)
@@ -84,8 +93,37 @@
                 return window.localStorage.getItem('loginUser') !== null;
             },
 
-            isAuthorized: function () {
-                console.log('authorized');
+            isAuthorized: function (privilegeValue) {
+                // todo: hard-coded for now, need to udpate when server side access privilege checking apis finished.
+                if(this.getLoginUser().isLocalUser)
+                {
+                    // local admin has the maximum privilege
+                    return true;
+                }
+                else {
+                    var res = false;
+                    angular.forEach(this.getLoginUser().courseEnrolled, function (ce) {
+                        var value = 0;
+                        if(ce.privilege.name === PRIVILEGE.ACCESS_STUDENT)
+                        {
+                            value = PRIVILEGE.ACCESS_STUDENT_VALUE;
+                        }
+                        else if(ce.privilege.name === PRIVILEGE.ACCESS_TA)
+                        {
+                            value = PRIVILEGE.ACCESS_TA_VALUE;
+                        }
+                        else if(ce.privilege.name === PRIVILEGE.ACCESS_INSTRUCTOR)
+                        {
+                            value = PRIVILEGE.ACCESS_INSTRUCTOR_VALUE;
+                        }
+                        else if(ce.privilege.name === PRIVILEGE.ACCESS_ADMIN)
+                        {
+                            value = PRIVILEGE.ACCESS_ADMIN_VALUE;
+                        }
+
+                        return res || value >= privilegeValue;
+                    });
+                }
             },
 
             getLoginUser: function () {
@@ -131,7 +169,8 @@
             responseError: function (response) {
                 $rootScope.$broadcast({
                     401: AUTH_EVENTS.notAuthenticated,
-                    403: AUTH_EVENTS.notAuthorized
+                    403: AUTH_EVENTS.notAuthorized,
+                    500: AUTH_EVENTS.serverError
                 }[response.status], response);
                 return $q.reject(response);
             }

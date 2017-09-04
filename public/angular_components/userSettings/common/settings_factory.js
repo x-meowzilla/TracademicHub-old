@@ -8,9 +8,7 @@
         .directive('pageControl', pageControl)
         .directive('ngConfirmClick', ngConfirmClick)
         .directive('fileChanged', fileChanged)
-        .directive('pwdCheck', pwdCheck)
-        .directive('userCardModal', userCardModal)
-        .directive('editProfile', editProfile);
+        .directive('pwdCheck', pwdCheck);
 
     function assignPoints() {
         return {
@@ -137,20 +135,21 @@
         return {
             restrict: 'A',
             scope: {
+                file: '=',
                 formname: '=',
                 filename: '='
             },
             link: function(scope, element) {
                 element.bind("change", function(changeEvent) {
-                    scope.filename = changeEvent.target.files[0];
+                    scope.file = changeEvent.target.files[0];
                     var reader = new FileReader();
                     reader.onload = function(loadEvent) {
                         scope.$apply(function() {
-                            // scope.filename = loadEvent.target.result;
+                            scope.filename = loadEvent.target.result;
                             scope.formname.$pristine = false;
                         });
                     }
-                    reader.readAsDataURL(scope.filename);
+                    reader.readAsDataURL(scope.file);
                 });
             }
         }
@@ -173,147 +172,5 @@
             }
         };
     }
-
-    userCardModal.$inject = ['_AjaxRequest'];
-    function userCardModal(_AjaxRequest) {
-        return {
-            restrict: 'EA',
-            scope: {
-                currentUser: '=user',
-                userCardId: '=pid'
-            },
-            templateUrl:'angular_components/userSettings/common/userSettingsModals/userCardModal.html',
-            link: function (scope) {
-                scope.avatarUrl = "../images/default-avatar.png";
-                // get user customized avatarUrl
-                (function () {
-                    _AjaxRequest.get('/api/privileges/')
-                        .then(
-                            function successCallback(result) {
-                                // $scope.avatarUrl = result.data;
-                            },
-                            function errorCallback(error) {
-                                console.error(error);
-                            }
-                        )
-                }());
-
-                scope.getDisplayName = function () {
-                    var userData = scope.currentUser;
-                    if (userData.name.preferredName) {
-                        return userData.name.preferredName;
-                    } else if (userData.name.firstName && userData.name.lastName) {
-                        return userData.name.firstName + ' ' + userData.name.lastName;
-                    } else {
-                        return  userData.utorid;
-                    }
-                };
-
-            }
-        };
-    }
-
-    editProfile.$inject = ['_AjaxRequest', '_Authentication']; // dependency injection
-    function editProfile(_AjaxRequest, _Authentication) {
-        return {
-            restrict: 'EA',
-            scope: {
-                getCurrentUser: '&user',
-                editProfileId: '=pid'
-            },
-            templateUrl:'angular_components/userSettings/common/userSettingsModals/editUserProfile.html',
-            link: function ($scope) {
-                // edit profile form
-                $scope.courses = [];
-                (function () {
-                    _AjaxRequest.get('/api/courses/')
-                        .then(
-                            function successCallback(result) {
-                                $scope.courses = result.data;
-                            },
-                            function errorCallback(error) {
-                                console.error(error);
-                            }
-                        )
-                }());
-
-                $scope.editUserInfo = $scope.getCurrentUser();
-                $scope.editUserInfo.inputimage =
-                    $scope.getCurrentUser().avatarPath? $scope.getCurrentUser().avatarPath: "../images/default-avatar.png";
-
-                // update user information
-                $scope.updateUserProfile = function () {
-                    var updateBasicInfo = {};
-                    if($scope.editUserProfileForm.preferredName.$dirty)
-                    {
-                        updateBasicInfo["preferredName"] = $scope.editUserInfo.name.preferredName;
-                    }
-                    if($scope.editUserProfileForm.biography.$dirty)
-                    {
-                        updateBasicInfo["biography"] = $scope.editUserInfo.biography;
-                    }
-                    if(!angular.equals({}, updateBasicInfo))
-                    {
-                        _AjaxRequest.patch('/api/users/' + $scope.getCurrentUser()._id + '/update/user-info?' + $.param(updateBasicInfo))
-                            .then(
-                                function successCallback(result) {
-                                    _Authentication.setLoginUser(result.data);
-                                    $scope.clearForm();
-                                    // todo: profile updated banner
-                                },
-                                function errorCallback(error) {
-                                    console.error(error);
-                                }
-                            );
-                    }
-
-                    var updateMoreInfo = {};
-                    if($scope.editUserProfileForm.firstName.$dirty)
-                    {
-                        updateMoreInfo["firstName"] = $scope.editUserInfo.name.firstName;
-                    }
-                    if($scope.editUserProfileForm.lastName.$dirty)
-                    {
-                        updateMoreInfo["lastName"] = $scope.editUserInfo.name.lastName;
-                    }
-                    if($scope.editUserProfileForm.email.$dirty)
-                    {
-                        updateMoreInfo["email"] = $scope.editUserInfo.email;
-                    }
-                    if(!angular.equals({}, updateMoreInfo))
-                    {
-                        _AjaxRequest.patch('/api/users/' + $scope.getCurrentUser()._id + '/update/user-access?' + $.param(updateMoreInfo))
-                            .then(
-                                function successCallback(result) {
-                                    _Authentication.setLoginUser(result.data);
-                                    $scope.clearForm();
-                                    // todo: profile updated banner
-                                },
-                                function errorCallback(error) {
-                                    console.error(error);
-                                }
-                            );
-                    }
-
-                };
-
-                // check validation of input access privilege field
-                $scope.$watchGroup(['selectedCourse', 'selectedPrivilege'], function(newValues, oldValues, scope) {
-                    if(angular.isUndefined(newValues[1]) || newValues[1] === null)
-                    {
-                        $scope.editUserProfileForm.course.$setPristine();
-                    }
-                });
-
-                $scope.clearForm = function () {
-                    angular.element("input[type='file']").val(null);
-                    $scope.editUserInfo = $scope.getCurrentUser();
-                    $scope.editUserProfileForm.$setPristine();
-                    $scope.editUserProfileForm.$setUntouched();
-                };
-            }
-        };
-    }
-
 
 }());
