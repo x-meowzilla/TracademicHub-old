@@ -59,7 +59,7 @@
                         <thead>
                         <tr>
                             <th ng-if="displayUser.displayType !== 'all'">
-                                <input type="checkbox" ng-model="selectedAll.checked" ng-click="checkAll(currentpage)" data-ng-disabled="(users|filter:searchrecord).length === 0 || !displayUser.userOperation"/>
+                                <input type="checkbox" ng-model="selectedAll.checked" ng-click="checkAll(currentpage)" data-ng-disabled="(users|filter:searchrecord).length === 0 || (!displayUser.userOperation && displayUser.displayType !== 'inactive')"/>
                             </th>
                             <th sort-Records order="name.firstName", sort="sort">First Name</th>
                             <th sort-Records order="name.lastName", sort="sort">Last Name</th>
@@ -77,7 +77,7 @@
                         <tbody>
                         <tr ng-repeat="item in getPagedItems(((users | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby)) | orderBy:sort.sortingOrder:sort.reverse)">
                             <td ng-if="displayUser.displayType !== 'all'">
-                                <input type="checkbox" ng-model="item.selected" ng-click="checkRow(item, currentpage)" data-ng-disabled="!displayUser.userOperation"/>
+                                <input type="checkbox" ng-model="item.selected" ng-click="checkRow(item, currentpage)" data-ng-disabled="!displayUser.userOperation && displayUser.displayType !== 'inactive')"/>
                             </td>
                             <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{item.name.firstName}}</td>
                             <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{item.name.lastName}}</td>
@@ -119,7 +119,7 @@
                         </tbody>
 
                         <tfoot>
-                        <td colspan="{{getColspan()}}" ng-if="pagedItems.length != 0 && checkedItems.length > 1 && displayUser.userOperation">
+                        <td colspan="{{getColspan()}}" ng-if="pagedItems.length != 0 && checkedItems.length > 1 && (displayUser.userOperation || displayUser.displayType === 'inactive')">
                             <!--delete mutiple users button-->
                             <span ng-if="isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE) && ['active', 'checkedin'].indexOf(displayUser.displayType) > -1" class="btn btn-danger checkedAllSection" ng-confirm-click="Are you sure to delete selected user?" confirmed-click="deleteSelectedUsers(checkedItems)">Delete Selected Users</span>
                             <!--modify mutiple user access privileges button-->
@@ -130,10 +130,10 @@
                             <span ng-if="displayUser.displayType === 'inactive'" data-ng-disabled="!isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE)" class="btn btn-success checkedAllSection" ng-confirm-click="Are you sure to active selected user?" confirmed-click="activeSelectedUsers(checkedItems)">Active Selected Users</span>
                             <span><strong class="">{{checkedItems.length}} record selected</strong></span>
                         </td>
-                        <td colspan="{{getColspan()}}" ng-if="(pagedItems.length == 0 || checkedItems.length <= 1 || !displayUser.userOperation) && (users|filter:searchrecord).length != 0" class="text-center text-muted">
+                        <td colspan="{{getColspan()}}" ng-if="(pagedItems.length == 0 || checkedItems.length <= 1 || (displayUser.displayType !== 'inactive' && !displayUser.userOperation)) && (users|filter:searchrecord).length != 0" class="text-center text-muted">
                             <div>Click row to view user profile.</div>
-                            <div ng-if="displayUser.displayType === 'active' && !displayUser.userOperation">1. Perform Bulk User Operations after selecting a course.</div>
-                            <div ng-if="displayUser.displayType !== 'all' && (pagedItems.length == 0 || checkedItems.length <= 1)">2. Select Multiple Users and perform Bulk User Operations.</div>
+                            <div ng-if="displayUser.displayType === 'active' && !displayUser.userOperation">Perform Bulk User Operations after selecting a course.</div>
+                            <div ng-if="displayUser.displayType !== 'all' && (pagedItems.length == 0 || checkedItems.length <= 1)">Select Multiple Users and perform Bulk User Operations.</div>
                         </td>
                         <td colspan="{{getColspan()}}" ng-if="(users|filter:searchrecord).length == 0" class="text-center">
                             <strong>DATA NOT FOUND.</strong>
