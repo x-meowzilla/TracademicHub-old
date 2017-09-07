@@ -20,7 +20,7 @@
 
         $scope.users = [];
         $scope.displayTypes = ['all', 'active', 'inactive', 'checkedin'];
-        $scope.displayUser = {displayType: $scope.displayTypes[1], displayCourse: {}, displayPrivilege: {}};
+        $scope.displayUser = {displayType: $scope.displayTypes[1], displayCourse: {}, displayPrivilege: {}, userOperation: false};
 
         var getUsers = function () {
             // isActive query not working now, upload csv data cannot save this field to db, need to be fixed in the future.
@@ -79,8 +79,13 @@
         };
 
         $scope.$watch('displayUser', function(newValue, oldValue) {
+            // check if display user operation buttons(give points, modify user information or deactive user)
+            $scope.displayUser.userOperation =
+                !angular.isUndefined($scope.displayUser.displayCourse)
+                && !angular.equals({}, $scope.displayUser.displayCourse);
+
+            // display results
             getUsers();
-            clearSelected();
         }, true);
 
         (function () {
@@ -360,7 +365,6 @@
                     );
 
                 getUsers();
-                clearSelected();
             });
         };
 
