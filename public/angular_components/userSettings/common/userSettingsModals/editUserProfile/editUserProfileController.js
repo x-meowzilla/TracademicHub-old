@@ -114,7 +114,6 @@
                     _AjaxRequest.patch('/api/users/' + $scope.getCurrentUser()._id + '/update/user-access?' + $.param(updateMoreInfo))
                         .then(
                             function successCallback(result) {
-                                console.log(result.data);
                                 if($scope.getCurrentUser()._id === _Authentication.getLoginUser()._id)
                                 {
                                     _Authentication.setLoginUser(result.data);

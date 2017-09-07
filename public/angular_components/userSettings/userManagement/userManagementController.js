@@ -269,7 +269,9 @@
                         return currentUser;
                     }
                 }
-            })
+            });
+
+            getUsers();
         };
 
         $scope.openUserProfileModal = function(currentUser) {
