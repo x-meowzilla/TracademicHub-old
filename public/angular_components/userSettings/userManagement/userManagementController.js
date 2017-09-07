@@ -27,6 +27,13 @@
             _AjaxRequest.get('/api/users')
                 .then(
                     function successCallback(result) {
+                        // check if course has been selected
+                        var courseSelected = !angular.isUndefined($scope.displayUser.displayCourse)
+                            && !angular.equals({}, $scope.displayUser.displayCourse);
+                        // check if privilege has been selected
+                        var privilegeSelected = !angular.isUndefined($scope.displayUser.displayPrivilege)
+                            && !angular.equals({}, $scope.displayUser.displayPrivilege);
+
                         $scope.users = result.data.filter(function (item) {
                             // filter by user type
                             var res = item._id !== $scope.currentUser._id && !item.isLocalUser;
@@ -35,8 +42,7 @@
                             {
                                 res = res && item.isActive;
 
-                                if(!angular.isUndefined($scope.displayUser.displayCourse)
-                                    && !angular.equals({}, $scope.displayUser.displayCourse))
+                                if(courseSelected)
                                 {
                                     var courseList = [];
                                     var pList = [];
@@ -50,9 +56,7 @@
                                         }
 
                                         // filter by user privilege
-                                        // check if privilege has been selected
-                                        if(!angular.isUndefined($scope.displayUser.displayPrivilege)
-                                            && !angular.equals({}, $scope.displayUser.displayPrivilege))
+                                        if(privilegeSelected)
                                         {
                                             // get all privileges that user has
                                             pList.push(ce.privilege._id);
@@ -61,8 +65,12 @@
 
                                     // return if user take the selected course
                                     res = res && courseList.indexOf($scope.displayUser.displayCourse._id) > -1;
-                                    // return if user has the selected privilege
-                                    res = res && pList.indexOf($scope.displayUser.displayPrivilege._id) > -1;
+
+                                    if(privilegeSelected)
+                                    {
+                                        // return if user has the selected privilege
+                                        res = res && pList.indexOf($scope.displayUser.displayPrivilege._id) > -1;
+                                    }
                                 }
                             }
                             else if($scope.displayUser.displayType === 'inactive')
