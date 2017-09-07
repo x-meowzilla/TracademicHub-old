@@ -6,13 +6,14 @@
         .controller('pointsHistoryController', pointsHistoryController);
 
 
-    pointsHistoryController.$inject = ['$scope', '_AjaxRequest']; // dependency injection
+    pointsHistoryController.$inject = ['$scope', '$uibModal', '_AjaxRequest']; // dependency injection
 
-    function pointsHistoryController($scope, _AjaxRequest) {
+    function pointsHistoryController($scope, $uibModal, _AjaxRequest) {
 
         $scope.items = [];
         $scope.categories = [];
-        (function () {
+
+        var getPoints = function () {
             _AjaxRequest.get('/api/points/')
                 .then(
                     // change to get leader board rank endpoint, get userID
@@ -23,6 +24,10 @@
                         console.error(error);
                     }
                 );
+        };
+
+        (function () {
+            getPoints();
 
             _AjaxRequest.get('/api/points-category/')
                 .then(
@@ -49,6 +54,10 @@
                         }
                     );
             }
+            else
+            {
+                getPoints();
+            }
         }, true);
 
 
@@ -64,16 +73,33 @@
 
         // user card modal
         $scope.openUserProfileModal = function(user) {
-            console.log('hi');
-            // var modalInstance = $uibModal.open({
-            //     templateUrl : 'angular_components/userSettings/common/userSettingsModals/userCard/userCardModal.html',
-            //     controller : 'userCardController',
-            //     resolve : {
-            //         currentUser : function() {
-            //             return currentUser;
-            //         }
-            //     }
-            // })
+            var currentUser = {};
+            _AjaxRequest.get('/api/users?' + $.param({isActive: true, _id: user._id}))
+                .then(
+                    function successCallback(result) {
+                        currentUser = result.data;
+                    },
+                    function errorCallback(error) {
+                        console.error(error);
+                    }
+                );
+
+            if(angular.equals({}, currentUser))
+            {
+                console.error('User not found');
+            }
+            else
+            {
+                var modalInstance = $uibModal.open({
+                    templateUrl : 'angular_components/userSettings/common/userSettingsModals/userCard/userCardModal.html',
+                    controller : 'userCardController',
+                    resolve : {
+                        currentUser : function() {
+                            return currentUser;
+                        }
+                    }
+                });
+            }
         };
 
     };
