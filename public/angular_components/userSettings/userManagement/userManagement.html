@@ -77,7 +77,7 @@
                         <tbody>
                         <tr ng-repeat="item in getPagedItems(((users | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby)) | orderBy:sort.sortingOrder:sort.reverse)">
                             <td ng-if="displayUser.displayType !== 'all'">
-                                <input type="checkbox" ng-model="item.selected" ng-click="checkRow(item, currentpage)" data-ng-disabled="!displayUser.userOperation && displayUser.displayType !== 'inactive')"/>
+                                <input type="checkbox" ng-model="item.selected" ng-click="checkRow(item, currentpage)" data-ng-disabled="(!displayUser.userOperation && displayUser.displayType !== 'inactive')"/>
                             </td>
                             <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{item.name.firstName}}</td>
                             <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{item.name.lastName}}</td>

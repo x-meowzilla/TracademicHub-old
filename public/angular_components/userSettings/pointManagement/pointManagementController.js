@@ -5,9 +5,9 @@
         .module('TracademicHub')
         .controller('pointManagementController', pointManagementController);
 
-    pointManagementController.$inject = ['$scope', '$uibModal', '_AjaxRequest', '_Authentication', 'PRIVILEGE', '_AssignPoints']; // dependency injection
+    pointManagementController.$inject = ['$scope', '$uibModal', '$timeout', '_AjaxRequest', '_Authentication', 'PRIVILEGE', '_AssignPoints']; // dependency injection
 
-    function pointManagementController($scope, $uibModal, _AjaxRequest, _Authentication, PRIVILEGE, _AssignPoints) {
+    function pointManagementController($scope, $uibModal, $timeout, _AjaxRequest, _Authentication, PRIVILEGE, _AssignPoints) {
         $scope.authorizedPrivilege = PRIVILEGE;
         $scope.isAuthorized = function (value) {
             // todo: hard-coded for now, need to udpate when server side access privilege checking apis finished.
@@ -121,7 +121,6 @@
                     res.push({"id": category._id, "point": category.point});
                 }
             });
-
             return res;
         };
 
@@ -155,7 +154,6 @@
                                 }
                                 else if(result.data.length === 0)
                                 {
-                                    // TODO: pop up user does not exist or user is inactive message.
                                     $scope.addAssigneeFailed = true;
                                 }
                                 else
@@ -170,22 +168,28 @@
                 }
             }
         };
-        
+
+        $scope.assignPointsSuccessfully = false;
         $scope.assignPoints = function () {
+            var assignedPoints = $scope.getAssignedPoints();
             angular.forEach($scope.users, function (user) {
-                angular.forEach($scope.getAssignedPoints(), function (category) {
+                angular.forEach(assignedPoints, function (category) {
 
                     var postPointData = {
                         assigneeID: user._id,
                         pointValue: category.point,
-                        pointCategoryID: category._id
+                        pointCategoryID: category.id
                     };
-
                     _AjaxRequest.post('/api/points', postPointData, true)
                         .then(
                             function successCallback(result) {
-                                // todo: assign point successfully banner
-                                console.log(result.data);
+                                // assign point successfully banner
+                                $scope.assignPointsSuccessfully = true;
+
+                                var banner = function () {
+                                    $scope.assignPointsSuccessfully = false;
+                                };
+                                $timeout(banner,3000);
                             },
                             function errorCallback(error) {
                                 console.error(error);
