@@ -101,28 +101,8 @@
                     return true;
                 }
                 else {
-                    var res = false;
-                    angular.forEach(this.getLoginUser().courseEnrolled, function (ce) {
-                        var value = 0;
-                        if(ce.privilege.name === PRIVILEGE.ACCESS_STUDENT)
-                        {
-                            value = PRIVILEGE.ACCESS_STUDENT_VALUE;
-                        }
-                        else if(ce.privilege.name === PRIVILEGE.ACCESS_TA)
-                        {
-                            value = PRIVILEGE.ACCESS_TA_VALUE;
-                        }
-                        else if(ce.privilege.name === PRIVILEGE.ACCESS_INSTRUCTOR)
-                        {
-                            value = PRIVILEGE.ACCESS_INSTRUCTOR_VALUE;
-                        }
-                        else if(ce.privilege.name === PRIVILEGE.ACCESS_ADMIN)
-                        {
-                            value = PRIVILEGE.ACCESS_ADMIN_VALUE;
-                        }
+                    // todo: use server api, pass privilegeValue to the api
 
-                        return res || value >= privilegeValue;
-                    });
                 }
             },
 

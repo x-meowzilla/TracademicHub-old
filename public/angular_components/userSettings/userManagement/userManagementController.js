@@ -35,27 +35,33 @@
                             {
                                 res = res && item.isActive;
 
-                                // filter by course
                                 if(!angular.isUndefined($scope.displayUser.displayCourse)
                                     && !angular.equals({}, $scope.displayUser.displayCourse))
                                 {
                                     var courseList = [];
-                                    angular.forEach(item.courseEnrolled, function (ce) {
-                                        courseList.push(ce.course._id);
-                                    });
-
-                                    res = res && courseList.indexOf($scope.displayUser.displayCourse._id) > -1;
-                                }
-
-                                // filter by user privilege
-                                if(!angular.isUndefined($scope.displayUser.displayPrivilege)
-                                    && !angular.equals({}, $scope.displayUser.displayPrivilege))
-                                {
                                     var pList = [];
+
                                     angular.forEach(item.courseEnrolled, function (ce) {
-                                        pList.push(ce.privilege._id);
+                                        // filter by course
+                                        if(ce.course.isActive)
+                                        {
+                                            // get all active courses that user taken
+                                            courseList.push(ce.course._id);
+                                        }
+
+                                        // filter by user privilege
+                                        // check if privilege has been selected
+                                        if(!angular.isUndefined($scope.displayUser.displayPrivilege)
+                                            && !angular.equals({}, $scope.displayUser.displayPrivilege))
+                                        {
+                                            // get all privileges that user has
+                                            pList.push(ce.privilege._id);
+                                        }
                                     });
 
+                                    // return if user take the selected course
+                                    res = res && courseList.indexOf($scope.displayUser.displayCourse._id) > -1;
+                                    // return if user has the selected privilege
                                     res = res && pList.indexOf($scope.displayUser.displayPrivilege._id) > -1;
                                 }
                             }
@@ -83,6 +89,17 @@
             $scope.displayUser.userOperation =
                 !angular.isUndefined($scope.displayUser.displayCourse)
                 && !angular.equals({}, $scope.displayUser.displayCourse);
+
+            // display the privileges that has lower value than the max privilege value current user has for selected course
+            if($scope.displayUser.userOperation)
+            {
+                $scope.displayUser.displayCourse.userPrivileges = $scope.displayUser.displayCourse.userPrivileges.filter(function (item) {
+                    var res = item;
+                    // todo: use server api, pass item.value to the api
+
+                    return res;
+                });
+            }
 
             // display results
             getUsers();
