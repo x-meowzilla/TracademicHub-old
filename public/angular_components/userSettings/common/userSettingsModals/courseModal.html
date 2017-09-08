@@ -1,0 +1,72 @@
+<div class="panel panel-danger courseCard">
+    <div class="panel-heading">
+        <span><strong>{{course.name}}</strong></span>
+        <!--delete course-->
+        <!--delete course button-->
+        <span ng-show="!editCourse.editCourse && displayType === 'active'" class="btn btn-xs pull-right glyphicon glyphicon-trash" ng-confirm-click="Are you sure to delete this course?" confirmed-click="deleteCourse()"></span>
+        <span ng-show="!editCourse.editCourse && displayType === 'active'" class="pull-right"> | </span>
+        <!--edit course-->
+        <!--edit course button-->
+        <span ng-show="!editCourse.editCourse && displayType === 'active'" class="btn btn-xs pull-right glyphicon glyphicon-pencil" data-ng-click="editCourse.editCourse = true"></span>
+        <!--active course-->
+        <!--active course button-->
+        <span ng-show="!editCourse.editCourse && displayType === 'inactive'" class="btn btn-xs pull-right glyphicon glyphicon-flag" data-ng-click="editCourse.editCourse = true"></span>
+        <!--cancel changes button-->
+        <button ng-show="editCourse.editCourse" class="btn btn-danger btn-xs btn-circle pull-right" data-ng-click="editCourse.editCourse = false; clearForm()">
+            <span class="glyphicon glyphicon-remove"></span>
+        </button>
+        <!--save changes button-->
+        <button ng-show="editCourse.editCourse" data-ng-disabled="editCourseForm.$invalid || (!dateUpdated && displayType === 'inactive')" class="btn btn-success btn-xs btn-circle pull-right" data-ng-click="editCourse.editCourse = false; updateCourseInfo()">
+            <span class="glyphicon glyphicon-ok"></span>
+        </button>
+    </div>
+    <div class="panel-body">
+        <form class="row" name="editCourseForm">
+            <div class="col-xs-12">
+                <label><strong>Start Date: </strong></label>
+                <div ng-if="!editCourse.editCourse" class="crap-word">{{course.startDate.slice(0, 10)}}</div>
+                <!--edit course startDate-->
+                <button ng-if="editCourse.editCourse" class="form-control text-left" type="button" ng-init="setStartDatePicker(editCourse)" ng-click="editCourse.startDatePicker.show = !editCourse.startDatePicker.show">
+                    {{editCourse.startDateObj ? (editCourse.startDateObj | date:'yyyy-MM-dd') : course.startDate.slice(0, 10)}}
+                </button>
+                <div type="text" uib-datepicker-popup ng-model="editCourse.startDateObj" is-open="editCourse.startDatePicker.show" datepicker-options="editCourse.startDatePicker" close-text="Close" ng-change="resetEndDate(editCourse); dateUpdated=true" />
+            </div>
+            <div class="col-xs-12">
+                <label><strong>End Date: </strong></label>
+                <div ng-if="!editCourse.editCourse" class="crap-word">{{course.endDate.slice(0, 10)}}</div>
+                <!--edit course endDate-->
+                <button ng-if="editCourse.editCourse" class="form-control text-left" type="button" ng-init="setEndDatePicker(editCourse)" ng-click="editCourse.endDatePicker.show = !editCourse.endDatePicker.show">
+                    {{editCourse.endDateObj ? (editCourse.endDateObj | date:'yyyy-MM-dd') : course.endDate.slice(0, 10)}}
+                </button>
+                <div type="text" uib-datepicker-popup ng-model="editCourse.endDateObj" is-open="editCourse.endDatePicker.show" datepicker-options="editCourse.endDatePicker" close-text="Close" />
+            </div>
+            <div class="col-xs-12">
+                <label><strong>Description: </strong></label>
+                <div ng-if="(!editCourse.editCourse && displayType === 'active') || displayType === 'inactive'" class="crap-word">{{course.description}}</div>
+                <!--edit course description-->
+                <textarea ng-if="editCourse.editCourse && displayType === 'active'" class="form-control" name="description" ng-model="editCourse.description" rows="2" cols="50" required></textarea>
+            </div>
+            <div class="col-xs-12">
+                <label><strong>Academic Term: </strong></label>
+                <div ng-if="(!editCourse.editCourse && displayType === 'active') || displayType === 'inactive'" class="crap-word">{{course.academicTerm}}</div>
+                <!--edit course academic term-->
+                <input ng-if="editCourse.editCourse && displayType === 'active'" class="form-control" name="academicTerm" ng-minlength="3" ng-maxlength="10" ng-pattern="/^[A-z]*$/" ng-model="editCourse.academicTerm" required>
+                <div class="text-danger" ng-show="editCourse.editCourse && editCourseForm.academicTerm.$dirty && (editCourseForm.academicTerm.$error.minlength || editCourseForm.academicTerm.$error.maxlength || editCourseForm.academicTerm.$error.pattern)">
+                    Academic term must be between 3 to 10 characters, and contains strings only.
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <label ng-if="!editCourse.editCourse"><strong>Access Privileges: </strong></label>
+                <div class="crap-word">{{getUserPrivilegesList(course.userPrivileges)}}</div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="text-success col-xs-12" ng-if="updateCourse && displayType === 'active'">
+    <h3>Update Course Successfully!</h3>
+</div>
+
+<div class="text-success col-xs-12" ng-if="activeCourse && displayType === 'inactive'">
+    <h3>Active Course Successfully!</h3>
+</div>
