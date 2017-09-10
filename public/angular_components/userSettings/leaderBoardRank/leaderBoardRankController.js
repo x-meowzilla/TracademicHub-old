@@ -64,7 +64,10 @@
         }());
 
         $scope.$watch('selectCategory', function(newValue, oldValue) {
-            getLeaderBoard();
+            if(newValue !== oldValue)
+            {
+                getLeaderBoard();
+            }
         }, true);
 
 

@@ -119,22 +119,23 @@
                                     </div>
                                     <div class="panel-body">
                                         <div class="row">
-                                            <div ng-if="courses.length > 0" class="form-group col-xs-12">
-                                                <label class="col-xs-2 control-label"><h5>Course:</h5></label>
-                                                <div class="col-xs-8">
-                                                    <select ng-model="selectedCourseBar" ng-options="course as course.name for course in courses" class="form-control" required>
-                                                        <option value="">Please select a course...</option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                            <!--<div ng-if="courses.length > 0" class="form-group col-xs-12">-->
+                                                <!--<label class="col-xs-2 control-label"><h5>Course:</h5></label>-->
+                                                <!--<div class="col-xs-8">-->
+                                                    <!--<select ng-model="selectedCourseBar" ng-options="course as course.name for course in courses" class="form-control" required>-->
+                                                        <!--<option value="">Please select a course...</option>-->
+                                                    <!--</select>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
 
-                                            <h3 ng-if="courses.length > 0" && ng-if="bardata.length === 0" class="col-xs-12 text-center">
+                                            <!--ng-if="courses.length > 0"-->
+                                            <h3 ng-if="bardata.length === 0" class="col-xs-12 text-center">
                                                 <strong>No Points Earned.</strong>
                                             </h3>
 
-                                            <h3 ng-if="courses.length === 0" class="col-xs-12 text-center">
-                                                <strong>No Course taken.</strong>
-                                            </h3>
+                                            <!--<h3 ng-if="courses.length === 0" class="col-xs-12 text-center">-->
+                                                <!--<strong>No Course taken.</strong>-->
+                                            <!--</h3>-->
 
                                             <div class="col-xs-12">
                                                 <bar-Chart ng-if="bardata.length !== 0" bardata="bardata" xkey="xkey" ykeys="ykeys" labels="labels"></bar-Chart>
@@ -155,22 +156,23 @@
                                     </div>
                                     <div class="panel-body">
                                         <div class="row">
-                                            <div ng-if="courses.length > 0" class="form-group col-xs-12">
-                                                <label class="col-xs-2 control-label"><h5>Course:</h5></label>
-                                                <div class="col-xs-8">
-                                                    <select ng-model="selectedCourseDonut" ng-options="course as course.name for course in courses" class="form-control" required>
-                                                        <option value="">Please select a course...</option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                            <!--<div ng-if="courses.length > 0" class="form-group col-xs-12">-->
+                                                <!--<label class="col-xs-2 control-label"><h5>Course:</h5></label>-->
+                                                <!--<div class="col-xs-8">-->
+                                                    <!--<select ng-model="selectedCourseDonut" ng-options="course as course.name for course in courses" class="form-control" required>-->
+                                                        <!--<option value="">Please select a course...</option>-->
+                                                    <!--</select>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
 
-                                            <h3 ng-if="courses.length > 0 && donutdata.length === 0" class="col-xs-12 text-center">
+                                            <!--ng-if="courses.length > 0"-->
+                                            <h3 ng-if="donutdata.length === 0" class="col-xs-12 text-center">
                                                 <strong>No Points Earned.</strong>
                                             </h3>
 
-                                            <h3 ng-if="courses.length === 0" class="col-xs-12 text-center">
-                                                <strong>No Course taken.</strong>
-                                            </h3>
+                                            <!--<h3 ng-if="courses.length === 0" class="col-xs-12 text-center">-->
+                                                <!--<strong>No Course taken.</strong>-->
+                                            <!--</h3>-->
 
                                             <div class="col-xs-12">
                                                 <donut-Chart ng-if="donutdata.length !== 0" donutdata="donutdata"></donut-Chart>

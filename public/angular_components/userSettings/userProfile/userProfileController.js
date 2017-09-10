@@ -99,30 +99,30 @@
         };
 
         // Bar Chart
-        $scope.bardata = [];
+        $scope.bardata = getDataList('bar');
         $scope.xkey = "category";
         $scope.ykeys = ['points'];
         $scope.labels = ['Points'];
 
-        $scope.$watch('selectedCourseBar', function(newValue, oldValue) {
-            if(newValue !== oldValue)
-            {
-                $scope.bardata = angular.isUndefined(newValue) ?
-                    [] : getDataList();
-            }
-        }, true);
+        // $scope.$watch('selectedCourseBar', function(newValue, oldValue) {
+        //     if(newValue !== oldValue)
+        //     {
+        //         $scope.bardata = angular.isUndefined(newValue) ?
+        //             [] : getDataList();
+        //     }
+        // }, true);
 
 
         // Donut Chart
-        $scope.donutdata = [];
+        $scope.donutdata = getDataList('donut');
 
-        $scope.$watch('selectedCourseDonut', function(newValue, oldValue) {
-            if(newValue !== oldValue)
-            {
-                $scope.donutdata = angular.isUndefined(newValue) ?
-                    [] : getDataList();
-            }
-        }, true);
+        // $scope.$watch('selectedCourseDonut', function(newValue, oldValue) {
+        //     if(newValue !== oldValue)
+        //     {
+        //         $scope.donutdata = angular.isUndefined(newValue) ?
+        //             [] : getDataList();
+        //     }
+        // }, true);
 
     }
 

@@ -14,7 +14,10 @@
         $scope.categories = [];
 
         var getPoints = function () {
-            _AjaxRequest.get('/api/points/')
+            var uri = '/api/points';
+            uri += $scope.selectCategory ? "?" + $.param({categoryID: $scope.selectCategory}) : "";
+
+            _AjaxRequest.get(uri)
                 .then(
                     // change to get leader board rank endpoint, get userID
                     function successCallback(result) {
@@ -42,19 +45,7 @@
 
 
         $scope.$watch('selectCategory', function(newValue, oldValue) {
-            if(!angular.isUndefined(newValue) && newValue !== null)
-            {
-                _AjaxRequest.get('/api/points?' + $.param({categoryID: newValue._id}))
-                    .then(
-                        function successCallback(result) {
-                            $scope.items = result.data;
-                        },
-                        function errorCallback(error) {
-                            console.error(error);
-                        }
-                    );
-            }
-            else
+            if(newValue !== oldValue)
             {
                 getPoints();
             }
@@ -72,7 +63,6 @@
 
 
         // user card modal
-        // user card modal
         $scope.openUserProfileModal = function(user) {
             _AjaxRequest.get('/api/users?' + $.param({_id: user._id}))
                 .then(
@@ -84,7 +74,6 @@
                                 controller : 'userCardController',
                                 resolve : {
                                     currentUser : function() {
-                                        console.log(result.data);
                                         return result.data[0];
                                     }
                                 }
