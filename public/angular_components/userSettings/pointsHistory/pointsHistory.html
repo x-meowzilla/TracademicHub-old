@@ -18,34 +18,49 @@
 
         <!--data table-->
         <div class="row">
-            <div class="col-lg-12" page-Control gap="5" viewby="viewby" currentpage="currentpage" operations="operations" items="items" searchrecord="searchrecord">
+            <!-- display category -->
+            <div class="col-xs-12 displayUserController">
+                <label class="col-xs-3">Category: </label>
+                <div class="col-xs-6">
+                    <select ng-model="selectCategory" ng-options="category as category.name for category in categories" class="form-control" required>
+                        <option value="">Please select a category...</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-xs-12" page-Control gap="5" viewby="viewby" currentpage="currentpage" operations="operations" items="items" searchrecord="searchrecord">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
                         <tr>
-                            <th sort-Records order="assigneeFullName", sort="sort">Assignee Full Name</th>
-                            <th sort-Records order="assigneePreferredName", sort="sort">Assignee Preferred Name</th>
-                            <th sort-Records order="assignerFullName", sort="sort">Assigner Full Name</th>
-                            <th sort-Records order="assignerPreferredName", sort="sort">Assigner Preferred Name</th>
-                            <th sort-Records order="category", sort="sort">Category</th>
-                            <th sort-Records order="course", sort="sort">Course</th>
-                            <th sort-Records order="date", sort="sort">Date</th>
+                            <th sort-Records order="assignee.name.firstName", sort="sort">Assignee's First Name</th>
+                            <th sort-Records order="assignee.name.lastName", sort="sort">Assignee's Last Name</th>
+                            <th sort-Records order="assigner.name.firstName", sort="sort">Assigner's First Name</th>
+                            <th sort-Records order="assigner.name.lastName", sort="sort">Assigner's Last Name</th>
+                            <th sort-Records order="value", sort="sort">Value</th>
+                            <th sort-Records order="grantDate", sort="sort">Date</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="item in (items | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby) | orderBy:sort.sortingOrder:sort.reverse">
-                            <td>{{item.fullName}}</td>
-                            <td>{{item.fullName}}</td>
-                            <td>{{item.preferredName}}</td>
-                            <td>{{item.preferredName}}</td>
-                            <td>{{item.category}}</td>
-                            <td>{{item.course}}</td>
-                            <td>{{item.date}}</td>
+                            <td><a data-ng-click="openUserProfileModal(item.assignee)" class="hand-cursor">
+                                {{item.assignee.name.firstName}}</a>
+                            </td>
+                            <td><a data-ng-click="openUserProfileModal(item.assignee)" class="hand-cursor">
+                                {{item.assignee.name.lastName}}</a>
+                            </td>
+                            <td><a data-ng-click="openUserProfileModal(item.assigner)" class="hand-cursor">
+                                {{item.assigner.name.firstName}}</a>
+                            </td>
+                            <td><a data-ng-click="openUserProfileModal(item.assigner)" class="hand-cursor">
+                                {{item.assigner.name.lastName}}</a>
+                            </td>
+                            <td>{{item.value}}</td>
+                            <td>{{item.grantDate}}</td>
                         </tr>
                         </tbody>
-
                         <tfoot>
-                        <td colspan="5" ng-if="(items|filter:searchrecord).length == 0" class="text-center">
+                        <td colspan="6" ng-if="(items|filter:searchrecord).length == 0" class="text-center">
                             <strong>DATA NOT FOUND.</strong>
                         </td>
                         </tfoot>

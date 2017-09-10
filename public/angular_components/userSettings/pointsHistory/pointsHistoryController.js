@@ -6,62 +6,50 @@
         .controller('pointsHistoryController', pointsHistoryController);
 
 
-    pointsHistoryController.$inject = ['$scope', '_AjaxRequest']; // dependency injection
+    pointsHistoryController.$inject = ['$scope', '$uibModal', '_AjaxRequest']; // dependency injection
 
-    function pointsHistoryController($scope, _AjaxRequest) {
+    function pointsHistoryController($scope, $uibModal, _AjaxRequest) {
 
-        $scope.items = [
-            {"fullName":1,"preferredName":"name 1","category":"description 1","course":"field3 1","date":"field4 1"},
-            {"fullName":2,"preferredName":"name 2","category":"description 1","course":"field3 5","date":"field4 2"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":5,"preferredName":"name 5","category":"description 1","course":"field3 7","date":"field4 5"},
-            {"fullName":6,"preferredName":"name 6","category":"description 1","course":"field3 6","date":"field4 6"},
-            {"fullName":9,"preferredName":"name 6","category":"description 1","course":"field3 6","date":"field4 6"}
-        ];
+        $scope.items = [];
+        $scope.categories = [];
 
-        (function () {
-            _AjaxRequest.get('/api/points/history')
+        var getPoints = function () {
+            var uri = '/api/points';
+            uri += $scope.selectCategory ? "?" + $.param({categoryID: $scope.selectCategory}) : "";
+
+            _AjaxRequest.get(uri)
                 .then(
+                    // change to get leader board rank endpoint, get userID
                     function successCallback(result) {
-                        $scope.pointsHistoryData = result.data;
+                        $scope.items = result.data;
                     },
                     function errorCallback(error) {
                         console.error(error);
                     }
-                )
+                );
+        };
+
+        (function () {
+            getPoints();
+
+            _AjaxRequest.get('/api/points-category/')
+                .then(
+                    function successCallback(result) {
+                        $scope.categories = result.data;
+                    },
+                    function errorCallback(error) {
+                        console.error(error);
+                    }
+                );
         }());
+
+
+        $scope.$watch('selectCategory', function(newValue, oldValue) {
+            if(newValue !== oldValue)
+            {
+                getPoints();
+            }
+        }, true);
 
 
         $scope.sort = {
@@ -73,6 +61,32 @@
         $scope.operations = [10, 15, 20];
         $scope.searchrecord = '';
 
-    };
+
+        // user card modal
+        $scope.openUserProfileModal = function(user) {
+            _AjaxRequest.get('/api/users?' + $.param({_id: user._id}))
+                .then(
+                    function successCallback(result) {
+                        if(result.data)
+                        {
+                            var modalInstance = $uibModal.open({
+                                templateUrl : 'angular_components/userSettings/common/userSettingsModals/userCard/userCardModal.html',
+                                controller : 'userCardController',
+                                resolve : {
+                                    currentUser : function() {
+                                        return result.data[0];
+                                    }
+                                }
+                            });
+                        }
+
+                    },
+                    function errorCallback(error) {
+                        console.error(error);
+                    }
+                );
+        };
+
+    }
 
 }());

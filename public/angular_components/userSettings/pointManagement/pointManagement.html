@@ -130,11 +130,11 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="user in users">
-                                <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{user.name.firstName}}</td>
-                                <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{user.name.lastName}}</td>
-                                <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{user.name.preferredName}}</td>
-                                <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{user.email}}</td>
-                                <td data-ng-click="openUserProfileModal(item)" class="hand-cursor">{{user.studentNumber}}</td>
+                                <td data-ng-click="openUserProfileModal(user)" class="hand-cursor">{{user.name.firstName}}</td>
+                                <td data-ng-click="openUserProfileModal(user)" class="hand-cursor">{{user.name.lastName}}</td>
+                                <td data-ng-click="openUserProfileModal(user)" class="hand-cursor">{{user.name.preferredName}}</td>
+                                <td data-ng-click="openUserProfileModal(user)" class="hand-cursor">{{user.email}}</td>
+                                <td data-ng-click="openUserProfileModal(user)" class="hand-cursor">{{user.studentNumber}}</td>
                                 <td class="text-center">
                                     <button class="btn btn-danger btn-xs" data-title="Clear" ng-click="removeAssignee(user)" ><span class="glyphicon glyphicon-trash"></span></button>
                                 </td>
@@ -150,11 +150,14 @@
                                         <!--</select>-->
                                     <!--</div>-->
                                 <!--</div>-->
-                                <div class="col-xs-2">
-                                    <button class="btn btn-info customBtn center-block" data-ng-disabled="getAssignedPoints().length === 0" data-ng-click="assignPoints()">Give Points</button>
+                                <div class="col-xs-6">
+                                    <button class="btn btn-info center-block" data-ng-disabled="getAssignedPoints().length === 0" data-ng-click="assignPoints()">Give Points</button>
                                 </div>
-                                <div class="col-xs-3">
+                                <div class="col-xs-6">
                                     <h5>{{users.length}} users selected</h5>
+                                </div>
+                                <div class="text-success col-xs-12" ng-if="assignPointsSuccessfully">
+                                    <h3>Assign Points Successfully!</h3>
                                 </div>
                             </td>
                             <td colspan="6" ng-if="users.length===0" class="text-center">

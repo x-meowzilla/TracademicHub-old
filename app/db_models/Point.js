@@ -28,5 +28,48 @@ pointSchema.statics.deletePointData = function (deleteDoc) {
     return point.remove(deleteDoc);
 };
 
+pointSchema.statics.getLeaderBoard = function (categoryID) {
+    "use strict";
+    var point = this.model('Point');
+
+    var filter = [];
+
+    if(categoryID)
+    {
+        filter.push(
+            {"$match": {
+                "category": mongoose.Types.ObjectId(categoryID)
+            }}
+        );
+    }
+
+    // not working for some reason... comment it for now
+    // filter.push(
+    //     {"$lookup": {
+    //         from: "Point",
+    //         localField: "_id",
+    //         foreignField: "_id",
+    //         as: "point"
+    //     }},
+    //     {$unwind: "$point"},
+    //     {"$project": {
+    //         "assigneeData": "$point.assignee"
+    //     }}
+    // );
+
+    filter.push(
+        {"$group": {
+            "_id": '$assignee',
+            "totalPoints": {"$sum": '$value'}
+        }},
+        {"$sort": {"totalPoints": -1}},
+        {"$project": {
+            "totalPoints": 1
+        }}
+    );
+
+    return point.aggregate([filter]);
+};
+
 var PointModel = mongoose.model('Point', pointSchema);
 module.exports = PointModel;

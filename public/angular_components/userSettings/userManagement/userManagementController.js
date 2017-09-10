@@ -20,13 +20,20 @@
 
         $scope.users = [];
         $scope.displayTypes = ['all', 'active', 'inactive', 'checkedin'];
-        $scope.displayUser = {displayType: $scope.displayTypes[1], displayCourse: {}, displayPrivilege: {}};
+        $scope.displayUser = {displayType: $scope.displayTypes[1], displayCourse: {}, displayPrivilege: {}, userOperation: false};
 
         var getUsers = function () {
             // isActive query not working now, upload csv data cannot save this field to db, need to be fixed in the future.
             _AjaxRequest.get('/api/users')
                 .then(
                     function successCallback(result) {
+                        // check if course has been selected
+                        var courseSelected = !angular.isUndefined($scope.displayUser.displayCourse)
+                            && !angular.equals({}, $scope.displayUser.displayCourse);
+                        // check if privilege has been selected
+                        var privilegeSelected = !angular.isUndefined($scope.displayUser.displayPrivilege)
+                            && !angular.equals({}, $scope.displayUser.displayPrivilege);
+
                         $scope.users = result.data.filter(function (item) {
                             // filter by user type
                             var res = item._id !== $scope.currentUser._id && !item.isLocalUser;
@@ -35,28 +42,35 @@
                             {
                                 res = res && item.isActive;
 
-                                // filter by course
-                                if(!angular.isUndefined($scope.displayUser.displayCourse)
-                                    && !angular.equals({}, $scope.displayUser.displayCourse))
+                                if(courseSelected)
                                 {
                                     var courseList = [];
-                                    angular.forEach(item.courseEnrolled, function (ce) {
-                                        courseList.push(ce.course._id);
-                                    });
-
-                                    res = res && courseList.indexOf($scope.displayUser.displayCourse._id) > -1;
-                                }
-
-                                // filter by user privilege
-                                if(!angular.isUndefined($scope.displayUser.displayPrivilege)
-                                    && !angular.equals({}, $scope.displayUser.displayPrivilege))
-                                {
                                     var pList = [];
+
                                     angular.forEach(item.courseEnrolled, function (ce) {
-                                        pList.push(ce.privilege._id);
+                                        // filter by course
+                                        if(ce.course.isActive)
+                                        {
+                                            // get all active courses that user taken
+                                            courseList.push(ce.course._id);
+                                        }
+
+                                        // filter by user privilege
+                                        if(privilegeSelected)
+                                        {
+                                            // get all privileges that user has
+                                            pList.push(ce.privilege._id);
+                                        }
                                     });
 
-                                    res = res && pList.indexOf($scope.displayUser.displayPrivilege._id) > -1;
+                                    // return if user take the selected course
+                                    res = res && courseList.indexOf($scope.displayUser.displayCourse._id) > -1;
+
+                                    if(privilegeSelected)
+                                    {
+                                        // return if user has the selected privilege
+                                        res = res && pList.indexOf($scope.displayUser.displayPrivilege._id) > -1;
+                                    }
                                 }
                             }
                             else if($scope.displayUser.displayType === 'inactive')
@@ -79,8 +93,24 @@
         };
 
         $scope.$watch('displayUser', function(newValue, oldValue) {
+            // check if display user operation buttons(give points, modify user information or deactive user)
+            $scope.displayUser.userOperation =
+                !angular.isUndefined($scope.displayUser.displayCourse)
+                && !angular.equals({}, $scope.displayUser.displayCourse);
+
+            // display the privileges that has lower value than the max privilege value current user has for selected course
+            if($scope.displayUser.userOperation)
+            {
+                $scope.displayUser.displayCourse.userPrivileges = $scope.displayUser.displayCourse.userPrivileges.filter(function (item) {
+                    var res = item;
+                    // todo: use server api, pass item.value to the api
+
+                    return res;
+                });
+            }
+
+            // display results
             getUsers();
-            clearSelected();
         }, true);
 
         (function () {
@@ -239,7 +269,9 @@
                         return currentUser;
                     }
                 }
-            })
+            });
+
+            getUsers();
         };
 
         $scope.openUserProfileModal = function(currentUser) {
@@ -360,7 +392,6 @@
                     );
 
                 getUsers();
-                clearSelected();
             });
         };
 
