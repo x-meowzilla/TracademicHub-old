@@ -18,32 +18,43 @@
 
         <!--data table-->
         <div class="row">
-            <div class="col-lg-12" page-Control gap="5" viewby="viewby" currentpage="currentpage" operations="operations" items="items" searchrecord="searchrecord">
+            <!-- display category -->
+            <div class="col-xs-12 displayUserController">
+                <label class="col-xs-3">Category: </label>
+                <div class="col-xs-6">
+                    <select ng-model="selectCategory" ng-options="category as category.name for category in categories" class="form-control" required>
+                        <option value="">Please select a category...</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-xs-12" page-Control gap="5" viewby="viewby" currentpage="currentpage" operations="operations" items="items" searchrecord="searchrecord">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
+                    <table class="table table-bordered table-striped table-hover">
                         <thead>
                         <tr>
-                            <th sort-Records order="firstName", sort="sort">First Name</th>
-                            <th sort-Records order="lastName", sort="sort">Last Name</th>
-                            <th sort-Records order="preferredName", sort="sort">Preferred Name</th>
-                            <th sort-Records order="category", sort="sort">Category</th>
-                            <th sort-Records order="course", sort="sort">Course</th>
-                            <th sort-Records order="date", sort="sort">Date</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Preferred Name</th>
+                            <th>Total Points</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="item in (items | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby) | orderBy:sort.sortingOrder:sort.reverse"
-                            class="hand-cursor" data-ng-click="openUserProfileModal(item)">
-                            <td>{{item.fullName}}</td>
-                            <td>{{item.fullName}}</td>
-                            <td>{{item.preferredName}}</td>
-                            <td>{{item.category}}</td>
-                            <td>{{item.course}}</td>
-                            <td>{{item.date}}</td>
+                        <tr ng-repeat="item in (items | filter:searchrecord | limitTo : viewby : (currentpage-1)*viewby) | orderBy:sort.sortingOrder:sort.reverse">
+                            <td data-ng-click="openUserProfileModal(item._id)" class="hand-cursor">
+                                {{item.assigneeName.firstName}}
+                            </td>
+                            <td data-ng-click="openUserProfileModal(item._id)" class="hand-cursor">
+                                {{item.assigneeName.lastName}}
+                            </td>
+                            <td data-ng-click="openUserProfileModal(item._id)" class="hand-cursor">
+                                {{item.assigneeName.preferredName}}
+                            </td>
+                            <td>{{item._id}}</td>
                         </tr>
                         </tbody>
                         <tfoot>
-                        <td colspan="5" ng-if="(items|filter:searchrecord).length == 0" class="text-center">
+                        <td colspan="4" ng-if="(items|filter:searchrecord).length == 0" class="text-center">
                             <strong>DATA NOT FOUND.</strong>
                         </td>
                         </tfoot>

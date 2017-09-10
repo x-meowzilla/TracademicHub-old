@@ -72,34 +72,28 @@
 
 
         // user card modal
-        $scope.openUserProfileModal = function(user) {
-            var currentUser = {};
-            _AjaxRequest.get('/api/users?' + $.param({isActive: true, _id: user._id}))
+        $scope.openUserProfileModal = function(userID) {
+            _AjaxRequest.get('/api/users?' + $.param({isActive: true, _id: userID}))
                 .then(
                     function successCallback(result) {
-                        currentUser = result.data;
+                        if(result.data)
+                        {
+                            var modalInstance = $uibModal.open({
+                                templateUrl : 'angular_components/userSettings/common/userSettingsModals/userCard/userCardModal.html',
+                                controller : 'userCardController',
+                                resolve : {
+                                    currentUser : function() {
+                                        return result.data[0];
+                                    }
+                                }
+                            });
+                        }
+
                     },
                     function errorCallback(error) {
                         console.error(error);
                     }
                 );
-
-            if(angular.equals({}, currentUser))
-            {
-                console.error('User not found');
-            }
-            else
-            {
-                var modalInstance = $uibModal.open({
-                    templateUrl : 'angular_components/userSettings/common/userSettingsModals/userCard/userCardModal.html',
-                    controller : 'userCardController',
-                    resolve : {
-                        currentUser : function() {
-                            return currentUser;
-                        }
-                    }
-                });
-            }
         };
 
     };

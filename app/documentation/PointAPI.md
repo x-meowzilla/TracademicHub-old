@@ -42,6 +42,27 @@ Point API Documentation
     + **Response:** 403
         + Body:
             + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-activate your account.'
+
++ **READ**
+    + **Description:** Retrieve leaderBoard record.
+    + **Request:** ```GET /api/points/leaderBoard```
+        + By default, this request returns leaderBoard record in the database
+        + **Pre-requisite:**
+            + User must login and this account must be activated.
+        + **Query String Options:**
+            + pointCategoryID: (string) point category ID
+    + **Response:** 200
+        + Content-Type: ```application/json```
+        + Body: ```array of object```
+            + _id: (string) unique point ID(also assignee ID)
+            + totalPoints: (number) total points user gained for a category
+    + **Response:** 401
+        + Body:
+            + errmsg: 'Please login before performing this action.'
+    + **Response:** 403
+        + Body:
+            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-activate your account.'
+
             
 + **CREATE**
     + **Description:** Create and save a point record.

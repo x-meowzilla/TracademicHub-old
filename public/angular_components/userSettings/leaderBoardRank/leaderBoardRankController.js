@@ -8,38 +8,66 @@
     leaderBoardRankController.$inject = ['$scope', '$uibModal', '_AjaxRequest']; // dependency injection
 
     function leaderBoardRankController($scope, $uibModal, _AjaxRequest) {
-
-        (function () {
-            _AjaxRequest.get('/api/points/history')
+        $scope.items = [];
+        //59b0da3f0fffc82da7c3372e
+        var getLeaderBoard = function () {
+            var uri = '/api/points/leaderboard';
+            uri += $scope.selectCategory ? "?" + $.param({pointCategoryID: $scope.selectCategory._id}) : "";
+            _AjaxRequest.get(uri)
                 .then(
                     // change to get leader board rank endpoint, get userID
                     function successCallback(result) {
-                        $scope.pointsHistoryData = result.data;
+                        $scope.items = result.data;
+
+                        // todo: not a good design, need to fix getLeaderBoard in Point.js and remove this part
+                        angular.forEach(result.data, function (item) {
+                            _AjaxRequest.get('/api/users?' + $.param({_id: item._id}))
+                                .then(
+                                    function successCallback(result) {
+                                        if(!result.data)
+                                        {
+                                            // user has been deactived warning, then refresh data
+                                            window.alert("User is deactive!");
+                                            getLeaderBoard();
+                                        }
+
+                                        item.assigneeName = result.data[0].name;
+                                    },
+                                    function errorCallback(error) {
+                                        console.error(error);
+                                    }
+                                );
+                        });
+
+                        return $scope.items;
                     },
                     function errorCallback(error) {
                         console.error(error);
                     }
-                )
+                );
+        };
+
+
+        $scope.categories = [];
+        (function () {
+            getLeaderBoard();
+
+            _AjaxRequest.get('/api/points-category/')
+                .then(
+                    function successCallback(result) {
+                        $scope.categories = result.data;
+                    },
+                    function errorCallback(error) {
+                        console.error(error);
+                    }
+                );
         }());
 
-        $scope.items = [
-            {"fullName":1,"preferredName":"name 1","category":"description 1","course":"field3 1","date":"field4 1"},
-            {"fullName":2,"preferredName":"name 2","category":"description 1","course":"field3 5","date":"field4 2"},
-            {"fullName":3,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":4,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":5,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":6,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":7,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":8,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":9,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":10,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":11,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":12,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":14,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":13,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":15,"preferredName":"name 3","category":"description 1","course":"field3 3","date":"field4 3"},
-            {"fullName":19,"preferredName":"name 6","category":"description 1","course":"field3 6","date":"field4 6"}
-        ];
+        $scope.$watch('selectCategory', function(newValue, oldValue) {
+            getLeaderBoard();
+        }, true);
+
+
 
         $scope.sort = {
             sortingOrder : '',
@@ -51,18 +79,29 @@
         $scope.searchrecord = '';
 
 
-
         // user card modal
-        $scope.openUserProfileModal = function(currentUser) {
-            var modalInstance = $uibModal.open({
-                templateUrl : 'angular_components/userSettings/common/userSettingsModals/userCard/userCardModal.html',
-                controller : 'userCardController',
-                resolve : {
-                    currentUser : function() {
-                        return currentUser;
+        $scope.openUserProfileModal = function(userID) {
+            _AjaxRequest.get('/api/users?' + $.param({isActive: true, _id: userID}))
+                .then(
+                    function successCallback(result) {
+                        if(result.data)
+                        {
+                            var modalInstance = $uibModal.open({
+                                templateUrl : 'angular_components/userSettings/common/userSettingsModals/userCard/userCardModal.html',
+                                controller : 'userCardController',
+                                resolve : {
+                                    currentUser : function() {
+                                        return result.data[0];
+                                    }
+                                }
+                            });
+                        }
+
+                    },
+                    function errorCallback(error) {
+                        console.error(error);
                     }
-                }
-            })
+                );
         };
     }
 

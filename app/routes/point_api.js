@@ -33,6 +33,18 @@ router.get('/', mw.checkAuthentication, function (req, res) {
         });
 });
 
+// get leaderboard
+router.get('/leaderboard', mw.checkAuthentication, function (req, res) {
+    "use strict";
+    PointModel.getLeaderBoard(req.query.pointCategoryID)
+        .then(function (pointsArray) {
+            return res.json(pointsArray).end();
+        })
+        .catch(function (error) {
+            return res.status(500).send(error).end();
+        });
+});
+
 router.post('/', mw.checkAuthentication, function (req, res) {
     "use strict";
     // req.body = {assigneeID, pointCategoryID, [pointValue]},  // TODO - courseID
