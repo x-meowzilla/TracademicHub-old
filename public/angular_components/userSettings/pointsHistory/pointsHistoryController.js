@@ -72,8 +72,9 @@
 
 
         // user card modal
-        $scope.openUserProfileModal = function(userID) {
-            _AjaxRequest.get('/api/users?' + $.param({isActive: true, _id: userID}))
+        // user card modal
+        $scope.openUserProfileModal = function(user) {
+            _AjaxRequest.get('/api/users?' + $.param({_id: user._id}))
                 .then(
                     function successCallback(result) {
                         if(result.data)
@@ -83,6 +84,7 @@
                                 controller : 'userCardController',
                                 resolve : {
                                     currentUser : function() {
+                                        console.log(result.data);
                                         return result.data[0];
                                     }
                                 }
@@ -96,6 +98,6 @@
                 );
         };
 
-    };
+    }
 
 }());
