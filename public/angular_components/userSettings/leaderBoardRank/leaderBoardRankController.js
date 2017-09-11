@@ -9,9 +9,9 @@
 
     function leaderBoardRankController($scope, $uibModal, _AjaxRequest) {
         $scope.items = [];
-        //59b0da3f0fffc82da7c3372e
+
         var getLeaderBoard = function () {
-            var uri = '/api/points/leaderboard';
+            var uri = '/api/points/sum';
             uri += $scope.selectCategory ? "?" + $.param({pointCategoryID: $scope.selectCategory._id}) : "";
             _AjaxRequest.get(uri)
                 .then(
@@ -19,7 +19,7 @@
                     function successCallback(result) {
                         $scope.items = result.data;
 
-                        // todo: not a good design, need to fix getLeaderBoard in Point.js and remove this part
+                        // todo: not a good design, need to fix getPointsSum in Point.js and remove this part
                         angular.forEach(result.data, function (item) {
                             _AjaxRequest.get('/api/users?' + $.param({_id: item._id}))
                                 .then(

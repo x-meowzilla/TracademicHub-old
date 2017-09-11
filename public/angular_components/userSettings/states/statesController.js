@@ -6,9 +6,9 @@
         .controller('statesController', statesController)
         .directive('areaChart', areaChart);
 
-    statesController.$inject = ['$scope', '$uibModal', '_Authentication', '_AjaxRequest']; // dependency injection
+    statesController.$inject = ['$scope', '$uibModal', '$filter', '_Authentication', '_AjaxRequest']; // dependency injection
 
-    function statesController($scope, $uibModal , _Authentication, _AjaxRequest) {
+    function statesController($scope, $uibModal, $filter, _Authentication, _AjaxRequest) {
         $scope.getCurrentUser = function () {
             return _Authentication.getLoginUser();
         };
@@ -18,10 +18,114 @@
         };
 
 
+        $scope.startDatePicker = {
+            show: false
+        };
+        $scope.endDatePicker = {
+            show: false
+        };
+        $scope.timePeriod = {
+            startDate: new Date(),
+            endDate: new Date()
+        };
+        $scope.$watch('timePeriod.startDate', function(newValue, oldValue) {
+            if(newValue > $scope.timePeriod.endDate)
+            {
+                $scope.endDatePicker.minDate = newValue;
+                $scope.timePeriod.endDate = newValue;
+            }
+
+            if(!angular.isUndefined($scope.timePeriod))
+            {
+                getDataList();
+            }
+        }, true);
+
+        // Morris data
+        var getDataList = function () {
+            _AjaxRequest.get('/api/points/period?' + $.param({userID: $scope.getCurrentUser()._id, startDate: $scope.timePeriod.startDate, endDate: $scope.timePeriod.endDate}), true)
+                .then(
+                    // change to get leader board rank endpoint, get userID
+                    function successCallback(result) {
+                        if(!result.data || result.data.length === 0)
+                        {
+                            $scope.areadata = [];
+                            $scope.ykeys = [];
+                            $scope.labels = [];
+                        }
+
+                        var areaDataObjTemplate = {"period": ''};
+                        var loopCount = 0;
+
+                        // todo: not a good design, need to fix getPointsByPeriod in Point.js and remove this part
+                        var categorieNames = [];
+                        var dates = [];
+                        var pointInfo = [];
+                        var pointsData = angular.copy(result.data);
+                        angular.forEach(pointsData, function (data) {
+                            _AjaxRequest.get('/api/points-category?' + $.param({_id: data.category}))
+                                .then(
+                                    function successCallback(res) {
+                                        loopCount += 1;
+
+                                        // get all categories
+                                        if (categorieNames.indexOf(res.data[0].name) < 0) {
+                                            categorieNames.push(res.data[0].name);
+                                        }
+
+                                        data.categoryName = res.data[0].name;
+                                        areaDataObjTemplate[res.data[0].name] = 0;
+
+                                        // get all dates
+                                        if (dates.indexOf(data.date) < 0) {
+                                            dates.push(data.date);
+                                        }
+
+                                        // for last loop
+                                        if (loopCount === result.data.length)
+                                        {
+                                            var areadata = [];
+                                            angular.forEach(pointsData, function (each) {
+                                                var eachDate = $filter('date')(each.date, "yyyy-MM-dd");
+                                                var dateObj = $filter('filter')(areadata, {'period': eachDate});
+
+                                                if(dateObj.length > 0)
+                                                {
+                                                    dateObj[0][each.categoryName] = each.totalPoints;
+                                                }
+                                                else
+                                                {
+                                                    var areaDataObjT = angular.copy(areaDataObjTemplate);
+
+                                                    areaDataObjT['period'] = eachDate;
+                                                    areaDataObjT[each.categoryName] = each.totalPoints;
+                                                    areadata.push(areaDataObjT);
+                                                }
+                                            });
+
+                                            $scope.areadata = areadata;
+                                            $scope.labels = categorieNames;
+                                            $scope.ykeys = categorieNames;
+                                        }
+                                    },
+                                    function errorCallback(error) {
+                                        console.error(error);
+                                    }
+                                );
+                        });
+                    },
+                    function errorCallback(error) {
+                        console.error(error);
+                    }
+                );
+        };
+
+
+
         $scope.items = [];
         $scope.courses = [];
 
-        (function () {
+        var renderData = function () {
             // get point history
             _AjaxRequest.get('/api/points?' + $.param({assigneeID: $scope.getCurrentUser()._id}))
                 .then(
@@ -55,6 +159,18 @@
             //             );
             //     }
             // });
+        };
+
+        (function () {
+            // initial time period
+            var startDate = new Date();
+            var endDate = new Date();
+            startDate.setDate(endDate.getDate()-30);
+            $scope.timePeriod.startDate = startDate;
+            $scope.timePeriod.endDate = endDate;
+
+            // get points line chart
+            renderData();
         }());
 
 
@@ -96,75 +212,11 @@
 
 
 
-        $scope.startDatePicker = {
-            show: false
-        };
-        $scope.endDatePicker = {
-            show: false
-        };
-        $scope.timePeriod = {
-            startDate: new Date(),
-            endDate: new Date()
-        };
-        $scope.$watch('timePeriod.startDate', function(newValue, oldValue) {
-            if(newValue > $scope.timePeriod.endDate)
-            {
-                $scope.endDatePicker.minDate = newValue;
-                $scope.timePeriod.endDate = newValue;
-            }
-        }, true);
-
-
-
-        // Morris data
-        var getDataList = function () {
-            var data = [];
-
-            _AjaxRequest.get('/api/points-category/')
-                .then(
-                    function successCallback(result) {
-                        angular.forEach(result.data, function (category) {
-                            var value = 0;
-                            _AjaxRequest.get('/api/points?' + $.param({assignerID: $scope.getCurrentUser()._id, categoryID: category._id}))
-                                .then(
-                                    function successCallback(points) {
-                                        angular.forEach(points.data, function (point) {
-                                            value = value + point.value;
-                                        });
-                                    },
-                                    function errorCallback(error) {
-                                        console.error(error);
-                                    }
-                                );
-                            if(value !== 0)
-                            {
-                                if(chartType === 'donut')
-                                {
-                                    data['label'] = category.name;
-                                    data['value'] = value;
-                                }
-                                else if(chartType === 'bar')
-                                {
-                                    data['period'] = category.name;
-                                    data['points'] = value;
-                                }
-
-                            }
-                        });
-                    },
-                    function errorCallback(error) {
-                        console.error(error);
-                    }
-                );
-
-            return data;
-        };
-
         // Area Chart
-        $scope.areadata = getDataList();
+        $scope.areadata = [];
         $scope.xkey = "period";
-        $scope.ykeys = ['teaching', 'experience', 'challenge'];
-        $scope.labels = ['teaching points', 'experience points', 'challenge points'];
+        $scope.ykeys = [];
+        $scope.labels = [];
 
         // $scope.$watch('selectedCourseArea', function(newValue, oldValue) {
         //     if(newValue !== oldValue)

@@ -45,12 +45,13 @@ Point API Documentation
 
 + **READ**
     + **Description:** Retrieve leaderBoard record.
-    + **Request:** ```GET /api/points/leaderBoard```
-        + By default, this request returns leaderBoard record in the database
+    + **Request:** ```GET /api/points/sum```
+        + By default, this request returns the total points that each user has.
         + **Pre-requisite:**
             + User must login and this account must be activated.
         + **Query String Options:**
             + pointCategoryID: (string) point category ID
+            + assigneeID: (string) point category ID
     + **Response:** 200
         + Content-Type: ```application/json```
         + Body: ```array of object```
@@ -63,7 +64,33 @@ Point API Documentation
         + Body:
             + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-activate your account.'
 
-            
++ **READ**
+    + **Description:** Retrieve leaderBoard record.
+    + **Request:** ```GET /api/points/period```
+        + By default, this request returns point records between a period.
+        + **Pre-requisite:**
+            + User must login and this account must be activated.
+        + **Query String Options:**
+            + userID: (string) user ID
+            + startDate: (date) start date
+            + endDate: (date) end date
+    + **Response:** 200
+        + Content-Type: ```application/json```
+        + Body: ```array of object```
+            + id: (object)
+                + date: (string) date
+                + month: (string) month
+                + year: (string) year
+                + category: (string) unique category ID
+            + totalPoints: (number) total points user gained for a category
+    + **Response:** 401
+        + Body:
+            + errmsg: 'Please login before performing this action.'
+    + **Response:** 403
+        + Body:
+            + errmsg: 'Permission denied. Your account is inactive. Please contact instructor to re-activate your account.'
+
+             
 + **CREATE**
     + **Description:** Create and save a point record.
     + **Request:** ```POST /api/points/```

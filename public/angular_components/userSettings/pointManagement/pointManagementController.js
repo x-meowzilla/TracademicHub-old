@@ -8,6 +8,8 @@
     pointManagementController.$inject = ['$scope', '$uibModal', '$timeout', '_AjaxRequest', '_Authentication', 'PRIVILEGE', '_AssignPoints']; // dependency injection
 
     function pointManagementController($scope, $uibModal, $timeout, _AjaxRequest, _Authentication, PRIVILEGE, _AssignPoints) {
+        $scope.currentUser = _Authentication.getLoginUser();
+
         $scope.authorizedPrivilege = PRIVILEGE;
         $scope.isAuthorized = function (value) {
             // todo: hard-coded for now, need to udpate when server side access privilege checking apis finished.

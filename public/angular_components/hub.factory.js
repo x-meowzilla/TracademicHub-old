@@ -102,7 +102,8 @@
                 }
                 else {
                     // todo: use server api, pass privilegeValue to the api
-
+                    // return true for now for testing, remove it when api is fixing
+                    return true;
                 }
             },
 
