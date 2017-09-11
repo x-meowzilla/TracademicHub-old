@@ -12,10 +12,10 @@
         <li>
             <a href="/leaderBoardRank" ng-class="{'activeTab': activetab == '/leaderBoardRank'}"><i class="fa fa-fw fa-table"></i> LeaderBoard Rank</a>
         </li>
-        <li>
+        <li ng-if="!isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE)">
             <a href="/manageProducts" ng-class="{'activeTab': activetab == '/manageProducts'}"><i class="fa fa-fw fa-book"></i> Manage Products</a>
         </li>
-        <li>
+        <li ng-if="!isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE)">
             <a href="/pointsHistory" ng-class="{'activeTab': activetab == '/pointsHistory'}"><i class="fa fa-fw fa-history"></i>Points History</a>
         </li>
         <!--<li>-->
@@ -32,13 +32,13 @@
                 <!--</li>-->
             <!--</ul>-->
         <!--</li>-->
-        <li>
+        <li ng-if="!isAuthorized(authorizedPrivilege.ACCESS_TA_VALUE)">
             <a href="javascript:;" data-toggle="collapse" data-target="#management" ng-class="{'activeTab': activetab.indexOf('Management')>-1}"><i class="fa fa-fw fa-wrench"></i> Management <i class="fa fa-fw fa-caret-down"></i></a>
             <ul id="management" class="collapse">
                 <li>
                     <a href="/userManagement" ng-class="{'activeTab': activetab == '/userManagement'}">User Management</a>
                 </li>
-                <li>
+                <li ng-if="!isAuthorized(authorizedPrivilege.ACCESS_INSTRUCTOR_VALUE)">
                     <a href="/courseManagement" ng-class="{'activeTab': activetab == '/courseManagement'}">Course Management</a>
                 </li>
                 <li>
