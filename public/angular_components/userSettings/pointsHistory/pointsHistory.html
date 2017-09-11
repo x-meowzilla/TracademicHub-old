@@ -39,6 +39,7 @@
                             <th sort-Records order="assigner.name.lastName", sort="sort">Assigner's Last Name</th>
                             <th sort-Records order="value", sort="sort">Value</th>
                             <th sort-Records order="grantDate", sort="sort">Date</th>
+                            <th sort-Records order="category.name", sort="sort">Category</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -57,10 +58,11 @@
                             </td>
                             <td>{{item.value}}</td>
                             <td>{{item.grantDate}}</td>
+                            <td>{{item.category.name}}</td>
                         </tr>
                         </tbody>
                         <tfoot>
-                        <td colspan="6" ng-if="(items|filter:searchrecord).length == 0" class="text-center">
+                        <td colspan="7" ng-if="(items|filter:searchrecord).length == 0" class="text-center">
                             <strong>DATA NOT FOUND.</strong>
                         </td>
                         </tfoot>

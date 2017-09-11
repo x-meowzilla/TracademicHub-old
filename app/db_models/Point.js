@@ -28,17 +28,55 @@ pointSchema.statics.deletePointData = function (deleteDoc) {
     return point.remove(deleteDoc);
 };
 
-pointSchema.statics.getLeaderBoard = function (categoryID) {
+pointSchema.statics.getPointsByPeriod = function (req) {
+    "use strict";
+    var point = this.model('Point');
+
+    return point.aggregate([
+        {"$match": {
+            $and: [
+                {"assignee": mongoose.Types.ObjectId(req.userID)},
+                {"grantDate": {$gt: new Date(req.startDate), $lt: new Date(req.endDate)}}
+            ]
+        }},
+        {"$group": {
+            "_id": {date:{$dayOfMonth:"$grantDate"}, month:{$month:"$grantDate"}, year:{$year:"$grantDate"}, "category": "$category"},
+            "date": {$first: "$grantDate"},
+            "category": {$first: "$category"},
+            "totalPoints": {"$sum": '$value'}
+        }},
+        {"$sort": {"totalPoints": -1}},
+        {"$project": {
+            "_id": 0,
+            "date": 1,
+            "category": 1,
+            "totalPoints": 1
+        }}
+    ]);
+};
+
+pointSchema.statics.getPointsSum = function (req) {
     "use strict";
     var point = this.model('Point');
 
     var filter = [];
 
+    var categoryID = req.pointCategoryID;
     if(categoryID)
     {
         filter.push(
             {"$match": {
                 "category": mongoose.Types.ObjectId(categoryID)
+            }}
+        );
+    }
+
+    var assigneeID = req.assigneeID;
+    if(assigneeID)
+    {
+        filter.push(
+            {"$match": {
+                "assignee": mongoose.Types.ObjectId(assigneeID)
             }}
         );
     }

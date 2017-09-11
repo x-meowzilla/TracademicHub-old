@@ -21,24 +21,78 @@
         $scope.avatarUrl = $scope.getCurrentUser().avatarPath? $scope.getCurrentUser().avatarPath: "../images/default-avatar.png";
 
         $scope.courses = [];
+        // Morris data
+        var getDataList = function (chartType) {
+            _AjaxRequest.get('/api/points-category/')
+                .then(
+                    function successCallback(result) {
+                        angular.forEach(result.data, function (category) {
+                            _AjaxRequest.get('/api/points/sum?' + $.param({pointCategoryID: category._id, assigneeID: $scope.getCurrentUser()._id}))
+                                .then(
+                                    function successCallback(result) {
+                                        var data = {};
+
+                                        if(result.data.length > 0)
+                                        {
+                                            var value = result.data[0].totalPoints;
+                                            if(value > 0)
+                                            {
+                                                if(chartType === 'donut')
+                                                {
+                                                    data['label'] = category.name;
+                                                    data['value'] = value;
+
+                                                    $scope.donutdata.push(data);
+                                                }
+                                                else if(chartType === 'bar')
+                                                {
+                                                    data['category'] = category.name;
+                                                    data['points'] = value;
+
+                                                    $scope.bardata.push(data);
+                                                }
+
+                                                return dataList
+                                            }
+                                        }
+                                        else
+                                        {
+                                            $scope.bardata = [];
+                                            $scope.donutdata = [];
+                                        }
+                                    },
+                                    function errorCallback(error) {
+                                        console.error(error);
+                                    }
+                                );
+                        });
+                    },
+                    function errorCallback(error) {
+                        console.error(error);
+                    }
+                );
+        };
         (function () {
-            var courseIds = [];
-            angular.forEach($scope.getCurrentUser().courseEnrolled, function (item) {
-                var courseId = item.course._id;
-                if(courseIds.indexOf(courseId) < 0)
-                {
-                    _AjaxRequest.get('/api/courses?' + $.param({_id: courseId, isActive: true}))
-                        .then(
-                            function successCallback(result) {
-                                $scope.courses.push(result.data[0]);
-                                courseIds.push(result.data[0]._id);
-                            },
-                            function errorCallback(error) {
-                                console.error(error);
-                            }
-                        );
-                }
-            });
+            // var courseIds = [];
+            // angular.forEach($scope.getCurrentUser().courseEnrolled, function (item) {
+            //     var courseId = item.course._id;
+            //     if(courseIds.indexOf(courseId) < 0)
+            //     {
+            //         _AjaxRequest.get('/api/courses?' + $.param({_id: courseId, isActive: true}))
+            //             .then(
+            //                 function successCallback(result) {
+            //                     $scope.courses.push(result.data[0]);
+            //                     courseIds.push(result.data[0]._id);
+            //                 },
+            //                 function errorCallback(error) {
+            //                     console.error(error);
+            //                 }
+            //             );
+            //     }
+            // });
+
+            getDataList('donut');
+            getDataList('bar');
         }());
 
         // open edit profile modal
@@ -54,52 +108,11 @@
             })
         };
 
-        // Morris data
-        var getDataList = function (chartType) {
-            var data = [];
 
-            _AjaxRequest.get('/api/points-category/')
-                .then(
-                    function successCallback(result) {
-                        angular.forEach(result.data, function (category) {
-                            var value = 0;
-                            _AjaxRequest.get('/api/points?' + $.param({assignerID: $scope.getCurrentUser()._id, categoryID: category._id}))
-                                .then(
-                                    function successCallback(points) {
-                                        angular.forEach(points.data, function (point) {
-                                            value = value + point.value;
-                                        });
-                                    },
-                                    function errorCallback(error) {
-                                        console.error(error);
-                                    }
-                                );
-                            if(value !== 0)
-                            {
-                                if(chartType === 'donut')
-                                {
-                                    data['label'] = category.name;
-                                    data['value'] = value;
-                                }
-                                else if(chartType === 'bar')
-                                {
-                                    data['category'] = category.name;
-                                    data['points'] = value;
-                                }
-
-                            }
-                        });
-                    },
-                    function errorCallback(error) {
-                        console.error(error);
-                    }
-                );
-
-            return data;
-        };
 
         // Bar Chart
-        $scope.bardata = getDataList('bar');
+        $scope.bardata = [];
+
         $scope.xkey = "category";
         $scope.ykeys = ['points'];
         $scope.labels = ['Points'];
@@ -114,7 +127,7 @@
 
 
         // Donut Chart
-        $scope.donutdata = getDataList('donut');
+        $scope.donutdata = [];
 
         // $scope.$watch('selectedCourseDonut', function(newValue, oldValue) {
         //     if(newValue !== oldValue)

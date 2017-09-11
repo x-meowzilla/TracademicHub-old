@@ -33,10 +33,26 @@ router.get('/', mw.checkAuthentication, function (req, res) {
         });
 });
 
-// get leaderboard
-router.get('/leaderboard', mw.checkAuthentication, function (req, res) {
+// get point records between a period
+router.get('/period', mw.checkAuthentication, function (req, res) {
     "use strict";
-    PointModel.getLeaderBoard(req.query.pointCategoryID)
+    if(!req.query.userID || !req.query.startDate || !req.query.endDate)
+    {
+        return res.status(500).send(error).end();
+    }
+    PointModel.getPointsByPeriod(req.query)
+        .then(function (pointsArray) {
+            return res.json(pointsArray).end();
+        })
+        .catch(function (error) {
+            return res.status(500).send(error).end();
+        });
+});
+
+// get totl points that each user has
+router.get('/sum', mw.checkAuthentication, function (req, res) {
+    "use strict";
+    PointModel.getPointsSum(req.query)
         .then(function (pointsArray) {
             return res.json(pointsArray).end();
         })

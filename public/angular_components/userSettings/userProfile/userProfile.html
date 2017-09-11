@@ -89,8 +89,8 @@
                                                     </thead>
                                                     <tbody>
                                                     <tr ng-repeat="ce in getCurrentUser().courseEnrolled">
-                                                        <td>{{ce.course}}</td>
-                                                        <td>{{ce.privilege}}</td>
+                                                        <td>{{ce.course.name}}</td>
+                                                        <td>{{ce.privilege.name}}</td>
                                                     </tr>
                                                     </tbody>
                                                 </table>

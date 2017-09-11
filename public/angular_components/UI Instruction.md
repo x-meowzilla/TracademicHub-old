@@ -9,21 +9,20 @@ UI Instruction
         + Basic information of current user
         + Points Dashboard 
             + Bar Chart: 
-                ``Display total points user gained under each category``
+                > Display total points user gained under each category
             + Donut Chart:
-                ``Display percentage of each category``
+                > Display percentage of each category
     + **Operations**
         + edit current user's profile
-            ``Able to edit some basic user profile such as 
-            avatar, preferred name, biography.``
+            > Able to edit some basic user profile such as avatar, preferred name, biography.
         + check points history of the current use by clicking **View Details**
         
 + **States Details Page**
     + **Views**
         + data table
-            ``Display points history of the current user``
+            > Display points history of the current user
         + Line chart
-            ``Display points history of the current user by time``
+            > Display points history of the current user by time
     + **Operations**
         + data table
             + search blah blah blah in the search bar
