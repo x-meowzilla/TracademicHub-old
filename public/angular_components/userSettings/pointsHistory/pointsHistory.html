@@ -57,7 +57,7 @@
                                 {{item.assigner.name.lastName}}</a>
                             </td>
                             <td>{{item.value}}</td>
-                            <td>{{item.grantDate}}</td>
+                            <td>{{item.grantDate  | date:'yyyy-MM-dd hh:mm:ss'}}</td>
                             <td>{{item.category.name}}</td>
                         </tr>
                         </tbody>

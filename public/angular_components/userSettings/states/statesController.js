@@ -28,8 +28,8 @@
             startDate: new Date(),
             endDate: new Date()
         };
-        $scope.$watch('timePeriod.startDate', function(newValue, oldValue) {
-            if(newValue > $scope.timePeriod.endDate)
+        $scope.$watch('timePeriod', function(newValue, oldValue) {
+            if(newValue.startDate > newValue.endDate)
             {
                 $scope.endDatePicker.minDate = newValue;
                 $scope.timePeriod.endDate = newValue;
